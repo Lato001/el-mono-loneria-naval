@@ -1,25 +1,9 @@
-import {
-  Header,
-  Footer,
-  Hero,
-  About,
-  Services,
-  Reviews,
-  Faq,
-  Contact,
-} from "./components/views";
+import { Home } from "./pages";
 
 export default function App() {
   return (
     <>
-      <Header />
-      <Hero />
-      <About />
-      <Services />
-      <Reviews />
-      <Faq />
-      <Contact />
-      <Footer />
+      <Home></Home>
     </>
   );
 }
