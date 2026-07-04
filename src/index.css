@@ -1,8 +1,18 @@
 @import "tailwindcss";
 @import "./fonts.css";
 
+/*IMPORT FONTS*/
 @theme {
   --font-brown: "Brown Beige", sans-serif;
   --font-poppins: "Poppins", sans-serif;
   --font-nord: "Nord", sans-serif;
+}
+/*COLOR PALETTE*/
+@theme{
+  --color-pr-hero-blue: #344784;
+  --color-pr-aquamarine: #40F1E7;
+  --color-sc-ocean-blue: #001051;
+  --color-sc-sky-blue: #42B2EB;
+  --color-sc-chalk: #F4F4F4;
+  --color-sc-sand: #EAD9C1;
 }
