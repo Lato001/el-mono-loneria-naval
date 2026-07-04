@@ -1,9 +1,11 @@
 import { Routes, Route } from "react-router-dom";
+import { Header } from "./components/layout";
 import { AboutUs, Contact, Faq, Home, Services } from "./pages";
 import { PATHS } from "./routes/routes";
 export default function App() {
   return (
     <>
+      <Header></Header>
       <Routes>
         <Route path={PATHS.HOME} element={<Home />} />
         <Route path={PATHS.SERVICES} element={<Services />} />
