@@ -3,6 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import { Header, Navbar } from "./components/layout";
 import { AboutUs, Contact, Faq, Home, Services } from "./pages";
 import { PATHS } from "./routes/routes";
+import { ScrollToTop } from "./components/ui/Button";
 
 export default function App() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -23,6 +24,7 @@ export default function App() {
       >
         <Header />
         <Navbar />
+        <ScrollToTop></ScrollToTop>
       </div>
       <Routes>
         <Route path={PATHS.HOME} element={<Home />} />
