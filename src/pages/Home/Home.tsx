@@ -1,3 +1,5 @@
+import { Hero } from "../../components/layout";
+
 export function Home() {
-  return <div>Home</div>;
+  return <Hero />;
 }
