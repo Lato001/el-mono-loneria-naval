@@ -1,4 +1,4 @@
-import { BrandMarquee } from "../../components/ui/Brands/BrandMarquee";
+import { BrandMarquee } from "../../components/ui/Marquee/Marquee";
 import { Hero } from "../../components/layout";
 
 export function Home() {
