@@ -1,1 +1,1 @@
-export * from './Brands';
+export * from './BrandMarquee';
