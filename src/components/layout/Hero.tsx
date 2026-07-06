@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { PATHS } from "../../routes/routes";
+import bgOlas from "../../assets/backgrounds/formas-olas-sec.svg";
 
 interface HeroProps {
   eyebrow?: string;
@@ -21,24 +22,35 @@ export function Hero({
   return (
     <section
       id="home"
-      className="relative overflow-hidden px-8 pt-[110px] pb-[90px] text-white bg-gradient-to-br from-sc-ocean-blue to-pr-hero-blue"
+      className="relative overflow-hidden px-8 pt-27.5 pb-22.5 text-white bg-linear-to-br from-sc-ocean-blue to-pr-hero-blue"
     >
       <div
-        className="absolute -top-[120px] -right-[120px] w-[420px] h-[420px] rounded-full bg-pr-aquamarine/20 pointer-events-none select-none"
+        className="absolute -top-30 -right-30 w-105 h-105 rounded-full bg-pr-aquamarine/20 pointer-events-none select-none"
         aria-hidden="true"
       />
 
-      <div className="relative mx-auto max-w-[1180px]">
+      <div
+        className="absolute inset-0 pointer-events-none select-none"
+        aria-hidden="true"
+        style={{
+          backgroundImage: `url(${bgOlas})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center bottom",
+          opacity: 0.4,
+        }}
+      />
+
+      <div className="relative mx-auto max-w-295">
         <p className="font-poppins text-xs uppercase tracking-[0.2em] text-pr-aquamarine mb-4">
           {eyebrow}
         </p>
 
-        <h1 className="font-poppins font-bold uppercase leading-[1.05] text-[clamp(2.4rem,5.5vw,4.4rem)] max-w-[820px]">
+        <h1 className="font-poppins font-bold uppercase leading-[1.05] text-[clamp(2.4rem,5.5vw,4.4rem)] max-w-205">
           {titlePrefix}
           <span className="text-pr-aquamarine">{titleHighlight}</span>
         </h1>
 
-        <p className="font-poppins text-[1.15rem] opacity-[0.88] max-w-[560px] mt-6">
+        <p className="font-poppins text-[1.15rem] opacity-[0.88] max-w-140 mt-6">
           {description}
         </p>
 

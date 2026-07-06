@@ -54,24 +54,25 @@ export function Header() {
                 to={link.href}
                 className={`relative font-brown font-normal text-base tracking-wider
                   transition-colors duration-300
-                  before:absolute before:inset-y-[-6px] before:inset-x-[-14px]
+                  before:absolute before:-inset-y-1.5 before:-inset-x-3.5
                   before:rounded-full before:pointer-events-none
                   before:bg-[radial-gradient(ellipse_at_30%_25%,rgba(255,255,255,0.35)_0%,rgba(64,241,231,0.2)_45%,rgba(64,241,231,0.06)_100%)]
                   before:opacity-0 before:transition-all before:duration-300
                   hover:before:opacity-100
-                  ${isActive(link.href)
-                    ? "text-pr-aquamarine before:opacity-100"
-                    : "text-white hover:text-pr-aquamarine"
+                  ${
+                    isActive(link.href)
+                      ? "text-pr-aquamarine before:opacity-100"
+                      : "text-white hover:text-pr-aquamarine"
                   }`}
               >
                 {isActive(link.href) && (
                   <span
-                    className="absolute -bottom-2 left-1/2 -translate-x-1/2 flex gap-[3px]"
+                    className="absolute -bottom-2 left-1/2 -translate-x-1/2 flex gap-0.75"
                     aria-hidden="true"
                   >
-                    <span className="block w-[5px] border-t-2 border-dashed border-pr-aquamarine" />
-                    <span className="block w-[5px] border-t-2 border-dashed border-pr-aquamarine" />
-                    <span className="block w-[5px] border-t-2 border-dashed border-pr-aquamarine" />
+                    <span className="block w-1.25 border-t-2 border-dashed border-pr-aquamarine" />
+                    <span className="block w-1.25 border-t-2 border-dashed border-pr-aquamarine" />
+                    <span className="block w-1.25 border-t-2 border-dashed border-pr-aquamarine" />
                   </span>
                 )}
                 {link.label}
@@ -128,14 +129,15 @@ export function Header() {
                     onClick={() => setIsOpen(false)}
                     className={`relative font-brown text-lg
                       transition-colors duration-300
-                      before:absolute before:inset-y-[-7px] before:inset-x-[-16px]
+                      before:absolute before:-inset-y-1.75 before:-inset-x-4
                       before:rounded-full before:pointer-events-none
                       before:bg-[radial-gradient(ellipse_at_30%_25%,rgba(255,255,255,0.35)_0%,rgba(64,241,231,0.2)_45%,rgba(64,241,231,0.06)_100%)]
                       before:opacity-0 before:transition-all before:duration-300
                       hover:before:opacity-100
-                      ${isActive(link.href)
-                        ? "text-pr-aquamarine font-semibold before:opacity-100"
-                        : "text-white font-medium hover:text-pr-aquamarine"
+                      ${
+                        isActive(link.href)
+                          ? "text-pr-aquamarine font-semibold before:opacity-100"
+                          : "text-white font-medium hover:text-pr-aquamarine"
                       }`}
                   >
                     {link.label}
