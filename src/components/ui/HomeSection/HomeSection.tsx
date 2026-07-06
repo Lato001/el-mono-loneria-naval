@@ -20,7 +20,7 @@ export function HomeSection({
           )}
           <div>
             {eyebrow && (
-              <p className="font-poppins mb-4 text-xs uppercase tracking-[0.2em] text-pr-aquamarine">
+              <p className="font-poppins mb-4 text-xs uppercase tracking-[0.2em] text-pr-hero-blue">
                 {eyebrow}
               </p>
             )}
