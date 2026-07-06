@@ -6,7 +6,7 @@ export const data  ={
       {
       id: "services",
       eyebrow: "Qué hacemos",
-      title: "Servicios de lonería naval"
+      title: "Servicios de lonería naval",
       },
       {
       id: "reviews",
