@@ -1,7 +1,7 @@
 ﻿import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { IconMenu2, IconX } from "@tabler/icons-react";
-import logoSrc from "../../assets/logos/isotipo-elmono-01.png";
+import logoSrc from "../../assets/logos/elmono/isotipo-elmono-01.png";
 import { PATHS } from "../../routes/routes";
 
 const NAV_LINKS = [
