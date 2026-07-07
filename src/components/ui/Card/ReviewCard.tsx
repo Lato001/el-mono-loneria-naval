@@ -1,8 +1,14 @@
-﻿import type { Review } from "../Marquee/ReviewMarquee.types";
+﻿import type { Review } from "../../../types/review";
 
 const STARS = [0, 1, 2, 3, 4];
 
-export function ReviewCard({ avatar, title, author, stars, description }: Review) {
+export function ReviewCard({
+  avatar,
+  title,
+  author,
+  stars,
+  description,
+}: Review) {
   const initial = author.charAt(0).toUpperCase();
 
   return (

@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { IconHome } from "@tabler/icons-react";
+import "./ScrollToTop.css";
 
 export function ScrollToTop() {
   const [isVisible, setIsVisible] = useState(false);
@@ -18,9 +20,9 @@ export function ScrollToTop() {
       type="button"
       onClick={handleScrollToTop}
       aria-label="Volver al inicio"
-      className={`fixed bottom-8 right-8 z-50 flex h-12 w-12 items-center justify-center rounded-full border-2 border-accent bg-white/40 text-accent backdrop-blur-md dark:bg-white/10 dark:backdrop-blur-md dark:text-accent shadow-lg transition-all duration-300 hover:scale-105 hover:cursor-pointer focus:outline-none focus:ring-2 focus:ring-accent-pop/50 ${isVisible ? "opacity-100" : "opacity-0 pointer-events-none"}`}
+      className={`fixed bottom-8 right-8 z-50 flex h-14 w-14 items-center justify-center rounded-full border-2 border-pr-aquamarine bg-sc-ocean-blue text-white text-xl animate-pulse-glow transition-all duration-300 hover:scale-105 hover:cursor-pointer hover:brightness-110 focus:outline-none ${isVisible ? "opacity-100" : "opacity-0 pointer-events-none"}`}
     >
-      I
+      <IconHome size={24} />
     </button>
   );
 }
