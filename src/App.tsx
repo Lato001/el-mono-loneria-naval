@@ -23,8 +23,8 @@ export default function App() {
         }`}
       >
         <Header />
-        <ScrollToTop />
       </div>
+      <ScrollToTop />
       <Routes>
         <Route path={PATHS.HOME} element={<Home />} />
         <Route path={PATHS.SERVICES} element={<Services />} />
