@@ -6,6 +6,7 @@ import { PATHS } from "../../routes/routes";
 
 const NAV_LINKS = [
   { href: PATHS.HOME, label: "Inicio" },
+  { href: PATHS.PRODUCTS, label: "Productos" },
   { href: PATHS.SERVICES, label: "Servicios" },
   { href: PATHS.ABOUT_US, label: "Nosotros" },
   { href: PATHS.FAQ, label: "FAQ" },

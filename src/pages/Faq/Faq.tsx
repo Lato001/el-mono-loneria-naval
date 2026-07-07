@@ -1,3 +1,3 @@
 export function Faq() {
-  return <section>{/* Acá irá el acordeón de preguntas frecuentes */}</section>;
+  return <section>PREGUNTAS FRECUENTES</section>;
 }
