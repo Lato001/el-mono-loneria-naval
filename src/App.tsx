@@ -19,7 +19,7 @@ export default function App() {
     <>
       <div
         className={`sticky top-0 z-50 transition-all duration-300 ${
-          isScrolled ? "bg-sc-ocean-blue/90 backdrop-blur-sm" : ""
+          isScrolled ? "bg-sc-ocean-blue/90" : ""
         }`}
       >
         <Header />
