@@ -4,6 +4,3 @@ export * from './AboutUs';
 export * from './Faq';
 export * from './Contact';
 export * from '../components/layout';
-export * from '../components/layout';
-export * from '../components/layout';
-export * from '../components/layout';
