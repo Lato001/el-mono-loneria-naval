@@ -4,12 +4,15 @@ import {
   BrandMarquee,
   Card,
   SplitCardsSection,
+  ReviewCard,
 } from "../../components/ui";
 import { data } from "../../mocks/data";
 import icon from "../../assets/logos/elmono/isotype-mono-color.svg";
 
 export function Home() {
   const HOME_SECTIONS = data.Home.Sections;
+  const REVIEWS = data.Home.Reviews;
+
   return (
     <>
       <Hero />
@@ -38,7 +41,15 @@ export function Home() {
           eyebrow={section.eyebrow}
           title={section.title}
           icon={icon}
-        ></HomeSection>
+        >
+          {section.id === "reviews" && (
+            <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
+              {REVIEWS.slice(0, 3).map((r) => (
+                <ReviewCard key={r.id} {...r} />
+              ))}
+            </div>
+          )}
+        </HomeSection>
       ))}
     </>
   );
