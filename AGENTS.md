@@ -2,12 +2,28 @@
 
 Landing page for "El Mono" lonería naval (marine canvas workshop).
 
+**Recent changes (testing-setup):** Added Vitest + @testing-library/react + jsdom test infrastructure. Initial tests for Button, Footer, AboutSection, and Home page (34 tests, all passing). Coverage v8 with v1 thresholds (40/35/35/40).
+
+**Recent changes (homepage-finalize):** Completed Button, Footer, and AboutSection implementations. Added ServiceGrid to Home page. Removed dead Reviews.tsx stub. Extended mock data with aboutus content fields. All barrels are clean (no duplicates).
+
 ## Commands
 - `pnpm dev` — dev server
 - `pnpm build` — `tsc -b && vite build` (typecheck first, then bundle)
 - `pnpm lint` — `eslint .`
 - `pnpm preview` — preview production build
-- No test framework is configured.
+- `pnpm test` — vitest watch mode (dev)
+- `pnpm test:run` — vitest single run (CI)
+- `pnpm test:coverage` — vitest run with v8 coverage report
+
+## Testing
+- Stack: Vitest 4 + @testing-library/react 16 + jsdom
+- Test file convention: co-located `.test.tsx` next to the component file
+- Setup file: `src/test/setup.ts` (jest-dom matchers, ResizeObserver/IntersectionObserver/matchMedia polyfills)
+- Coverage: v8 provider, thresholds at 40% stmts / 35% branches / 35% functions / 40% lines (v1 baseline, will raise)
+- Excluded from coverage: barrel files (`index.ts`), stub pages, Carousel, ScrollToTop, Header, App.tsx
+- Test wrapper: components using `<Link>` need `MemoryRouter` wrapper
+- Globals: `describe`/`it`/`expect`/`vi` available without imports (via `vitest/globals` in tsconfig)
+- TypeScript: test files follow same strict rules (`import type`, `noUnusedLocals`, `erasableSyntaxOnly`)
 
 ## Stack
 - React 19, TypeScript ~6.0, Vite 8, react-router-dom 7, Tailwind CSS v4
@@ -27,20 +43,26 @@ src/
 │       └── elmono/    # isotipo-elmono-01.png (Header), isotype-mono-color.svg (HomeSection icon), logo-elmono-horizontal.png
 ├── components/
 │   ├── layout/
-│   │   ├── index.ts   # barrel: Footer, Header, Hero, Reviews
-│   │   ├── Footer.tsx            # Stub
+│   │   ├── index.ts   # barrel: Footer, Header, Hero
+│   │   ├── Footer.tsx            # 3-column footer: brand + nav + contact
 │   │   ├── Header.tsx            # Unified nav + CTA + mobile sidebar
-│   │   ├── Hero.tsx              # Gradient hero with props for extractable copy
-│   │   └── Reviews.tsx           # Stub
+│   │   └── Hero.tsx              # Gradient hero with props for extractable copy
 │   ├── ui/
-│   │   ├── index.ts   # barrel: Button, Card, Carousel, Marquee, HomeSection, ServiceGrid
+│   │   ├── index.ts   # barrel: Button, Card, Carousel, Marquee, HomeSection, ServiceGrid, AboutSection
+│   │   ├── AboutSection/
+│   │   │   ├── index.ts
+│   │   │   ├── AboutSection.tsx   # 2-col: image + content/highlights/CTA
+│   │   │   └── AboutSection.types.ts
 │   │   ├── Button/
 │   │   │   ├── index.ts
-│   │   │   ├── Button.tsx        # Stub
-│   │   │   └── ScrollToTop.tsx   # Floating "Volver al inicio" button
+│   │   │   ├── Button.tsx         # Variants: primary/secondary/outline/ghost, sizes: sm/md/lg, Link-aware
+│   │   │   ├── Button.types.ts
+│   │   │   └── ScrollToTop.tsx    # Floating "Volver al inicio" button
 │   │   ├── Card/
 │   │   │   ├── index.ts
-│   │   │   └── Card.tsx          # Stub
+│   │   │   ├── Card.tsx           # Full card: image/color header, badge, title, description, CTA, dashed separator
+│   │   │   ├── ReviewCard.tsx     # Review card: avatar/initial, stars, title, description
+│   │   │   └── SplitCardsSection.tsx  # 2-col grid wrapper for Cards
 │   │   ├── Carousel/
 │   │   │   ├── index.ts          # exports StackedCarousel + types
 │   │   │   ├── Carousel.tsx      # StackedCarousel component
@@ -60,15 +82,18 @@ src/
 │   │       ├── index.ts
 │   │       ├── ServiceGrid.tsx   # Responsive grid of ServiceCard
 │   │       └── ServiceGrid.types.ts
-│   └── index.ts       # barrel (duplicated exports)
+│   └── index.ts       # barrel: layout + ui
 ├── hooks/              # (empty)
 ├── mocks/
-│   └── data.ts         # data.Home.Sections[] + data.Home.Services[]
+│   └── data.ts         # data.Home.Sections[] + Services[] + Reviews[] (typed)
 ├── pages/
-│   ├── index.ts        # barrel (HAS DUPLICATED exports, 4x '../components/layout')
+│   ├── index.ts        # barrel: AboutUs, Contact, Faq, Home, Products, Services
 │   ├── Home/
 │   │   ├── index.ts
-│   │   └── Home.tsx    # Composes Hero + BrandMarquee + iterates sections
+│   │   └── Home.tsx    # Composes Hero + BrandMarquee + SplitCards + ServiceGrid + Reviews + AboutSection
+│   ├── Products/
+│   │   ├── index.ts
+│   │   └── Products.tsx  # Stub
 │   ├── Services/
 │   │   ├── index.ts
 │   │   └── Services.tsx  # Stub
@@ -82,8 +107,10 @@ src/
 │       ├── index.ts
 │       └── Contact.tsx   # Stub
 ├── routes/
-│   └── routes.ts       # PATHS constant (HOME, SERVICES, ABOUT_US, FAQ, CONTACT, NOT_FOUND)
-├── App.tsx             # Header (sticky) + ScrollToTop + Routes
+│   └── routes.ts       # PATHS constant (HOME, PRODUCTS, SERVICES, ABOUT_US, FAQ, CONTACT, NOT_FOUND)
+├── types/
+│   └── review.ts       # Review interface
+├── App.tsx             # Header (sticky) + ScrollToTop + Routes + Footer (global)
 ├── main.tsx            # createRoot + BrowserRouter + StrictMode
 ├── index.css           # @import "tailwindcss" + @theme (colors + fonts)
 └── fonts.css           # @font-face for all 3 font families
@@ -116,6 +143,7 @@ src/
 | Path | Component | Status |
 |---|---|---|
 | `/` | Home | Implemented |
+| `/productos` | Products | Stub |
 | `/servicios` | Services | Stub |
 | `/nosotros` | AboutUs | Stub |
 | `/faq` | Faq | Stub |
@@ -138,6 +166,13 @@ src/
 - Decorative: aquamarine circle (`rounded-full bg-pr-aquamarine/20`), olas SVG overlay at 40% opacity
 - 2 CTAs: primary → `/contacto` (white bg), secondary → `/servicios` (outlined)
 
+### Footer (`src/components/layout/Footer.tsx`)
+- 3-column grid on `lg:grid-cols-3`, stacked on mobile
+- Col 1: horizontal logo, tagline placeholder, social icons (Facebook, Instagram, WhatsApp)
+- Col 2: navigation links (Servicios, Nosotros, Productos, FAQ, Contacto) with hover underline
+- Col 3: contact info with icons (phone, email, address) — all placeholder text marked TODO
+- Bottom row: copyright text with thin top border
+
 ### StackedCarousel (`src/components/ui/Carousel/`)
 - **useCarousel.ts**: `activeIndex` state (unbounded), `next()`/`prev()` increment/decrement, `getCardClasses(index, total)` returns Tailwind classes based on offset from active
   - offset 0: `translate-x-0 scale-100 z-30 opacity-100`
@@ -154,6 +189,33 @@ src/
 - `title` → `font-poppins font-bold uppercase text-[clamp(1.8rem,3.5vw,2.8rem)] text-sc-ocean-blue`
 - `children` rendered below title
 
+### Button (`src/components/ui/Button/`)
+- Variants: `primary` (white bg), `secondary` (aquamarine), `outline` (bordered white), `ghost` (text only)
+- Sizes: `sm`, `md` (default), `lg`
+- If `href` is provided, renders as `Link` from react-router-dom; otherwise renders `<button>`
+- Props: `children`, `variant`, `size`, `href`, `onClick`, `className`, `type`, `disabled`, `ariaLabel`
+
+### Card (`src/components/ui/Card/`)
+- Full card component with image/color header, badge, title, description, CTA button
+- Dashed separator between image and content sections
+- Hover effect: `-translate-y-1.5` + `shadow-xl`
+- Props: `title`, `description`, `badge`, `imageSrc`, `ctaLabel`, `onCtaClick`, `className`, `color`, `badgeClassName`
+
+### ReviewCard (`src/components/ui/Card/ReviewCard.tsx`)
+- Review card with avatar (image or initial), star rating, title, description
+- Uses `Review` type from `src/types/review.ts`
+- Hover effect: `-translate-y-1.5` + `shadow-xl`
+
+### SplitCardsSection (`src/components/ui/Card/SplitCardsSection.tsx`)
+- 2-column grid wrapper for Cards: `grid grid-cols-1 md:grid-cols-2`
+- Props: `children`, `className`
+
+### AboutSection (`src/components/ui/AboutSection/`)
+- 2-column layout on `lg:grid-cols-2`, stacked on mobile
+- Left: image with `rounded-2xl overflow-hidden shadow-xl aspect-[4/3]`, fallback background on error
+- Right: eyebrow, title, content paragraphs, highlights grid (3 cols), CTA button
+- Props: `image`, `imageAlt`, `content`, `highlights`, `cta`, `eyebrow`, `title`
+
 ### Marquee / BrandMarquee (`src/components/ui/Marquee/`)
 - Pure CSS animation: `@keyframes marquee-scroll` animates `translateX(0)` to `translateX(var(--marquee-scroll-dist))`
 - `ResizeObserver` measures content vs container → calculates `multiplier` (duplicate count) for seamless loop
@@ -163,6 +225,7 @@ src/
 ### ServiceGrid (`src/components/ui/ServiceGrid/`)
 - Responsive: `grid gap-6 md:grid-cols-2 lg:grid-cols-3`
 - `ServiceCard` internal component: white bg, `rounded-lg`, `shadow-lg`, `p-6`
+- Props: `services: Service[]` where `Service = { id, title, description }`
 
 ### ScrollToTop (`src/components/ui/Button/ScrollToTop.tsx`)
 - Fixed bottom-right, visible when `scrollY > 200`
@@ -177,6 +240,9 @@ src/
 
 ## Data & env
 - `src/mocks/data.ts` — mock data for Home sections and services
+- `data.Home.Sections[]` — typed as `Section` with optional `content`, `image`, `imageAlt`, `highlights`, `cta` fields (aboutus section uses all of them)
+- `data.Home.Services[]` — typed as `Service[]` (3 services)
+- `data.Home.Reviews[]` — typed as `Review[]` (5 reviews, imported from `src/types/review.ts`)
 - `src/data/*` is gitignored — local data stays off-disk
 - `.env` and `.env.dev` are gitignored
 - `.env` contains `VITE_WHATSAPP_URL` (WhatsApp deep link with preset message)
@@ -187,8 +253,6 @@ src/
 - React Compiler active in production
 
 ## Quirks & gotchas
-- `pages/index.ts` has 4x `export * from '../components/layout'` — avoid adding more
-- `components/index.ts` has 2x `export * from './layout'` — same issue
 - `sass` 1.101.0 + `patches/react-fast-marquee@1.6.5.patch` present but **unused** (custom Marquee replaces fast-marquee)
 - `src/hooks/` and `src/data/` directories exist but are empty
 - No `.vscode/extensions.json` or useful `.vscode/settings.json`
