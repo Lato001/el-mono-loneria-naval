@@ -5,6 +5,7 @@ export function HomeSection({
   eyebrow,
   title,
   children,
+  centerTitleOnMobile = false,
 }: HomeSectionProps) {
   return (
     <section className="bg-sc-chalk px-8 py-20" aria-label={title}>
@@ -18,7 +19,11 @@ export function HomeSection({
               className="mt-4 h-16 w-16 shrink-0 self-start rounded-full"
             />
           )}
-          <div>
+          <div
+            className={
+              centerTitleOnMobile ? "text-center md:text-left" : undefined
+            }
+          >
             {eyebrow && (
               <p className="font-poppins mb-4 text-xs uppercase tracking-[0.2em] text-pr-hero-blue">
                 {eyebrow}
