@@ -35,8 +35,12 @@ describe('Home page', () => {
     expect(sunbrellaImages.length).toBeGreaterThanOrEqual(1);
   });
 
-  it('renders the SplitCardsSection with 2 cards', () => {
-    // SplitCards: "Productos" and "Servicios" titles
+  it('renders the ServicesSection with 2 cards', () => {
+    // ServicesSection: eyebrow and title
+    expect(screen.getByText('¿Qué ofrecemos?')).toBeInTheDocument();
+    expect(screen.getByText('Nuestros Servicios')).toBeInTheDocument();
+
+    // Cards: "Productos" and "Servicios" titles
     expect(screen.getByText('Productos')).toBeInTheDocument();
     expect(screen.getByText('Servicios')).toBeInTheDocument();
 

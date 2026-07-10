@@ -3,14 +3,14 @@ import {
   HomeSection,
   BrandMarquee,
   Card,
-  SplitCardsSection,
+  ServicesSection,
   ReviewCard,
   AboutSection,
 } from "../../components/ui";
 import { data } from "../../mocks/data";
 import type { Section } from "../../mocks/data";
 import type { Review } from "../../types/review";
-import icon from "../../assets/logos/elmono/isotype-mono-color.svg";
+import icon from "../../assets/logos/elmono/isotipo-elmono.png";
 
 // TODO: replace with real content for top-level category cards
 const splitCards = [
@@ -42,14 +42,17 @@ export function Home() {
     <>
       <Hero />
       <BrandMarquee />
-      <div className="bg-sc-ocean-blue py-10">
-        <SplitCardsSection>
+      <ServicesSection
+        icon={icon}
+        eyebrow="¿Qué ofrecemos?"
+        title="Nuestros Servicios"
+      >
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
           {splitCards.map((c) => (
-            <Card key={c.title} {...c} />
+            <Card className="max-w-2xl" key={c.title} {...c} />
           ))}
-        </SplitCardsSection>
-      </div>
-
+        </div>
+      </ServicesSection>
       {/* Dynamic sections from data — discriminated union on `kind` */}
       {homeSections.map((section: Section) => {
         switch (section.kind) {
@@ -60,6 +63,7 @@ export function Home() {
                 eyebrow={section.eyebrow}
                 title={section.title}
                 icon={icon}
+                centerTitleOnMobile
               >
                 <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
                   {reviews.slice(0, 3).map((r: Review) => (

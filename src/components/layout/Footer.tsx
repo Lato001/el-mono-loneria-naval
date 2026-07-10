@@ -9,7 +9,7 @@ import {
 } from "@tabler/icons-react";
 import type { Icon } from "@tabler/icons-react";
 import { PATHS } from "../../routes/routes";
-import isotipoElmono from "../../assets/logos/elmono/isotipo-elmono-01.png";
+import isotipoElmono from "../../assets/logos/elmono/isotipo-elmono.png";
 
 // TODO: sub-page hrefs are placeholders — replace with real routes when sub-pages are implemented
 const navGroups: Array<{
