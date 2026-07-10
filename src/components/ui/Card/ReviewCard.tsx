@@ -12,8 +12,8 @@ export function ReviewCard({
   const initial = author.charAt(0).toUpperCase();
 
   return (
-    <article className="flex h-96 flex-col overflow-hidden rounded-xl border border-sc-ocean-blue/15 bg-white transition-all duration-200 ease-out hover:-translate-y-1.5 hover:shadow-xl">
-      <div className="flex items-center gap-5 border-b border-sc-ocean-blue/10 px-8 py-6">
+    <article className="mx-auto flex h-full max-w-md flex-col overflow-hidden rounded-xl border border-sc-ocean-blue/15 bg-white transition-all duration-200 ease-out hover:-translate-y-1.5 hover:shadow-xl md:mx-0 md:max-w-none">
+      <div className="flex items-center gap-5 border-b border-sc-ocean-blue/10 px-6 py-5 md:px-8 md:py-6">
         {avatar ? (
           <img
             src={avatar}
@@ -34,7 +34,7 @@ export function ReviewCard({
             {STARS.map((i) => (
               <span
                 key={i}
-                className={`text-2xl ${i < stars ? "text-pr-aquamarine" : "text-pr-aquamarine/20"}`}
+                className={`text-xl md:text-2xl ${i < stars ? "text-pr-aquamarine" : "text-pr-aquamarine/20"}`}
               >
                 ★
               </span>
@@ -43,13 +43,13 @@ export function ReviewCard({
         </div>
       </div>
 
-      <div className="flex flex-1 flex-col justify-between p-8">
+      <div className="flex flex-1 flex-col justify-between p-6 md:p-8">
         <div>
-          <h3 className="mb-3 text-2xl font-bold text-sc-ocean-blue uppercase">
+          <h3 className="mb-3 text-xl font-bold text-sc-ocean-blue uppercase md:text-2xl">
             {title}
           </h3>
 
-          <p className="text-lg leading-relaxed text-sc-ocean-blue/70">
+          <p className="text-base leading-relaxed text-sc-ocean-blue/70 md:text-lg">
             {description}
           </p>
         </div>
