@@ -1,7 +1,8 @@
-export interface Review{
-avatar?: string,
-  title: string,
-  author: string,
-  stars: number,
-  description: string,
+export interface Review {
+  id: string;
+  avatar?: string;
+  title: string;
+  author: string;
+  stars: number;
+  description: string;
 }

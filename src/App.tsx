@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Routes, Route } from "react-router-dom";
-import { Header } from "./components/layout";
+import { Footer, Header } from "./components/layout";
 import { AboutUs, Contact, Faq, Home, Products, Services } from "./pages";
 import { PATHS } from "./routes/routes";
 import { ScrollToTop } from "./components/ui/Button";
@@ -34,6 +34,7 @@ export default function App() {
         <Route path={PATHS.CONTACT} element={<Contact />} />
         <Route path={PATHS.NOT_FOUND} element={<h1>404 - Page Not Found</h1>} />
       </Routes>
+      <Footer />
     </>
   );
 }
