@@ -5,4 +5,6 @@ export interface HomeSectionProps {
   title: string;
   icon? : string;
   children?: ReactNode;
+  /** When true, eyebrow+title container gets text-center on mobile, text-left at md:. Default: false. */
+  centerTitleOnMobile?: boolean;
 }

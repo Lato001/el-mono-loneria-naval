@@ -5,20 +5,35 @@ export function HomeSection({
   eyebrow,
   title,
   children,
+  centerTitleOnMobile = false,
 }: HomeSectionProps) {
   return (
     <section className="bg-sc-chalk px-8 py-20" aria-label={title}>
       <div className="mx-auto max-w-295">
-        <div className="flex gap-6">
+        <div
+          className={
+            centerTitleOnMobile
+              ? "flex flex-col items-center gap-6 md:flex-row md:items-start"
+              : "flex gap-6"
+          }
+        >
           {icon && (
             <img
               src={icon}
               alt=""
               aria-hidden="true"
-              className="mt-4 h-16 w-16 shrink-0 self-start rounded-full"
+              className={
+                centerTitleOnMobile
+                  ? "h-16 w-16 shrink-0 rounded-full"
+                  : "mt-4 h-16 w-16 shrink-0 self-start rounded-full"
+              }
             />
           )}
-          <div>
+          <div
+            className={
+              centerTitleOnMobile ? "text-center md:text-left" : undefined
+            }
+          >
             {eyebrow && (
               <p className="font-poppins mb-4 text-xs uppercase tracking-[0.2em] text-pr-hero-blue">
                 {eyebrow}
