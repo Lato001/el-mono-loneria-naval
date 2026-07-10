@@ -44,4 +44,33 @@ describe('HomeSection', () => {
     expect(titleWrapper).toHaveClass('text-center');
     expect(titleWrapper).toHaveClass('md:text-left');
   });
+
+  it('centers icon on mobile (flex-col items-center) when centerTitleOnMobile is true', () => {
+    const { container } = render(
+      <HomeSection
+        eyebrow="Eyebrow"
+        title="Title"
+        icon="/test-icon.png"
+        centerTitleOnMobile
+      />,
+    );
+    const outerDiv = container.querySelector('.flex');
+    expect(outerDiv).toHaveClass('flex-col');
+    expect(outerDiv).toHaveClass('items-center');
+    expect(outerDiv).toHaveClass('md:flex-row');
+    expect(outerDiv).toHaveClass('md:items-start');
+  });
+
+  it('keeps icon on the left (flex row) when centerTitleOnMobile is absent', () => {
+    const { container } = render(
+      <HomeSection
+        eyebrow="Eyebrow"
+        title="Title"
+        icon="/test-icon.png"
+      />,
+    );
+    const outerDiv = container.querySelector('.flex');
+    expect(outerDiv).not.toHaveClass('flex-col');
+    expect(outerDiv).not.toHaveClass('items-center');
+  });
 });
