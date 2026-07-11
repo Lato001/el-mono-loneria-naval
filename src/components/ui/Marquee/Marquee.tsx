@@ -41,7 +41,11 @@ export function Marquee({
   const defaultRender = useCallback(
     (item: MarqueeProps["items"][number]) => (
       <div className="flex shrink-0 items-center gap-2">
-        <img src={item.src} alt={item.alt} className="h-12 w-32 object-contain" />
+        <img
+          src={item.src}
+          alt={item.alt}
+          className="h-12 w-32 object-contain"
+        />
         {item.name && <span className="text-sm">{item.name}</span>}
       </div>
     ),
@@ -54,21 +58,27 @@ export function Marquee({
     <div
       ref={containerRef}
       className={`w-full overflow-hidden ${pauseOnHover ? "group" : ""} ${className}`}
-      onMouseEnter={() => { if (pauseOnHover) setIsPaused(true); }}
-      onMouseLeave={() => { if (pauseOnHover) setIsPaused(false); }}
+      onMouseEnter={() => {
+        if (pauseOnHover) setIsPaused(true);
+      }}
+      onMouseLeave={() => {
+        if (pauseOnHover) setIsPaused(false);
+      }}
     >
       <div
         className="flex"
-        style={{
-          width: "max-content",
-          animationName: "marquee-scroll",
-          animationDuration: `${speed}s`,
-          animationTimingFunction: "linear",
-          animationIterationCount: "infinite",
-          animationDirection: direction === "right" ? "reverse" : "normal",
-          animationPlayState: isPaused ? "paused" : "running",
-          "--marquee-scroll-dist": `-${100 / multiplier}%`,
-        } as React.CSSProperties}
+        style={
+          {
+            width: "max-content",
+            animationName: "marquee-scroll",
+            animationDuration: `${speed}s`,
+            animationTimingFunction: "linear",
+            animationIterationCount: "infinite",
+            animationDirection: direction === "right" ? "reverse" : "normal",
+            animationPlayState: isPaused ? "paused" : "running",
+            "--marquee-scroll-dist": `-${100 / multiplier}%`,
+          } as React.CSSProperties
+        }
       >
         <div ref={contentRef} className="flex shrink-0">
           {items.map((item, i) => (

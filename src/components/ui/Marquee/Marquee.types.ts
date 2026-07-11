@@ -5,6 +5,7 @@ export interface MarqueeItem {
   src: string;
   alt: string;
   name?: string;
+  link?: string;
 }
 
 export interface MarqueeProps {
