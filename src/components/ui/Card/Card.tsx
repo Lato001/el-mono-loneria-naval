@@ -19,21 +19,20 @@ export const Card = ({
   onCtaClick,
   className,
   color = "#F4F4F4",
-  badgeClassName,
+  badgeClassName = "bg-pr-aquamarine/80",
 }: CardProps) => {
   const hasContent = !!(title || description || ctaLabel);
   const hasImage = !!(imageSrc || color);
-  const showSeparator = hasImage && hasContent;
 
   return (
     <article
-      className={`h-120 flex flex-col overflow-hidden rounded-xl border border-sc-ocean-blue/15 bg-white group transition-all duration-200 ease-out hover:-translate-y-1.5 hover:shadow-xl ${className ?? ""}`}
+      className={`h-120 flex flex-col overflow-hidden rounded-xl border-2 border-sc-ocean-blue/15 bg-white group transition-all duration-200 ease-out hover:-translate-y-1.5 hover:shadow-xl ${className ?? ""}`}
     >
       {hasImage && (
         <div className="relative h-64 shrink-0 overflow-hidden">
           {badge && (
             <span
-              className={`absolute top-4 left-4 z-10 rounded-full px-3 py-1 text-xs font-medium text-sc-ocean-blue ${badgeClassName ?? "bg-sc-sand"}`}
+              className={`text-black absolute top-4 left-4 z-10 rounded-full px-3 py-1 text-xs font-medium ${badgeClassName ?? "bg-sc-sand"}`}
             >
               {badge}
             </span>
@@ -56,20 +55,16 @@ export const Card = ({
         </div>
       )}
 
-      {showSeparator && (
-        <div className="border-t-2 border-dashed border-sc-ocean-blue/25" />
-      )}
-
       {hasContent && (
         <div className="flex flex-1 flex-col justify-between p-6">
           {title && (
-            <h3 className="mb-2 text-2xl font-bold text-sc-ocean-blue">
+            <h3 className="mb-2 text-2xl font-poppins font-bold  text-sc-ocean-blue ">
               {title}
             </h3>
           )}
 
           {description && (
-            <p className="text-base leading-relaxed text-sc-ocean-blue/70">
+            <p className="text-base font-poppins leading-relaxed text-sc-ocean-blue/70">
               {description}
             </p>
           )}
@@ -79,7 +74,7 @@ export const Card = ({
               type="button"
               onClick={onCtaClick}
               aria-label={ctaLabel}
-              className="mt-auto w-full cursor-pointer rounded-md bg-sc-ocean-blue px-5 py-2.5 text-sm font-medium text-sc-chalk transition-colors duration-150 hover:bg-sc-sky-blue"
+              className="mt-auto w-full rounded-full cursor-pointer  bg-sc-ocean-blue px-5 py-2.5 text-sm font-medium text-sc-chalk transition-colors duration-150 hover:bg-sc-sky-blue"
             >
               {ctaLabel}
             </button>
