@@ -7,11 +7,11 @@ export function StackedCarousel({ items }: StackedCarouselProps) {
 
   return (
     <div className="w-full">
-      <div className="relative mx-auto h-[580px] w-full overflow-x-clip">
+      <div className="relative mx-auto h-145 w-full overflow-x-clip">
         {items.map((item, index) => (
           <article
             key={item.id}
-            className={`absolute inset-y-0 left-0 flex w-[80%] flex-col gap-6 rounded-2xl bg-white p-8 shadow-xl transition-all duration-500 ease-in-out ${item.color ?? ''} ${getCardClasses(index, total)}`}
+            className={`absolute inset-y-0 left-0 flex w-[80%] flex-col gap-6 rounded-2xl bg-white p-8 shadow-xl transition-all duration-500 ease-in-out ${item.color ?? ""} ${getCardClasses(index, total)}`}
           >
             <h3 className="font-poppins text-xl font-bold uppercase text-sc-ocean-blue">
               {item.title}
