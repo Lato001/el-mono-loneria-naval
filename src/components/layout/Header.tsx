@@ -2,6 +2,7 @@
 import { Link, useLocation } from "react-router-dom";
 import { IconMenu2, IconX } from "@tabler/icons-react";
 import logoSrc from "../../assets/logos/elmono/isotipo-elmono.png";
+import nameLogoSrc from "../../assets/logos/elmono/isotipo-elmono-name.png";
 import { PATHS } from "../../routes/routes";
 
 const NAV_LINKS = [
@@ -42,9 +43,16 @@ export function Header() {
 
   return (
     <header className="bg-sc-ocean-blue min-h-14">
-      <div className="mx-auto flex items-center justify-between px-6 py-2.5 max-w-7xl">
-        <Link to={PATHS.HOME} className="shrink-0">
-          <img src={logoSrc} alt="El Mono" className="h-auto w-24" />
+      <div className="m-auto flex items-center justify-between  py-2.5 max-w-7xl">
+        <Link to={PATHS.HOME} className="shrink-0 ">
+          <div className="flex  justify-between items-center w-40">
+            <img src={logoSrc} alt="El Mono" className="h-auto w-24" />
+            <img
+              src={nameLogoSrc}
+              alt="El Mono"
+              className="ml-4 max-w-30 max-h-15"
+            />
+          </div>
         </Link>
 
         {isDesktop && (
@@ -55,10 +63,6 @@ export function Header() {
                 to={link.href}
                 className={`relative font-brown font-normal text-base tracking-wider
                   transition-colors duration-300
-                  before:absolute before:-inset-y-1.5 before:-inset-x-3.5
-                  before:rounded-full before:pointer-events-none
-                  before:bg-[radial-gradient(ellipse_at_30%_25%,rgba(255,255,255,0.35)_0%,rgba(64,241,231,0.2)_45%,rgba(64,241,231,0.06)_100%)]
-                  before:opacity-0 before:transition-all before:duration-300
                   hover:before:opacity-100
                   ${
                     isActive(link.href)
@@ -87,7 +91,7 @@ export function Header() {
             to={PATHS.CONTACT}
             className="shrink-0 rounded-lg bg-white px-6 py-2.5 font-poppins font-semibold text-base text-sc-ocean-blue transition-colors hover:bg-sc-chalk"
           >
-            Cotizar
+            Contactame
           </Link>
         )}
 
@@ -117,11 +121,24 @@ export function Header() {
           )}
           <aside
             id="mobile-sidebar"
-            className={`fixed top-0 right-0 h-full w-64 bg-sc-ocean-blue shadow-lg z-40 transform transition-transform duration-300 ease-in-out ${
+            className={`fixed top-0 right-0 h-full w-64 bg-linear-to-br from-sc-ocean-blue to-pr-hero-blue shadow-lg z-40 transform transition-transform duration-300 ease-in-out ${
               isOpen ? "translate-x-0" : "translate-x-full"
             }`}
           >
-            <div className="flex h-full flex-col px-6 pt-24 pb-6">
+            {isOpen && (
+              <div
+                className="absolute -bottom-20 -left-20 w-60 h-60 rounded-full bg-pr-aquamarine/15 pointer-events-none select-none"
+                aria-hidden="true"
+              />
+            )}
+            <div className="relative flex h-full flex-col px-6 pt-24 pb-6">
+              <button
+                onClick={() => setIsOpen(false)}
+                aria-label="Cerrar menú"
+                className="absolute top-5 right-5 p-2 rounded-lg text-white hover:text-pr-aquamarine transition-colors"
+              >
+                <IconX size={24} />
+              </button>
               <div className="flex flex-col gap-6">
                 {NAV_LINKS.map((link) => (
                   <Link
@@ -130,9 +147,6 @@ export function Header() {
                     onClick={() => setIsOpen(false)}
                     className={`relative font-brown text-lg
                       transition-colors duration-300
-                      before:absolute before:-inset-y-1.75 before:-inset-x-4
-                      before:rounded-full before:pointer-events-none
-                      before:bg-[radial-gradient(ellipse_at_30%_25%,rgba(255,255,255,0.35)_0%,rgba(64,241,231,0.2)_45%,rgba(64,241,231,0.06)_100%)]
                       before:opacity-0 before:transition-all before:duration-300
                       hover:before:opacity-100
                       ${

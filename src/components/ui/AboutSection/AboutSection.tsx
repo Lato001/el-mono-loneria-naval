@@ -19,7 +19,7 @@ export function AboutSection({
       <div className="mx-auto max-w-295">
         <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2">
           {/* Left col: Image or placeholder */}
-          <div className="overflow-hidden rounded-2xl bg-sc-sand/30 shadow-xl aspect-[4/3]">
+          <div className="overflow-hidden rounded-2xl bg-sc-sand/30 shadow-xl aspect-4/3">
             {image ? (
               <img
                 src={image}
@@ -60,7 +60,10 @@ export function AboutSection({
             {highlights && highlights.length > 0 && (
               <div className="mt-4 grid grid-cols-3 gap-4">
                 {highlights.map(({ label, value }) => (
-                  <div key={label} className="flex flex-col items-center text-center">
+                  <div
+                    key={label}
+                    className="flex flex-col items-center text-center"
+                  >
                     <span className="font-poppins text-2xl font-bold text-sc-ocean-blue">
                       {value}
                     </span>

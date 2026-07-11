@@ -77,43 +77,27 @@ export const data = {
     Reviews: [
       {
         id: "r1",
-        title: "Excelente calidad",
-        author: "Juan P\u00e9rez",
+        title: "Excelente Trabajo",
+        author: "Enrique Gómez",
         stars: 5,
         description:
-          "Las lonas quedaron perfectas, tal como las ped\u00ed. Muy buena atenci\u00f3n y rapidez en la entrega.",
+          "Trabajos rápidos y acorde con precios, recomendados!",
       },
       {
         id: "r2",
-        title: "Trabajo impecable",
-        author: "Mar\u00eda L\u00f3pez",
+        title: "Excelente Atencion y Servicio",
+        author: "German Villanueva",
         stars: 5,
         description:
-          "La capota para mi barco qued\u00f3 exactamente a medida. Materiales de primera y terminaciones impecables.",
+          "Excelente atención y servicio. Trabajos en tiempo y forma con la mejor calidad",
       },
       {
         id: "r3",
-        title: "Muy recomendables",
-        author: "Carlos Garc\u00eda",
+        title: "En Tiempo y Forma",
+        author: "Lautaro Couceiro",
         stars: 5,
         description:
-          "Profesionales y responsables. Me ayudaron a elegir el material adecuado para mi proyecto.",
-      },
-      {
-        id: "r4",
-        title: "Atenci\u00f3n personalizada",
-        author: "Laura Mart\u00ednez",
-        stars: 5,
-        description:
-          "Desde el primer contacto se tomaron el tiempo para entender lo que necesitaba. Resultado excelente.",
-      },
-      {
-        id: "r5",
-        title: "Durabilidad garantizada",
-        author: "Pedro Rodr\u00edguez",
-        stars: 5,
-        description:
-          "Ya pas\u00f3 una temporada completa y las cubiertas siguen como nuevas. Sin duda volver\u00eda a contratarlos.",
+          "Excelente. Cumplió en tiempo y forma, la lona le queda como un guante a mi tracker. Muy recomendable.",
       },
     ] satisfies Review[],
   },
