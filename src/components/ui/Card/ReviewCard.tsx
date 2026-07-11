@@ -53,8 +53,6 @@ export function ReviewCard({
             {description}
           </p>
         </div>
-
-        <div className="border-t-2 border-dashed border-sc-ocean-blue/25" />
       </div>
     </article>
   );

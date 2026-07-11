@@ -35,8 +35,8 @@ describe('Home page', () => {
     expect(sunbrellaImages.length).toBeGreaterThanOrEqual(1);
   });
 
-  it('renders the ServicesSection with 2 cards', () => {
-    // ServicesSection: eyebrow and title
+  it('renders the SectionWrapper with 2 cards', () => {
+    // SectionWrapper: eyebrow and title
     expect(screen.getByText('¿Qué ofrecemos?')).toBeInTheDocument();
     expect(screen.getByText('Nuestros Servicios')).toBeInTheDocument();
 
