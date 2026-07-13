@@ -27,7 +27,19 @@
   to { height: 0; opacity: 0; }
 }
 
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes modalSheetIn {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
 @theme {
   --animate-slideDown: slideDown 200ms ease-out;
   --animate-slideUp: slideUp 200ms ease-out;
+  --animate-fadeIn: fadeIn 200ms ease-out;
+  --animate-modalSheetIn: modalSheetIn 250ms ease-out;
 }

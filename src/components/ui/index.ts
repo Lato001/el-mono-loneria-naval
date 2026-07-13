@@ -7,4 +7,8 @@ export * from './AboutSection';
 export * from './SectionWrapper';
 export * from './SplitCards';
 export * from './Accordion';
+export * from './Modal';
+export * from './ProductCarousel';
+export * from './CatalogTabs';
+export * from './CatalogHero';
 
