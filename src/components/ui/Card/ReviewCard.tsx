@@ -13,15 +13,16 @@ export function ReviewCard({
 
   return (
     <article className="mx-auto flex h-full max-w-md flex-col overflow-hidden rounded-xl border border-sc-ocean-blue/15 bg-white transition-all duration-200 ease-out hover:-translate-y-1.5 hover:shadow-xl md:mx-0 md:max-w-none">
-      <div className="flex items-center gap-5 border-b border-sc-ocean-blue/10 px-6 py-5 md:px-8 md:py-6">
+      <div className="flex items-center gap-4 border-b border-sc-ocean-blue/10 px-6 py-5 md:gap-5 md:px-8 md:py-6">
         {avatar ? (
           <img
             src={avatar}
             alt={author}
-            className="h-16 w-16 rounded-full object-cover"
+            loading="lazy"
+            className="h-14 w-14 rounded-full object-cover md:h-16 md:w-16"
           />
         ) : (
-          <div className="flex h-16 w-16 items-center justify-center rounded-full bg-sc-ocean-blue text-xl font-bold text-white">
+          <div className="flex h-14 w-14 items-center justify-center rounded-full bg-sc-ocean-blue text-lg font-bold text-white md:h-16 md:w-16 md:text-xl">
             {initial}
           </div>
         )}
@@ -34,7 +35,7 @@ export function ReviewCard({
             {STARS.map((i) => (
               <span
                 key={i}
-                className={`text-xl md:text-2xl ${i < stars ? "text-pr-aquamarine" : "text-pr-aquamarine/20"}`}
+                className={`text-2xl ${i < stars ? "text-amber-300" : "text-pr-aquamarine/20"}`}
               >
                 ★
               </span>
@@ -45,7 +46,7 @@ export function ReviewCard({
 
       <div className="flex flex-1 flex-col justify-between p-6 md:p-8">
         <div>
-          <h3 className="mb-3 text-xl font-bold text-sc-ocean-blue uppercase md:text-2xl">
+          <h3 className="mb-3 text-[clamp(1.25rem,2.5vw,1.5rem)] font-bold text-sc-ocean-blue uppercase">
             {title}
           </h3>
 
