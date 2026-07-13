@@ -1,6 +1,7 @@
 ﻿import { Hero } from "../../components/layout";
-import { SectionWrapper, SplitCards } from "../../components/ui";
+import { Accordion, SectionWrapper, SplitCards } from "../../components/ui";
 import { SplitReviews } from "../../components/ui/SplitReviews/SplitReviews";
+import { data } from "../../mocks/data";
 
 // TODO: replace with real content for top-level category cards
 
@@ -40,7 +41,7 @@ export function Home() {
         eyebrow={"FAQ's"}
         title={"Preguntas frecuentes"}
       >
-        <div />
+        <Accordion items={data.Home.FAQs} />
       </SectionWrapper>
     </>
   );
