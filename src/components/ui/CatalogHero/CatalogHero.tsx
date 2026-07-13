@@ -9,7 +9,9 @@ export function CatalogHero({
   ctaTargetId,
 }: CatalogHeroProps) {
   const handleCtaClick = () => {
-    document.getElementById(ctaTargetId)?.scrollIntoView({ behavior: "smooth" });
+    document
+      .getElementById(ctaTargetId)
+      ?.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
