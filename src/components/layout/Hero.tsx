@@ -45,7 +45,7 @@ export function Hero({
             opacity: 0.4,
           }}
         />
-        <div className="relative z-10 flex items-center justify-around gap-8">
+        <div className="relative z-10 flex items-center justify-around gap-8 mx-[clamp(1rem,10vw,12.5rem)]">
           <div className="relative max-w-150">
             <p className="font-poppins text-xs uppercase tracking-[0.2em] text-pr-aquamarine mb-4">
               {eyebrow}
