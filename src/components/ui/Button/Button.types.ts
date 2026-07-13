@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 
-export type ButtonVariant = "primary" | "secondary" | "outline" | "ghost";
+export type ButtonVariant = "primary" | "secondary" | "outline" | "ghost" | "hero";
 export type ButtonSize = "sm" | "md" | "lg";
 
 export interface ButtonProps {

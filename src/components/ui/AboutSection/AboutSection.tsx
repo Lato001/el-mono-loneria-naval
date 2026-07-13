@@ -123,7 +123,7 @@ export function AboutSection({
 
         {cta && (
           <div className="mt-2 flex justify-center">
-            <Button variant="primary" href={cta.href}>
+            <Button variant="hero" href={cta.href}>
               {cta.text}
             </Button>
           </div>
