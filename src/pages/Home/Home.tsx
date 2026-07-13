@@ -1,9 +1,12 @@
 ﻿import { Hero } from "../../components/layout";
-import { Accordion, SectionWrapper, SplitCards } from "../../components/ui";
+import {
+  Accordion,
+  AboutSection,
+  SectionWrapper,
+  SplitCards,
+} from "../../components/ui";
 import { SplitReviews } from "../../components/ui/SplitReviews/SplitReviews";
 import { data } from "../../mocks/data";
-
-// TODO: replace with real content for top-level category cards
 
 export function Home() {
   return (
@@ -18,12 +21,16 @@ export function Home() {
         <SplitCards></SplitCards>
       </SectionWrapper>
       <SectionWrapper
-        titlesAlign="start"
+        titlesAlign="end"
         theme="light"
         eyebrow={"Sobre Nosotros"}
-        title={"Acerca de nuestro trabajo"}
+        title={"Trabajos a Medida"}
       >
-        <div />
+        <AboutSection
+          showControls
+          description="Lonas, capotas y fundas a medida. Hecho en nuestro taller ubicado en Tigre, Buenos Aires. Trabajo artesanal con materiales de Marcas lider mundiales!"
+          cta={{ text: "Trabajos Realizados", href: "/servicios" }}
+        />
       </SectionWrapper>
 
       <SectionWrapper
