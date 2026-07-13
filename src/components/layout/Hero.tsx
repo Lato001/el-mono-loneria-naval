@@ -56,27 +56,27 @@ export function Hero({
               <span className="text-pr-aquamarine">{titleHighlight}</span>
             </h1>
 
-            <p className="font-poppins text-[1.15rem] opacity-[0.88] max-w-140 mt-6">
+            <p className="font-poppins text-[clamp(1rem,2.5vw,1.15rem)] opacity-[0.88] max-w-140 mt-6">
               {description}
             </p>
 
             <div className="flex flex-wrap gap-4 mt-8">
               <Link
                 to={PATHS.CONTACT}
-                className="inline-block rounded-lg bg-white px-8 py-3 font-poppins font-bold text-[1.1rem] text-pr-hero-blue border border-white transition-colors hover:border-pr-aquamarine"
+                className="inline-block rounded-lg bg-white px-6 py-3 font-poppins font-bold text-[clamp(1rem,1.5vw,1.1rem)] text-pr-hero-blue border border-white transition-colors hover:border-pr-aquamarine md:px-8 md:py-3.5"
               >
                 {primaryCta}
               </Link>
               <Link
                 to={PATHS.SERVICES}
-                className="inline-block rounded-lg bg-transparent px-8 py-3 font-poppins font-bold text-[1.1rem] text-white border border-white/40 transition-colors hover:border-white"
+                className="inline-block rounded-lg bg-transparent px-6 py-3 font-poppins font-bold text-[clamp(1rem,1.5vw,1.1rem)] text-white border border-white/40 transition-colors hover:border-white md:px-8 md:py-3.5"
               >
                 {secondaryCta}
               </Link>
             </div>
           </div>
           <ImgCard
-            className="max-[1000px]:hidden"
+            className="max-lg:hidden"
             images={[
               { src: heroImg1, alt: "Lona naval" },
               { src: heroImg2, alt: "Capota a medida" },
