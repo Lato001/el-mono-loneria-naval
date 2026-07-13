@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useMediaQuery } from "../../hooks/useMediaQuery";
 import { CatalogHero } from "../../components/ui/CatalogHero";
 import { CatalogTabs } from "../../components/ui/CatalogTabs";
 import { Modal } from "../../components/ui/Modal";
@@ -170,6 +171,7 @@ function CotizacionModalContent({
 export function Products() {
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [activeCategoryId, setActiveCategoryId] = useState<string | null>(null);
+  const isMobile = useMediaQuery("(max-width: 767px)");
 
   const handleTabSelect = (id: string) => {
     setActiveCategoryId(id);
@@ -218,6 +220,7 @@ export function Products() {
         onOpenChange={closeQuotation}
         title="Cotizar producto"
         description="Te llevamos a WhatsApp con el producto pre-seleccionado."
+        variant={isMobile ? "sheet" : "centered"}
       >
         {selectedProduct && (
           <CotizacionModalContent product={selectedProduct} onClose={closeQuotation} />
