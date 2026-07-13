@@ -13,7 +13,7 @@ export function Modal({
 }: ModalProps) {
   const positionClasses =
     variant === "sheet"
-      ? "inset-x-0 bottom-0 max-h-[85vh] rounded-t-2xl data-[state=open]:animate-slideUp"
+      ? "inset-x-0 bottom-0 max-h-[85vh] rounded-t-2xl data-[state=open]:animate-modalSheetIn"
       : "left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 max-w-md rounded-2xl data-[state=open]:animate-fadeIn";
 
   return (

@@ -81,4 +81,30 @@ describe("Modal", () => {
 
     expect(screen.getByLabelText("Cerrar")).toBeInTheDocument();
   });
+
+  it("applies centered position classes by default", () => {
+    render(
+      <Modal open={true} onOpenChange={() => {}} title="Centered">
+        <p>Centered content</p>
+      </Modal>,
+    );
+
+    const dialog = screen.getByRole("dialog");
+    expect(dialog.className).toContain("left-1/2");
+    expect(dialog.className).toContain("max-w-md");
+    expect(dialog.className).toContain("rounded-2xl");
+  });
+
+  it("applies sheet position classes when variant is sheet", () => {
+    render(
+      <Modal open={true} onOpenChange={() => {}} title="Sheet" variant="sheet">
+        <p>Sheet content</p>
+      </Modal>,
+    );
+
+    const dialog = screen.getByRole("dialog");
+    expect(dialog.className).toContain("bottom-0");
+    expect(dialog.className).toContain("rounded-t-2xl");
+    expect(dialog.className).toContain("max-h-[85vh]");
+  });
 });
