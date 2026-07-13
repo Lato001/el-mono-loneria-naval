@@ -33,30 +33,30 @@ const categories: ProductCategory[] = [
     products: [
       {
         id: "b1",
-        title: "Broche Náutico",
+        title: "Broche Casco Baca",
         description:
-          "Broche de bronce con diseño de ancla, ideal para sombreros y gorras.",
+          "Broche a presión de carcasa tipo baca, ideal para sombreros y gorras.",
         imageSrc: baca01,
       },
       {
         id: "b2",
-        title: "Broche Marinero",
+        title: "Broche Casco Bacp",
         description:
-          "Broche clásico con cabo trenzado, acabado en bronce envejecido.",
+          "Broche a presión de carcasa tipo bacp, acabado resistente para uso intensivo.",
         imageSrc: bacp01,
       },
       {
         id: "b3",
-        title: "Broche Timón",
+        title: "Broche Casco Bar",
         description:
-          "Broche decorativo con forma de timón, perfecto para decoración naval.",
+          "Broche a presión de carcasa tipo bar, perfecto para decoración naval.",
         imageSrc: bar01,
       },
       {
         id: "b4",
-        title: "Broche Rosa de los Vientos",
+        title: "Broche Lona Hembra Bronze",
         description:
-          "Broche artesanal con rosa de los vientos calada en latón.",
+          "Broche lona hembra en bronce, para sujeción de lonas y correas.",
         imageSrc: hb01,
       },
     ],
@@ -67,23 +67,9 @@ const categories: ProductCategory[] = [
     products: [
       {
         id: "c1",
-        title: "Caballete Classic",
+        title: "Caballete Caño Inox",
         description:
-          "Caballete de madera tratada para toldos y carpas náuticas.",
-        imageSrc: ci01,
-      },
-      {
-        id: "c2",
-        title: "Caballette Reforzado",
-        description:
-          "Estructura reforzada en acero inoxidable para cargas pesadas.",
-        imageSrc: ci01,
-      },
-      {
-        id: "c3",
-        title: "Caballette Plegable",
-        description:
-          "Caballete plegable de fácil transporte, ideal para embarcaciones.",
+          "Caballete de caño de acero inoxidable, resistente a la corrosión y apto para intemperie.",
         imageSrc: ci01,
       },
     ],
