@@ -13,7 +13,7 @@ const NAV_LINKS = [
   { href: PATHS.FAQ, label: "FAQ" },
 ];
 
-const BREAKPOINT = 800;
+const BREAKPOINT = 1024;
 
 export function Header() {
   const [isOpen, setIsOpen] = useState(false);
@@ -43,14 +43,14 @@ export function Header() {
 
   return (
     <header className="bg-sc-ocean-blue min-h-14">
-      <div className="m-auto flex items-center justify-between  py-2.5 max-w-7xl">
-        <Link to={PATHS.HOME} className="shrink-0 ">
-          <div className="flex  justify-between items-center w-40">
+      <div className="m-auto flex items-center justify-between px-4 py-2.5 max-w-7xl sm:px-6">
+        <Link to={PATHS.HOME} className="shrink-0">
+          <div className="flex items-center w-24 lg:w-40">
             <img src={logoSrc} alt="El Mono" className="h-auto w-24" />
             <img
               src={nameLogoSrc}
               alt="El Mono"
-              className="ml-4 max-w-30 max-h-15"
+              className="ml-4 hidden max-w-30 max-h-15 lg:block"
             />
           </div>
         </Link>

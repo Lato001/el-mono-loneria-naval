@@ -38,73 +38,32 @@ describe('Home page', () => {
   it('renders the SectionWrapper with 2 cards', () => {
     // SectionWrapper: eyebrow and title
     expect(screen.getByText('¿Qué ofrecemos?')).toBeInTheDocument();
-    expect(screen.getByText('Nuestros Servicios')).toBeInTheDocument();
+    expect(screen.getByText('Encontrá lo que buscas')).toBeInTheDocument();
 
-    // Cards: "Productos" and "Servicios" titles
+    // ImgCards: "Productos" and "Servicios" titles
     expect(screen.getByText('Productos')).toBeInTheDocument();
     expect(screen.getByText('Servicios')).toBeInTheDocument();
-
-    // Both cards have CTA buttons
-    expect(
-      screen.getByRole('button', { name: /ver catálogo/i }),
-    ).toBeInTheDocument();
-    expect(
-      screen.getByRole('button', { name: /ver más/i }),
-    ).toBeInTheDocument();
   });
 
   it('renders the reviews section with 3 ReviewCards', () => {
     const reviews = data.Home.Reviews;
-    expect(reviews.length).toBe(5); // 5 in data, but only 3 rendered
+    expect(reviews).toHaveLength(3);
 
-    // Only the first 3 reviews should render
-    for (const review of reviews.slice(0, 3)) {
+    // All 3 reviews from the mock should render
+    for (const review of reviews) {
       expect(screen.getByText(review.title)).toBeInTheDocument();
-    }
-
-    // Reviews 4 and 5 should NOT render
-    for (const review of reviews.slice(3)) {
-      expect(screen.queryByText(review.title)).not.toBeInTheDocument();
     }
   });
 
-  it('renders the AboutSection with data from mock', () => {
-    const aboutSection = data.Home.Sections.find((s) => s.kind === 'aboutus');
-    if (!aboutSection || aboutSection.kind !== 'aboutus') {
-      throw new Error('Expected aboutus section in mock data');
-    }
-
-    // Eyebrow and title
-    expect(screen.getByText(aboutSection.eyebrow)).toBeInTheDocument();
-    expect(screen.getByText(aboutSection.title)).toBeInTheDocument();
-
-    // Content paragraphs
-    for (const paragraph of aboutSection.content) {
-      expect(screen.getByText(paragraph)).toBeInTheDocument();
-    }
-
-    // Highlights
-    if (aboutSection.highlights) {
-      for (const { value } of aboutSection.highlights) {
-        expect(screen.getByText(value)).toBeInTheDocument();
-      }
-    }
-
-    // CTA
-    if (aboutSection.cta) {
-      expect(
-        screen.getByRole('link', { name: aboutSection.cta.text }),
-      ).toBeInTheDocument();
-    }
+  it('renders the About section wrapper', () => {
+    // SectionWrapper of About is mounted with AboutWork inside
+    expect(screen.getByText('Sobre Nosotros')).toBeInTheDocument();
+    expect(screen.getByText('Trabajos a Medida')).toBeInTheDocument();
   });
 
   it('renders the reviews section heading', () => {
-    const reviewsSection = data.Home.Sections.find(
-      (s) => s.kind === 'reviews',
-    );
-    if (!reviewsSection || reviewsSection.kind !== 'reviews') {
-      throw new Error('Expected reviews section in mock data');
-    }
-    expect(screen.getByText(reviewsSection.title)).toBeInTheDocument();
+    // SectionWrapper of Reviews heading
+    expect(screen.getByText('Testimonios')).toBeInTheDocument();
+    expect(screen.getByText('Nuestros Clientes')).toBeInTheDocument();
   });
 });

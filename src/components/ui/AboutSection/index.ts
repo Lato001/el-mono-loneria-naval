@@ -1,2 +1,7 @@
 export { AboutSection } from "./AboutSection";
-export type { AboutSectionProps, Highlight, AboutCta } from "./AboutSection.types";
+export type {
+  AboutSectionProps,
+  AboutSectionImage,
+  Highlight,
+  AboutCta,
+} from "./AboutSection.types";
