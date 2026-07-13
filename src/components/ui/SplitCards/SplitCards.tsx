@@ -15,10 +15,11 @@ const splitCards = [
 
 export function SplitCards() {
   return (
-    <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+    <div className="grid grid-cols-1 justify-items-center gap-6 md:grid-cols-2">
       {splitCards.map((c) => (
         <a href={`${c.title}`}>
           <ImgCard
+            className="!aspect-square max-w-72"
             imageClassName="brightness-50 grayscale-50 hover:brightness-100 hover:grayscale-0"
             src={c.imageSrc}
             alt={c.title}
