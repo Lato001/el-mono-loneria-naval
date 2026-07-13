@@ -32,7 +32,6 @@ export default defineConfig({
         'src/pages/AboutUs/**',
         'src/pages/Contact/**',
         'src/pages/Faq/**',
-        'src/pages/Products/**',
         'src/pages/Services/**',
         // Not yet tested — will add in future batches
         'src/components/ui/Carousel/**',
