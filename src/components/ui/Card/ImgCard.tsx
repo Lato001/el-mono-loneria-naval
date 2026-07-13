@@ -6,6 +6,8 @@ interface ImgCardProps {
   images?: { src: string; alt: string }[];
   interval?: number;
   className?: string;
+  title?: string;
+  imageClassName?: string;
 }
 
 export function ImgCard({
@@ -14,6 +16,8 @@ export function ImgCard({
   images,
   interval = 4000,
   className = "",
+  title,
+  imageClassName = "",
 }: ImgCardProps) {
   const hasSlideshow = images && images.length > 1;
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -43,10 +47,15 @@ export function ImgCard({
             src={img.src}
             alt={img.alt}
             className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${
-              i === currentIndex ? "opacity-100" : "opacity-0"
-            }`}
+              i === currentIndex ? "opacity-100" : "opacity-0 "
+            } ${imageClassName}`}
           />
         ))}
+        {title && (
+          <h2 className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center font-brown tracking-wider text-white text-3xl drop-shadow-[0_2px_8px_rgba(0,0,0,0.65)]">
+            {title}
+          </h2>
+        )}
       </div>
     );
   }
@@ -54,7 +63,7 @@ export function ImgCard({
   return (
     <div
       className={`
-         w-full max-w-md aspect-3/4
+         w-full max-w-md aspect-3/4 relative
         rounded-3xl border-2 border-b-sc-sand
         overflow-hidden
         shadow-[0_20px_45px_-10px_rgba(0,0,0,0.55)]
@@ -64,9 +73,14 @@ export function ImgCard({
       <img
         src={src}
         alt={alt}
-        className="h-full w-full object-cover"
+        className={`h-full w-full object-cover ${imageClassName}`}
         loading="lazy"
       />
+      {title && (
+        <h2 className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center font-brown uppercase tracking-wider text-white text-3xl drop-shadow-[0_2px_8px_rgba(0,0,0,0.65)]">
+          {title}
+        </h2>
+      )}
     </div>
   );
 }
