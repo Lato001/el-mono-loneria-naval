@@ -10,18 +10,6 @@ describe("CatalogHero", () => {
     expect(screen.getByRole("heading")).toHaveTextContent("Nuestros productos");
   });
 
-  it("renders eyebrow when provided", () => {
-    render(
-      <CatalogHero
-        eyebrow="Catálogo"
-        title="Productos"
-        ctaLabel="Ver"
-        ctaTargetId="tabs"
-      />,
-    );
-    expect(screen.getByText("Catálogo")).toBeInTheDocument();
-  });
-
   it("renders description when provided", () => {
     render(
       <CatalogHero

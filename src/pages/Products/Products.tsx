@@ -6,10 +6,113 @@ import { Modal } from "../../components/ui/Modal";
 import { ProductCarousel } from "../../components/ui/ProductCarousel";
 import type { Product } from "../../components/ui/ProductCarousel/ProductCarousel.types";
 import type { Tab } from "../../components/ui/CatalogTabs/CatalogTabs.types";
-import services01 from "../../assets/img/services/services-01.jpg";
-import services02 from "../../assets/img/services/services-02.jpg";
-import services04 from "../../assets/img/services/services-04.jpg";
-import services05 from "../../assets/img/services/services-05.jpg";
+
+// Broches — Casco
+import bacan01 from "../../assets/img/products/broches/broche-casco/baca/negro/bacan-01.webp";
+import bacab01 from "../../assets/img/products/broches/broche-casco/baca/blanco/bacab-01.webp";
+import bacp01 from "../../assets/img/products/broches/broche-casco/bacp/bacp-01.webp";
+import bar01 from "../../assets/img/products/broches/broche-casco/bar/bar-01.webp";
+
+// Broches — Lona Hembra
+import hb01 from "../../assets/img/products/broches/broche-lona/hembra/bronze/hb-01.webp";
+import hi01 from "../../assets/img/products/broches/broche-lona/hembra/inox/hi-01.webp";
+
+// Broches — Lona Macho
+import bb01 from "../../assets/img/products/broches/broche-lona/macho/bronze-blanco/bb-01.webp";
+import bg01 from "../../assets/img/products/broches/broche-lona/macho/bronze-gris/bg-01.webp";
+import bn01 from "../../assets/img/products/broches/broche-lona/macho/bronze-negro/bn-01.webp";
+import cb01 from "../../assets/img/products/broches/broche-lona/macho/comun-bronze/cb-01.webp";
+import cc01 from "../../assets/img/products/broches/broche-lona/macho/comun-cubeta/cc-01.webp";
+import ciBroche01 from "../../assets/img/products/broches/broche-lona/macho/comun-inox/ci-01.webp";
+import nc01 from "../../assets/img/products/broches/broche-lona/macho/negro-cubeta/nc-01.webp";
+
+// Caballetes
+import ci01 from "../../assets/img/products/caballetes/cano-inox/ci-01.webp";
+
+const brochesProducts: Product[] = [
+  {
+    id: "b1",
+    title: "Broche Casco Bacan",
+    description: "Broche a presión de carcasa tipo baca, acabado negro.",
+    imageSrc: bacan01,
+  },
+  {
+    id: "b2",
+    title: "Broche Casco Bacab",
+    description: "Broche a presión de carcasa tipo baca, acabado blanco.",
+    imageSrc: bacab01,
+  },
+  {
+    id: "b3",
+    title: "Broche Casco Bacp",
+    description: "Broche a presión de carcasa tipo bacp, para uso intensivo.",
+    imageSrc: bacp01,
+  },
+  {
+    id: "b4",
+    title: "Broche Casco Bar",
+    description: "Broche a presión de carcasa tipo bar, para decoración naval.",
+    imageSrc: bar01,
+  },
+  {
+    id: "b5",
+    title: "Broche Lona Hembra Bronze",
+    description:
+      "Broche lona hembra en bronce, para sujeción de lonas y correas.",
+    imageSrc: hb01,
+  },
+  {
+    id: "b6",
+    title: "Broche Lona Hembra Inox",
+    description:
+      "Broche lona hembra en acero inoxidable, para sujeción de lonas y correas.",
+    imageSrc: hi01,
+  },
+  {
+    id: "b7",
+    title: "Broche Lona Macho Bronze Blanco",
+    description: "Broche lona macho en bronce blanco, para sujeción de lonas.",
+    imageSrc: bb01,
+  },
+  {
+    id: "b8",
+    title: "Broche Lona Macho Bronze Gris",
+    description: "Broche lona macho en bronce gris, para sujeción de lonas.",
+    imageSrc: bg01,
+  },
+  {
+    id: "b9",
+    title: "Broche Lona Macho Bronze Negro",
+    description: "Broche lona macho en bronce negro, para sujeción de lonas.",
+    imageSrc: bn01,
+  },
+  {
+    id: "b10",
+    title: "Broche Lona Macho Comun Bronze",
+    description: "Broche lona macho común en bronce, para sujeción de lonas.",
+    imageSrc: cb01,
+  },
+  {
+    id: "b11",
+    title: "Broche Lona Macho Comun Cubeta",
+    description: "Broche lona macho común con cubeta, para sujeción de lonas.",
+    imageSrc: cc01,
+  },
+  {
+    id: "b12",
+    title: "Broche Lona Macho Comun Inox",
+    description:
+      "Broche lona macho común en acero inoxidable, para sujeción de lonas.",
+    imageSrc: ciBroche01,
+  },
+  {
+    id: "b13",
+    title: "Broche Lona Macho Negro Cubeta",
+    description:
+      "Broche lona macho en negro con cubeta, para sujeción de lonas.",
+    imageSrc: nc01,
+  },
+];
 
 interface ProductCategory {
   id: string;
@@ -21,32 +124,7 @@ const categories: ProductCategory[] = [
   {
     id: "broches",
     name: "Broches",
-    products: [
-      {
-        id: "b1",
-        title: "Broche Náutico",
-        description: "Broche de bronce con diseño de ancla, ideal para sombreros y gorras.",
-        imageSrc: services01,
-      },
-      {
-        id: "b2",
-        title: "Broche Marinero",
-        description: "Broche clásico con cabo trenzado, acabado en bronce envejecido.",
-        imageSrc: services02,
-      },
-      {
-        id: "b3",
-        title: "Broche Timón",
-        description: "Broche decorativo con forma de timón, perfecto para decoración naval.",
-        imageSrc: services04,
-      },
-      {
-        id: "b4",
-        title: "Broche Rosa de los Vientos",
-        description: "Broche artesanal con rosa de los vientos calada en latón.",
-        imageSrc: services05,
-      },
-    ],
+    products: brochesProducts,
   },
   {
     id: "caballetes",
@@ -54,75 +132,10 @@ const categories: ProductCategory[] = [
     products: [
       {
         id: "c1",
-        title: "Caballete Classic",
-        description: "Caballete de madera tratada para toldos y carpas náuticas.",
-        imageSrc: services02,
-      },
-      {
-        id: "c2",
-        title: "Caballette Reforzado",
-        description: "Estructura reforzada en acero inoxidable para cargas pesadas.",
-        imageSrc: services04,
-      },
-      {
-        id: "c3",
-        title: "Caballette Plegable",
-        description: "Caballete plegable de fácil transporte, ideal para embarcaciones.",
-        imageSrc: services05,
-      },
-    ],
-  },
-  {
-    id: "cierres",
-    name: "Cierres",
-    products: [
-      {
-        id: "ci1",
-        title: "Cierre Cremallera #10",
-        description: "Cierre de cremallera resistente al agua, calibre 10, para fundas náuticas.",
-        imageSrc: services04,
-      },
-      {
-        id: "ci2",
-        title: "Cierre Velcro Marino",
-        description: "Velcro de alta adherencia tratado contra UV y salinidad.",
-        imageSrc: services05,
-      },
-      {
-        id: "ci3",
-        title: "Cierre Snap Bronce",
-        description: "Botones a presión de bronce macizo para lonas y toldos.",
-        imageSrc: services01,
-      },
-    ],
-  },
-  {
-    id: "hilos",
-    name: "Hilos",
-    products: [
-      {
-        id: "h1",
-        title: "Hilo PTFE Premium",
-        description: "Hilo de PTFE 100% resistente a UV, sal y temperaturas extremas.",
-        imageSrc: services05,
-      },
-      {
-        id: "h2",
-        title: "Hilo Polyester Naval",
-        description: "Hilo de poliéster de alta tenacidad para costuras de lonas.",
-        imageSrc: services01,
-      },
-      {
-        id: "h3",
-        title: "Hilo Kevlar Reforzado",
-        description: "Hilo de aramida para costuras de máxima resistencia mecánica.",
-        imageSrc: services02,
-      },
-      {
-        id: "h4",
-        title: "Hilo Sunbrella",
-        description: "Hilo especialmente diseñado para telas Sunbrella, garantía de color.",
-        imageSrc: services04,
+        title: "Caballete Caño Inox",
+        description:
+          "Caballete de caño de acero inoxidable, resistente a la corrosión y apto para intemperie.",
+        imageSrc: ci01,
       },
     ],
   },
@@ -147,7 +160,9 @@ function CotizacionModalContent({
   return (
     <div className="font-poppins mt-4 flex flex-col gap-3">
       <p className="text-sm text-sc-ocean-blue/70">
-        Consultá por <strong className="text-sc-ocean-blue">{product.title}</strong> vía WhatsApp.
+        Consultá por{" "}
+        <strong className="text-sc-ocean-blue">{product.title}</strong> vía
+        WhatsApp.
       </p>
       <a
         href={whatsappHref}
@@ -189,10 +204,9 @@ export function Products() {
   return (
     <>
       <CatalogHero
-        eyebrow="Catálogo"
         title="Nuestros productos"
         description="Explorá nuestra selección de artículos náuticos: broches, caballetes, cierres e hilos de la más alta calidad para tu embarcación."
-        ctaLabel="Ver catálogo"
+        ctaLabel="Solicitar precios!"
         ctaTargetId="tabs"
       />
 
@@ -223,7 +237,10 @@ export function Products() {
         variant={isMobile ? "sheet" : "centered"}
       >
         {selectedProduct && (
-          <CotizacionModalContent product={selectedProduct} onClose={closeQuotation} />
+          <CotizacionModalContent
+            product={selectedProduct}
+            onClose={closeQuotation}
+          />
         )}
       </Modal>
     </>
