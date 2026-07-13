@@ -11,6 +11,15 @@ import services02 from "../../assets/img/services/services-02.jpg";
 import services04 from "../../assets/img/services/services-04.jpg";
 import services05 from "../../assets/img/services/services-05.jpg";
 
+// Broches — cascos
+import baca01 from "../../assets/img/products/broches/broche-casco/baca/baca-01.webp";
+import bacp01 from "../../assets/img/products/broches/broche-casco/bacp/bacp-01.webp";
+import bar01 from "../../assets/img/products/broches/broche-casco/bar/bar-01.webp";
+// Broches — lona
+import hb01 from "../../assets/img/products/broches/broche-lona/hembra/bronze/hb-01.webp";
+// Caballetes
+import ci01 from "../../assets/img/products/caballetes/cano-inox/ci-01.webp";
+
 interface ProductCategory {
   id: string;
   name: string;
@@ -25,26 +34,30 @@ const categories: ProductCategory[] = [
       {
         id: "b1",
         title: "Broche Náutico",
-        description: "Broche de bronce con diseño de ancla, ideal para sombreros y gorras.",
-        imageSrc: services01,
+        description:
+          "Broche de bronce con diseño de ancla, ideal para sombreros y gorras.",
+        imageSrc: baca01,
       },
       {
         id: "b2",
         title: "Broche Marinero",
-        description: "Broche clásico con cabo trenzado, acabado en bronce envejecido.",
-        imageSrc: services02,
+        description:
+          "Broche clásico con cabo trenzado, acabado en bronce envejecido.",
+        imageSrc: bacp01,
       },
       {
         id: "b3",
         title: "Broche Timón",
-        description: "Broche decorativo con forma de timón, perfecto para decoración naval.",
-        imageSrc: services04,
+        description:
+          "Broche decorativo con forma de timón, perfecto para decoración naval.",
+        imageSrc: bar01,
       },
       {
         id: "b4",
         title: "Broche Rosa de los Vientos",
-        description: "Broche artesanal con rosa de los vientos calada en latón.",
-        imageSrc: services05,
+        description:
+          "Broche artesanal con rosa de los vientos calada en latón.",
+        imageSrc: hb01,
       },
     ],
   },
@@ -55,20 +68,23 @@ const categories: ProductCategory[] = [
       {
         id: "c1",
         title: "Caballete Classic",
-        description: "Caballete de madera tratada para toldos y carpas náuticas.",
-        imageSrc: services02,
+        description:
+          "Caballete de madera tratada para toldos y carpas náuticas.",
+        imageSrc: ci01,
       },
       {
         id: "c2",
         title: "Caballette Reforzado",
-        description: "Estructura reforzada en acero inoxidable para cargas pesadas.",
-        imageSrc: services04,
+        description:
+          "Estructura reforzada en acero inoxidable para cargas pesadas.",
+        imageSrc: ci01,
       },
       {
         id: "c3",
         title: "Caballette Plegable",
-        description: "Caballete plegable de fácil transporte, ideal para embarcaciones.",
-        imageSrc: services05,
+        description:
+          "Caballete plegable de fácil transporte, ideal para embarcaciones.",
+        imageSrc: ci01,
       },
     ],
   },
@@ -79,7 +95,8 @@ const categories: ProductCategory[] = [
       {
         id: "ci1",
         title: "Cierre Cremallera #10",
-        description: "Cierre de cremallera resistente al agua, calibre 10, para fundas náuticas.",
+        description:
+          "Cierre de cremallera resistente al agua, calibre 10, para fundas náuticas.",
         imageSrc: services04,
       },
       {
@@ -103,25 +120,29 @@ const categories: ProductCategory[] = [
       {
         id: "h1",
         title: "Hilo PTFE Premium",
-        description: "Hilo de PTFE 100% resistente a UV, sal y temperaturas extremas.",
+        description:
+          "Hilo de PTFE 100% resistente a UV, sal y temperaturas extremas.",
         imageSrc: services05,
       },
       {
         id: "h2",
         title: "Hilo Polyester Naval",
-        description: "Hilo de poliéster de alta tenacidad para costuras de lonas.",
+        description:
+          "Hilo de poliéster de alta tenacidad para costuras de lonas.",
         imageSrc: services01,
       },
       {
         id: "h3",
         title: "Hilo Kevlar Reforzado",
-        description: "Hilo de aramida para costuras de máxima resistencia mecánica.",
+        description:
+          "Hilo de aramida para costuras de máxima resistencia mecánica.",
         imageSrc: services02,
       },
       {
         id: "h4",
         title: "Hilo Sunbrella",
-        description: "Hilo especialmente diseñado para telas Sunbrella, garantía de color.",
+        description:
+          "Hilo especialmente diseñado para telas Sunbrella, garantía de color.",
         imageSrc: services04,
       },
     ],
@@ -147,7 +168,9 @@ function CotizacionModalContent({
   return (
     <div className="font-poppins mt-4 flex flex-col gap-3">
       <p className="text-sm text-sc-ocean-blue/70">
-        Consultá por <strong className="text-sc-ocean-blue">{product.title}</strong> vía WhatsApp.
+        Consultá por{" "}
+        <strong className="text-sc-ocean-blue">{product.title}</strong> vía
+        WhatsApp.
       </p>
       <a
         href={whatsappHref}
@@ -223,7 +246,10 @@ export function Products() {
         variant={isMobile ? "sheet" : "centered"}
       >
         {selectedProduct && (
-          <CotizacionModalContent product={selectedProduct} onClose={closeQuotation} />
+          <CotizacionModalContent
+            product={selectedProduct}
+            onClose={closeQuotation}
+          />
         )}
       </Modal>
     </>
