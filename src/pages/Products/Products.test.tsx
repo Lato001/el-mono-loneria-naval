@@ -32,16 +32,16 @@ describe("Products page", () => {
     expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent("Nuestros productos");
   });
 
-  it("renders 4 category tabs", () => {
+  it("renders 2 category tabs", () => {
     renderProducts();
     const tabs = screen.getAllByRole("tab");
-    expect(tabs).toHaveLength(4);
+    expect(tabs).toHaveLength(2);
   });
 
-  it("renders 4 carousel sections (tabpanels)", () => {
+  it("renders 2 carousel sections (tabpanels)", () => {
     renderProducts();
     const panels = screen.getAllByRole("tabpanel");
-    expect(panels).toHaveLength(4);
+    expect(panels).toHaveLength(2);
   });
 
   it("opens quotation modal when card CTA is clicked", async () => {
