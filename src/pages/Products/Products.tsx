@@ -13,75 +13,38 @@ import services05 from "../../assets/img/services/services-05.jpg";
 
 // Broches — Casco
 import baca01 from "../../assets/img/products/broches/broche-casco/baca/baca-01.webp";
-import baca02 from "../../assets/img/products/broches/broche-casco/baca/baca-02.webp";
-import baca03 from "../../assets/img/products/broches/broche-casco/baca/baca-03.webp";
-import baca04 from "../../assets/img/products/broches/broche-casco/baca/baca-04.webp";
 import bacp01 from "../../assets/img/products/broches/broche-casco/bacp/bacp-01.webp";
-import bacp02 from "../../assets/img/products/broches/broche-casco/bacp/bacp-02.webp";
 import bar01 from "../../assets/img/products/broches/broche-casco/bar/bar-01.webp";
-import bar02 from "../../assets/img/products/broches/broche-casco/bar/bar-02.webp";
-import bar03 from "../../assets/img/products/broches/broche-casco/bar/bar-03.webp";
 
 // Broches — Lona Hembra
 import hb01 from "../../assets/img/products/broches/broche-lona/hembra/bronze/hb-01.webp";
-import hb02 from "../../assets/img/products/broches/broche-lona/hembra/bronze/hb-02.webp";
 import hi01 from "../../assets/img/products/broches/broche-lona/hembra/inox/hi-01.webp";
-import hi02 from "../../assets/img/products/broches/broche-lona/hembra/inox/hi-02.webp";
 
 // Broches — Lona Macho
 import bb01 from "../../assets/img/products/broches/broche-lona/macho/bronze-blanco/bb-01.webp";
-import bb02 from "../../assets/img/products/broches/broche-lona/macho/bronze-blanco/bb-02.webp";
 import bg01 from "../../assets/img/products/broches/broche-lona/macho/bronze-gris/bg-01.webp";
-import bg02 from "../../assets/img/products/broches/broche-lona/macho/bronze-gris/bg-02.webp";
 import bn01 from "../../assets/img/products/broches/broche-lona/macho/bronze-negro/bn-01.webp";
-import bn02 from "../../assets/img/products/broches/broche-lona/macho/bronze-negro/bn-02.webp";
-import bn03 from "../../assets/img/products/broches/broche-lona/macho/bronze-negro/bn-03.webp";
 import cb01 from "../../assets/img/products/broches/broche-lona/macho/comun-bronze/cb-01.webp";
-import cb02 from "../../assets/img/products/broches/broche-lona/macho/comun-bronze/cb-02.webp";
-import cb03 from "../../assets/img/products/broches/broche-lona/macho/comun-bronze/cb-03.webp";
 import cc01 from "../../assets/img/products/broches/broche-lona/macho/comun-cubeta/cc-01.webp";
-import cc02 from "../../assets/img/products/broches/broche-lona/macho/comun-cubeta/cc-02.webp";
 import ciBroche01 from "../../assets/img/products/broches/broche-lona/macho/comun-inox/ci-01.webp";
-import ciBroche02 from "../../assets/img/products/broches/broche-lona/macho/comun-inox/ci-02.webp";
 import nc01 from "../../assets/img/products/broches/broche-lona/macho/negro-cubeta/nc-01.webp";
-import nc02 from "../../assets/img/products/broches/broche-lona/macho/negro-cubeta/nc-02.webp";
 
 // Caballetes
 import ci01 from "../../assets/img/products/caballetes/cano-inox/ci-01.webp";
 
 const brochesProducts: Product[] = [
-  // Casco
-  { id: "b1", title: "Broche Casco Baca 01", description: "Broche a presión de carcasa tipo baca.", imageSrc: baca01 },
-  { id: "b2", title: "Broche Casco Baca 02", description: "Broche a presión de carcasa tipo baca.", imageSrc: baca02 },
-  { id: "b3", title: "Broche Casco Baca 03", description: "Broche a presión de carcasa tipo baca.", imageSrc: baca03 },
-  { id: "b4", title: "Broche Casco Baca 04", description: "Broche a presión de carcasa tipo baca.", imageSrc: baca04 },
-  { id: "b5", title: "Broche Casco Bacp 01", description: "Broche a presión de carcasa tipo bacp.", imageSrc: bacp01 },
-  { id: "b6", title: "Broche Casco Bacp 02", description: "Broche a presión de carcasa tipo bacp.", imageSrc: bacp02 },
-  { id: "b7", title: "Broche Casco Bar 01", description: "Broche a presión de carcasa tipo bar.", imageSrc: bar01 },
-  { id: "b8", title: "Broche Casco Bar 02", description: "Broche a presión de carcasa tipo bar.", imageSrc: bar02 },
-  { id: "b9", title: "Broche Casco Bar 03", description: "Broche a presión de carcasa tipo bar.", imageSrc: bar03 },
-  // Lona Hembra
-  { id: "b10", title: "Broche Lona Hembra Bronze 01", description: "Broche lona hembra en bronce.", imageSrc: hb01 },
-  { id: "b11", title: "Broche Lona Hembra Bronze 02", description: "Broche lona hembra en bronce.", imageSrc: hb02 },
-  { id: "b12", title: "Broche Lona Hembra Inox 01", description: "Broche lona hembra en acero inoxidable.", imageSrc: hi01 },
-  { id: "b13", title: "Broche Lona Hembra Inox 02", description: "Broche lona hembra en acero inoxidable.", imageSrc: hi02 },
-  // Lona Macho
-  { id: "b14", title: "Broche Lona Macho Bronze Blanco 01", description: "Broche lona macho en bronce blanco.", imageSrc: bb01 },
-  { id: "b15", title: "Broche Lona Macho Bronze Blanco 02", description: "Broche lona macho en bronce blanco.", imageSrc: bb02 },
-  { id: "b16", title: "Broche Lona Macho Bronze Gris 01", description: "Broche lona macho en bronce gris.", imageSrc: bg01 },
-  { id: "b17", title: "Broche Lona Macho Bronze Gris 02", description: "Broche lona macho en bronce gris.", imageSrc: bg02 },
-  { id: "b18", title: "Broche Lona Macho Bronze Negro 01", description: "Broche lona macho en bronce negro.", imageSrc: bn01 },
-  { id: "b19", title: "Broche Lona Macho Bronze Negro 02", description: "Broche lona macho en bronce negro.", imageSrc: bn02 },
-  { id: "b20", title: "Broche Lona Macho Bronze Negro 03", description: "Broche lona macho en bronce negro.", imageSrc: bn03 },
-  { id: "b21", title: "Broche Lona Macho Comun Bronze 01", description: "Broche lona macho común en bronce.", imageSrc: cb01 },
-  { id: "b22", title: "Broche Lona Macho Comun Bronze 02", description: "Broche lona macho común en bronce.", imageSrc: cb02 },
-  { id: "b23", title: "Broche Lona Macho Comun Bronze 03", description: "Broche lona macho común en bronce.", imageSrc: cb03 },
-  { id: "b24", title: "Broche Lona Macho Comun Cubeta 01", description: "Broche lona macho común con cubeta.", imageSrc: cc01 },
-  { id: "b25", title: "Broche Lona Macho Comun Cubeta 02", description: "Broche lona macho común con cubeta.", imageSrc: cc02 },
-  { id: "b26", title: "Broche Lona Macho Comun Inox 01", description: "Broche lona macho común en acero inoxidable.", imageSrc: ciBroche01 },
-  { id: "b27", title: "Broche Lona Macho Comun Inox 02", description: "Broche lona macho común en acero inoxidable.", imageSrc: ciBroche02 },
-  { id: "b28", title: "Broche Lona Macho Negro Cubeta 01", description: "Broche lona macho en negro con cubeta.", imageSrc: nc01 },
-  { id: "b29", title: "Broche Lona Macho Negro Cubeta 02", description: "Broche lona macho en negro con cubeta.", imageSrc: nc02 },
+  { id: "b1", title: "Broche Casco Baca", description: "Broche a presión de carcasa tipo baca, para sombreros y gorras.", imageSrc: baca01 },
+  { id: "b2", title: "Broche Casco Bacp", description: "Broche a presión de carcasa tipo bacp, para uso intensivo.", imageSrc: bacp01 },
+  { id: "b3", title: "Broche Casco Bar", description: "Broche a presión de carcasa tipo bar, para decoración naval.", imageSrc: bar01 },
+  { id: "b4", title: "Broche Lona Hembra Bronze", description: "Broche lona hembra en bronce, para sujeción de lonas y correas.", imageSrc: hb01 },
+  { id: "b5", title: "Broche Lona Hembra Inox", description: "Broche lona hembra en acero inoxidable, para sujeción de lonas y correas.", imageSrc: hi01 },
+  { id: "b6", title: "Broche Lona Macho Bronze Blanco", description: "Broche lona macho en bronce blanco, para sujeción de lonas.", imageSrc: bb01 },
+  { id: "b7", title: "Broche Lona Macho Bronze Gris", description: "Broche lona macho en bronce gris, para sujeción de lonas.", imageSrc: bg01 },
+  { id: "b8", title: "Broche Lona Macho Bronze Negro", description: "Broche lona macho en bronce negro, para sujeción de lonas.", imageSrc: bn01 },
+  { id: "b9", title: "Broche Lona Macho Comun Bronze", description: "Broche lona macho común en bronce, para sujeción de lonas.", imageSrc: cb01 },
+  { id: "b10", title: "Broche Lona Macho Comun Cubeta", description: "Broche lona macho común con cubeta, para sujeción de lonas.", imageSrc: cc01 },
+  { id: "b11", title: "Broche Lona Macho Comun Inox", description: "Broche lona macho común en acero inoxidable, para sujeción de lonas.", imageSrc: ciBroche01 },
+  { id: "b12", title: "Broche Lona Macho Negro Cubeta", description: "Broche lona macho en negro con cubeta, para sujeción de lonas.", imageSrc: nc01 },
 ];
 
 interface ProductCategory {
@@ -102,7 +65,7 @@ const categories: ProductCategory[] = [
     products: [
       {
         id: "c1",
-        title: "Caballete Caño Inox 01",
+        title: "Caballete Caño Inox",
         description:
           "Caballete de caño de acero inoxidable, resistente a la corrosión y apto para intemperie.",
         imageSrc: ci01,
