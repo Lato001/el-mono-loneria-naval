@@ -56,9 +56,9 @@ describe('Home page', () => {
   });
 
   it('renders the About section wrapper', () => {
-    // SectionWrapper of About is mounted; AboutSection component not yet integrated
+    // SectionWrapper of About is mounted with AboutWork inside
     expect(screen.getByText('Sobre Nosotros')).toBeInTheDocument();
-    expect(screen.getByText('Acerca de nuestro trabajo')).toBeInTheDocument();
+    expect(screen.getByText('Trabajos a Medida')).toBeInTheDocument();
   });
 
   it('renders the reviews section heading', () => {

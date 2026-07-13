@@ -14,10 +14,22 @@ const defaultProps = {
 };
 
 describe('AboutSection', () => {
-  it('renders the eyebrow and title', () => {
-    renderWithRouter(<AboutSection {...defaultProps} />);
+  it('renders the eyebrow and title when provided', () => {
+    renderWithRouter(
+      <AboutSection
+        {...defaultProps}
+        eyebrow="Sobre nosotros"
+        title="Pasión por el oficio"
+      />,
+    );
     expect(screen.getByText('Sobre nosotros')).toBeInTheDocument();
     expect(screen.getByText('Pasión por el oficio')).toBeInTheDocument();
+  });
+
+  it('does not render eyebrow or title when not provided', () => {
+    renderWithRouter(<AboutSection {...defaultProps} />);
+    expect(screen.queryByText('Sobre nosotros')).not.toBeInTheDocument();
+    expect(screen.queryByText('Pasión por el oficio')).not.toBeInTheDocument();
   });
 
   it('renders custom eyebrow and title', () => {
@@ -60,7 +72,7 @@ describe('AboutSection', () => {
   });
 
   it('does not render highlights when not provided', () => {
-    renderWithRouter(<AboutSection {...defaultProps} />);
+    renderWithRouter(<AboutSection {...defaultProps} highlights={[]} />);
     // No highlight values should be present
     expect(screen.queryByText('+20')).not.toBeInTheDocument();
   });
@@ -83,14 +95,13 @@ describe('AboutSection', () => {
     ).not.toBeInTheDocument();
   });
 
-  it('renders placeholder when image is undefined', () => {
-    renderWithRouter(<AboutSection {...defaultProps} />);
+  it('renders placeholder when no media is provided', () => {
+    renderWithRouter(<AboutSection {...defaultProps} images={[]} />);
     expect(screen.getByText('Imagen pendiente')).toBeInTheDocument();
   });
 
-  it('does not render img element when image is undefined', () => {
-    renderWithRouter(<AboutSection {...defaultProps} />);
-    // The only img-like element should NOT be present (no <img> tag)
+  it('does not render img element when no media is provided', () => {
+    renderWithRouter(<AboutSection {...defaultProps} images={[]} />);
     const images = screen.queryAllByRole('img');
     expect(images).toHaveLength(0);
   });
@@ -99,6 +110,7 @@ describe('AboutSection', () => {
     renderWithRouter(
       <AboutSection
         {...defaultProps}
+        images={[]}
         image="https://example.com/photo.jpg"
         imageAlt="Workshop photo"
       />,
