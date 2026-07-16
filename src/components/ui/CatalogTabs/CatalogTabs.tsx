@@ -11,6 +11,7 @@ export function CatalogTabs({
   selectedCount,
   onPresupuestar,
   presupuestarDisabled,
+  onClear,
 }: CatalogTabsProps) {
   const tablistRef = useRef<HTMLDivElement>(null);
 
@@ -20,7 +21,7 @@ export function CatalogTabs({
       const currentIndex = tabs.findIndex((t) => t.id === activeId);
       if (currentIndex === -1) return;
 
-      let nextIndex = currentIndex;
+      let nextIndex: number;
 
       switch (e.key) {
         case "ArrowRight":
@@ -44,9 +45,8 @@ export function CatalogTabs({
       onSelect?.(nextTab.id);
 
       // Move focus to the next tab button
-      const tabButtons = tablistRef.current?.querySelectorAll<HTMLButtonElement>(
-        '[role="tab"]',
-      );
+      const tabButtons =
+        tablistRef.current?.querySelectorAll<HTMLButtonElement>('[role="tab"]');
       tabButtons?.[nextIndex]?.focus();
     },
     [categories, activeId, onSelect],
@@ -89,7 +89,15 @@ export function CatalogTabs({
         <div className="flex shrink-0 items-center gap-2 pr-6">
           <SelectionCounter count={selectedCount} />
           <Button
-            variant="primary"
+            variant="danger"
+            size="sm"
+            onClick={onClear}
+            disabled={presupuestarDisabled}
+            ariaLabel="Borrar lista de productos seleccionados"
+          >
+            Borrar lista
+          </Button>
+          <Button
             size="sm"
             onClick={onPresupuestar}
             disabled={presupuestarDisabled}

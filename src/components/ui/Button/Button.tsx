@@ -3,7 +3,7 @@ import type { ButtonProps } from "./Button.types";
 
 const variantClasses: Record<NonNullable<ButtonProps["variant"]>, string> = {
   primary:
-    "bg-white text-sc-ocean-blue hover:bg-sc-chalk focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pr-aquamarine",
+    "bg-sc-ocean-blue text-white hover:cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pr-aquamarine",
   secondary:
     "bg-pr-aquamarine text-sc-ocean-blue hover:bg-pr-aquamarine/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sc-ocean-blue",
   outline:
@@ -11,6 +11,7 @@ const variantClasses: Record<NonNullable<ButtonProps["variant"]>, string> = {
   ghost:
     "text-white hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50",
   hero: "bg-pr-hero-blue text-white hover:bg-pr-hero-blue/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pr-aquamarine",
+  danger: "bg-red-500 text-white hover:bg-red-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-300",
 };
 
 const sizeClasses: Record<NonNullable<ButtonProps["size"]>, string> = {
@@ -70,11 +71,7 @@ export function Button({
 
   if (href) {
     return (
-      <Link
-        to={href}
-        className={classes}
-        aria-label={ariaLabel}
-      >
+      <Link to={href} className={classes} aria-label={ariaLabel}>
         {children}
       </Link>
     );
