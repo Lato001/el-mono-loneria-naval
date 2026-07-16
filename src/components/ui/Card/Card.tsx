@@ -1,4 +1,6 @@
-﻿export interface CardProps {
+﻿import { IconPlus, IconX } from "@tabler/icons-react";
+
+export interface CardProps {
   title?: string;
   description?: string;
   badge?: string;
@@ -67,8 +69,13 @@ export const Card = ({
             checked={!!selected}
             onChange={(e) => onSelectChange(e.target.checked)}
             aria-label={`Seleccionar ${title ?? "producto"}`}
-            className="h-4 w-4 shrink-0 cursor-pointer accent-black"
+            className="sr-only"
           />
+          {selected ? (
+            <IconX className="h-4 w-4 shrink-0" aria-hidden="true" />
+          ) : (
+            <IconPlus className="h-4 w-4 shrink-0" aria-hidden="true" />
+          )}
           <span
             aria-hidden="true"
             className={`whitespace-nowrap text-sm font-medium text-white transition-all duration-200 ease-out ${
