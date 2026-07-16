@@ -130,9 +130,9 @@ function CotizacionModalContent({
           size="sm"
           onClick={onClear}
           disabled={products.length === 0}
-          ariaLabel="Vaciar selección"
+          ariaLabel={data.ui.vaciarSelectionAriaLabel}
         >
-          Vaciar
+          {data.ui.vaciarButton}
         </Button>
         <Button variant="ghost" size="sm" onClick={onClose}>
           {data.ui.keepBrowsing}
@@ -264,7 +264,7 @@ export function Products() {
               variant="danger"
               size="sm"
               onClick={handleConfirmClear}
-              ariaLabel="Borrar lista"
+              ariaLabel={data.ui.clearListAriaLabel}
             >
               {data.ui.delete}
             </Button>
