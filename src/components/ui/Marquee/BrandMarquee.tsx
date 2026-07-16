@@ -1,20 +1,20 @@
-import sauledaSrc from "../../../assets/logos/brands/sauleda-logo.svg";
-import sunbrellaSrc from "../../../assets/logos/brands/sunbrella-logo.svg";
-import achillesSrc from "../../../assets/logos/brands/achilles-logo.svg";
-import coatsSrc from "../../../assets/logos/brands/coats-logo.svg";
-import ykkSrc from "../../../assets/logos/brands/ykk-logo.svg";
 import { data } from "../../../mocks/data";
 import type { MarqueeItem } from "./Marquee.types";
 
 import { Marquee } from "./";
 
-const brandImageMap: Record<string, string> = {
-  sauleda: sauledaSrc,
-  ykk: ykkSrc,
-  sunbrella: sunbrellaSrc,
-  coats: coatsSrc,
-  achilles: achillesSrc,
-};
+// ─── Brand logos (auto-discovered via Vite glob) ───────────────────────
+const brandImages = import.meta.glob(
+  "../../../assets/logos/brands/*",
+  { eager: true, import: "default" },
+) as Record<string, string>;
+
+const brandImageMap: Record<string, string> = Object.fromEntries(
+  Object.entries(brandImages).map(([path, url]) => [
+    path.split("/").pop()!.replace(/\.[^.]+$/, ""),
+    url,
+  ]),
+);
 
 const brandItems: MarqueeItem[] = data.brands.map((b) => ({
   id: b.id,
