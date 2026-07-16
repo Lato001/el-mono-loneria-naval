@@ -1,10 +1,6 @@
 import { Link } from "react-router-dom";
 import { PATHS } from "../../routes/routes";
 import bgOlas from "../../assets/backgrounds/formas-olas-sec.svg";
-import heroImg1 from "../../assets/img/services/services-01.jpg";
-import heroImg2 from "../../assets/img/services/services-02.jpg";
-import heroImg3 from "../../assets/img/services/services-04.jpg";
-import heroImg4 from "../../assets/img/services/services-05.jpg";
 import { BrandMarquee, ImgCard } from "../ui";
 
 interface HeroProps {
@@ -14,6 +10,7 @@ interface HeroProps {
   description?: string;
   primaryCta?: string;
   secondaryCta?: string;
+  images?: { src: string; alt: string }[];
 }
 
 export function Hero({
@@ -23,6 +20,7 @@ export function Hero({
   description = "Confección de lonas, cerramientos, capotas, cubreautos y fundas para motos de agua. Trabajo a medida con materiales técnicos de alta durabilidad.",
   primaryCta = "Solicitar presupuesto",
   secondaryCta = "Ver servicios",
+  images,
 }: HeroProps) {
   return (
     <>
@@ -77,12 +75,7 @@ export function Hero({
           </div>
           <ImgCard
             className="max-lg:hidden"
-            images={[
-              { src: heroImg1, alt: "Lona naval" },
-              { src: heroImg2, alt: "Capota a medida" },
-              { src: heroImg3, alt: "Cubreauto" },
-              { src: heroImg4, alt: "Funda para moto de agua" },
-            ]}
+            images={images}
             interval={4000}
           />
         </div>
