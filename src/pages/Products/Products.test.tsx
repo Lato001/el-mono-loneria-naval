@@ -152,4 +152,76 @@ describe("Products page", () => {
 
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
   });
+
+  it("renders the 'Borrar lista' button (red, disabled when no selection)", () => {
+    renderProducts();
+    const clearButton = screen.getByRole("button", { name: /borrar lista/i });
+    expect(clearButton).toBeInTheDocument();
+    expect(clearButton.className).toContain("bg-red-500");
+    expect(clearButton).toBeDisabled();
+  });
+
+  it("'Borrar lista' opens a confirmation modal without clearing the selection", async () => {
+    const user = userEvent.setup();
+    renderProducts();
+
+    const checkboxes = screen.getAllByRole("checkbox");
+    await user.click(checkboxes[0]);
+    await user.click(checkboxes[1]);
+    expect(screen.getByText("2")).toBeInTheDocument();
+
+    await user.click(screen.getByRole("button", { name: /borrar lista/i }));
+
+    // Confirmation modal opens
+    const dialogs = screen.getAllByRole("dialog");
+    expect(dialogs.length).toBeGreaterThanOrEqual(1);
+    expect(
+      screen.getByText(/¿Estás seguro que querés borrar toda la lista/i),
+    ).toBeInTheDocument();
+
+    // Selection is still intact (counter still shows 2)
+    expect(screen.getByText("2")).toBeInTheDocument();
+  });
+
+  it("Cancelar in confirmation modal closes it without clearing selection", async () => {
+    const user = userEvent.setup();
+    renderProducts();
+
+    const checkboxes = screen.getAllByRole("checkbox");
+    await user.click(checkboxes[0]);
+    await user.click(screen.getByRole("button", { name: /borrar lista/i }));
+
+    // Scope to the confirmation dialog
+    const dialog = screen.getByRole("dialog", { name: /borrar lista/i });
+    const cancelButton = within(dialog).getByRole("button", { name: /^cancelar$/i });
+    await user.click(cancelButton);
+
+    // Modal closed, selection intact
+    expect(
+      screen.queryByText(/¿Estás seguro que querés borrar toda la lista/i),
+    ).not.toBeInTheDocument();
+    expect(screen.getByText("1")).toBeInTheDocument();
+  });
+
+  it("Borrar in confirmation modal clears all selections", async () => {
+    const user = userEvent.setup();
+    renderProducts();
+
+    const checkboxes = screen.getAllByRole("checkbox");
+    await user.click(checkboxes[0]);
+    await user.click(checkboxes[1]);
+    expect(screen.getByText("2")).toBeInTheDocument();
+
+    await user.click(screen.getByRole("button", { name: /borrar lista/i }));
+
+    // Scope to the confirmation dialog (the tabs row Borrar lista button is outside)
+    const dialog = screen.getByRole("dialog", { name: /borrar lista/i });
+    const confirmButton = within(dialog).getByRole("button", { name: /borrar lista/i });
+    await user.click(confirmButton);
+
+    // Selection cleared: counter badge is gone (hidden at 0), Presupuestar and Borrar lista are disabled
+    expect(screen.queryByText("2")).not.toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /presupuestar/i })).toBeDisabled();
+    expect(screen.getByRole("button", { name: /borrar lista/i })).toBeDisabled();
+  });
 });

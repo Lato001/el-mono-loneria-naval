@@ -11,4 +11,5 @@ export interface CatalogTabsProps {
   selectedCount: number;
   onPresupuestar: () => void;
   presupuestarDisabled: boolean;
+  onClear: () => void;
 }

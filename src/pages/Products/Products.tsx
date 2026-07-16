@@ -233,6 +233,7 @@ export function Products() {
   const { selected, isSelected, toggle, remove, clear, count } =
     useSessionSelection(STORAGE_KEY);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isClearModalOpen, setIsClearModalOpen] = useState(false);
   const [activeCategoryId, setActiveCategoryId] = useState<string | null>(null);
   const isMobile = useMediaQuery("(max-width: 767px)");
 
@@ -266,6 +267,13 @@ export function Products() {
   const handleOpenModal = () => setIsModalOpen(true);
   const handleCloseModal = () => setIsModalOpen(false);
 
+  const handleOpenClearModal = () => setIsClearModalOpen(true);
+  const handleCloseClearModal = () => setIsClearModalOpen(false);
+  const handleConfirmClear = () => {
+    clear();
+    setIsClearModalOpen(false);
+  };
+
   // Auto-close: derive modal visibility — if selection empties while modal is open,
   // the derived `isModalVisible` becomes false without calling setState in an effect.
   const isModalVisible = isModalOpen && selected.size > 0;
@@ -287,6 +295,7 @@ export function Products() {
           topOffset={56}
           selectedCount={count}
           onPresupuestar={handleOpenModal}
+          onClear={handleOpenClearModal}
           presupuestarDisabled={count === 0}
         />
 
@@ -318,6 +327,39 @@ export function Products() {
           isWhatsAppDisabled={whatsappResult.isTooLong}
           whatsappDisabledReason="El mensaje es demasiado largo; contactanos por WhatsApp directamente."
         />
+      </Modal>
+
+      <Modal
+        open={isClearModalOpen}
+        onOpenChange={(open) => { if (!open) handleCloseClearModal(); }}
+        title="Borrar lista"
+        description="Vas a eliminar todos los productos seleccionados."
+        variant={isMobile ? "sheet" : "centered"}
+      >
+        <div className="font-poppins mt-4 flex flex-col gap-4">
+          <p className="text-sm text-sc-ocean-blue">
+            ¿Estás seguro que querés borrar toda la lista de productos
+            seleccionados? Esta acción no se puede deshacer.
+          </p>
+          <div className="flex justify-end gap-2">
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={handleCloseClearModal}
+              ariaLabel="Cancelar"
+            >
+              Cancelar
+            </Button>
+            <Button
+              variant="danger"
+              size="sm"
+              onClick={handleConfirmClear}
+              ariaLabel="Borrar lista"
+            >
+              Borrar
+            </Button>
+          </div>
+        </div>
       </Modal>
     </>
   );
