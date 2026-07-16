@@ -287,10 +287,10 @@ export const data = {
       primaryCta: "Solicitar presupuesto",
       secondaryCta: "Ver servicios",
       images: [
-        { src: "services-01.jpg", alt: "Lona naval" },
-        { src: "services-02.jpg", alt: "Capota a medida" },
-        { src: "services-04.jpg", alt: "Cubreauto" },
-        { src: "services-05.jpg", alt: "Funda para moto de agua" },
+        { src: "services-01", alt: "Lona naval" },
+        { src: "services-02", alt: "Capota a medida" },
+        { src: "services-04", alt: "Cubreauto" },
+        { src: "services-05", alt: "Funda para moto de agua" },
       ],
     } satisfies HeroData,
 
@@ -322,8 +322,8 @@ export const data = {
     } satisfies SectionsGroup,
 
     splitCards: [
-      { title: "Productos", imageKey: "services-02.jpg" },
-      { title: "Servicios", imageKey: "services-04.jpg" },
+      { title: "Productos", imageKey: "services-02" },
+      { title: "Servicios", imageKey: "services-04" },
     ] satisfies SplitCardData[],
 
     aboutSection: {
@@ -372,11 +372,11 @@ export const data = {
 
   // ─── Brands ──────────────────────────────────────────────────────────
   brands: [
-    { id: "sauleda", alt: "Sauleda", link: "https://sauleda.com/" },
-    { id: "ykk", alt: "YKK", link: "https://argentina.ykkamericas.com/" },
-    { id: "sunbrella", alt: "Sunbrella", link: "https://global.sunbrella.com" },
-    { id: "coats", alt: "Coats", link: "https://www.coats.com/" },
-    { id: "achilles", alt: "Achilles" },
+    { id: "sauleda-logo", alt: "Sauleda", link: "https://sauleda.com/" },
+    { id: "ykk-logo", alt: "YKK", link: "https://argentina.ykkamericas.com/" },
+    { id: "sunbrella-logo", alt: "Sunbrella", link: "https://global.sunbrella.com" },
+    { id: "coats-logo", alt: "Coats", link: "https://www.coats.com/" },
+    { id: "achilles-logo", alt: "Achilles" },
   ] satisfies BrandData[],
 
   // ─── Deprecated backward-compat aliases ──────────────────────────────
