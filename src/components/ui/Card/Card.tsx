@@ -60,22 +60,19 @@ export const Card = ({
 
       {isInteractive && (
         <label
-          className={`absolute top-3 right-3 z-20 inline-flex h-8 items-center gap-2 overflow-hidden rounded-full border-2 bg-white/90 pl-1 pr-1 backdrop-blur-sm transition-all duration-200 ease-out cursor-pointer
-            ${selected ? "border-sc-ocean-blue pr-3" : "border-transparent"}`}
+          className="absolute top-3 right-3 z-20 inline-flex h-8 items-center gap-2 overflow-hidden rounded-full border-2 border-sc-ocean-blue bg-sc-ocean-blue pl-1 pr-1 transition-all duration-200 ease-out cursor-pointer hover:brightness-110"
         >
           <input
             type="checkbox"
             checked={!!selected}
             onChange={(e) => onSelectChange(e.target.checked)}
             aria-label={`Seleccionar ${title ?? "producto"}`}
-            className="h-4 w-4 shrink-0 cursor-pointer accent-pr-aquamarine"
+            className="h-4 w-4 shrink-0 cursor-pointer accent-black"
           />
           <span
             aria-hidden="true"
-            className={`whitespace-nowrap text-sm font-medium transition-all duration-200 ease-out ${
-              selected
-                ? "max-w-[7.5rem] text-sc-ocean-blue opacity-100"
-                : "max-w-0 opacity-0"
+            className={`whitespace-nowrap text-sm font-medium text-white transition-all duration-200 ease-out ${
+              selected ? "max-w-[7.5rem] opacity-100" : "max-w-0 opacity-0"
             }`}
           >
             Seleccionado
