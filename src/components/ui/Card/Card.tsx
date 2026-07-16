@@ -21,13 +21,13 @@ export const Card = ({
   selected,
   onSelectChange,
 }: CardProps) => {
-  const hasContent = !!(title || description || onSelectChange);
+  const hasContent = !!(title || description);
   const hasImage = !!(imageSrc || color);
   const isInteractive = !!onSelectChange;
 
   return (
     <article
-      className={`h-120 flex flex-col overflow-hidden rounded-xl border-2 group transition-all duration-200 ease-out hover:-translate-y-1.5 hover:shadow-xl
+      className={`relative h-120 flex flex-col overflow-hidden rounded-xl border-2 group transition-all duration-200 ease-out hover:-translate-y-1.5 hover:shadow-xl
       ${selected ? "border-pr-aquamarine ring-2 ring-pr-aquamarine" : "border-sc-ocean-blue/15 bg-white"}
       ${className ?? ""}`}
     >
@@ -58,6 +58,33 @@ export const Card = ({
         </div>
       )}
 
+      {isInteractive && (
+        <label
+          className={`absolute top-3 left-3 z-20 inline-flex h-8 items-center gap-2 overflow-hidden rounded-full pl-1 pr-1 transition-all duration-200 ease-out cursor-pointer
+            ${
+              selected
+                ? "bg-pr-aquamarine pr-3 text-white shadow-md"
+                : "bg-white/90 backdrop-blur-sm border-2 border-pr-aquamarine/60 hover:border-pr-aquamarine"
+            }`}
+        >
+          <input
+            type="checkbox"
+            checked={!!selected}
+            onChange={(e) => onSelectChange(e.target.checked)}
+            aria-label={`Seleccionar ${title ?? "producto"}`}
+            className="h-4 w-4 shrink-0 cursor-pointer accent-pr-aquamarine"
+          />
+          <span
+            aria-hidden="true"
+            className={`whitespace-nowrap text-sm font-medium transition-all duration-200 ease-out ${
+              selected ? "max-w-[7.5rem] opacity-100" : "max-w-0 opacity-0"
+            }`}
+          >
+            Seleccionado
+          </span>
+        </label>
+      )}
+
       {hasContent && (
         <div className="flex flex-1 flex-col justify-between p-6">
           {title && (
@@ -70,19 +97,6 @@ export const Card = ({
             <p className="text-base font-poppins leading-relaxed text-sc-ocean-blue/70">
               {description}
             </p>
-          )}
-
-          {isInteractive && (
-            <label className="mt-auto flex cursor-pointer items-center gap-2 rounded-full bg-sc-chalk px-5 py-2.5 text-sm font-medium text-sc-ocean-blue transition-colors hover:bg-sc-chalk/70 focus-within:ring-2 focus-within:ring-pr-aquamarine">
-              <input
-                type="checkbox"
-                checked={!!selected}
-                onChange={(e) => onSelectChange(e.target.checked)}
-                aria-label={`Seleccionar ${title ?? "producto"}`}
-                className="h-4 w-4 cursor-pointer accent-pr-aquamarine"
-              />
-              <span>{selected ? "Seleccionado" : "Seleccionar"}</span>
-            </label>
           )}
         </div>
       )}
