@@ -14,38 +14,18 @@ import { data } from "../../mocks/data";
 
 const STORAGE_KEY = "mono:quote-cart";
 
-// ─── Image imports (resolved at build time by Vite) ──────────────────────
-import bacan01 from "../../assets/img/products/broches/broche-casco/baca/negro/bacan-01.webp";
-import bacab01 from "../../assets/img/products/broches/broche-casco/baca/blanco/bacab-01.webp";
-import bacp01 from "../../assets/img/products/broches/broche-casco/bacp/bacp-01.webp";
-import bar01 from "../../assets/img/products/broches/broche-casco/bar/bar-01.webp";
-import hb01 from "../../assets/img/products/broches/broche-lona/hembra/bronze/hb-01.webp";
-import hi01 from "../../assets/img/products/broches/broche-lona/hembra/inox/hi-01.webp";
-import bb01 from "../../assets/img/products/broches/broche-lona/macho/bronze-blanco/bb-01.webp";
-import bg01 from "../../assets/img/products/broches/broche-lona/macho/bronze-gris/bg-01.webp";
-import bn01 from "../../assets/img/products/broches/broche-lona/macho/bronze-negro/bn-01.webp";
-import cb01 from "../../assets/img/products/broches/broche-lona/macho/comun-bronze/cb-01.webp";
-import cc01 from "../../assets/img/products/broches/broche-lona/macho/comun-cubeta/cc-01.webp";
-import ciBroche01 from "../../assets/img/products/broches/broche-lona/macho/comun-inox/ci-01.webp";
-import nc01 from "../../assets/img/products/broches/broche-lona/macho/negro-cubeta/nc-01.webp";
-import ci01 from "../../assets/img/products/caballetes/cano-inox/ci-01.webp";
+// ─── Product images (auto-discovered via Vite glob) ─────────────────────
+const productImages = import.meta.glob(
+  "../../assets/img/products/**/*.{webp,png,jpg}",
+  { eager: true, import: "default" },
+) as Record<string, string>;
 
-const productsImageMap: Record<string, string> = {
-  "bacan-01": bacan01,
-  "bacab-01": bacab01,
-  "bacp-01": bacp01,
-  "bar-01": bar01,
-  "hb-01": hb01,
-  "hi-01": hi01,
-  "bb-01": bb01,
-  "bg-01": bg01,
-  "bn-01": bn01,
-  "cb-01": cb01,
-  "cc-01": cc01,
-  "ci-broche-01": ciBroche01,
-  "nc-01": nc01,
-  "ci-01": ci01,
-};
+const productsImageMap: Record<string, string> = Object.fromEntries(
+  Object.entries(productImages).map(([path, url]) => {
+    const key = path.split("/").pop()!.replace(/\.[^.]+$/, "");
+    return [key, url];
+  }),
+);
 
 // ─── Derived data ────────────────────────────────────────────────────────
 
