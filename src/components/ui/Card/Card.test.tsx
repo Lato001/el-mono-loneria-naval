@@ -30,7 +30,7 @@ describe("Card", () => {
     expect(article.className).not.toContain("ring-pr-aquamarine");
   });
 
-  it("renders the selection pill at top-right with rounded-full shape and no border", () => {
+  it("renders the selection pill at top-right with always-navy background", () => {
     render(<Card title="Broche Test" onSelectChange={() => {}} />);
     const checkbox = screen.getByRole("checkbox");
     const pill = checkbox.closest("label");
@@ -39,7 +39,14 @@ describe("Card", () => {
     expect(pill!.className).toContain("top-3");
     expect(pill!.className).toContain("right-3");
     expect(pill!.className).toContain("rounded-full");
-    expect(pill!.className).toContain("border-transparent");
+    expect(pill!.className).toContain("bg-sc-ocean-blue");
+  });
+
+  it("checkbox uses default accent color (black check on white box, not aquamarine)", () => {
+    render(<Card title="Broche Test" onSelectChange={() => {}} />);
+    const checkbox = screen.getByRole("checkbox");
+    expect(checkbox.className).toContain("accent-black");
+    expect(checkbox.className).not.toContain("accent-pr-aquamarine");
   });
 
   it("hides the 'Seleccionado' text when not selected (collapsed pill)", () => {
@@ -47,17 +54,25 @@ describe("Card", () => {
     const text = screen.getByText("Seleccionado");
     expect(text.className).toContain("opacity-0");
     expect(text.className).toContain("max-w-0");
+    expect(text.className).toContain("text-white");
     expect(text.getAttribute("aria-hidden")).toBe("true");
   });
 
-  it("shows the 'Seleccionado' text in navy with a navy border when selected (unfolded pill)", () => {
+  it("shows the white 'Seleccionado' text on the navy pill when selected (unfolded pill)", () => {
     render(<Card title="Broche Test" selected={true} onSelectChange={() => {}} />);
     const checkbox = screen.getByRole("checkbox");
     const pill = checkbox.closest("label");
-    expect(pill!.className).toContain("border-sc-ocean-blue");
+    expect(pill!.className).toContain("bg-sc-ocean-blue");
     const text = screen.getByText("Seleccionado");
     expect(text.className).toContain("opacity-100");
     expect(text.className).toContain("max-w-[7.5rem]");
-    expect(text.className).toContain("text-sc-ocean-blue");
+    expect(text.className).toContain("text-white");
+  });
+
+  it("keeps the aquamarine ring on the card when selected (card visual unchanged)", () => {
+    render(<Card title="Broche Test" selected={true} onSelectChange={() => {}} />);
+    const article = screen.getByRole("article");
+    expect(article.className).toContain("ring-pr-aquamarine");
+    expect(article.className).toContain("border-pr-aquamarine");
   });
 });
