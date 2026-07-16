@@ -1,6 +1,7 @@
 import { useCallback, useRef, type KeyboardEvent } from "react";
 import { Button } from "../Button";
 import { SelectionCounter } from "../SelectionCounter";
+import { data } from "../../../mocks/data";
 import type { CatalogTabsProps } from "./CatalogTabs.types";
 
 export function CatalogTabs({
@@ -56,7 +57,7 @@ export function CatalogTabs({
     <div
       ref={tablistRef}
       role="tablist"
-      aria-label="Categorías de productos"
+      aria-label={data.ui.categoriesLabel}
       className="sticky z-40 border-b border-sc-ocean-blue/10 bg-sc-chalk"
       style={{ top: topOffset }}
       onKeyDown={handleKeyDown}
@@ -93,17 +94,17 @@ export function CatalogTabs({
             size="sm"
             onClick={onClear}
             disabled={presupuestarDisabled}
-            ariaLabel="Borrar lista de productos seleccionados"
+            ariaLabel={data.ui.clearListLabel}
           >
-            Borrar lista
+            {data.ui.clearList}
           </Button>
           <Button
             size="sm"
             onClick={onPresupuestar}
             disabled={presupuestarDisabled}
-            ariaLabel="Presupuestar productos seleccionados"
+            ariaLabel={data.ui.quoteCartLabel}
           >
-            Presupuestar
+            {data.ui.quoteLabel}
           </Button>
         </div>
       </div>

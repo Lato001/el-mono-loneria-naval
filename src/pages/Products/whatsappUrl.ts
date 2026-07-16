@@ -6,13 +6,15 @@ export interface BuildWhatsAppUrlResult {
 
 export const WHATSAPP_URL_MAX_LENGTH = 1800;
 
+import { data } from "../../mocks/data";
+
 export function buildWhatsAppUrl(
   products: ReadonlyArray<{ title: string }>,
   baseUrl: string,
   pageUrl: string,
 ): BuildWhatsAppUrlResult {
   const message = [
-    "Hola! Me interesa presupuestar los siguientes productos:",
+    data.ui.whatsappGreeting,
     ...products.map((p) => `• ${p.title}`),
     "",
     `Página: ${pageUrl}`,

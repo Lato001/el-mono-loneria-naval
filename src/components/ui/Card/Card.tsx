@@ -1,4 +1,5 @@
 ﻿import { IconPlus, IconX } from "@tabler/icons-react";
+import { data } from "../../../mocks/data";
 
 export interface CardProps {
   title?: string;
@@ -92,7 +93,7 @@ export const Card = ({
               selected ? "max-w-[7.5rem] opacity-100" : "max-w-0 opacity-0"
             }`}
           >
-            Seleccionado
+            {data.ui.selectedLabel}
           </span>
         </label>
       )}

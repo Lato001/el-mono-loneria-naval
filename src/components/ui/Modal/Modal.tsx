@@ -1,5 +1,6 @@
 import * as Dialog from "@radix-ui/react-dialog";
 import { IconX } from "@tabler/icons-react";
+import { data } from "../../../mocks/data";
 import type { ModalProps } from "./Modal.types";
 
 export function Modal({
@@ -37,7 +38,7 @@ export function Modal({
           <Dialog.Close asChild>
             <button
               type="button"
-              aria-label="Cerrar"
+              aria-label={data.ui.closeLabel}
               className="absolute right-4 top-4 rounded-full p-1 text-sc-ocean-blue/60 transition-colors hover:bg-sc-chalk hover:text-sc-ocean-blue focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pr-aquamarine"
             >
               <IconX className="h-5 w-5" />
