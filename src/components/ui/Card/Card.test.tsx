@@ -42,11 +42,24 @@ describe("Card", () => {
     expect(pill!.className).toContain("bg-sc-ocean-blue");
   });
 
-  it("checkbox uses default accent color (black check on white box, not aquamarine)", () => {
+  it("shows the + icon (IconPlus) when unselected and the × icon (IconX) when selected", () => {
+    const { rerender, container } = render(
+      <Card title="Broche Test" onSelectChange={() => {}} />,
+    );
+    expect(container.querySelector(".tabler-icon-plus")).toBeInTheDocument();
+    expect(container.querySelector(".tabler-icon-x")).not.toBeInTheDocument();
+
+    rerender(<Card title="Broche Test" selected={true} onSelectChange={() => {}} />);
+    expect(container.querySelector(".tabler-icon-plus")).not.toBeInTheDocument();
+    expect(container.querySelector(".tabler-icon-x")).toBeInTheDocument();
+  });
+
+  it("keeps the native checkbox accessible via sr-only (for screen readers and click handling)", () => {
     render(<Card title="Broche Test" onSelectChange={() => {}} />);
-    const checkbox = screen.getByRole("checkbox");
-    expect(checkbox.className).toContain("accent-black");
-    expect(checkbox.className).not.toContain("accent-pr-aquamarine");
+    const checkbox = screen.getByRole("checkbox", { hidden: true });
+    expect(checkbox).toBeInTheDocument();
+    expect(checkbox).not.toBeChecked();
+    expect(checkbox.className).toContain("sr-only");
   });
 
   it("hides the 'Seleccionado' text when not selected (collapsed pill)", () => {
