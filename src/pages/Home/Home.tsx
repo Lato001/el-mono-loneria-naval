@@ -1,4 +1,6 @@
-﻿import { Hero } from "../../components/layout";
+﻿import heroImg2 from "../../assets/img/services/services-02.jpg";
+import heroImg3 from "../../assets/img/services/services-04.jpg";
+import { Hero } from "../../components/layout";
 import {
   Accordion,
   AboutSection,
@@ -8,36 +10,51 @@ import {
 import { SplitReviews } from "../../components/ui/SplitReviews/SplitReviews";
 import { data } from "../../mocks/data";
 
+const splitCardsImageMap: Record<string, string> = {
+  "services-02.jpg": heroImg2,
+  "services-04.jpg": heroImg3,
+};
+
 export function Home() {
   return (
     <>
-      <Hero />
+      <Hero
+        eyebrow={data.home.hero.eyebrow}
+        titlePrefix={data.home.hero.titlePrefix}
+        titleHighlight={data.home.hero.titleHighlight}
+        description={data.home.hero.description}
+        primaryCta={data.home.hero.primaryCta}
+        secondaryCta={data.home.hero.secondaryCta}
+      />
       <SectionWrapper
         theme="dark"
-        eyebrow="¿Qué ofrecemos?"
-        title="Encontrá lo que buscas"
+        eyebrow={data.home.sections.whatWeOffer.eyebrow}
+        title={data.home.sections.whatWeOffer.title}
         titlesAlign="start"
       >
-        <SplitCards></SplitCards>
+        <SplitCards
+          items={data.home.splitCards}
+          imageMap={splitCardsImageMap}
+        />
       </SectionWrapper>
       <SectionWrapper
         titlesAlign="end"
         theme="light"
-        eyebrow={"Sobre Nosotros"}
-        title={"Trabajos a Medida"}
+        eyebrow={data.home.sections.aboutUs.eyebrow}
+        title={data.home.sections.aboutUs.title}
       >
         <AboutSection
           showControls
-          description="Lonas, capotas y fundas a medida. Hecho en nuestro taller ubicado en Tigre, Buenos Aires. Trabajo artesanal con materiales de Marcas lider mundiales!"
-          cta={{ text: "Trabajos Realizados", href: "/servicios" }}
+          description={data.home.aboutSection.description}
+          cta={data.home.aboutSection.cta}
         />
       </SectionWrapper>
 
       <SectionWrapper
         titlesAlign="center"
         theme="light"
-        eyebrow={"Testimonios"}
-        title={"Nuestros Clientes"}
+        eyebrow={data.home.sections.testimonials.eyebrow}
+        title={data.home.sections.testimonials.title}
       >
         <SplitReviews></SplitReviews>
       </SectionWrapper>
@@ -45,10 +62,10 @@ export function Home() {
       <SectionWrapper
         titlesAlign="center"
         theme="dark"
-        eyebrow={"FAQ's"}
-        title={"Preguntas frecuentes"}
+        eyebrow={data.home.sections.faq.eyebrow}
+        title={data.home.sections.faq.title}
       >
-        <Accordion items={data.Home.FAQs} />
+        <Accordion items={data.home.faqs} />
       </SectionWrapper>
     </>
   );
