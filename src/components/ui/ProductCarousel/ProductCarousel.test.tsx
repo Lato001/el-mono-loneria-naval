@@ -74,24 +74,41 @@ describe("ProductCarousel", () => {
     expect(section).toHaveAttribute("aria-labelledby", "tab-test-section");
   });
 
-  it("calls onQuotationOpen when card CTA is clicked", async () => {
+  it("renders the section heading as h2 (not h1)", () => {
+    render(
+      <ProductCarousel items={mockProducts} ariaLabel="Test" id="test-section" />,
+    );
+
+    expect(
+      screen.getByRole("heading", { level: 2, name: "test-section" }),
+    ).toBeInTheDocument();
+  });
+
+  it("passes isSelected and onToggle to each card", async () => {
     const user = userEvent.setup();
-    const onQuotationOpen = vi.fn();
+    const isSelected = vi.fn((id: string) => id === "p2");
+    const onToggle = vi.fn();
 
     render(
       <ProductCarousel
         items={mockProducts}
         ariaLabel="Test"
         id="test-section"
-        onQuotationOpen={onQuotationOpen}
+        isSelected={isSelected}
+        onToggle={onToggle}
       />,
     );
 
-    // Find the first "Cotizar" button
-    const cotizarButtons = screen.getAllByLabelText("Cotizar");
-    await user.click(cotizarButtons[0]);
+    // p2 is selected → its checkbox should be checked
+    const checkboxes = screen.getAllByRole("checkbox");
+    expect(checkboxes).toHaveLength(3);
+    expect(checkboxes[0]).not.toBeChecked(); // p1
+    expect(checkboxes[1]).toBeChecked(); // p2
+    expect(checkboxes[2]).not.toBeChecked(); // p3
 
-    expect(onQuotationOpen).toHaveBeenCalledWith(mockProducts[0]);
+    // Clicking p1's checkbox should call onToggle with "p1"
+    await user.click(checkboxes[0]);
+    expect(onToggle).toHaveBeenCalledWith("p1");
   });
 
   it("renders N dots where N = Math.ceil(items.length / itemsPerPage)", () => {

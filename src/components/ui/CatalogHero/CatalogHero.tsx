@@ -8,6 +8,7 @@ export function CatalogHero({
   ctaTargetId,
 }: CatalogHeroProps) {
   const handleCtaClick = () => {
+    if (!ctaTargetId) return;
     document
       .getElementById(ctaTargetId)
       ?.scrollIntoView({ behavior: "smooth" });
@@ -31,9 +32,11 @@ export function CatalogHero({
             {description}
           </p>
         )}
-        <Button variant="hero" onClick={handleCtaClick}>
-          {ctaLabel}
-        </Button>
+        {ctaLabel && (
+          <Button variant="hero" onClick={handleCtaClick}>
+            {ctaLabel}
+          </Button>
+        )}
       </div>
     </section>
   );
