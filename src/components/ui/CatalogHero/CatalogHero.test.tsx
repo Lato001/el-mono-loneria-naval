@@ -47,4 +47,9 @@ describe("CatalogHero", () => {
 
     document.body.removeChild(target);
   });
+
+  it("does not render the CTA button when ctaLabel is omitted", () => {
+    render(<CatalogHero title="Nuestros productos" description="Sin CTA" />);
+    expect(screen.queryByRole("button")).not.toBeInTheDocument();
+  });
 });

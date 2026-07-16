@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { MemoryRouter } from "react-router-dom";
 import { Products } from "./Products";
@@ -18,6 +18,10 @@ beforeAll(() => {
   });
 });
 
+beforeEach(() => {
+  window.sessionStorage.clear();
+});
+
 function renderProducts() {
   return render(
     <MemoryRouter initialEntries={["/productos"]}>
@@ -29,7 +33,9 @@ function renderProducts() {
 describe("Products page", () => {
   it("renders the hero heading", () => {
     renderProducts();
-    expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent("Nuestros productos");
+    expect(
+      screen.getByRole("heading", { level: 1, name: /Nuestros productos/i }),
+    ).toBeInTheDocument();
   });
 
   it("renders 2 category tabs", () => {
@@ -44,60 +50,178 @@ describe("Products page", () => {
     expect(panels).toHaveLength(2);
   });
 
-  it("opens quotation modal when card CTA is clicked", async () => {
-    const user = userEvent.setup();
+  it("Presupuestar button is disabled when no products are selected", () => {
     renderProducts();
-
-    // Find the first "Cotizar" button (Card CTA)
-    const cotizarButtons = screen.getAllByLabelText("Cotizar");
-    expect(cotizarButtons.length).toBeGreaterThan(0);
-
-    await user.click(cotizarButtons[0]);
-
-    // Modal should be open with the product title
-    expect(screen.getByRole("dialog")).toBeInTheDocument();
-    expect(screen.getByText("Cotizar producto")).toBeInTheDocument();
+    const button = screen.getByRole("button", { name: /presupuestar/i });
+    expect(button).toBeDisabled();
   });
 
-  it("WhatsApp link includes product name", async () => {
+  it("selecting a product enables Presupuestar and shows counter", async () => {
     const user = userEvent.setup();
     renderProducts();
 
-    const cotizarButtons = screen.getAllByLabelText("Cotizar");
-    await user.click(cotizarButtons[0]);
+    const checkboxes = screen.getAllByRole("checkbox");
+    await user.click(checkboxes[0]);
+
+    const button = screen.getByRole("button", { name: /presupuestar/i });
+    expect(button).not.toBeDisabled();
+    expect(screen.getByText("1")).toBeInTheDocument();
+  });
+
+  it("opening modal lists selected product names", async () => {
+    const user = userEvent.setup();
+    renderProducts();
+
+    const checkboxes = screen.getAllByRole("checkbox");
+    await user.click(checkboxes[0]);
+    await user.click(screen.getByRole("button", { name: /presupuestar/i }));
+
+    const dialog = screen.getByRole("dialog");
+    expect(within(dialog).getByText("Broche Casco Bacan")).toBeInTheDocument();
+  });
+
+  it("× removes a product from the modal and updates selection", async () => {
+    const user = userEvent.setup();
+    renderProducts();
+
+    const checkboxes = screen.getAllByRole("checkbox");
+    await user.click(checkboxes[0]);
+    await user.click(checkboxes[1]);
+    await user.click(screen.getByRole("button", { name: /presupuestar/i }));
+
+    const dialog = screen.getByRole("dialog");
+    // Modal should list both
+    expect(within(dialog).getByText("Broche Casco Bacan")).toBeInTheDocument();
+    expect(within(dialog).getByText("Broche Casco Bacab")).toBeInTheDocument();
+
+    // Remove first product
+    const removeButtons = within(dialog).getAllByLabelText(/Quitar/);
+    await user.click(removeButtons[0]);
+
+    // First product should be gone from the modal
+    expect(within(dialog).queryByText("Broche Casco Bacan")).not.toBeInTheDocument();
+    // Counter should show 1
+    expect(screen.getByText("1")).toBeInTheDocument();
+  });
+
+  it("Vaciar clears all selection and closes modal", async () => {
+    const user = userEvent.setup();
+    renderProducts();
+
+    const checkboxes = screen.getAllByRole("checkbox");
+    await user.click(checkboxes[0]);
+    await user.click(screen.getByRole("button", { name: /presupuestar/i }));
+
+    expect(screen.getByRole("dialog")).toBeInTheDocument();
+
+    const dialog = screen.getByRole("dialog");
+    await user.click(within(dialog).getByRole("button", { name: /vaciar/i }));
+
+    // Modal auto-closes because selection is now empty
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+    // Presupuestar is disabled again (count = 0)
+    expect(screen.getByRole("button", { name: /presupuestar/i })).toBeDisabled();
+  });
+
+  it("WhatsApp URL contains selected products", async () => {
+    const user = userEvent.setup();
+    renderProducts();
+
+    const checkboxes = screen.getAllByRole("checkbox");
+    await user.click(checkboxes[0]);
+    await user.click(screen.getByRole("button", { name: /presupuestar/i }));
 
     const whatsappLink = screen.getByText("Consultar por WhatsApp");
     expect(whatsappLink.closest("a")).toHaveAttribute(
       "href",
-      expect.stringContaining("wa.me"),
+      expect.stringContaining("Broche%20Casco%20Bacan"),
     );
-  });
-
-  it('"Seguir viendo" closes the modal', async () => {
-    const user = userEvent.setup();
-    renderProducts();
-
-    const cotizarButtons = screen.getAllByLabelText("Cotizar");
-    await user.click(cotizarButtons[0]);
-
-    expect(screen.getByRole("dialog")).toBeInTheDocument();
-
-    await user.click(screen.getByText("Seguir viendo"));
-
-    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
   });
 
   it("Escape closes the modal", async () => {
     const user = userEvent.setup();
     renderProducts();
 
-    const cotizarButtons = screen.getAllByLabelText("Cotizar");
-    await user.click(cotizarButtons[0]);
+    const checkboxes = screen.getAllByRole("checkbox");
+    await user.click(checkboxes[0]);
+    await user.click(screen.getByRole("button", { name: /presupuestar/i }));
 
     expect(screen.getByRole("dialog")).toBeInTheDocument();
 
     await user.keyboard("{Escape}");
 
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+  });
+
+  it("renders the 'Borrar lista' button (red, disabled when no selection)", () => {
+    renderProducts();
+    const clearButton = screen.getByRole("button", { name: /borrar lista/i });
+    expect(clearButton).toBeInTheDocument();
+    expect(clearButton.className).toContain("bg-red-500");
+    expect(clearButton).toBeDisabled();
+  });
+
+  it("'Borrar lista' opens a confirmation modal without clearing the selection", async () => {
+    const user = userEvent.setup();
+    renderProducts();
+
+    const checkboxes = screen.getAllByRole("checkbox");
+    await user.click(checkboxes[0]);
+    await user.click(checkboxes[1]);
+    expect(screen.getByText("2")).toBeInTheDocument();
+
+    await user.click(screen.getByRole("button", { name: /borrar lista/i }));
+
+    // Confirmation modal opens
+    const dialogs = screen.getAllByRole("dialog");
+    expect(dialogs.length).toBeGreaterThanOrEqual(1);
+    expect(
+      screen.getByText(/¿Estás seguro que querés borrar toda la lista/i),
+    ).toBeInTheDocument();
+
+    // Selection is still intact (counter still shows 2)
+    expect(screen.getByText("2")).toBeInTheDocument();
+  });
+
+  it("Cancelar in confirmation modal closes it without clearing selection", async () => {
+    const user = userEvent.setup();
+    renderProducts();
+
+    const checkboxes = screen.getAllByRole("checkbox");
+    await user.click(checkboxes[0]);
+    await user.click(screen.getByRole("button", { name: /borrar lista/i }));
+
+    // Scope to the confirmation dialog
+    const dialog = screen.getByRole("dialog", { name: /borrar lista/i });
+    const cancelButton = within(dialog).getByRole("button", { name: /^cancelar$/i });
+    await user.click(cancelButton);
+
+    // Modal closed, selection intact
+    expect(
+      screen.queryByText(/¿Estás seguro que querés borrar toda la lista/i),
+    ).not.toBeInTheDocument();
+    expect(screen.getByText("1")).toBeInTheDocument();
+  });
+
+  it("Borrar in confirmation modal clears all selections", async () => {
+    const user = userEvent.setup();
+    renderProducts();
+
+    const checkboxes = screen.getAllByRole("checkbox");
+    await user.click(checkboxes[0]);
+    await user.click(checkboxes[1]);
+    expect(screen.getByText("2")).toBeInTheDocument();
+
+    await user.click(screen.getByRole("button", { name: /borrar lista/i }));
+
+    // Scope to the confirmation dialog (the tabs row Borrar lista button is outside)
+    const dialog = screen.getByRole("dialog", { name: /borrar lista/i });
+    const confirmButton = within(dialog).getByRole("button", { name: /borrar lista/i });
+    await user.click(confirmButton);
+
+    // Selection cleared: counter badge is gone (hidden at 0), Presupuestar and Borrar lista are disabled
+    expect(screen.queryByText("2")).not.toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /presupuestar/i })).toBeDisabled();
+    expect(screen.getByRole("button", { name: /borrar lista/i })).toBeDisabled();
   });
 });
