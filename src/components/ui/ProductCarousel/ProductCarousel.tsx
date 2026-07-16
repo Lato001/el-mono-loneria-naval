@@ -16,8 +16,15 @@ function FadeInCard({ children }: { children: React.ReactNode }) {
   );
 }
 
-export function ProductCarousel({ items, ariaLabel, id, onQuotationOpen }: ProductCarouselProps) {
-  const { scrollRef, activeIndex, totalPages, prev, next, goTo } = useProductCarousel(items.length);
+export function ProductCarousel({
+  items,
+  ariaLabel,
+  id,
+  isSelected,
+  onToggle,
+}: ProductCarouselProps) {
+  const { scrollRef, activeIndex, totalPages, prev, next, goTo } =
+    useProductCarousel(items.length);
 
   return (
     <section
@@ -27,6 +34,9 @@ export function ProductCarousel({ items, ariaLabel, id, onQuotationOpen }: Produ
       className="relative py-8"
       style={{ scrollMarginTop: 128 }}
     >
+      <h2 className="font-brown text-2xl flex justify-center text-pr-hero-blue pb-10">
+        {id}
+      </h2>
       <div
         ref={scrollRef}
         className="flex gap-4 overflow-x-auto scroll-smooth snap-x snap-mandatory px-6 pb-4 scrollbar-hide"
@@ -42,8 +52,8 @@ export function ProductCarousel({ items, ariaLabel, id, onQuotationOpen }: Produ
                 imageSrc={product.imageSrc}
                 title={product.title}
                 description={product.description}
-                ctaLabel="Cotizar"
-                onCtaClick={() => onQuotationOpen?.(product)}
+                selected={isSelected?.(product.id)}
+                onSelectChange={() => onToggle?.(product.id)}
               />
             </FadeInCard>
           </div>

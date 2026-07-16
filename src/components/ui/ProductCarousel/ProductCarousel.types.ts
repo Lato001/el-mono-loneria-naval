@@ -9,5 +9,6 @@ export interface ProductCarouselProps {
   items: Product[];
   ariaLabel: string;
   id: string;
-  onQuotationOpen?: (product: Product) => void;
+  isSelected?: (id: string) => boolean;
+  onToggle?: (id: string) => void;
 }
