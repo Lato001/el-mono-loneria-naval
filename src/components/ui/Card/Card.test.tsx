@@ -32,7 +32,7 @@ describe("Card", () => {
 
   it("renders the selection pill at top-right with always-navy background", () => {
     render(<Card title="Broche Test" onSelectChange={() => {}} />);
-    const checkbox = screen.getByRole("checkbox");
+    const checkbox = screen.getByRole("checkbox", { hidden: true });
     const pill = checkbox.closest("label");
     expect(pill).not.toBeNull();
     expect(pill!.className).toContain("absolute");
@@ -42,16 +42,42 @@ describe("Card", () => {
     expect(pill!.className).toContain("bg-sc-ocean-blue");
   });
 
-  it("shows the + icon (IconPlus) when unselected and the × icon (IconX) when selected", () => {
+  it("centers the + icon in the pill when unselected (w-8 + justify-center + gap-0)", () => {
+    render(<Card title="Broche Test" onSelectChange={() => {}} />);
+    const checkbox = screen.getByRole("checkbox", { hidden: true });
+    const pill = checkbox.closest("label");
+    expect(pill!.className).toContain("w-8");
+    expect(pill!.className).toContain("justify-center");
+    expect(pill!.className).toContain("gap-0");
+  });
+
+  it("anchors the × icon at the left of the pill when selected (justify-start + gap-2 + pl-1 + pr-3)", () => {
+    render(<Card title="Broche Test" selected={true} onSelectChange={() => {}} />);
+    const checkbox = screen.getByRole("checkbox", { hidden: true });
+    const pill = checkbox.closest("label");
+    expect(pill!.className).toContain("justify-start");
+    expect(pill!.className).toContain("gap-2");
+    expect(pill!.className).toContain("pl-1");
+    expect(pill!.className).toContain("pr-3");
+    expect(pill!.className).not.toContain("w-8");
+  });
+
+  it("shows the + icon (IconPlus) when unselected and the × icon (IconX) when selected, at h-5 w-5 (20px)", () => {
     const { rerender, container } = render(
       <Card title="Broche Test" onSelectChange={() => {}} />,
     );
-    expect(container.querySelector(".tabler-icon-plus")).toBeInTheDocument();
+    const plusIcon = container.querySelector(".tabler-icon-plus");
+    expect(plusIcon).toBeInTheDocument();
+    expect(plusIcon).toHaveClass("h-5");
+    expect(plusIcon).toHaveClass("w-5");
     expect(container.querySelector(".tabler-icon-x")).not.toBeInTheDocument();
 
     rerender(<Card title="Broche Test" selected={true} onSelectChange={() => {}} />);
+    const xIcon = container.querySelector(".tabler-icon-x");
     expect(container.querySelector(".tabler-icon-plus")).not.toBeInTheDocument();
-    expect(container.querySelector(".tabler-icon-x")).toBeInTheDocument();
+    expect(xIcon).toBeInTheDocument();
+    expect(xIcon).toHaveClass("h-5");
+    expect(xIcon).toHaveClass("w-5");
   });
 
   it("keeps the native checkbox accessible via sr-only (for screen readers and click handling)", () => {
