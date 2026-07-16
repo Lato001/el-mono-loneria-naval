@@ -62,19 +62,29 @@ export const Card = ({
 
       {isInteractive && (
         <label
-          className="absolute top-3 right-3 z-20 inline-flex h-8 items-center gap-2 overflow-hidden rounded-full border-2 border-sc-ocean-blue bg-sc-ocean-blue pl-1 pr-1 transition-all duration-200 ease-out cursor-pointer hover:brightness-110"
+          className={`absolute top-3 right-3 z-20 inline-flex h-8 items-center overflow-hidden rounded-full border-2 border-sc-ocean-blue bg-sc-ocean-blue transition-all duration-200 ease-out cursor-pointer hover:brightness-110 ${
+            selected
+              ? "justify-start gap-2 pl-1 pr-3"
+              : "w-8 justify-center gap-0"
+          }`}
         >
           <input
             type="checkbox"
             checked={!!selected}
             onChange={(e) => onSelectChange(e.target.checked)}
             aria-label={`Seleccionar ${title ?? "producto"}`}
-            className="sr-only"
+            className="sr-only align-middle"
           />
           {selected ? (
-            <IconX className="h-4 w-4 shrink-0" aria-hidden="true" />
+            <IconX
+              className="text-white h-5 w-5 shrink-0"
+              aria-hidden="true"
+            />
           ) : (
-            <IconPlus className="h-4 w-4 shrink-0" aria-hidden="true" />
+            <IconPlus
+              className="text-white h-5 w-5 shrink-0"
+              aria-hidden="true"
+            />
           )}
           <span
             aria-hidden="true"
