@@ -1,5 +1,7 @@
-﻿import heroImg2 from "../../assets/img/services/services-02.jpg";
+﻿import heroImg1 from "../../assets/img/services/services-01.jpg";
+import heroImg2 from "../../assets/img/services/services-02.jpg";
 import heroImg3 from "../../assets/img/services/services-04.jpg";
+import heroImg4 from "../../assets/img/services/services-05.jpg";
 import { Hero } from "../../components/layout";
 import {
   Accordion,
@@ -9,6 +11,18 @@ import {
 } from "../../components/ui";
 import { SplitReviews } from "../../components/ui/SplitReviews/SplitReviews";
 import { data } from "../../mocks/data";
+
+const heroImageMap: Record<string, string> = {
+  "services-01.jpg": heroImg1,
+  "services-02.jpg": heroImg2,
+  "services-04.jpg": heroImg3,
+  "services-05.jpg": heroImg4,
+};
+
+const heroImages = data.home.hero.images.map((img) => ({
+  src: heroImageMap[img.src],
+  alt: img.alt,
+}));
 
 const splitCardsImageMap: Record<string, string> = {
   "services-02.jpg": heroImg2,
@@ -25,6 +39,7 @@ export function Home() {
         description={data.home.hero.description}
         primaryCta={data.home.hero.primaryCta}
         secondaryCta={data.home.hero.secondaryCta}
+        images={heroImages}
       />
       <SectionWrapper
         theme={data.home.sections.whatWeOffer.theme}
