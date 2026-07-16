@@ -170,7 +170,7 @@ export const data = {
     catalogHeroDescription:
       "Explorá nuestra selección de artículos náuticos: broches, caballetes, cierres e hilos de la más alta calidad para tu embarcación.",
     consultWhatsApp: "Consultar por WhatsApp",
-    clearList: "Vaciar",
+    clearList: "Borrar lista",
     keepBrowsing: "Seguir viendo",
     cancel: "Cancelar",
     delete: "Borrar",
