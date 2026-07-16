@@ -60,12 +60,8 @@ export const Card = ({
 
       {isInteractive && (
         <label
-          className={`absolute top-3 left-3 z-20 inline-flex h-8 items-center gap-2 overflow-hidden rounded-full pl-1 pr-1 transition-all duration-200 ease-out cursor-pointer
-            ${
-              selected
-                ? "bg-pr-aquamarine pr-3 text-white shadow-md"
-                : "bg-white/90 backdrop-blur-sm border-2 border-pr-aquamarine/60 hover:border-pr-aquamarine"
-            }`}
+          className={`absolute top-3 right-3 z-20 inline-flex h-8 items-center gap-2 overflow-hidden rounded-full border-2 bg-white/90 pl-1 pr-1 backdrop-blur-sm transition-all duration-200 ease-out cursor-pointer
+            ${selected ? "border-sc-ocean-blue pr-3" : "border-transparent"}`}
         >
           <input
             type="checkbox"
@@ -77,7 +73,9 @@ export const Card = ({
           <span
             aria-hidden="true"
             className={`whitespace-nowrap text-sm font-medium transition-all duration-200 ease-out ${
-              selected ? "max-w-[7.5rem] opacity-100" : "max-w-0 opacity-0"
+              selected
+                ? "max-w-[7.5rem] text-sc-ocean-blue opacity-100"
+                : "max-w-0 opacity-0"
             }`}
           >
             Seleccionado

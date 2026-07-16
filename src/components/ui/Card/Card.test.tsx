@@ -30,18 +30,19 @@ describe("Card", () => {
     expect(article.className).not.toContain("ring-pr-aquamarine");
   });
 
-  it("renders the selection pill at top-left with rounded-full shape", () => {
+  it("renders the selection pill at top-right with rounded-full shape and no border", () => {
     render(<Card title="Broche Test" onSelectChange={() => {}} />);
     const checkbox = screen.getByRole("checkbox");
     const pill = checkbox.closest("label");
     expect(pill).not.toBeNull();
     expect(pill!.className).toContain("absolute");
     expect(pill!.className).toContain("top-3");
-    expect(pill!.className).toContain("left-3");
+    expect(pill!.className).toContain("right-3");
     expect(pill!.className).toContain("rounded-full");
+    expect(pill!.className).toContain("border-transparent");
   });
 
-  it("hides the 'Seleccionado' text when not selected (unfolded pill)", () => {
+  it("hides the 'Seleccionado' text when not selected (collapsed pill)", () => {
     render(<Card title="Broche Test" onSelectChange={() => {}} />);
     const text = screen.getByText("Seleccionado");
     expect(text.className).toContain("opacity-0");
@@ -49,10 +50,14 @@ describe("Card", () => {
     expect(text.getAttribute("aria-hidden")).toBe("true");
   });
 
-  it("shows the 'Seleccionado' text when selected (unfolded pill)", () => {
+  it("shows the 'Seleccionado' text in navy with a navy border when selected (unfolded pill)", () => {
     render(<Card title="Broche Test" selected={true} onSelectChange={() => {}} />);
+    const checkbox = screen.getByRole("checkbox");
+    const pill = checkbox.closest("label");
+    expect(pill!.className).toContain("border-sc-ocean-blue");
     const text = screen.getByText("Seleccionado");
     expect(text.className).toContain("opacity-100");
     expect(text.className).toContain("max-w-[7.5rem]");
+    expect(text.className).toContain("text-sc-ocean-blue");
   });
 });
