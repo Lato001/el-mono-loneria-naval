@@ -283,8 +283,6 @@ export function Products() {
       <CatalogHero
         title="Nuestros productos"
         description="Explorá nuestra selección de artículos náuticos: broches, caballetes, cierres e hilos de la más alta calidad para tu embarcación."
-        ctaLabel="Solicitar precios!"
-        ctaTargetId="tabs"
       />
 
       <div id="tabs">
