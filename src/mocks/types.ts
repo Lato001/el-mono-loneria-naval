@@ -66,6 +66,8 @@ export interface HeroData {
 export interface SectionData {
   eyebrow: string;
   title: string;
+  theme?: "dark" | "light";
+  titlesAlign?: "start" | "center" | "end";
 }
 
 export interface SectionsGroup {
@@ -146,6 +148,9 @@ export interface UICopy {
   quoteCartLabel: string;
   clearListLabel: string;
   quoteLabel: string;
+  vaciarButton: string;
+  vaciarSelectionAriaLabel: string;
+  clearListAriaLabel: string;
   // WhatsApp
   whatsappGreeting: string;
   // Footer

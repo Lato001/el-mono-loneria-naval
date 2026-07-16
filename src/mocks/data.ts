@@ -198,6 +198,9 @@ export const data = {
     quoteCartLabel: "Presupuestar productos seleccionados",
     clearListLabel: "Borrar lista de productos seleccionados",
     quoteLabel: "Presupuestar",
+    vaciarButton: "Vaciar",
+    vaciarSelectionAriaLabel: "Vaciar selección",
+    clearListAriaLabel: "Borrar lista",
     whatsappGreeting:
       "Hola! Me interesa presupuestar los siguientes productos:",
     contactSectionTitle: "Contacto",
@@ -295,18 +298,26 @@ export const data = {
       whatWeOffer: {
         eyebrow: "¿Qué ofrecemos?",
         title: "Encontrá lo que buscas",
+        theme: "dark",
+        titlesAlign: "start",
       },
       aboutUs: {
         eyebrow: "Sobre Nosotros",
         title: "Trabajos a Medida",
+        theme: "light",
+        titlesAlign: "end",
       },
       testimonials: {
         eyebrow: "Testimonios",
         title: "Nuestros Clientes",
+        theme: "light",
+        titlesAlign: "center",
       },
       faq: {
         eyebrow: "FAQ's",
         title: "Preguntas frecuentes",
+        theme: "dark",
+        titlesAlign: "center",
       },
     } satisfies SectionsGroup,
 

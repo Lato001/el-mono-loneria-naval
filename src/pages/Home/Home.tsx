@@ -27,10 +27,10 @@ export function Home() {
         secondaryCta={data.home.hero.secondaryCta}
       />
       <SectionWrapper
-        theme="dark"
+        theme={data.home.sections.whatWeOffer.theme}
+        titlesAlign={data.home.sections.whatWeOffer.titlesAlign}
         eyebrow={data.home.sections.whatWeOffer.eyebrow}
         title={data.home.sections.whatWeOffer.title}
-        titlesAlign="start"
       >
         <SplitCards
           items={data.home.splitCards}
@@ -38,8 +38,8 @@ export function Home() {
         />
       </SectionWrapper>
       <SectionWrapper
-        titlesAlign="end"
-        theme="light"
+        theme={data.home.sections.aboutUs.theme}
+        titlesAlign={data.home.sections.aboutUs.titlesAlign}
         eyebrow={data.home.sections.aboutUs.eyebrow}
         title={data.home.sections.aboutUs.title}
       >
@@ -51,8 +51,8 @@ export function Home() {
       </SectionWrapper>
 
       <SectionWrapper
-        titlesAlign="center"
-        theme="light"
+        theme={data.home.sections.testimonials.theme}
+        titlesAlign={data.home.sections.testimonials.titlesAlign}
         eyebrow={data.home.sections.testimonials.eyebrow}
         title={data.home.sections.testimonials.title}
       >
@@ -60,8 +60,8 @@ export function Home() {
       </SectionWrapper>
 
       <SectionWrapper
-        titlesAlign="center"
-        theme="dark"
+        theme={data.home.sections.faq.theme}
+        titlesAlign={data.home.sections.faq.titlesAlign}
         eyebrow={data.home.sections.faq.eyebrow}
         title={data.home.sections.faq.title}
       >
