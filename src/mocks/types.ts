@@ -155,6 +155,9 @@ export interface UICopy {
   whatsappGreeting: string;
   // Footer
   contactSectionTitle: string;
+  // Action bar / desktop action group
+  actionBarLabel: string;
+  desktopActionGroupLabel: string;
 }
 
 // ─── Global ──────────────────────────────────────────────────────────────

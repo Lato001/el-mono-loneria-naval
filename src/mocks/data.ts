@@ -204,6 +204,8 @@ export const data = {
     whatsappGreeting:
       "Hola! Me interesa presupuestar los siguientes productos:",
     contactSectionTitle: "Contacto",
+    actionBarLabel: "Acciones del presupuesto",
+    desktopActionGroupLabel: "Acciones del presupuesto",
   } satisfies UICopy,
 
   // ─── Navigation ──────────────────────────────────────────────────────
