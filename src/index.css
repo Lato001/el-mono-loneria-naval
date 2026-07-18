@@ -1,6 +1,13 @@
 @import "tailwindcss";
 @import "./fonts.css";
 
+/* Prevent page-level horizontal scroll.
+   Individual scroll containers (carousels, tabs rows) keep their own overflow-x-auto. */
+html, body {
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
 /* Custom variant for Modal: md-data-state-open:animate-fadeIn (Tailwind v4) */
 @custom-variant md-data-state-open {
   @media (min-width: 768px) {
