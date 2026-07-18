@@ -56,7 +56,7 @@ export function CatalogTabs({
       style={{ top: topOffset }}
       onKeyDown={handleKeyDown}
     >
-      <div className="mx-auto flex max-w-295 items-center gap-3 overflow-x-auto min-w-max scrollbar-hide">
+      <div className="mx-auto flex max-w-295 items-center gap-3 overflow-x-auto scrollbar-hide">
         <div className="flex shrink-0 gap-0 px-6">
           {categories.map((tab) => {
             const isActive = tab.id === activeId;
