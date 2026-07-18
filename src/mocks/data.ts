@@ -205,7 +205,6 @@ export const data = {
       "Hola! Me interesa presupuestar los siguientes productos:",
     contactSectionTitle: "Contacto",
     actionBarLabel: "Acciones del presupuesto",
-    desktopActionGroupLabel: "Acciones del presupuesto",
   } satisfies UICopy,
 
   // ─── Navigation ──────────────────────────────────────────────────────
@@ -287,7 +286,7 @@ export const data = {
       description:
         "Confección de lonas, cerramientos, capotas, cubreautos y fundas para motos de agua. Trabajo a medida con materiales técnicos de alta durabilidad.",
       primaryCta: "Solicitar presupuesto",
-      secondaryCta: "Ver servicios",
+      secondaryCta: "Ver Productos",
       images: [
         { src: "services-01", alt: "Lona naval" },
         { src: "services-02", alt: "Capota a medida" },

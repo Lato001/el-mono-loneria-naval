@@ -20,9 +20,8 @@ describe('Home page', () => {
   });
 
   it('renders the Hero secondary CTA', () => {
-    // Hero default secondaryCta is "Ver servicios"
     expect(
-      screen.getByRole('link', { name: /^ver servicios$/i }),
+      screen.getByRole('link', { name: /^ver productos$/i }),
     ).toBeInTheDocument();
   });
 

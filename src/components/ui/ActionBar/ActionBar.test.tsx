@@ -10,10 +10,18 @@ const defaultProps = {
 };
 
 describe("ActionBar", () => {
-  it("renders with md:hidden class (mobile-only visibility)", () => {
+  it("renders visible on all viewports (no md:hidden)", () => {
     const { container } = render(<ActionBar {...defaultProps} />);
     const bar = container.firstChild as HTMLElement;
-    expect(bar.className).toMatch(/\bmd:hidden\b/);
+    expect(bar.className).not.toMatch(/\bmd:hidden\b/);
+  });
+
+  it("is fixed at the bottom of the viewport", () => {
+    const { container } = render(<ActionBar {...defaultProps} />);
+    const bar = container.firstChild as HTMLElement;
+    expect(bar.className).toMatch(/\bfixed\b/);
+    expect(bar.className).toMatch(/\binset-x-0\b/);
+    expect(bar.className).toMatch(/\bbottom-0\b/);
   });
 
   it('has role="region" with aria-label from data.ui.actionBarLabel', () => {

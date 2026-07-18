@@ -13,5 +13,4 @@ export * from './CatalogTabs';
 export * from './CatalogHero';
 export * from './SelectionCounter';
 export * from './ActionBar';
-export * from './DesktopActionGroup';
 

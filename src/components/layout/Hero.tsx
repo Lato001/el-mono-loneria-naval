@@ -14,12 +14,12 @@ interface HeroProps {
 }
 
 export function Hero({
-  eyebrow = "Lonería naval — a medida, para cada superficie",
-  titlePrefix = "Lonas, capotas y fundas que ",
-  titleHighlight = "resisten cualquier intemperie",
-  description = "Confección de lonas, cerramientos, capotas, cubreautos y fundas para motos de agua. Trabajo a medida con materiales técnicos de alta durabilidad.",
-  primaryCta = "Solicitar presupuesto",
-  secondaryCta = "Ver servicios",
+  eyebrow,
+  titlePrefix,
+  titleHighlight,
+  description,
+  primaryCta,
+  secondaryCta,
   images,
 }: HeroProps) {
   return (
@@ -60,24 +60,20 @@ export function Hero({
 
             <div className="flex flex-wrap gap-4 mt-8">
               <Link
-                to={PATHS.CONTACT}
+                to={import.meta.env.VITE_WHATSAPP_URL}
                 className="inline-block rounded-lg bg-white px-6 py-3 font-poppins font-bold text-[clamp(1rem,1.5vw,1.1rem)] text-pr-hero-blue border border-white transition-colors hover:border-pr-aquamarine md:px-8 md:py-3.5"
               >
                 {primaryCta}
               </Link>
               <Link
-                to={PATHS.SERVICES}
+                to={PATHS.PRODUCTS}
                 className="inline-block rounded-lg bg-transparent px-6 py-3 font-poppins font-bold text-[clamp(1rem,1.5vw,1.1rem)] text-white border border-white/40 transition-colors hover:border-white md:px-8 md:py-3.5"
               >
                 {secondaryCta}
               </Link>
             </div>
           </div>
-          <ImgCard
-            className="max-lg:hidden"
-            images={images}
-            interval={4000}
-          />
+          <ImgCard className="max-lg:hidden" images={images} interval={4000} />
         </div>
       </section>
       <BrandMarquee className="bg-linear-to-br from-pr-hero-blue to-sc-ocean-blue" />

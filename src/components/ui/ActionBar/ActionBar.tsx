@@ -3,7 +3,7 @@ import { data } from "../../../mocks/data";
 import type { ActionBarProps } from "./ActionBar.types";
 
 /**
- * ActionBar — mobile-only sticky bottom bar.
+ * ActionBar — sticky bottom bar (all viewports).
  *
  * z-index: z-30 (above page content, below CatalogTabs z-40, below Modal z-50).
  * Touch target: `min-h-11` (44px) on both buttons — defense-in-depth for
@@ -23,7 +23,7 @@ export function ActionBar({
     <div
       role="region"
       aria-label={data.ui.actionBarLabel}
-      className="fixed inset-x-0 bottom-0 z-30 md:hidden border-t border-sc-ocean-blue/10 bg-white shadow-[0_-4px_12px_rgba(0,0,0,0.06)] pb-[env(safe-area-inset-bottom)]"
+      className="fixed inset-x-0 bottom-0 z-30 border-t border-sc-ocean-blue/10 bg-white shadow-[0_-4px_12px_rgba(0,0,0,0.06)] pb-[env(safe-area-inset-bottom)]"
     >
       <div className="mx-auto flex max-w-295 items-center gap-3 px-4 py-3">
         <Button

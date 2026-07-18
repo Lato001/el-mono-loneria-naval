@@ -5,7 +5,6 @@ import { buildWhatsAppUrl } from "./whatsappUrl";
 import { CatalogHero } from "../../components/ui/CatalogHero";
 import { CatalogTabs } from "../../components/ui/CatalogTabs";
 import { ActionBar } from "../../components/ui/ActionBar";
-import { DesktopActionGroup } from "../../components/ui/DesktopActionGroup";
 import { Modal } from "../../components/ui/Modal";
 import { Button } from "../../components/ui/Button";
 import { ProductCarousel } from "../../components/ui/ProductCarousel";
@@ -61,13 +60,13 @@ function CotizacionModalContent({
   whatsappDisabledReason?: string;
 }) {
   return (
-    <div className="font-poppins mt-4 flex flex-col gap-3">
+    <div className="font-poppins mt-4 flex min-h-0 flex-1 flex-col gap-3">
       {products.length === 0 ? (
         <p className="text-sm text-sc-ocean-blue/70">
           {data.ui.noProductsSelected}
         </p>
       ) : (
-        <ul className="flex flex-col gap-2 max-h-72 overflow-y-auto">
+        <ul className="flex min-h-0 flex-1 flex-col gap-2 overflow-y-auto">
           {products.map((p) => (
             <li
               key={p.id}
@@ -183,13 +182,6 @@ export function Products() {
           categories={tabs}
           activeId={activeCategoryId ?? undefined}
           onSelect={handleTabSelect}
-        />
-
-        <DesktopActionGroup
-          selectedCount={count}
-          onPresupuestar={handleOpenModal}
-          onClear={handleOpenClearModal}
-          presupuestarDisabled={count === 0}
         />
 
         {categories.map((cat) => (
