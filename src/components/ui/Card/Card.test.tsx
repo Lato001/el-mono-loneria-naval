@@ -40,6 +40,7 @@ describe("Card", () => {
     expect(pill!.className).toContain("right-3");
     expect(pill!.className).toContain("rounded-full");
     expect(pill!.className).toContain("bg-sc-ocean-blue");
+    expect(pill!.className).toContain("h-11");
   });
 
   it("centers the + icon in the pill when unselected (w-8 + justify-center + gap-0)", () => {

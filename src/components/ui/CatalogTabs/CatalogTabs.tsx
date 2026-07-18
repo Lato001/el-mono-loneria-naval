@@ -62,8 +62,8 @@ export function CatalogTabs({
       style={{ top: topOffset }}
       onKeyDown={handleKeyDown}
     >
-      <div className="mx-auto flex max-w-295 items-center gap-3">
-        <div className="flex flex-1 gap-0 overflow-x-auto px-6">
+      <div className="mx-auto flex max-w-295 items-center gap-3 overflow-x-auto min-w-max scrollbar-hide">
+        <div className="flex shrink-0 gap-0 px-6">
           {categories.map((tab) => {
             const isActive = tab.id === activeId;
             return (
@@ -87,11 +87,12 @@ export function CatalogTabs({
           })}
         </div>
 
-        <div className="flex shrink-0 items-center gap-2 pr-6">
+        <div className="ml-auto flex shrink-0 items-center gap-2 pr-6">
           <SelectionCounter count={selectedCount} />
           <Button
             variant="danger"
-            size="sm"
+            size="md"
+            className="md:px-3 md:py-1.5 md:text-sm"
             onClick={onClear}
             disabled={presupuestarDisabled}
             ariaLabel={data.ui.clearListLabel}
@@ -99,7 +100,8 @@ export function CatalogTabs({
             {data.ui.clearList}
           </Button>
           <Button
-            size="sm"
+            size="md"
+            className="md:px-3 md:py-1.5 md:text-sm"
             onClick={onPresupuestar}
             disabled={presupuestarDisabled}
             ariaLabel={data.ui.quoteCartLabel}
