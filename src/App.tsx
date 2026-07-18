@@ -3,7 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import { Footer, Header } from "./components/layout";
 import { AboutUs, Contact, Faq, Home, Products, Services } from "./pages";
 import { PATHS } from "./routes/routes";
-import { ScrollToTop, WhatsappButton } from "./components/ui/Button";
+import { WhatsappButton } from "./components/ui/Button";
 
 export default function App() {
   const [isScrolled, setIsScrolled] = useState(false);
