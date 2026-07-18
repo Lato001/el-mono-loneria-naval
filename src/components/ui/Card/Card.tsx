@@ -33,12 +33,13 @@ export const Card = ({
 
   return (
     <article
-      className={`relative flex flex-col overflow-hidden rounded-xl border-2 transition-all duration-200 ease-out hover:-translate-y-1.5 hover:shadow-xl h-[351px] md:h-auto group
+      style={{ height: MOBILE_CARD_HEIGHT }}
+      className={`relative flex flex-col overflow-hidden rounded-xl border-2 transition-all duration-200 ease-out hover:-translate-y-1.5 hover:shadow-xl md:h-auto group
       ${selected ? "border-pr-aquamarine ring-2 ring-pr-aquamarine" : "border-sc-ocean-blue/15 bg-white"}
       ${className ?? ""}`}
     >
       {hasImage && (
-        <div className="relative aspect-[4/3] w-full shrink-0 overflow-hidden">
+        <div className="relative aspect-4/3 w-full shrink-0 overflow-hidden">
           {badge && (
             <span
               className={`text-black absolute top-4 left-4 z-10 rounded-full px-3 py-1 text-xs font-medium ${badgeClassName ?? "bg-sc-sand"}`}
@@ -93,7 +94,7 @@ export const Card = ({
           <span
             aria-hidden="true"
             className={`whitespace-nowrap text-sm font-medium text-white transition-all duration-200 ease-out ${
-              selected ? "max-w-[7.5rem] opacity-100" : "max-w-0 opacity-0"
+              selected ? "max-w-30 opacity-100" : "max-w-0 opacity-0"
             }`}
           >
             {data.ui.selectedLabel}

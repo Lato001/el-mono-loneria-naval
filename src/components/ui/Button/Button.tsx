@@ -62,7 +62,7 @@ export function Button({
   const badgeElement = hasBadge ? (
     <span
       aria-hidden="true"
-      className="pointer-events-none absolute -top-1.5 -right-1.5 inline-flex min-w-[20px] items-center justify-center rounded-full bg-pr-aquamarine px-1.5 text-xs font-bold text-sc-ocean-blue h-5"
+      className="pointer-events-none absolute -top-1.5 -right-1.5 inline-flex min-w-5 items-center justify-center rounded-full bg-pr-aquamarine px-1.5 text-xs font-bold text-sc-ocean-blue h-5"
     >
       {badge}
     </span>
