@@ -3,6 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { MemoryRouter } from "react-router-dom";
 import { Services } from "./Services";
 import { data } from "../../mocks/data";
+import type { ServiceSection } from "../../mocks/types";
 
 // Mock useFadeInOnView to avoid IntersectionObserver complexity
 vi.mock("../../hooks/useFadeInOnView", () => ({
@@ -18,6 +19,8 @@ function renderServices() {
 }
 
 describe("Services page", () => {
+  const contentByTab = data.servicesPage.content as Record<string, ServiceSection>;
+
   it("renders the hero with the services title and description", () => {
     renderServices();
     expect(
@@ -43,38 +46,79 @@ describe("Services page", () => {
     );
   });
 
-  it("renders a content section for every service tab", () => {
+  it("defaults the active tab to the first one on initial render", () => {
     renderServices();
-    for (const tab of data.servicesPage.tabs) {
-      const section = document.getElementById(tab.id);
-      expect(section).toBeInTheDocument();
-      expect(section?.tagName).toBe("SECTION");
-      const content = data.servicesPage.content[tab.id];
+    const firstTab = data.servicesPage.tabs[0];
+    // The SectionWrapper shows the active tab's name as its title.
+    expect(
+      screen.getByRole("heading", { level: 2, name: firstTab.name }),
+    ).toBeInTheDocument();
+    const activeTab = screen.getByRole("tab", { name: firstTab.name });
+    expect(activeTab).toHaveAttribute("aria-selected", "true");
+  });
+
+  it("updates the SectionWrapper title and the active tab when a tab is clicked", async () => {
+    const user = userEvent.setup();
+    renderServices();
+    const secondTab = data.servicesPage.tabs[1];
+
+    // Click the second tab.
+    await user.click(screen.getByRole("tab", { name: secondTab.name }));
+
+    // SectionWrapper title now reflects the new active tab.
+    expect(
+      screen.getByRole("heading", { level: 2, name: secondTab.name }),
+    ).toBeInTheDocument();
+    // Previous tab is no longer selected.
+    const firstTab = data.servicesPage.tabs[0];
+    expect(
+      screen.getByRole("tab", { name: firstTab.name }),
+    ).toHaveAttribute("aria-selected", "false");
+    expect(
+      screen.getByRole("tab", { name: secondTab.name }),
+    ).toHaveAttribute("aria-selected", "true");
+  });
+
+  it("renders one carousel card per item of the active tab", () => {
+    renderServices();
+    const firstTab = data.servicesPage.tabs[0];
+    const firstContent = contentByTab[firstTab.id];
+    for (const item of firstContent.items) {
+      // Each item is rendered as an <article> with its title as a heading.
       expect(
-        screen.getByRole("heading", { level: 2, name: content.title }),
+        screen.getByRole("heading", { name: item.title }),
       ).toBeInTheDocument();
     }
   });
 
-  it("scrolls to the corresponding section when a tab is clicked", async () => {
+  it("swaps the carousel items when a tab is clicked", async () => {
     const user = userEvent.setup();
-    // Mock scrollIntoView on every element so we can spy on the call.
-    const original = HTMLElement.prototype.scrollIntoView;
-    HTMLElement.prototype.scrollIntoView = vi.fn();
+    renderServices();
+    const firstTab = data.servicesPage.tabs[0];
+    const firstContent = contentByTab[firstTab.id];
+    const secondTab = data.servicesPage.tabs[1];
+    const secondContent = contentByTab[secondTab.id];
 
-    try {
-      renderServices();
-      // Click the second tab (Cerramientos) — scope to tablist so we
-      // don't match the h2 in the content section below.
-      const tablist = screen.getByRole("tablist");
-      await user.click(screen.getByRole("tab", { name: "Cerramientos" }));
-      const target = document.getElementById("cerramientos");
-      expect(target).not.toBeNull();
-      expect(target!.scrollIntoView).toHaveBeenCalledWith({
-        behavior: "smooth",
-      });
-    } finally {
-      HTMLElement.prototype.scrollIntoView = original;
+    // First tab items are visible.
+    for (const item of firstContent.items) {
+      expect(
+        screen.getByRole("heading", { name: item.title }),
+      ).toBeInTheDocument();
+    }
+
+    // Switch to the second tab.
+    await user.click(screen.getByRole("tab", { name: secondTab.name }));
+
+    // Second tab items are now visible, first tab items are gone.
+    for (const item of secondContent.items) {
+      expect(
+        screen.getByRole("heading", { name: item.title }),
+      ).toBeInTheDocument();
+    }
+    for (const item of firstContent.items) {
+      expect(
+        screen.queryByRole("heading", { name: item.title }),
+      ).not.toBeInTheDocument();
     }
   });
 });

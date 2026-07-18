@@ -1,12 +1,33 @@
+import { useEffect, useState } from "react";
 import { useCarousel } from "./useCarousel";
 import type { StackedCarouselProps } from "./Carousel.types";
 
-export function StackedCarousel({ items }: StackedCarouselProps) {
+export function StackedCarousel({
+  items,
+  autoplay = false,
+  interval = 4000,
+}: StackedCarouselProps) {
   const { activeIndex, next, prev, getCardClasses } = useCarousel();
+  const [isHovered, setIsHovered] = useState(false);
   const total = items.length;
 
+  // Autoplay — same pattern as the hero `ImgCard`. Pauses on hover so
+  // the user can read a card without it advancing. No-op when there is
+  // only 0 or 1 card.
+  useEffect(() => {
+    if (!autoplay || isHovered || total <= 1) return;
+    const timer = setInterval(() => {
+      next();
+    }, interval);
+    return () => clearInterval(timer);
+  }, [autoplay, interval, isHovered, total, next]);
+
   return (
-    <div className="w-full">
+    <div
+      className="w-full"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
       <div className="relative mx-auto h-145 w-full overflow-x-clip">
         {items.map((item, index) => (
           <article

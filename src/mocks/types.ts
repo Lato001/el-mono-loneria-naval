@@ -118,9 +118,18 @@ export interface ServiceTab {
   name: string;
 }
 
+export interface ServiceItem {
+  id: string;
+  title: string;
+  description: string;
+  color?: string;
+}
+
 export interface ServiceSection {
   title: string;
   description: string;
+  /** Items rendered inside the StackedCarousel for this tab. */
+  items: ServiceItem[];
 }
 
 export interface ServicesPageData {
