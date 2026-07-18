@@ -1,6 +1,5 @@
 import { useMemo, useState } from "react";
 import { IconX } from "@tabler/icons-react";
-import { useMediaQuery } from "../../hooks/useMediaQuery";
 import { useSessionSelection } from "../../hooks/useSessionSelection";
 import { buildWhatsAppUrl } from "./whatsappUrl";
 import { CatalogHero } from "../../components/ui/CatalogHero";
@@ -128,7 +127,6 @@ export function Products() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isClearModalOpen, setIsClearModalOpen] = useState(false);
   const [activeCategoryId, setActiveCategoryId] = useState<string | null>(null);
-  const isMobile = useMediaQuery("(max-width: 767px)");
 
   const selectedProducts = useMemo<Product[]>(
     () =>
@@ -183,7 +181,6 @@ export function Products() {
           categories={tabs}
           activeId={activeCategoryId ?? undefined}
           onSelect={handleTabSelect}
-          topOffset={56}
           selectedCount={count}
           onPresupuestar={handleOpenModal}
           onClear={handleOpenClearModal}
@@ -207,7 +204,6 @@ export function Products() {
         onOpenChange={(open) => { if (!open) handleCloseModal(); }}
         title={data.ui.quoteModal.title}
         description={data.ui.quoteModal.description}
-        variant={isMobile ? "sheet" : "centered"}
       >
         <CotizacionModalContent
           products={selectedProducts}
@@ -225,7 +221,6 @@ export function Products() {
         onOpenChange={(open) => { if (!open) handleCloseClearModal(); }}
         title={data.ui.clearModal.title}
         description={data.ui.clearModal.description}
-        variant={isMobile ? "sheet" : "centered"}
       >
         <div className="font-poppins mt-4 flex flex-col gap-4">
           <p className="text-sm text-sc-ocean-blue">

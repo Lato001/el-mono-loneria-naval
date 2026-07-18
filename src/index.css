@@ -1,6 +1,19 @@
 @import "tailwindcss";
 @import "./fonts.css";
 
+/* Custom variant for Modal: md-data-state-open:animate-fadeIn (Tailwind v4) */
+@custom-variant md-data-state-open {
+  @media (min-width: 768px) {
+    &:is([data-state="open"]) {
+      @slot;
+    }
+  }
+}
+
+/* KEEP IN SYNC with Header.tsx min-h-14 + py-2.5 (mobile) and +name-logo (lg) */
+:root { --header-h: 76px; }
+@media (min-width: 1024px) { :root { --header-h: 80px; } }
+
 /*IMPORT FONTS*/
 @theme {
   --font-brown: "Brown Beige", sans-serif;
