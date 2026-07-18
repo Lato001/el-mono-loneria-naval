@@ -32,8 +32,13 @@ function renderProducts() {
 
 // Both ActionBar and DesktopActionGroup render Presupuestar/Borrar/counter,
 // so queries must be scoped to avoid "found multiple elements" errors.
+// `hidden: true` because Radix sets aria-hidden on page content while a
+// Dialog is open, and the group is reachable for assertions anyway.
 const getDesktopActionGroup = () =>
-  screen.getByRole("group", { name: /Acciones del presupuesto/i });
+  screen.getByRole("group", {
+    name: /Acciones del presupuesto/i,
+    hidden: true,
+  });
 
 describe("Products page", () => {
   it("renders the hero heading", () => {

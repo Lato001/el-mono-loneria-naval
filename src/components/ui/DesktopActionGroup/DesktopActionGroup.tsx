@@ -1,5 +1,4 @@
 import { Button } from "../Button";
-import { SelectionCounter } from "../SelectionCounter";
 import { data } from "../../../mocks/data";
 import type { DesktopActionGroupProps } from "./DesktopActionGroup.types";
 
@@ -8,6 +7,8 @@ import type { DesktopActionGroupProps } from "./DesktopActionGroup.types";
  *
  * Rendered as a sibling of <CatalogTabs> inside <div id="tabs"> in Products.tsx.
  * Hidden on mobile (md:flex) where the ActionBar takes over.
+ * Selected-count badge: rendered on the Presupuestar button's upper-right
+ * corner when `selectedCount > 0`.
  */
 export function DesktopActionGroup({
   selectedCount,
@@ -15,13 +16,14 @@ export function DesktopActionGroup({
   presupuestarDisabled,
   onClear,
 }: DesktopActionGroupProps) {
+  const badge = selectedCount > 0 ? selectedCount : undefined;
+
   return (
     <div
       role="group"
       aria-label={data.ui.desktopActionGroupLabel}
       className="mx-auto flex max-w-295 items-center gap-2 px-6 hidden md:flex"
     >
-      <SelectionCounter count={selectedCount} />
       <Button
         variant="danger"
         size="md"
@@ -37,6 +39,7 @@ export function DesktopActionGroup({
         disabled={presupuestarDisabled}
         ariaLabel={data.ui.quoteCartLabel}
         className="ml-auto"
+        badge={badge}
       >
         {data.ui.quoteLabel}
       </Button>

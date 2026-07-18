@@ -51,8 +51,21 @@ export function Button({
   type = "button",
   disabled,
   ariaLabel,
+  badge,
 }: ButtonProps) {
-  const classes = `${baseClasses} ${variantClasses[variant]} ${sizeClasses[size]}${className ? ` ${className}` : ""}${disabled ? ` ${disabledClasses}` : ""}`;
+  const hasBadge = badge !== undefined;
+  const classes = `${baseClasses} ${variantClasses[variant]} ${sizeClasses[size]}${className ? ` ${className}` : ""}${disabled ? ` ${disabledClasses}` : ""}${hasBadge ? " relative" : ""}`;
+
+  // Badge: small circle in the upper-right corner. pointer-events-none so the
+  // badge never intercepts the button's own click target.
+  const badgeElement = hasBadge ? (
+    <span
+      aria-hidden="true"
+      className="pointer-events-none absolute -top-1.5 -right-1.5 inline-flex min-w-[20px] items-center justify-center rounded-full bg-pr-aquamarine px-1.5 text-xs font-bold text-sc-ocean-blue h-5"
+    >
+      {badge}
+    </span>
+  ) : null;
 
   // When href + disabled: render a non-navigable <span> to avoid broken Link.
   // Empty string href is treated as no-href (renders <button> below).
@@ -65,6 +78,7 @@ export function Button({
         role="link"
       >
         {children}
+        {badgeElement}
       </span>
     );
   }
@@ -73,6 +87,7 @@ export function Button({
     return (
       <Link to={href} className={classes} aria-label={ariaLabel}>
         {children}
+        {badgeElement}
       </Link>
     );
   }
@@ -86,6 +101,7 @@ export function Button({
       aria-label={ariaLabel}
     >
       {children}
+      {badgeElement}
     </button>
   );
 }

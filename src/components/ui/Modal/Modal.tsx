@@ -22,7 +22,7 @@ export function Modal({
       <Dialog.Portal>
         <Dialog.Overlay className="fixed inset-0 bg-black/50 data-[state=open]:animate-fadeIn" />
         <Dialog.Content
-          className={`fixed z-50 w-[calc(100%-2rem)] bg-white p-6 shadow-2xl focus:outline-none ${positionClasses} ${className ?? ""}`}
+          className={`fixed z-50 w-full bg-white p-6 shadow-2xl focus:outline-none ${positionClasses} ${className ?? ""}`}
         >
           <Dialog.Title className="font-poppins mb-2 text-xl font-bold text-sc-ocean-blue">
             {title}
