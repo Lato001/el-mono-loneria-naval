@@ -115,4 +115,25 @@ describe("Card", () => {
     expect(article.className).toContain("ring-pr-aquamarine");
     expect(article.className).toContain("border-pr-aquamarine");
   });
+
+  it("enforces uniform mobile card height via h-[351px] and content-driven desktop height via md:h-auto", () => {
+    render(<Card title="Broche Test" description="Some description" />);
+    const article = screen.getByRole("article");
+    expect(article.className).toContain("h-[351px]");
+    expect(article.className).toContain("md:h-auto");
+  });
+
+  it("truncates the title to a single line via line-clamp-1", () => {
+    render(<Card title="A very long title that should be truncated" />);
+    const heading = screen.getByRole("heading", { level: 3 });
+    expect(heading.className).toContain("line-clamp-1");
+  });
+
+  it("truncates the description to two lines via line-clamp-2", () => {
+    render(<Card title="Test" description="A long description that should wrap and get truncated after two lines" />);
+    const article = screen.getByRole("article");
+    const description = article.querySelector("p");
+    expect(description).not.toBeNull();
+    expect(description!.className).toContain("line-clamp-2");
+  });
 });
