@@ -133,6 +133,27 @@ describe("ProductCarousel", () => {
     expect(dots[2]).not.toHaveAttribute("aria-current");
   });
 
+  it("renders prev/next buttons with 44px touch target (p-3)", () => {
+    render(
+      <ProductCarousel items={mockProducts} ariaLabel="Test" id="test-section" />,
+    );
+
+    expect(screen.getByLabelText("Anterior")).toHaveClass("p-3");
+    expect(screen.getByLabelText("Siguiente")).toHaveClass("p-3");
+  });
+
+  it("renders dot indicators with 44px touch wrapper (min-h-11 min-w-11)", () => {
+    render(
+      <ProductCarousel items={mockProducts} ariaLabel="Test" id="test-section" />,
+    );
+
+    const dots = screen.getAllByLabelText(/Ir a producto/);
+    for (const dot of dots) {
+      expect(dot).toHaveClass("min-h-11");
+      expect(dot).toHaveClass("min-w-11");
+    }
+  });
+
   it("updates aria-current on the active dot after simulated scroll", () => {
     // Mock requestAnimationFrame to run synchronously
     vi.stubGlobal("requestAnimationFrame", (cb: FrameRequestCallback) => {

@@ -46,7 +46,7 @@ export function ProductCarousel({
         {items.map((product) => (
           <div
             key={product.id}
-            className="w-[calc(50%-8px)] md:w-[calc(20%-13px)] shrink-0 snap-start"
+            className="w-[calc(75%-4px)] md:w-[calc(20%-13px)] shrink-0 snap-start"
           >
             <FadeInCard>
               <Card
@@ -66,7 +66,7 @@ export function ProductCarousel({
         type="button"
         aria-label={data.ui.prevLabel}
         onClick={prev}
-        className="absolute left-2 top-1/2 -translate-y-1/2 z-10 rounded-full bg-white/80 p-2 shadow-md backdrop-blur-sm transition-colors hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pr-aquamarine"
+        className="absolute left-2 top-1/2 -translate-y-1/2 z-10 rounded-full bg-white/80 p-3 shadow-md backdrop-blur-sm transition-colors hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pr-aquamarine"
       >
         <IconChevronLeft className="h-5 w-5 text-sc-ocean-blue" />
       </button>
@@ -74,7 +74,7 @@ export function ProductCarousel({
         type="button"
         aria-label={data.ui.nextLabel}
         onClick={next}
-        className="absolute right-2 top-1/2 -translate-y-1/2 z-10 rounded-full bg-white/80 p-2 shadow-md backdrop-blur-sm transition-colors hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pr-aquamarine"
+        className="absolute right-2 top-1/2 -translate-y-1/2 z-10 rounded-full bg-white/80 p-3 shadow-md backdrop-blur-sm transition-colors hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pr-aquamarine"
       >
         <IconChevronRight className="h-5 w-5 text-sc-ocean-blue" />
       </button>
@@ -92,12 +92,20 @@ export function ProductCarousel({
             aria-label={`${data.ui.goToProductLabel} ${i + 1}`}
             aria-current={i === activeIndex ? "true" : undefined}
             onClick={() => goTo(i)}
-            className={`h-2.5 w-2.5 rounded-full transition-colors ${
+            className={`min-h-11 min-w-11 flex items-center justify-center rounded-full transition-colors ${
               i === activeIndex
-                ? "bg-pr-aquamarine"
-                : "bg-sc-ocean-blue/20 hover:bg-sc-ocean-blue/40"
+                ? "bg-transparent"
+                : "hover:bg-transparent"
             }`}
-          />
+          >
+            <span
+              className={`block h-2.5 w-2.5 rounded-full transition-colors ${
+                i === activeIndex
+                  ? "bg-pr-aquamarine"
+                  : "bg-sc-ocean-blue/20 group-hover:bg-sc-ocean-blue/40"
+              }`}
+            />
+          </button>
         ))}
       </div>
     </section>
