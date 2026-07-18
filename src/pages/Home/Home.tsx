@@ -4,19 +4,23 @@ import {
   AboutSection,
   SectionWrapper,
   SplitCards,
+  WhatsappButton,
 } from "../../components/ui";
 import { SplitReviews } from "../../components/ui/SplitReviews/SplitReviews";
 import { data } from "../../mocks/data";
 
 // ─── Service images (auto-discovered via Vite glob) ────────────────────
-const serviceImages = import.meta.glob(
-  "../../assets/img/services/*",
-  { eager: true, import: "default" },
-) as Record<string, string>;
+const serviceImages = import.meta.glob("../../assets/img/services/*", {
+  eager: true,
+  import: "default",
+}) as Record<string, string>;
 
 const heroImageMap: Record<string, string> = Object.fromEntries(
   Object.entries(serviceImages).map(([path, url]) => [
-    path.split("/").pop()!.replace(/\.[^.]+$/, ""),
+    path
+      .split("/")
+      .pop()!
+      .replace(/\.[^.]+$/, ""),
     url,
   ]),
 );
@@ -31,6 +35,7 @@ const splitCardsImageMap: Record<string, string> = heroImageMap;
 export function Home() {
   return (
     <>
+      <WhatsappButton />
       <Hero
         eyebrow={data.home.hero.eyebrow}
         titlePrefix={data.home.hero.titlePrefix}
