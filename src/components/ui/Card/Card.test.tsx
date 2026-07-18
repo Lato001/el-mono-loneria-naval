@@ -43,11 +43,12 @@ describe("Card", () => {
     expect(pill!.className).toContain("h-11");
   });
 
-  it("centers the + icon in the pill when unselected (w-8 + justify-center + gap-0)", () => {
+  it("centers the + icon in the pill when unselected (w-11 + h-11 = circular + justify-center + gap-0)", () => {
     render(<Card title="Broche Test" onSelectChange={() => {}} />);
     const checkbox = screen.getByRole("checkbox", { hidden: true });
     const pill = checkbox.closest("label");
-    expect(pill!.className).toContain("w-8");
+    expect(pill!.className).toContain("w-11");
+    expect(pill!.className).toContain("h-11");
     expect(pill!.className).toContain("justify-center");
     expect(pill!.className).toContain("gap-0");
   });
@@ -60,7 +61,8 @@ describe("Card", () => {
     expect(pill!.className).toContain("gap-2");
     expect(pill!.className).toContain("pl-1");
     expect(pill!.className).toContain("pr-3");
-    expect(pill!.className).not.toContain("w-8");
+    // When selected, w-11 is overridden by !w-auto so the pill sizes to content
+    expect(pill!.className).not.toMatch(/\bw-11\b/);
   });
 
   it("shows the + icon (IconPlus) when unselected and the × icon (IconX) when selected, at h-5 w-5 (20px)", () => {
