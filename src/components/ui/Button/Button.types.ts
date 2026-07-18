@@ -19,4 +19,10 @@ export interface ButtonProps {
   type?: "button" | "submit" | "reset";
   disabled?: boolean;
   ariaLabel?: string;
+  /**
+   * Optional badge content rendered in the upper-right corner of the button
+   * (e.g. a selected-item count). Pass `undefined` to hide. The button gets
+   * `position: relative` automatically when a badge is present.
+   */
+  badge?: ReactNode;
 }

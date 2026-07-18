@@ -16,7 +16,7 @@ export function CatalogHero({
 
   return (
     <section
-      className="bg-white py-20 text-sc-ocean-blue"
+      className="bg-white py-10 md:py-20 text-sc-ocean-blue"
       style={{
         backgroundImage: `url(${bgOlas})`,
         backgroundSize: "cover",

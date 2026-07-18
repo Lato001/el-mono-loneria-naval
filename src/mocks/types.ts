@@ -1,0 +1,189 @@
+/**
+ * Type definitions for centralized mock data.
+ * All interfaces used by `data.ts` live here — data.ts contains NO type definitions.
+ */
+
+// ─── Re-exports from component type modules ──────────────────────────────
+export type { Highlight, AboutCta } from "../components/ui/AboutSection/AboutSection.types";
+export type { Service } from "../components/ui/ServiceGrid/ServiceGrid.types";
+export type { Review } from "../types/review";
+export type { AccordionItem } from "../components/ui/Accordion/Accordion";
+
+// ─── Unions ──────────────────────────────────────────────────────────────
+export type SocialPlatform = "Facebook" | "Instagram" | "WhatsApp";
+export type ContactIconKey = "phone" | "mail" | "mapPin";
+
+// ─── Navigation ──────────────────────────────────────────────────────────
+export interface NavLink {
+  label: string;
+  href: string;
+}
+
+export interface SocialLink {
+  platform: SocialPlatform;
+  href: string;
+}
+
+export interface ContactItem {
+  label: string;
+  value: string;
+  href: string;
+  iconKey: ContactIconKey;
+}
+
+export interface NavGroup {
+  title: string;
+  links: NavLink[];
+}
+
+export interface FooterNav {
+  groups: NavGroup[];
+  social: SocialLink[];
+  contact: ContactItem[];
+  tagline: string;
+  copyright: string;
+  contactTitle: string;
+}
+
+// ─── Hero ────────────────────────────────────────────────────────────────
+export interface HeroImage {
+  /** Image key — resolved by the consuming page via a Record<imageKey, string> map. */
+  src: string;
+  alt: string;
+}
+
+export interface HeroData {
+  eyebrow: string;
+  titlePrefix: string;
+  titleHighlight: string;
+  description: string;
+  primaryCta: string;
+  secondaryCta: string;
+  images: HeroImage[];
+}
+
+// ─── Sections ────────────────────────────────────────────────────────────
+export interface SectionData {
+  eyebrow: string;
+  title: string;
+  theme?: "dark" | "light";
+  titlesAlign?: "start" | "center" | "end";
+}
+
+export interface SectionsGroup {
+  whatWeOffer: SectionData;
+  aboutUs: SectionData;
+  testimonials: SectionData;
+  faq: SectionData;
+}
+
+export interface AboutUsContent {
+  description: string;
+  cta: { text: string; href: string };
+}
+
+// ─── Split cards ─────────────────────────────────────────────────────────
+export interface SplitCardData {
+  title: string;
+  /** Image key — resolved by the consuming page via a Record<imageKey, string> map. */
+  imageKey: string;
+}
+
+// ─── Brands ──────────────────────────────────────────────────────────────
+export interface BrandData {
+  id: string;
+  alt: string;
+  link?: string;
+  /** Image key — resolved by BrandMarquee via a Record<id, string> map. */
+}
+
+// ─── Products ────────────────────────────────────────────────────────────
+export interface ProductData {
+  id: string;
+  title: string;
+  description: string;
+  /** Image key — resolved by Products page via a Record<imageKey, string> map. */
+  imageKey: string;
+}
+
+export interface ProductCategoryData {
+  id: string;
+  name: string;
+  products: ProductData[];
+}
+
+// ─── UI copy ─────────────────────────────────────────────────────────────
+export interface ModalCopy {
+  title: string;
+  description: string;
+}
+
+export interface UICopy {
+  // Header CTAs
+  ctaContactDesktop: string;
+  ctaContactMobile: string;
+  // Products — CatalogHero
+  catalogHeroTitle: string;
+  catalogHeroDescription: string;
+  // Products — modal / buttons
+  consultWhatsApp: string;
+  clearList: string;
+  keepBrowsing: string;
+  cancel: string;
+  delete: string;
+  quoteModal: ModalCopy;
+  clearModal: ModalCopy;
+  clearConfirmation: string;
+  whatsappDisabledReason: string;
+  noProductsSelected: string;
+  // Leaf UI labels
+  selectedLabel: string;
+  closeLabel: string;
+  prevLabel: string;
+  nextLabel: string;
+  goToProductLabel: string;
+  categoriesLabel: string;
+  contactWhatsAppLabel: string;
+  selectedCountLabel: string;
+  quoteCartLabel: string;
+  clearListLabel: string;
+  quoteLabel: string;
+  vaciarButton: string;
+  vaciarSelectionAriaLabel: string;
+  clearListAriaLabel: string;
+  // WhatsApp
+  whatsappGreeting: string;
+  // Footer
+  contactSectionTitle: string;
+  // Action bar (sticky bottom, all viewports)
+  actionBarLabel: string;
+}
+
+// ─── Global ──────────────────────────────────────────────────────────────
+export interface GlobalData {
+  brandName: string;
+  brandFullName: string;
+  brandLogoAlt: string;
+}
+
+// ─── Legacy section types (discriminated union for Home.tsx) ─────────────
+export interface ReviewsSection {
+  id: "reviews";
+  kind: "reviews";
+  eyebrow: string;
+  title: string;
+}
+
+export interface AboutUsSection {
+  id: "aboutus";
+  kind: "aboutus";
+  eyebrow: string;
+  title: string;
+  content: string[];
+  image?: string;
+  imageAlt?: string;
+  highlights?: { label: string; value: string }[];
+  cta?: { text: string; href: string };
+}
+
+export type Section = ReviewsSection | AboutUsSection;

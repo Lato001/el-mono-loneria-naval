@@ -2,6 +2,7 @@ import { IconChevronLeft, IconChevronRight } from "@tabler/icons-react";
 import { Card } from "../Card";
 import { useFadeInOnView } from "../../../hooks/useFadeInOnView";
 import { useProductCarousel } from "./useProductCarousel";
+import { data } from "../../../mocks/data";
 import type { ProductCarouselProps } from "./ProductCarousel.types";
 
 function FadeInCard({ children }: { children: React.ReactNode }) {
@@ -18,21 +19,19 @@ function FadeInCard({ children }: { children: React.ReactNode }) {
 
 export function ProductCarousel({
   items,
-  ariaLabel,
   id,
   isSelected,
   onToggle,
 }: ProductCarouselProps) {
-  const { scrollRef, activeIndex, totalPages, prev, next, goTo } =
-    useProductCarousel(items.length);
+  const { scrollRef, prev, next } = useProductCarousel(items.length);
 
   return (
     <section
       id={id}
       role="tabpanel"
       aria-labelledby={`tab-${id}`}
-      className="relative py-8"
-      style={{ scrollMarginTop: 128 }}
+      className="relative min-w-0 py-8"
+      style={{ scrollMarginTop: "var(--header-h, 76px)" }}
     >
       <h2 className="font-brown text-2xl flex justify-center text-pr-hero-blue pb-10">
         {id}
@@ -45,7 +44,7 @@ export function ProductCarousel({
         {items.map((product) => (
           <div
             key={product.id}
-            className="w-[calc(50%-8px)] md:w-[calc(20%-13px)] shrink-0 snap-start"
+            className="w-[calc(75%-4px)] md:w-[calc(20%-13px)] shrink-0 snap-start"
           >
             <FadeInCard>
               <Card
@@ -63,42 +62,20 @@ export function ProductCarousel({
       {/* Prev/Next buttons */}
       <button
         type="button"
-        aria-label="Anterior"
+        aria-label={data.ui.prevLabel}
         onClick={prev}
-        className="absolute left-2 top-1/2 -translate-y-1/2 z-10 rounded-full bg-white/80 p-2 shadow-md backdrop-blur-sm transition-colors hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pr-aquamarine"
+        className="absolute left-2 top-1/2 -translate-y-1/2 z-10 rounded-full bg-white/80 p-3 shadow-md backdrop-blur-sm transition-colors hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pr-aquamarine"
       >
         <IconChevronLeft className="h-5 w-5 text-sc-ocean-blue" />
       </button>
       <button
         type="button"
-        aria-label="Siguiente"
+        aria-label={data.ui.nextLabel}
         onClick={next}
-        className="absolute right-2 top-1/2 -translate-y-1/2 z-10 rounded-full bg-white/80 p-2 shadow-md backdrop-blur-sm transition-colors hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pr-aquamarine"
+        className="absolute right-2 top-1/2 -translate-y-1/2 z-10 rounded-full bg-white/80 p-3 shadow-md backdrop-blur-sm transition-colors hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pr-aquamarine"
       >
         <IconChevronRight className="h-5 w-5 text-sc-ocean-blue" />
       </button>
-
-      {/* Dots */}
-      <div
-        role="tablist"
-        aria-label={`${ariaLabel} posición`}
-        className="mt-4 flex justify-center gap-2"
-      >
-        {Array.from({ length: totalPages }, (_, i) => (
-          <button
-            key={i}
-            type="button"
-            aria-label={`Ir a producto ${i + 1}`}
-            aria-current={i === activeIndex ? "true" : undefined}
-            onClick={() => goTo(i)}
-            className={`h-2.5 w-2.5 rounded-full transition-colors ${
-              i === activeIndex
-                ? "bg-pr-aquamarine"
-                : "bg-sc-ocean-blue/20 hover:bg-sc-ocean-blue/40"
-            }`}
-          />
-        ))}
-      </div>
     </section>
   );
 }

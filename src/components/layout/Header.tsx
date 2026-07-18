@@ -4,14 +4,7 @@ import { IconMenu2, IconX } from "@tabler/icons-react";
 import logoSrc from "../../assets/logos/elmono/isotipo-elmono.png";
 import nameLogoSrc from "../../assets/logos/elmono/isotipo-elmono-name.png";
 import { PATHS } from "../../routes/routes";
-
-const NAV_LINKS = [
-  { href: PATHS.HOME, label: "Inicio" },
-  { href: PATHS.PRODUCTS, label: "Productos" },
-  { href: PATHS.SERVICES, label: "Servicios" },
-  { href: PATHS.ABOUT_US, label: "Nosotros" },
-  { href: PATHS.FAQ, label: "FAQ" },
-];
+import { data } from "../../mocks/data";
 
 const BREAKPOINT = 1024;
 
@@ -42,8 +35,9 @@ export function Header() {
   const isActive = (path: string) => location.pathname === path;
 
   return (
+    // KEEP IN SYNC with --header-h in src/index.css
     <header className="bg-sc-ocean-blue min-h-14">
-      <div className="m-auto flex items-center justify-between px-4 py-2.5 max-w-7xl sm:px-6">
+      <div className="m-auto flex items-center justify-between px-4 py-2.5 max-w-7xl md:px-6">
         <Link to={PATHS.HOME} className="shrink-0">
           <div className="flex items-center w-24 lg:w-40">
             <img src={logoSrc} alt="El Mono" className="h-auto w-24" />
@@ -57,7 +51,7 @@ export function Header() {
 
         {isDesktop && (
           <nav className="flex items-center gap-8">
-            {NAV_LINKS.map((link) => (
+            {data.nav.header.map((link) => (
               <Link
                 key={link.href}
                 to={link.href}
@@ -91,7 +85,7 @@ export function Header() {
             to={PATHS.CONTACT}
             className="shrink-0 rounded-lg bg-white px-6 py-2.5 font-poppins font-semibold text-base text-sc-ocean-blue transition-colors hover:bg-sc-chalk"
           >
-            Contactame
+            {data.ui.ctaContactDesktop}
           </Link>
         )}
 
@@ -140,7 +134,7 @@ export function Header() {
                 <IconX size={24} />
               </button>
               <div className="flex flex-col gap-6">
-                {NAV_LINKS.map((link) => (
+                {data.nav.header.map((link) => (
                   <Link
                     key={link.href}
                     to={link.href}
@@ -165,7 +159,7 @@ export function Header() {
                 onClick={() => setIsOpen(false)}
                 className="block rounded-lg bg-white px-6 py-2.5 font-poppins font-semibold text-base text-sc-ocean-blue text-center transition-colors hover:bg-sc-chalk"
               >
-                Cotizar
+                {data.ui.ctaContactMobile}
               </Link>
             </div>
           </aside>
