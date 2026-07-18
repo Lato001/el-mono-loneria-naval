@@ -1,13 +1,13 @@
 import { useCallback, useRef, type KeyboardEvent } from "react";
 import { data } from "../../../mocks/data";
-import type { CatalogTabsProps } from "./CatalogTabs.types";
+import type { SectionTabsProps } from "./SectionTabs.types";
 
-export function CatalogTabs({
+export function SectionTabs({
   categories,
   activeId,
   onSelect,
   topOffset = "var(--header-h, 76px)",
-}: CatalogTabsProps) {
+}: SectionTabsProps) {
   const tablistRef = useRef<HTMLDivElement>(null);
 
   const handleKeyDown = useCallback(

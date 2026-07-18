@@ -5,7 +5,7 @@ import type { ActionBarProps } from "./ActionBar.types";
 /**
  * ActionBar — sticky bottom bar (all viewports).
  *
- * z-index: z-30 (above page content, below CatalogTabs z-40, below Modal z-50).
+ * z-index: z-30 (above page content, below SectionTabs z-40, below Modal z-50).
  * Touch target: `min-h-11` (44px) on both buttons — defense-in-depth for
  * accessibility, independent of Button's intrinsic line-height.
  * Selected-count badge: rendered on the Presupuestar button's upper-right

@@ -2,14 +2,14 @@ import { useMemo, useState } from "react";
 import { IconX } from "@tabler/icons-react";
 import { useSessionSelection } from "../../hooks/useSessionSelection";
 import { buildWhatsAppUrl } from "./whatsappUrl";
-import { CatalogHero } from "../../components/ui/CatalogHero";
-import { CatalogTabs } from "../../components/ui/CatalogTabs";
+import { SectionHero } from "../../components/ui/SectionHero";
+import { SectionTabs } from "../../components/ui/SectionTabs";
 import { ActionBar } from "../../components/ui/ActionBar";
 import { Modal } from "../../components/ui/Modal";
 import { Button } from "../../components/ui/Button";
 import { ProductCarousel } from "../../components/ui/ProductCarousel";
 import type { Product } from "../../components/ui/ProductCarousel/ProductCarousel.types";
-import type { Tab } from "../../components/ui/CatalogTabs/CatalogTabs.types";
+import type { Tab } from "../../components/ui/SectionTabs/SectionTabs.types";
 import { data } from "../../mocks/data";
 
 const STORAGE_KEY = "mono:quote-cart";
@@ -172,13 +172,13 @@ export function Products() {
 
   return (
     <>
-      <CatalogHero
+      <SectionHero
         title={data.ui.catalogHeroTitle}
         description={data.ui.catalogHeroDescription}
       />
 
       <div id="tabs" className="pb-28">
-        <CatalogTabs
+        <SectionTabs
           categories={tabs}
           activeId={activeCategoryId ?? undefined}
           onSelect={handleTabSelect}

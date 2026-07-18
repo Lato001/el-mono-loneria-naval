@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { CatalogTabs } from "./CatalogTabs";
-import type { Tab } from "./CatalogTabs.types";
+import { SectionTabs } from "./SectionTabs";
+import type { Tab } from "./SectionTabs.types";
 
 const categories: Tab[] = [
   { id: "broches", name: "Broches" },
@@ -10,9 +10,9 @@ const categories: Tab[] = [
   { id: "hilos", name: "Hilos" },
 ];
 
-describe("CatalogTabs", () => {
+describe("SectionTabs", () => {
   it("renders one tab per category", () => {
-    render(<CatalogTabs categories={categories} />);
+    render(<SectionTabs categories={categories} />);
     const tabs = screen.getAllByRole("tab");
     expect(tabs).toHaveLength(4);
     expect(tabs[0]).toHaveTextContent("Broches");
@@ -20,7 +20,7 @@ describe("CatalogTabs", () => {
   });
 
   it("marks the active tab with aria-selected", () => {
-    render(<CatalogTabs categories={categories} activeId="caballetes" />);
+    render(<SectionTabs categories={categories} activeId="caballetes" />);
     const tabs = screen.getAllByRole("tab");
     expect(tabs[0]).toHaveAttribute("aria-selected", "false");
     expect(tabs[1]).toHaveAttribute("aria-selected", "true");
@@ -29,7 +29,7 @@ describe("CatalogTabs", () => {
   it("calls onSelect when a tab is clicked", async () => {
     const user = userEvent.setup();
     const onSelect = vi.fn();
-    render(<CatalogTabs categories={categories} onSelect={onSelect} />);
+    render(<SectionTabs categories={categories} onSelect={onSelect} />);
 
     await user.click(screen.getByText("Cierres"));
     expect(onSelect).toHaveBeenCalledWith("cierres");
@@ -39,7 +39,7 @@ describe("CatalogTabs", () => {
     const user = userEvent.setup();
     const onSelect = vi.fn();
     render(
-      <CatalogTabs categories={categories} activeId="broches" onSelect={onSelect} />,
+      <SectionTabs categories={categories} activeId="broches" onSelect={onSelect} />,
     );
 
     const firstTab = screen.getByText("Broches");
@@ -53,7 +53,7 @@ describe("CatalogTabs", () => {
     const user = userEvent.setup();
     const onSelect = vi.fn();
     render(
-      <CatalogTabs categories={categories} activeId="broches" onSelect={onSelect} />,
+      <SectionTabs categories={categories} activeId="broches" onSelect={onSelect} />,
     );
 
     const firstTab = screen.getByText("Broches");
@@ -67,7 +67,7 @@ describe("CatalogTabs", () => {
     const user = userEvent.setup();
     const onSelect = vi.fn();
     render(
-      <CatalogTabs categories={categories} activeId="cierres" onSelect={onSelect} />,
+      <SectionTabs categories={categories} activeId="cierres" onSelect={onSelect} />,
     );
 
     const activeTab = screen.getByText("Cierres");
@@ -81,7 +81,7 @@ describe("CatalogTabs", () => {
     const user = userEvent.setup();
     const onSelect = vi.fn();
     render(
-      <CatalogTabs categories={categories} activeId="broches" onSelect={onSelect} />,
+      <SectionTabs categories={categories} activeId="broches" onSelect={onSelect} />,
     );
 
     const firstTab = screen.getByText("Broches");
@@ -92,13 +92,13 @@ describe("CatalogTabs", () => {
   });
 
   it("has correct aria-controls linking to section id", () => {
-    render(<CatalogTabs categories={categories} activeId="broches" />);
+    render(<SectionTabs categories={categories} activeId="broches" />);
     const brochesTab = screen.getByText("Broches");
     expect(brochesTab).toHaveAttribute("aria-controls", "broches");
   });
 
   it("sets tabIndex=0 on active tab and -1 on inactive", () => {
-    render(<CatalogTabs categories={categories} activeId="caballetes" />);
+    render(<SectionTabs categories={categories} activeId="caballetes" />);
     const tabs = screen.getAllByRole("tab");
     expect(tabs[0]).toHaveAttribute("tabindex", "-1");
     expect(tabs[1]).toHaveAttribute("tabindex", "0");

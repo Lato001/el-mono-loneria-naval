@@ -1,12 +1,13 @@
 import { Button } from "../Button";
-import type { CatalogHeroProps } from "./CatalogHero.types";
+import type { SectionHeroProps } from "./SectionHero.types";
 import bgOlas from "../../../assets/backgrounds/formas-canales.svg";
-export function CatalogHero({
+export function SectionHero({
+  img = bgOlas,
   title,
   description,
   ctaLabel,
   ctaTargetId,
-}: CatalogHeroProps) {
+}: SectionHeroProps) {
   const handleCtaClick = () => {
     if (!ctaTargetId) return;
     document
@@ -18,7 +19,7 @@ export function CatalogHero({
     <section
       className="bg-white py-10 md:py-20 text-sc-ocean-blue"
       style={{
-        backgroundImage: `url(${bgOlas})`,
+        backgroundImage: `url(${img})`,
         backgroundSize: "cover",
         backgroundPosition: "center bottom",
       }}
