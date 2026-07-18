@@ -1,6 +1,9 @@
 ﻿import { IconPlus, IconX } from "@tabler/icons-react";
 import { data } from "../../../mocks/data";
 
+/* KEEP IN SYNC with measured height of Broche Lona Macho Bronze Blanco at 375px */
+export const MOBILE_CARD_HEIGHT = "351px";
+
 export interface CardProps {
   title?: string;
   description?: string;
@@ -30,7 +33,7 @@ export const Card = ({
 
   return (
     <article
-      className={`relative flex flex-col overflow-hidden rounded-xl border-2 group transition-all duration-200 ease-out hover:-translate-y-1.5 hover:shadow-xl
+      className={`relative flex flex-col overflow-hidden rounded-xl border-2 transition-all duration-200 ease-out hover:-translate-y-1.5 hover:shadow-xl h-[351px] md:h-auto group
       ${selected ? "border-pr-aquamarine ring-2 ring-pr-aquamarine" : "border-sc-ocean-blue/15 bg-white"}
       ${className ?? ""}`}
     >
@@ -101,13 +104,13 @@ export const Card = ({
       {hasContent && (
         <div className="flex flex-1 flex-col justify-between p-6">
           {title && (
-            <h3 className="mb-2 text-2xl font-poppins font-bold text-sc-ocean-blue">
+            <h3 className="mb-2 line-clamp-1 text-2xl font-poppins font-bold text-sc-ocean-blue">
               {title}
             </h3>
           )}
 
           {description && (
-            <p className="text-base font-poppins leading-relaxed text-sc-ocean-blue/70">
+            <p className="line-clamp-2 text-base font-poppins leading-relaxed text-sc-ocean-blue/70">
               {description}
             </p>
           )}
