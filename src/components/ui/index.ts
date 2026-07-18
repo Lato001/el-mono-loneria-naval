@@ -1,5 +1,4 @@
 ﻿export * from './Button';
-export * from './Carousel';
 export * from './Marquee';
 export * from './ServiceGrid';
 export * from './Card';
