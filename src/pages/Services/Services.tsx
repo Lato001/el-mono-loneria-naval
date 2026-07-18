@@ -1,9 +1,10 @@
 import { useState } from "react";
 import {
+  Card,
+  ImgCard,
   SectionHero,
   SectionTabs,
   SectionWrapper,
-  StackedCarousel,
 } from "../../components/ui";
 import { data } from "../../mocks/data";
 import type { ServiceSection } from "../../mocks/types";
@@ -28,7 +29,10 @@ export function Services() {
   // The data is keyed by tab id, but TypeScript narrows `content` to
   // the specific keys from the literal object, so we cast to the index
   // signature for the lookup.
-  const contentByTab = data.servicesPage.content as Record<string, ServiceSection>;
+  const contentByTab = data.servicesPage.content as Record<
+    string,
+    ServiceSection
+  >;
   const activeContent = contentByTab[activeTab.id];
 
   return (
@@ -38,7 +42,6 @@ export function Services() {
         img={herobg}
         description={data.ui.servicesHeroDescription}
       />
-
       <SectionTabs
         categories={data.servicesPage.tabs}
         activeId={activeTab.id}
@@ -46,16 +49,15 @@ export function Services() {
         ariaLabel={data.ui.servicesCategoriesLabel}
       />
 
-      <SectionWrapper
-        eyebrow="Servicios"
-        title={activeTab.name}
-        theme="light"
-      >
-        <StackedCarousel
-          items={activeContent.items}
-          autoplay
-          interval={5000}
-        />
+      <SectionWrapper eyebrow="Servicios" title={activeTab.name} theme="light">
+        <div className="flex justify-around">
+          <ImgCard></ImgCard>
+          <Card
+            className=""
+            title={`${activeTab.name}`}
+            description={"lorem"}
+          ></Card>
+        </div>
       </SectionWrapper>
     </>
   );
