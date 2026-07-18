@@ -8,8 +8,4 @@ export interface CatalogTabsProps {
   activeId?: string;
   onSelect?: (id: string) => void;
   topOffset?: string | number;
-  selectedCount: number;
-  onPresupuestar: () => void;
-  presupuestarDisabled: boolean;
-  onClear: () => void;
 }

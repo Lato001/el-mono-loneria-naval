@@ -30,6 +30,11 @@ function renderProducts() {
   );
 }
 
+// Both ActionBar and DesktopActionGroup render Presupuestar/Borrar/counter,
+// so queries must be scoped to avoid "found multiple elements" errors.
+const getDesktopActionGroup = () =>
+  screen.getByRole("group", { name: /Acciones del presupuesto/i });
+
 describe("Products page", () => {
   it("renders the hero heading", () => {
     renderProducts();
@@ -52,7 +57,9 @@ describe("Products page", () => {
 
   it("Presupuestar button is disabled when no products are selected", () => {
     renderProducts();
-    const button = screen.getByRole("button", { name: /presupuestar/i });
+    const button = within(getDesktopActionGroup()).getByRole("button", {
+      name: /presupuestar/i,
+    });
     expect(button).toBeDisabled();
   });
 
@@ -63,9 +70,12 @@ describe("Products page", () => {
     const checkboxes = screen.getAllByRole("checkbox");
     await user.click(checkboxes[0]);
 
-    const button = screen.getByRole("button", { name: /presupuestar/i });
+    const desktopGroup = getDesktopActionGroup();
+    const button = within(desktopGroup).getByRole("button", {
+      name: /presupuestar/i,
+    });
     expect(button).not.toBeDisabled();
-    expect(screen.getByText("1")).toBeInTheDocument();
+    expect(within(desktopGroup).getByText("1")).toBeInTheDocument();
   });
 
   it("opening modal lists selected product names", async () => {
@@ -74,7 +84,11 @@ describe("Products page", () => {
 
     const checkboxes = screen.getAllByRole("checkbox");
     await user.click(checkboxes[0]);
-    await user.click(screen.getByRole("button", { name: /presupuestar/i }));
+    await user.click(
+      within(getDesktopActionGroup()).getByRole("button", {
+        name: /presupuestar/i,
+      }),
+    );
 
     const dialog = screen.getByRole("dialog");
     expect(within(dialog).getByText("Broche Casco Bacan")).toBeInTheDocument();
@@ -87,7 +101,11 @@ describe("Products page", () => {
     const checkboxes = screen.getAllByRole("checkbox");
     await user.click(checkboxes[0]);
     await user.click(checkboxes[1]);
-    await user.click(screen.getByRole("button", { name: /presupuestar/i }));
+    await user.click(
+      within(getDesktopActionGroup()).getByRole("button", {
+        name: /presupuestar/i,
+      }),
+    );
 
     const dialog = screen.getByRole("dialog");
     // Modal should list both
@@ -99,9 +117,11 @@ describe("Products page", () => {
     await user.click(removeButtons[0]);
 
     // First product should be gone from the modal
-    expect(within(dialog).queryByText("Broche Casco Bacan")).not.toBeInTheDocument();
+    expect(
+      within(dialog).queryByText("Broche Casco Bacan"),
+    ).not.toBeInTheDocument();
     // Counter should show 1
-    expect(screen.getByText("1")).toBeInTheDocument();
+    expect(within(getDesktopActionGroup()).getByText("1")).toBeInTheDocument();
   });
 
   it("Vaciar clears all selection and closes modal", async () => {
@@ -110,7 +130,11 @@ describe("Products page", () => {
 
     const checkboxes = screen.getAllByRole("checkbox");
     await user.click(checkboxes[0]);
-    await user.click(screen.getByRole("button", { name: /presupuestar/i }));
+    await user.click(
+      within(getDesktopActionGroup()).getByRole("button", {
+        name: /presupuestar/i,
+      }),
+    );
 
     expect(screen.getByRole("dialog")).toBeInTheDocument();
 
@@ -120,7 +144,11 @@ describe("Products page", () => {
     // Modal auto-closes because selection is now empty
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
     // Presupuestar is disabled again (count = 0)
-    expect(screen.getByRole("button", { name: /presupuestar/i })).toBeDisabled();
+    expect(
+      within(getDesktopActionGroup()).getByRole("button", {
+        name: /presupuestar/i,
+      }),
+    ).toBeDisabled();
   });
 
   it("WhatsApp URL contains selected products", async () => {
@@ -129,7 +157,11 @@ describe("Products page", () => {
 
     const checkboxes = screen.getAllByRole("checkbox");
     await user.click(checkboxes[0]);
-    await user.click(screen.getByRole("button", { name: /presupuestar/i }));
+    await user.click(
+      within(getDesktopActionGroup()).getByRole("button", {
+        name: /presupuestar/i,
+      }),
+    );
 
     const whatsappLink = screen.getByText("Consultar por WhatsApp");
     expect(whatsappLink.closest("a")).toHaveAttribute(
@@ -144,7 +176,11 @@ describe("Products page", () => {
 
     const checkboxes = screen.getAllByRole("checkbox");
     await user.click(checkboxes[0]);
-    await user.click(screen.getByRole("button", { name: /presupuestar/i }));
+    await user.click(
+      within(getDesktopActionGroup()).getByRole("button", {
+        name: /presupuestar/i,
+      }),
+    );
 
     expect(screen.getByRole("dialog")).toBeInTheDocument();
 
@@ -155,7 +191,9 @@ describe("Products page", () => {
 
   it("renders the 'Borrar lista' button (red, disabled when no selection)", () => {
     renderProducts();
-    const clearButton = screen.getByRole("button", { name: /borrar lista/i });
+    const clearButton = within(getDesktopActionGroup()).getByRole("button", {
+      name: /borrar lista/i,
+    });
     expect(clearButton).toBeInTheDocument();
     expect(clearButton.className).toContain("bg-red-500");
     expect(clearButton).toBeDisabled();
@@ -168,9 +206,13 @@ describe("Products page", () => {
     const checkboxes = screen.getAllByRole("checkbox");
     await user.click(checkboxes[0]);
     await user.click(checkboxes[1]);
-    expect(screen.getByText("2")).toBeInTheDocument();
+    expect(within(getDesktopActionGroup()).getByText("2")).toBeInTheDocument();
 
-    await user.click(screen.getByRole("button", { name: /borrar lista/i }));
+    await user.click(
+      within(getDesktopActionGroup()).getByRole("button", {
+        name: /borrar lista/i,
+      }),
+    );
 
     // Confirmation modal opens
     const dialogs = screen.getAllByRole("dialog");
@@ -180,7 +222,7 @@ describe("Products page", () => {
     ).toBeInTheDocument();
 
     // Selection is still intact (counter still shows 2)
-    expect(screen.getByText("2")).toBeInTheDocument();
+    expect(within(getDesktopActionGroup()).getByText("2")).toBeInTheDocument();
   });
 
   it("Cancelar in confirmation modal closes it without clearing selection", async () => {
@@ -189,18 +231,24 @@ describe("Products page", () => {
 
     const checkboxes = screen.getAllByRole("checkbox");
     await user.click(checkboxes[0]);
-    await user.click(screen.getByRole("button", { name: /borrar lista/i }));
+    await user.click(
+      within(getDesktopActionGroup()).getByRole("button", {
+        name: /borrar lista/i,
+      }),
+    );
 
     // Scope to the confirmation dialog
     const dialog = screen.getByRole("dialog", { name: /borrar lista/i });
-    const cancelButton = within(dialog).getByRole("button", { name: /^cancelar$/i });
+    const cancelButton = within(dialog).getByRole("button", {
+      name: /^cancelar$/i,
+    });
     await user.click(cancelButton);
 
     // Modal closed, selection intact
     expect(
       screen.queryByText(/¿Estás seguro que querés borrar toda la lista/i),
     ).not.toBeInTheDocument();
-    expect(screen.getByText("1")).toBeInTheDocument();
+    expect(within(getDesktopActionGroup()).getByText("1")).toBeInTheDocument();
   });
 
   it("Borrar in confirmation modal clears all selections", async () => {
@@ -210,18 +258,34 @@ describe("Products page", () => {
     const checkboxes = screen.getAllByRole("checkbox");
     await user.click(checkboxes[0]);
     await user.click(checkboxes[1]);
-    expect(screen.getByText("2")).toBeInTheDocument();
+    expect(within(getDesktopActionGroup()).getByText("2")).toBeInTheDocument();
 
-    await user.click(screen.getByRole("button", { name: /borrar lista/i }));
+    await user.click(
+      within(getDesktopActionGroup()).getByRole("button", {
+        name: /borrar lista/i,
+      }),
+    );
 
-    // Scope to the confirmation dialog (the tabs row Borrar lista button is outside)
+    // Scope to the confirmation dialog (the action bar Borrar lista button is outside)
     const dialog = screen.getByRole("dialog", { name: /borrar lista/i });
-    const confirmButton = within(dialog).getByRole("button", { name: /borrar lista/i });
+    const confirmButton = within(dialog).getByRole("button", {
+      name: /borrar lista/i,
+    });
     await user.click(confirmButton);
 
     // Selection cleared: counter badge is gone (hidden at 0), Presupuestar and Borrar lista are disabled
-    expect(screen.queryByText("2")).not.toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /presupuestar/i })).toBeDisabled();
-    expect(screen.getByRole("button", { name: /borrar lista/i })).toBeDisabled();
+    expect(
+      within(getDesktopActionGroup()).queryByText("2"),
+    ).not.toBeInTheDocument();
+    expect(
+      within(getDesktopActionGroup()).getByRole("button", {
+        name: /presupuestar/i,
+      }),
+    ).toBeDisabled();
+    expect(
+      within(getDesktopActionGroup()).getByRole("button", {
+        name: /borrar lista/i,
+      }),
+    ).toBeDisabled();
   });
 });
