@@ -11,7 +11,8 @@ const variantClasses: Record<NonNullable<ButtonProps["variant"]>, string> = {
   ghost:
     "text-white hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50",
   hero: "bg-pr-hero-blue text-white hover:bg-pr-hero-blue/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pr-aquamarine",
-  danger: "bg-red-500 text-white hover:bg-red-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-300",
+  danger:
+    "bg-red-500 text-white hover:bg-red-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-300",
 };
 
 const sizeClasses: Record<NonNullable<ButtonProps["size"]>, string> = {
@@ -21,7 +22,7 @@ const sizeClasses: Record<NonNullable<ButtonProps["size"]>, string> = {
 };
 
 const baseClasses =
-  "inline-flex items-center justify-center gap-2 rounded-md font-poppins font-medium transition-colors";
+  "inline-flex items-center justify-center gap-2 rounded-md font-poppins font-medium transition-colors hover:cursor-pointer";
 
 // Applied when disabled regardless of render mode (button, span, or Link).
 // Note: <a>/<Link> elements do not support the `disabled` HTML attribute,
