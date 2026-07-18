@@ -112,6 +112,22 @@ export interface ProductCategoryData {
   products: ProductData[];
 }
 
+// ─── Services page ──────────────────────────────────────────────────────
+export interface ServiceTab {
+  id: string;
+  name: string;
+}
+
+export interface ServiceSection {
+  title: string;
+  description: string;
+}
+
+export interface ServicesPageData {
+  tabs: ServiceTab[];
+  content: Record<string, ServiceSection>;
+}
+
 // ─── UI copy ─────────────────────────────────────────────────────────────
 export interface ModalCopy {
   title: string;
@@ -125,6 +141,10 @@ export interface UICopy {
   // Products — SectionHero
   catalogHeroTitle: string;
   catalogHeroDescription: string;
+  // Services — SectionHero
+  servicesHeroTitle: string;
+  servicesHeroDescription: string;
+  servicesCategoriesLabel: string;
   // Products — modal / buttons
   consultWhatsApp: string;
   clearList: string;
