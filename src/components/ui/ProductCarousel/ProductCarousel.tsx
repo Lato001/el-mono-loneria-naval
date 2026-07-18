@@ -33,7 +33,7 @@ export function ProductCarousel({
       role="tabpanel"
       aria-labelledby={`tab-${id}`}
       className="relative py-8"
-      style={{ scrollMarginTop: 128 }}
+      style={{ scrollMarginTop: "var(--header-h, 76px)" }}
     >
       <h2 className="font-brown text-2xl flex justify-center text-pr-hero-blue pb-10">
         {id}
