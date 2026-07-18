@@ -8,13 +8,13 @@ export function Modal({
   onOpenChange,
   title,
   description,
-  variant = "centered",
+  variant = "sheet",
   children,
   className,
 }: ModalProps) {
   const positionClasses =
     variant === "sheet"
-      ? "inset-x-0 bottom-0 max-h-[85vh] rounded-t-2xl data-[state=open]:animate-modalSheetIn"
+      ? "inset-x-0 bottom-0 max-h-[85vh] rounded-t-2xl data-[state=open]:animate-modalSheetIn md:left-1/2 md:top-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:max-w-md md:rounded-2xl md-data-state-open:animate-fadeIn"
       : "left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 max-w-md rounded-2xl data-[state=open]:animate-fadeIn";
 
   return (
