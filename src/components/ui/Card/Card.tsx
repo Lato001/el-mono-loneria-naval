@@ -30,12 +30,12 @@ export const Card = ({
 
   return (
     <article
-      className={`relative h-120 flex flex-col overflow-hidden rounded-xl border-2 group transition-all duration-200 ease-out hover:-translate-y-1.5 hover:shadow-xl
+      className={`relative flex flex-col overflow-hidden rounded-xl border-2 group transition-all duration-200 ease-out hover:-translate-y-1.5 hover:shadow-xl
       ${selected ? "border-pr-aquamarine ring-2 ring-pr-aquamarine" : "border-sc-ocean-blue/15 bg-white"}
       ${className ?? ""}`}
     >
       {hasImage && (
-        <div className="relative h-64 shrink-0 overflow-hidden">
+        <div className="relative aspect-[4/3] w-full shrink-0 overflow-hidden">
           {badge && (
             <span
               className={`text-black absolute top-4 left-4 z-10 rounded-full px-3 py-1 text-xs font-medium ${badgeClassName ?? "bg-sc-sand"}`}
