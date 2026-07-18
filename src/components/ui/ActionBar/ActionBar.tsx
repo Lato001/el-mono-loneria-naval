@@ -25,28 +25,30 @@ export function ActionBar({
       aria-label={data.ui.actionBarLabel}
       className="fixed inset-x-0 bottom-0 z-30 border-t border-sc-ocean-blue/10 bg-white shadow-[0_-4px_12px_rgba(0,0,0,0.06)] pb-[env(safe-area-inset-bottom)]"
     >
-      <div className="mx-auto flex max-w-295 items-center gap-3 px-4 py-3">
-        <Button
-          variant="danger"
-          size="md"
-          className="min-h-11"
-          onClick={onClear}
-          disabled={presupuestarDisabled}
-          ariaLabel={data.ui.clearListLabel}
-        >
-          {data.ui.clearList}
-        </Button>
-        <Button
-          variant="primary"
-          size="md"
-          className="ml-auto min-h-11"
-          onClick={onPresupuestar}
-          disabled={presupuestarDisabled}
-          ariaLabel={data.ui.quoteCartLabel}
-          badge={badge}
-        >
-          {data.ui.quoteLabel}
-        </Button>
+      <div className="max-w-295 ">
+        <div className="max-w-86 flex justify-between items-center gap-3 px-4 py-3">
+          <Button
+            variant="danger"
+            size="md"
+            className="min-h-11"
+            onClick={onClear}
+            disabled={presupuestarDisabled}
+            ariaLabel={data.ui.clearListLabel}
+          >
+            {data.ui.clearList}
+          </Button>
+          <Button
+            variant="primary"
+            size="md"
+            className="ml-auto min-h-11 "
+            onClick={onPresupuestar}
+            disabled={presupuestarDisabled}
+            ariaLabel={data.ui.quoteCartLabel}
+            badge={badge}
+          >
+            {data.ui.quoteLabel}
+          </Button>
+        </div>
       </div>
     </div>
   );
