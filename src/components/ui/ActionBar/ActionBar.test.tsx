@@ -80,4 +80,26 @@ describe("ActionBar", () => {
     await user.click(borrar);
     expect(onClear).toHaveBeenCalled();
   });
+
+  it("renders selected-count badge on Presupuestar when selectedCount > 0", () => {
+    render(
+      <ActionBar
+        {...defaultProps}
+        selectedCount={4}
+        presupuestarDisabled={false}
+      />,
+    );
+    const presupuestar = screen.getByRole("button", {
+      name: /presupuestar productos seleccionados/i,
+    });
+    expect(presupuestar).toHaveTextContent("4");
+  });
+
+  it("does not render the badge when selectedCount is 0", () => {
+    render(<ActionBar {...defaultProps} selectedCount={0} />);
+    const presupuestar = screen.getByRole("button", {
+      name: /presupuestar productos seleccionados/i,
+    });
+    expect(presupuestar.textContent).not.toMatch(/\b0\b/);
+  });
 });

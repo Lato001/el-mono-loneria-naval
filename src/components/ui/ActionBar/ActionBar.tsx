@@ -1,5 +1,4 @@
 import { Button } from "../Button";
-import { SelectionCounter } from "../SelectionCounter";
 import { data } from "../../../mocks/data";
 import type { ActionBarProps } from "./ActionBar.types";
 
@@ -9,6 +8,8 @@ import type { ActionBarProps } from "./ActionBar.types";
  * z-index: z-30 (above page content, below CatalogTabs z-40, below Modal z-50).
  * Touch target: `min-h-11` (44px) on both buttons — defense-in-depth for
  * accessibility, independent of Button's intrinsic line-height.
+ * Selected-count badge: rendered on the Presupuestar button's upper-right
+ * corner when `selectedCount > 0`.
  */
 export function ActionBar({
   selectedCount,
@@ -16,6 +17,8 @@ export function ActionBar({
   presupuestarDisabled,
   onClear,
 }: ActionBarProps) {
+  const badge = selectedCount > 0 ? selectedCount : undefined;
+
   return (
     <div
       role="region"
@@ -23,7 +26,6 @@ export function ActionBar({
       className="fixed inset-x-0 bottom-0 z-30 md:hidden border-t border-sc-ocean-blue/10 bg-white shadow-[0_-4px_12px_rgba(0,0,0,0.06)] pb-[env(safe-area-inset-bottom)]"
     >
       <div className="mx-auto flex max-w-295 items-center gap-3 px-4 py-3">
-        <SelectionCounter count={selectedCount} />
         <Button
           variant="danger"
           size="md"
@@ -41,6 +43,7 @@ export function ActionBar({
           onClick={onPresupuestar}
           disabled={presupuestarDisabled}
           ariaLabel={data.ui.quoteCartLabel}
+          badge={badge}
         >
           {data.ui.quoteLabel}
         </Button>

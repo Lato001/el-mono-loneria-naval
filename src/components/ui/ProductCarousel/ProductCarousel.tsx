@@ -19,13 +19,12 @@ function FadeInCard({ children }: { children: React.ReactNode }) {
 
 export function ProductCarousel({
   items,
-  ariaLabel,
+  ariaLabel: _ariaLabel,
   id,
   isSelected,
   onToggle,
 }: ProductCarouselProps) {
-  const { scrollRef, activeIndex, totalPages, prev, next, goTo } =
-    useProductCarousel(items.length);
+  const { scrollRef, prev, next } = useProductCarousel(items.length);
 
   return (
     <section
@@ -78,36 +77,6 @@ export function ProductCarousel({
       >
         <IconChevronRight className="h-5 w-5 text-sc-ocean-blue" />
       </button>
-
-      {/* Dots */}
-      <div
-        role="tablist"
-        aria-label={`${ariaLabel} posición`}
-        className="mt-4 flex justify-center gap-2"
-      >
-        {Array.from({ length: totalPages }, (_, i) => (
-          <button
-            key={i}
-            type="button"
-            aria-label={`${data.ui.goToProductLabel} ${i + 1}`}
-            aria-current={i === activeIndex ? "true" : undefined}
-            onClick={() => goTo(i)}
-            className={`min-h-11 min-w-11 flex items-center justify-center rounded-full transition-colors ${
-              i === activeIndex
-                ? "bg-transparent"
-                : "hover:bg-transparent"
-            }`}
-          >
-            <span
-              className={`block h-2.5 w-2.5 rounded-full transition-colors ${
-                i === activeIndex
-                  ? "bg-pr-aquamarine"
-                  : "bg-sc-ocean-blue/20 group-hover:bg-sc-ocean-blue/40"
-              }`}
-            />
-          </button>
-        ))}
-      </div>
     </section>
   );
 }

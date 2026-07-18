@@ -42,9 +42,21 @@ describe("DesktopActionGroup", () => {
     expect(borrar.className).toContain("bg-red-500");
   });
 
-  it("renders SelectionCounter showing count when selectedCount > 0", () => {
+  it("renders selected-count badge on Presupuestar button when selectedCount > 0", () => {
     render(<DesktopActionGroup {...defaultProps} selectedCount={3} presupuestarDisabled={false} />);
-    expect(screen.getByText("3")).toBeInTheDocument();
+    const presupuestar = screen.getByRole("button", {
+      name: /presupuestar productos seleccionados/i,
+    });
+    expect(presupuestar).toHaveTextContent("3");
+  });
+
+  it("does not render the badge when selectedCount is 0", () => {
+    render(<DesktopActionGroup {...defaultProps} selectedCount={0} />);
+    const presupuestar = screen.getByRole("button", {
+      name: /presupuestar productos seleccionados/i,
+    });
+    // Badge text "0" should not be inside the button.
+    expect(presupuestar.textContent).not.toMatch(/\b0\b/);
   });
 
   it("propagates disabled and calls handlers on click", async () => {
