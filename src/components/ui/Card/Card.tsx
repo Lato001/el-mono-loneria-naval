@@ -1,4 +1,8 @@
 ﻿import { IconPlus, IconX } from "@tabler/icons-react";
+import { data } from "../../../mocks/data";
+
+/* KEEP IN SYNC with measured height of Broche Lona Macho Bronze Blanco at 375px */
+export const MOBILE_CARD_HEIGHT = "351px";
 
 export interface CardProps {
   title?: string;
@@ -29,12 +33,12 @@ export const Card = ({
 
   return (
     <article
-      className={`relative h-120 flex flex-col overflow-hidden rounded-xl border-2 group transition-all duration-200 ease-out hover:-translate-y-1.5 hover:shadow-xl
+      className={`relative flex flex-col overflow-hidden rounded-xl border-2 transition-all duration-200 ease-out hover:-translate-y-1.5 hover:shadow-xl h-[351px] md:h-auto group
       ${selected ? "border-pr-aquamarine ring-2 ring-pr-aquamarine" : "border-sc-ocean-blue/15 bg-white"}
       ${className ?? ""}`}
     >
       {hasImage && (
-        <div className="relative h-64 shrink-0 overflow-hidden">
+        <div className="relative aspect-[4/3] w-full shrink-0 overflow-hidden">
           {badge && (
             <span
               className={`text-black absolute top-4 left-4 z-10 rounded-full px-3 py-1 text-xs font-medium ${badgeClassName ?? "bg-sc-sand"}`}
@@ -62,10 +66,10 @@ export const Card = ({
 
       {isInteractive && (
         <label
-          className={`absolute top-3 right-3 z-20 inline-flex h-8 items-center overflow-hidden rounded-full border-2 border-sc-ocean-blue bg-sc-ocean-blue transition-all duration-200 ease-out cursor-pointer hover:brightness-110 ${
+          className={`absolute top-3 right-3 z-20 inline-flex h-11 items-center overflow-hidden rounded-full border-2 border-sc-ocean-blue bg-sc-ocean-blue transition-all duration-200 ease-out cursor-pointer hover:brightness-110 ${
             selected
-              ? "justify-start gap-2 pl-1 pr-3"
-              : "w-8 justify-center gap-0"
+              ? "w-auto justify-start gap-2 pl-1 pr-3"
+              : "w-11 justify-center gap-0"
           }`}
         >
           <input
@@ -92,7 +96,7 @@ export const Card = ({
               selected ? "max-w-[7.5rem] opacity-100" : "max-w-0 opacity-0"
             }`}
           >
-            Seleccionado
+            {data.ui.selectedLabel}
           </span>
         </label>
       )}
@@ -100,13 +104,13 @@ export const Card = ({
       {hasContent && (
         <div className="flex flex-1 flex-col justify-between p-6">
           {title && (
-            <h3 className="mb-2 text-2xl font-poppins font-bold text-sc-ocean-blue">
+            <h3 className="mb-2 line-clamp-1 text-2xl font-poppins font-bold text-sc-ocean-blue">
               {title}
             </h3>
           )}
 
           {description && (
-            <p className="text-base font-poppins leading-relaxed text-sc-ocean-blue/70">
+            <p className="line-clamp-2 text-base font-poppins leading-relaxed text-sc-ocean-blue/70">
               {description}
             </p>
           )}

@@ -1,46 +1,36 @@
-import sauledaSrc from "../../../assets/logos/brands/sauleda-logo.svg";
-import sunbrellaSrc from "../../../assets/logos/brands/sunbrella-logo.svg";
-import achillesSrc from "../../../assets/logos/brands/achilles-logo.svg";
-import coatsSrc from "../../../assets/logos/brands/coats-logo.svg";
-import ykkSrc from "../../../assets/logos/brands/ykk-logo.svg";
+import { data } from "../../../mocks/data";
+import type { MarqueeItem } from "./Marquee.types";
 
 import { Marquee } from "./";
+
+// ─── Brand logos (auto-discovered via Vite glob) ───────────────────────
+const brandImages = import.meta.glob(
+  "../../../assets/logos/brands/*",
+  { eager: true, import: "default" },
+) as Record<string, string>;
+
+const brandImageMap: Record<string, string> = Object.fromEntries(
+  Object.entries(brandImages).map(([path, url]) => [
+    path.split("/").pop()!.replace(/\.[^.]+$/, ""),
+    url,
+  ]),
+);
+
+const brandItems: MarqueeItem[] = data.brands.map((b) => ({
+  id: b.id,
+  src: brandImageMap[b.id],
+  alt: b.alt,
+  link: b.link,
+}));
 
 interface BrandMarqueeProps {
   className?: string;
 }
 export function BrandMarquee({ className }: BrandMarqueeProps) {
-  const BRANDS = [
-    {
-      id: "sauleda",
-      src: sauledaSrc,
-      alt: "Sauleda",
-      link: "https://sauleda.com/",
-    },
-    {
-      id: "ykk",
-      src: ykkSrc,
-      alt: "YKK",
-      link: "https://argentina.ykkamericas.com/",
-    },
-    {
-      id: "sunbrella",
-      src: sunbrellaSrc,
-      alt: "Sunbrella",
-      link: "https://global.sunbrella.com",
-    },
-    {
-      id: "coats",
-      src: coatsSrc,
-      alt: "Coats",
-      link: "https://www.coats.com/",
-    },
-    { id: "achilles", src: achillesSrc, alt: "Achilles" },
-  ];
   return (
     <Marquee
       className={`${className}`}
-      items={BRANDS}
+      items={brandItems}
       speed={10}
       pauseOnHover={false}
       renderItem={(item) => (

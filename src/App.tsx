@@ -3,7 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import { Footer, Header } from "./components/layout";
 import { AboutUs, Contact, Faq, Home, Products, Services } from "./pages";
 import { PATHS } from "./routes/routes";
-import { ScrollToTop } from "./components/ui/Button";
+import { WhatsappButton } from "./components/ui/Button";
 
 export default function App() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -24,7 +24,7 @@ export default function App() {
       >
         <Header />
       </div>
-      <ScrollToTop />
+      <WhatsappButton />
       <Routes>
         <Route path={PATHS.HOME} element={<Home />} />
         <Route path={PATHS.PRODUCTS} element={<Products />} />

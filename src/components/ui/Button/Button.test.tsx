@@ -31,7 +31,7 @@ describe('Button', () => {
         <Button variant="primary">Btn</Button>
       </MemoryRouter>,
     );
-    expect(screen.getByRole('button')).toHaveClass('bg-white');
+    expect(screen.getByRole('button')).toHaveClass('bg-sc-ocean-blue');
 
     rerender(
       <MemoryRouter>

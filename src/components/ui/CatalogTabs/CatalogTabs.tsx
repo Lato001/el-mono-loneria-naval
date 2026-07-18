@@ -1,17 +1,12 @@
 import { useCallback, useRef, type KeyboardEvent } from "react";
-import { Button } from "../Button";
-import { SelectionCounter } from "../SelectionCounter";
+import { data } from "../../../mocks/data";
 import type { CatalogTabsProps } from "./CatalogTabs.types";
 
 export function CatalogTabs({
   categories,
   activeId,
   onSelect,
-  topOffset = 56,
-  selectedCount,
-  onPresupuestar,
-  presupuestarDisabled,
-  onClear,
+  topOffset = "var(--header-h, 76px)",
 }: CatalogTabsProps) {
   const tablistRef = useRef<HTMLDivElement>(null);
 
@@ -56,13 +51,13 @@ export function CatalogTabs({
     <div
       ref={tablistRef}
       role="tablist"
-      aria-label="Categorías de productos"
+      aria-label={data.ui.categoriesLabel}
       className="sticky z-40 border-b border-sc-ocean-blue/10 bg-sc-chalk"
       style={{ top: topOffset }}
       onKeyDown={handleKeyDown}
     >
-      <div className="mx-auto flex max-w-295 items-center gap-3">
-        <div className="flex flex-1 gap-0 overflow-x-auto px-6">
+      <div className="mx-auto flex max-w-295 items-center gap-3 overflow-x-auto scrollbar-hide">
+        <div className="flex shrink-0 gap-0 px-6">
           {categories.map((tab) => {
             const isActive = tab.id === activeId;
             return (
@@ -84,27 +79,6 @@ export function CatalogTabs({
               </button>
             );
           })}
-        </div>
-
-        <div className="flex shrink-0 items-center gap-2 pr-6">
-          <SelectionCounter count={selectedCount} />
-          <Button
-            variant="danger"
-            size="sm"
-            onClick={onClear}
-            disabled={presupuestarDisabled}
-            ariaLabel="Borrar lista de productos seleccionados"
-          >
-            Borrar lista
-          </Button>
-          <Button
-            size="sm"
-            onClick={onPresupuestar}
-            disabled={presupuestarDisabled}
-            ariaLabel="Presupuestar productos seleccionados"
-          >
-            Presupuestar
-          </Button>
         </div>
       </div>
     </div>
