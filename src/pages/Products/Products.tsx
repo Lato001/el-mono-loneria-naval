@@ -4,6 +4,8 @@ import { useSessionSelection } from "../../hooks/useSessionSelection";
 import { buildWhatsAppUrl } from "./whatsappUrl";
 import { CatalogHero } from "../../components/ui/CatalogHero";
 import { CatalogTabs } from "../../components/ui/CatalogTabs";
+import { ActionBar } from "../../components/ui/ActionBar";
+import { DesktopActionGroup } from "../../components/ui/DesktopActionGroup";
 import { Modal } from "../../components/ui/Modal";
 import { Button } from "../../components/ui/Button";
 import { ProductCarousel } from "../../components/ui/ProductCarousel";
@@ -176,11 +178,14 @@ export function Products() {
         description={data.ui.catalogHeroDescription}
       />
 
-      <div id="tabs">
+      <div id="tabs" className="pb-28">
         <CatalogTabs
           categories={tabs}
           activeId={activeCategoryId ?? undefined}
           onSelect={handleTabSelect}
+        />
+
+        <DesktopActionGroup
           selectedCount={count}
           onPresupuestar={handleOpenModal}
           onClear={handleOpenClearModal}
@@ -198,6 +203,13 @@ export function Products() {
           />
         ))}
       </div>
+
+      <ActionBar
+        selectedCount={count}
+        onPresupuestar={handleOpenModal}
+        onClear={handleOpenClearModal}
+        presupuestarDisabled={count === 0}
+      />
 
       <Modal
         open={isModalVisible}

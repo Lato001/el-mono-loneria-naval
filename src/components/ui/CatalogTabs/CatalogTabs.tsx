@@ -1,6 +1,4 @@
 import { useCallback, useRef, type KeyboardEvent } from "react";
-import { Button } from "../Button";
-import { SelectionCounter } from "../SelectionCounter";
 import { data } from "../../../mocks/data";
 import type { CatalogTabsProps } from "./CatalogTabs.types";
 
@@ -9,10 +7,6 @@ export function CatalogTabs({
   activeId,
   onSelect,
   topOffset = "var(--header-h, 76px)",
-  selectedCount,
-  onPresupuestar,
-  presupuestarDisabled,
-  onClear,
 }: CatalogTabsProps) {
   const tablistRef = useRef<HTMLDivElement>(null);
 
@@ -85,29 +79,6 @@ export function CatalogTabs({
               </button>
             );
           })}
-        </div>
-
-        <div className="ml-auto flex shrink-0 items-center gap-2 pr-6">
-          <SelectionCounter count={selectedCount} />
-          <Button
-            variant="danger"
-            size="md"
-            className="md:px-3 md:py-1.5 md:text-sm"
-            onClick={onClear}
-            disabled={presupuestarDisabled}
-            ariaLabel={data.ui.clearListLabel}
-          >
-            {data.ui.clearList}
-          </Button>
-          <Button
-            size="md"
-            className="md:px-3 md:py-1.5 md:text-sm"
-            onClick={onPresupuestar}
-            disabled={presupuestarDisabled}
-            ariaLabel={data.ui.quoteCartLabel}
-          >
-            {data.ui.quoteLabel}
-          </Button>
         </div>
       </div>
     </div>
