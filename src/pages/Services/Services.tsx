@@ -7,7 +7,7 @@ import {
   SectionWrapper,
 } from "../../components/ui";
 import { data } from "../../mocks/data";
-import type { ServiceSection } from "../../mocks/types";
+// import type { ServiceSection } from "../../mocks/types";
 import herobg from "../../assets/backgrounds/formas-olas-sec.svg";
 
 /**
@@ -29,11 +29,11 @@ export function Services() {
   // The data is keyed by tab id, but TypeScript narrows `content` to
   // the specific keys from the literal object, so we cast to the index
   // signature for the lookup.
-  const contentByTab = data.servicesPage.content as Record<
-    string,
-    ServiceSection
-  >;
-  const activeContent = contentByTab[activeTab.id];
+  // const contentByTab = data.servicesPage.content as Record<
+  //   string,
+  //   ServiceSection
+  // >;
+  // const activeContent = contentByTab[activeTab.id];
 
   return (
     <>
