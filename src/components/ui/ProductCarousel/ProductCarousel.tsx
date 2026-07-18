@@ -19,7 +19,6 @@ function FadeInCard({ children }: { children: React.ReactNode }) {
 
 export function ProductCarousel({
   items,
-  ariaLabel: _ariaLabel,
   id,
   isSelected,
   onToggle,
