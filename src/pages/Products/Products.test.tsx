@@ -30,12 +30,13 @@ function renderProducts() {
   );
 }
 
-// Both ActionBar and DesktopActionGroup render Presupuestar/Borrar/counter,
-// so queries must be scoped to avoid "found multiple elements" errors.
+// ActionBar renders Presupuestar/Borrar/counter, so queries must be scoped
+// to avoid "found multiple elements" errors (e.g. Borrar lista button in
+// the action bar vs. the same name in the confirmation modal).
 // `hidden: true` because Radix sets aria-hidden on page content while a
-// Dialog is open, and the group is reachable for assertions anyway.
-const getDesktopActionGroup = () =>
-  screen.getByRole("group", {
+// Dialog is open, and the bar is reachable for assertions anyway.
+const getActionBar = () =>
+  screen.getByRole("region", {
     name: /Acciones del presupuesto/i,
     hidden: true,
   });
@@ -62,7 +63,7 @@ describe("Products page", () => {
 
   it("Presupuestar button is disabled when no products are selected", () => {
     renderProducts();
-    const button = within(getDesktopActionGroup()).getByRole("button", {
+    const button = within(getActionBar()).getByRole("button", {
       name: /presupuestar/i,
     });
     expect(button).toBeDisabled();
@@ -75,7 +76,7 @@ describe("Products page", () => {
     const checkboxes = screen.getAllByRole("checkbox");
     await user.click(checkboxes[0]);
 
-    const desktopGroup = getDesktopActionGroup();
+    const desktopGroup = getActionBar();
     const button = within(desktopGroup).getByRole("button", {
       name: /presupuestar/i,
     });
@@ -90,7 +91,7 @@ describe("Products page", () => {
     const checkboxes = screen.getAllByRole("checkbox");
     await user.click(checkboxes[0]);
     await user.click(
-      within(getDesktopActionGroup()).getByRole("button", {
+      within(getActionBar()).getByRole("button", {
         name: /presupuestar/i,
       }),
     );
@@ -107,7 +108,7 @@ describe("Products page", () => {
     await user.click(checkboxes[0]);
     await user.click(checkboxes[1]);
     await user.click(
-      within(getDesktopActionGroup()).getByRole("button", {
+      within(getActionBar()).getByRole("button", {
         name: /presupuestar/i,
       }),
     );
@@ -126,7 +127,7 @@ describe("Products page", () => {
       within(dialog).queryByText("Broche Casco Bacan"),
     ).not.toBeInTheDocument();
     // Counter should show 1
-    expect(within(getDesktopActionGroup()).getByText("1")).toBeInTheDocument();
+    expect(within(getActionBar()).getByText("1")).toBeInTheDocument();
   });
 
   it("Vaciar clears all selection and closes modal", async () => {
@@ -136,7 +137,7 @@ describe("Products page", () => {
     const checkboxes = screen.getAllByRole("checkbox");
     await user.click(checkboxes[0]);
     await user.click(
-      within(getDesktopActionGroup()).getByRole("button", {
+      within(getActionBar()).getByRole("button", {
         name: /presupuestar/i,
       }),
     );
@@ -150,7 +151,7 @@ describe("Products page", () => {
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
     // Presupuestar is disabled again (count = 0)
     expect(
-      within(getDesktopActionGroup()).getByRole("button", {
+      within(getActionBar()).getByRole("button", {
         name: /presupuestar/i,
       }),
     ).toBeDisabled();
@@ -163,7 +164,7 @@ describe("Products page", () => {
     const checkboxes = screen.getAllByRole("checkbox");
     await user.click(checkboxes[0]);
     await user.click(
-      within(getDesktopActionGroup()).getByRole("button", {
+      within(getActionBar()).getByRole("button", {
         name: /presupuestar/i,
       }),
     );
@@ -182,7 +183,7 @@ describe("Products page", () => {
     const checkboxes = screen.getAllByRole("checkbox");
     await user.click(checkboxes[0]);
     await user.click(
-      within(getDesktopActionGroup()).getByRole("button", {
+      within(getActionBar()).getByRole("button", {
         name: /presupuestar/i,
       }),
     );
@@ -196,7 +197,7 @@ describe("Products page", () => {
 
   it("renders the 'Borrar lista' button (red, disabled when no selection)", () => {
     renderProducts();
-    const clearButton = within(getDesktopActionGroup()).getByRole("button", {
+    const clearButton = within(getActionBar()).getByRole("button", {
       name: /borrar lista/i,
     });
     expect(clearButton).toBeInTheDocument();
@@ -211,10 +212,10 @@ describe("Products page", () => {
     const checkboxes = screen.getAllByRole("checkbox");
     await user.click(checkboxes[0]);
     await user.click(checkboxes[1]);
-    expect(within(getDesktopActionGroup()).getByText("2")).toBeInTheDocument();
+    expect(within(getActionBar()).getByText("2")).toBeInTheDocument();
 
     await user.click(
-      within(getDesktopActionGroup()).getByRole("button", {
+      within(getActionBar()).getByRole("button", {
         name: /borrar lista/i,
       }),
     );
@@ -227,7 +228,7 @@ describe("Products page", () => {
     ).toBeInTheDocument();
 
     // Selection is still intact (counter still shows 2)
-    expect(within(getDesktopActionGroup()).getByText("2")).toBeInTheDocument();
+    expect(within(getActionBar()).getByText("2")).toBeInTheDocument();
   });
 
   it("Cancelar in confirmation modal closes it without clearing selection", async () => {
@@ -237,7 +238,7 @@ describe("Products page", () => {
     const checkboxes = screen.getAllByRole("checkbox");
     await user.click(checkboxes[0]);
     await user.click(
-      within(getDesktopActionGroup()).getByRole("button", {
+      within(getActionBar()).getByRole("button", {
         name: /borrar lista/i,
       }),
     );
@@ -253,7 +254,7 @@ describe("Products page", () => {
     expect(
       screen.queryByText(/¿Estás seguro que querés borrar toda la lista/i),
     ).not.toBeInTheDocument();
-    expect(within(getDesktopActionGroup()).getByText("1")).toBeInTheDocument();
+    expect(within(getActionBar()).getByText("1")).toBeInTheDocument();
   });
 
   it("Borrar in confirmation modal clears all selections", async () => {
@@ -263,10 +264,10 @@ describe("Products page", () => {
     const checkboxes = screen.getAllByRole("checkbox");
     await user.click(checkboxes[0]);
     await user.click(checkboxes[1]);
-    expect(within(getDesktopActionGroup()).getByText("2")).toBeInTheDocument();
+    expect(within(getActionBar()).getByText("2")).toBeInTheDocument();
 
     await user.click(
-      within(getDesktopActionGroup()).getByRole("button", {
+      within(getActionBar()).getByRole("button", {
         name: /borrar lista/i,
       }),
     );
@@ -280,15 +281,15 @@ describe("Products page", () => {
 
     // Selection cleared: counter badge is gone (hidden at 0), Presupuestar and Borrar lista are disabled
     expect(
-      within(getDesktopActionGroup()).queryByText("2"),
+      within(getActionBar()).queryByText("2"),
     ).not.toBeInTheDocument();
     expect(
-      within(getDesktopActionGroup()).getByRole("button", {
+      within(getActionBar()).getByRole("button", {
         name: /presupuestar/i,
       }),
     ).toBeDisabled();
     expect(
-      within(getDesktopActionGroup()).getByRole("button", {
+      within(getActionBar()).getByRole("button", {
         name: /borrar lista/i,
       }),
     ).toBeDisabled();
