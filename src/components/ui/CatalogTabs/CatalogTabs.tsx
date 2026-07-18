@@ -8,7 +8,7 @@ export function CatalogTabs({
   categories,
   activeId,
   onSelect,
-  topOffset = 56,
+  topOffset = "var(--header-h, 76px)",
   selectedCount,
   onPresupuestar,
   presupuestarDisabled,

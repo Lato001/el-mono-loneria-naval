@@ -35,6 +35,7 @@ export function Header() {
   const isActive = (path: string) => location.pathname === path;
 
   return (
+    // KEEP IN SYNC with --header-h in src/index.css
     <header className="bg-sc-ocean-blue min-h-14">
       <div className="m-auto flex items-center justify-between px-4 py-2.5 max-w-7xl sm:px-6">
         <Link to={PATHS.HOME} className="shrink-0">

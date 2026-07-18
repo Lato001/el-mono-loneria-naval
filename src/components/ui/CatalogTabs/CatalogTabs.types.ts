@@ -7,7 +7,7 @@ export interface CatalogTabsProps {
   categories: Tab[];
   activeId?: string;
   onSelect?: (id: string) => void;
-  topOffset?: number;
+  topOffset?: string | number;
   selectedCount: number;
   onPresupuestar: () => void;
   presupuestarDisabled: boolean;
