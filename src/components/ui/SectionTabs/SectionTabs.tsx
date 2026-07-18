@@ -7,6 +7,7 @@ export function SectionTabs({
   activeId,
   onSelect,
   topOffset = "var(--header-h, 76px)",
+  ariaLabel = data.ui.categoriesLabel,
 }: SectionTabsProps) {
   const tablistRef = useRef<HTMLDivElement>(null);
 
@@ -51,7 +52,7 @@ export function SectionTabs({
     <div
       ref={tablistRef}
       role="tablist"
-      aria-label={data.ui.categoriesLabel}
+      aria-label={ariaLabel}
       className="sticky z-40 border-b border-sc-ocean-blue/10 bg-sc-chalk"
       style={{ top: topOffset }}
       onKeyDown={handleKeyDown}
