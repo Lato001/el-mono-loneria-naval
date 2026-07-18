@@ -3,7 +3,7 @@ export interface Tab {
   name: string;
 }
 
-export interface CatalogTabsProps {
+export interface SectionTabsProps {
   categories: Tab[];
   activeId?: string;
   onSelect?: (id: string) => void;

@@ -122,7 +122,7 @@ export interface UICopy {
   // Header CTAs
   ctaContactDesktop: string;
   ctaContactMobile: string;
-  // Products — CatalogHero
+  // Products — SectionHero
   catalogHeroTitle: string;
   catalogHeroDescription: string;
   // Products — modal / buttons
