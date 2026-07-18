@@ -193,4 +193,34 @@ describe("CatalogTabs", () => {
     await user.click(screen.getByRole("button", { name: /borrar lista/i }));
     expect(onClear).toHaveBeenCalled();
   });
+
+  it("renders action buttons with mobile-md / desktop-sm responsive sizing (md:px-3)", () => {
+    render(
+      <CatalogTabs
+        categories={categories}
+        selectedCount={2}
+        onPresupuestar={vi.fn()}
+        onClear={vi.fn()}
+        presupuestarDisabled={false}
+      />,
+    );
+
+    const presBtn = screen.getByRole("button", { name: /presupuestar/i });
+    expect(presBtn.className).toMatch(/\bmd:px-3\b/);
+    expect(presBtn.className).toMatch(/\bmd:py-1\.5\b/);
+    expect(presBtn.className).toMatch(/\bmd:text-sm\b/);
+
+    const clearBtn = screen.getByRole("button", { name: /borrar lista/i });
+    expect(clearBtn.className).toMatch(/\bmd:px-3\b/);
+  });
+
+  it("wraps the action group in ml-auto for right-alignment at md+", () => {
+    const { container } = render(
+      <CatalogTabs categories={categories} {...defaultProps} />,
+    );
+
+    const actionGroup = container.querySelector(".ml-auto");
+    expect(actionGroup).not.toBeNull();
+    expect(actionGroup!.className).toContain("shrink-0");
+  });
 });

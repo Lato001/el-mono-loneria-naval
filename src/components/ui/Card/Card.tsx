@@ -63,7 +63,7 @@ export const Card = ({
 
       {isInteractive && (
         <label
-          className={`absolute top-3 right-3 z-20 inline-flex h-8 items-center overflow-hidden rounded-full border-2 border-sc-ocean-blue bg-sc-ocean-blue transition-all duration-200 ease-out cursor-pointer hover:brightness-110 ${
+          className={`absolute top-3 right-3 z-20 inline-flex h-11 items-center overflow-hidden rounded-full border-2 border-sc-ocean-blue bg-sc-ocean-blue transition-all duration-200 ease-out cursor-pointer hover:brightness-110 ${
             selected
               ? "justify-start gap-2 pl-1 pr-3"
               : "w-8 justify-center gap-0"
