@@ -38,24 +38,26 @@ export function FaqCategoryGrid({
     <div
       role="region"
       aria-label="Categorías de preguntas frecuentes"
-      className={`grid grid-cols-2 gap-x-6 gap-y-10 md:grid-cols-4 ${className ?? ""}`}
+      className={`rounded-2xl bg-pr-aquamarine/[0.08] p-8 md:p-10 ${className ?? ""}`}
     >
-      {categories.map((cat) => (
-        <div
-          key={cat.id}
-          className="flex flex-col items-center gap-3 text-center"
-        >
-          <img
-            src={cat.icon}
-            alt={cat.label}
-            className="h-16 w-16 object-contain"
-            loading="lazy"
-          />
-          <span className="font-poppins text-sm font-semibold uppercase tracking-[0.15em] text-pr-aquamarine">
-            {cat.label}
-          </span>
-        </div>
-      ))}
+      <div className="grid grid-cols-2 gap-x-6 gap-y-10 md:grid-cols-4">
+        {categories.map((cat) => (
+          <div
+            key={cat.id}
+            className="flex flex-col items-center gap-3 text-center"
+          >
+            <img
+              src={cat.icon}
+              alt={cat.label}
+              className="h-16 w-16 object-contain"
+              loading="lazy"
+            />
+            <span className="font-poppins text-sm font-semibold uppercase tracking-[0.15em] text-pr-aquamarine">
+              {cat.label}
+            </span>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
