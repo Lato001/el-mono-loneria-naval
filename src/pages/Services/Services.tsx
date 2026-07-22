@@ -1,13 +1,16 @@
 import { useState } from "react";
-import { SectionHero, SectionTabs, SectionWrapper, RotatingCard } from "../../components/ui";
+import {
+  RotatingCard,
+  SectionTabs,
+  SectionWrapper,
+} from "../../components/ui";
 import { data } from "../../mocks/data";
 import type { ServiceSection } from "../../mocks/types";
-import herobg from "../../assets/backgrounds/formas-olas-sec.svg";
 
 /**
- * Services page — hero + sticky category tabs + a content area
- * (SectionWrapper + RotatingCard) that swaps when the active tab changes.
- * The first tab is active on initial render.
+ * Services page — page-level SectionWrapper (h1) for the hero copy,
+ * the sticky SectionTabs row, and a content SectionWrapper (h2) whose
+ * title and content swap with the active tab. The first tab is the default.
  */
 export function Services() {
   const [activeId, setActiveId] = useState<string>(
@@ -23,11 +26,18 @@ export function Services() {
 
   return (
     <>
-      <SectionHero
+      <SectionWrapper
+        eyebrow="Servicios"
         title={data.ui.servicesHeroTitle}
-        img={herobg}
-        description={data.ui.servicesHeroDescription}
-      />
+        theme="light"
+        titlesAlign="start"
+        headingLevel="h1"
+      >
+        <p className="mb-8 max-w-2xl font-poppins text-base leading-relaxed text-sc-ocean-blue/70">
+          {data.ui.servicesHeroDescription}
+        </p>
+      </SectionWrapper>
+
       <SectionTabs
         categories={data.servicesPage.tabs}
         activeId={activeTab.id}
@@ -35,7 +45,12 @@ export function Services() {
         ariaLabel={data.ui.servicesCategoriesLabel}
       />
 
-      <SectionWrapper eyebrow="Servicios" title={activeTab.name} theme="light">
+      <SectionWrapper
+        title={activeTab.name}
+        theme="light"
+        titlesAlign="start"
+        headingLevel="h2"
+      >
         <RotatingCard items={activeContent.items} />
       </SectionWrapper>
     </>

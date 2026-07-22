@@ -23,7 +23,7 @@ export function ProductCarousel({
   isSelected,
   onToggle,
 }: ProductCarouselProps) {
-  const { scrollRef, prev, next } = useProductCarousel(items.length);
+  const { scrollRef, prev, next } = useProductCarousel();
 
   return (
     <section
