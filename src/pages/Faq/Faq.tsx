@@ -30,12 +30,17 @@ export function Faq() {
 
       <div className="flex flex-col gap-12">
         {bubbles.map((bubble, index) => (
-          <FaqBubble
-            key={bubble.id}
-            question={bubble.q}
-            answer={bubble.a}
-            align={aligns[index]}
-          />
+          <SectionWrapper
+            title={bubble.category}
+            titlesAlign={faqSection.titlesAlign}
+          >
+            <FaqBubble
+              key={bubble.id}
+              question={bubble.q}
+              answer={bubble.a}
+              align={aligns[index]}
+            />
+          </SectionWrapper>
         ))}
       </div>
     </SectionWrapper>
