@@ -21,7 +21,7 @@ function renderServices() {
 describe("Services page", () => {
   const contentByTab = data.servicesPage.content as Record<string, ServiceSection>;
 
-  it("renders the hero with the services title and description", () => {
+  it("renders the page-level heading (h1) with the services title and description", () => {
     renderServices();
     expect(
       screen.getByRole("heading", { level: 1, name: data.ui.servicesHeroTitle }),
