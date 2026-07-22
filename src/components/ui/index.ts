@@ -14,3 +14,4 @@ export * from './SelectionCounter';
 export * from './ActionBar';
 export * from './RotatingCard';
 export * from './FaqBubble';
+export * from './FaqCategoryGrid';
