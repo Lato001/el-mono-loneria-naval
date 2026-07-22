@@ -1,4 +1,5 @@
-export interface CatalogHeroProps {
+export interface SectionHeroProps {
+  img? : string;
   title: string;
   description?: string;
   ctaLabel?: string;

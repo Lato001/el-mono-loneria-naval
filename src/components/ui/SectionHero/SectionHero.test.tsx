@@ -1,18 +1,18 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { CatalogHero } from "./CatalogHero";
+import { SectionHero } from "./SectionHero";
 
-describe("CatalogHero", () => {
+describe("SectionHero", () => {
   it("renders title", () => {
     render(
-      <CatalogHero title="Nuestros productos" ctaLabel="Ver catálogo" ctaTargetId="tabs" />,
+      <SectionHero title="Nuestros productos" ctaLabel="Ver catálogo" ctaTargetId="tabs" />,
     );
     expect(screen.getByRole("heading")).toHaveTextContent("Nuestros productos");
   });
 
   it("renders description when provided", () => {
     render(
-      <CatalogHero
+      <SectionHero
         title="Productos"
         description="Explorá nuestro catálogo"
         ctaLabel="Ver"
@@ -24,7 +24,7 @@ describe("CatalogHero", () => {
 
   it("renders CTA button with correct label", () => {
     render(
-      <CatalogHero title="Productos" ctaLabel="Ver catálogo" ctaTargetId="tabs" />,
+      <SectionHero title="Productos" ctaLabel="Ver catálogo" ctaTargetId="tabs" />,
     );
     expect(screen.getByText("Ver catálogo")).toBeInTheDocument();
   });
@@ -39,7 +39,7 @@ describe("CatalogHero", () => {
     document.body.appendChild(target);
 
     render(
-      <CatalogHero title="Productos" ctaLabel="Ver catálogo" ctaTargetId="tabs" />,
+      <SectionHero title="Productos" ctaLabel="Ver catálogo" ctaTargetId="tabs" />,
     );
 
     await user.click(screen.getByText("Ver catálogo"));
@@ -49,7 +49,7 @@ describe("CatalogHero", () => {
   });
 
   it("does not render the CTA button when ctaLabel is omitted", () => {
-    render(<CatalogHero title="Nuestros productos" description="Sin CTA" />);
+    render(<SectionHero title="Nuestros productos" description="Sin CTA" />);
     expect(screen.queryByRole("button")).not.toBeInTheDocument();
   });
 });

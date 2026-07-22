@@ -1,13 +1,14 @@
 import { useCallback, useRef, type KeyboardEvent } from "react";
 import { data } from "../../../mocks/data";
-import type { CatalogTabsProps } from "./CatalogTabs.types";
+import type { SectionTabsProps } from "./SectionTabs.types";
 
-export function CatalogTabs({
+export function SectionTabs({
   categories,
   activeId,
   onSelect,
   topOffset = "var(--header-h, 76px)",
-}: CatalogTabsProps) {
+  ariaLabel = data.ui.categoriesLabel,
+}: SectionTabsProps) {
   const tablistRef = useRef<HTMLDivElement>(null);
 
   const handleKeyDown = useCallback(
@@ -51,7 +52,7 @@ export function CatalogTabs({
     <div
       ref={tablistRef}
       role="tablist"
-      aria-label={data.ui.categoriesLabel}
+      aria-label={ariaLabel}
       className="sticky z-40 border-b border-sc-ocean-blue/10 bg-sc-chalk"
       style={{ top: topOffset }}
       onKeyDown={handleKeyDown}
