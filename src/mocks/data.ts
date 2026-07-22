@@ -43,6 +43,7 @@ import type {
   ReviewsSection,
   Section,
   SectionsGroup,
+  ServicesPageData,
   SplitCardData,
   UICopy,
 } from "./types";
@@ -169,6 +170,10 @@ export const data = {
     catalogHeroTitle: "Nuestros productos",
     catalogHeroDescription:
       "Explorá nuestra selección de artículos náuticos: broches, caballetes, cierres e hilos de la más alta calidad para tu embarcación.",
+    servicesHeroTitle: "Nuestros servicios",
+    servicesHeroDescription:
+      "TODO: replace with real content — descripción general de los servicios que ofrece El Mono (lonas, capotas, cerramientos, etc.).",
+    servicesCategoriesLabel: "Categorías de servicios",
     consultWhatsApp: "Consultar por WhatsApp",
     clearList: "Vaciar lista",
     keepBrowsing: "Seguir viendo",
@@ -370,6 +375,48 @@ export const data = {
       },
     ] satisfies ProductCategoryData[],
   },
+
+  // ─── Services page ──────────────────────────────────────────────────
+  servicesPage: {
+    tabs: [
+      { id: "capotas", name: "Capotas" },
+      { id: "cerramientos", name: "Cerramientos" },
+      { id: "tonos", name: "Tonos" },
+    ],
+    content: {
+      capotas: {
+        title: "Capotas para embarcaciones",
+        // TODO: replace with real content
+        description:
+          "Diseño y confección de capotas personalizadas para embarcaciones, garantizando ajuste perfecto y resistencia a la intemperie.",
+        items: [
+          { id: "capotas-rigida", title: "Capota rígida", description: "TODO: descripción capota rígida" },
+          { id: "capotas-semirrigida", title: "Capota semirrígida", description: "TODO: descripción capota semirrígida" },
+          { id: "capotas-lona", title: "Capota de lona", description: "TODO: descripción capota de lona" },
+        ],
+      },
+      cerramientos: {
+        title: "Cerramientos",
+        // TODO: replace with real content
+        description:
+          "Cerramientos a medida para protección y confort en tu embarcación, con materiales técnicos de alta durabilidad.",
+        items: [
+          { id: "cerramientos-lateral", title: "Cerramiento lateral", description: "TODO: descripción cerramiento lateral" },
+          { id: "cerramientos-frontal", title: "Cerramiento frontal", description: "TODO: descripción cerramiento frontal" },
+        ],
+      },
+      tonos: {
+        title: "Tonos",
+        // TODO: replace with real content
+        description:
+          "Tonos y cubiertas para embarcaciones, fabricados con materiales de primera calidad.",
+        items: [
+          { id: "tonos-bimini", title: "Toldo Bimini", description: "TODO: descripción toldo bimini" },
+          { id: "tonos-cubre", title: "Cubre equipos", description: "TODO: descripción cubre equipos" },
+        ],
+      },
+    },
+  } satisfies ServicesPageData,
 
   // ─── Brands ──────────────────────────────────────────────────────────
   brands: [

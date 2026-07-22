@@ -112,6 +112,31 @@ export interface ProductCategoryData {
   products: ProductData[];
 }
 
+// ─── Services page ──────────────────────────────────────────────────────
+export interface ServiceTab {
+  id: string;
+  name: string;
+}
+
+export interface ServiceItem {
+  id: string;
+  title: string;
+  description: string;
+  color?: string;
+}
+
+export interface ServiceSection {
+  title: string;
+  description: string;
+  /** Items rendered inside the StackedCarousel for this tab. */
+  items: ServiceItem[];
+}
+
+export interface ServicesPageData {
+  tabs: ServiceTab[];
+  content: Record<string, ServiceSection>;
+}
+
 // ─── UI copy ─────────────────────────────────────────────────────────────
 export interface ModalCopy {
   title: string;
@@ -122,9 +147,13 @@ export interface UICopy {
   // Header CTAs
   ctaContactDesktop: string;
   ctaContactMobile: string;
-  // Products — CatalogHero
+  // Products — SectionHero
   catalogHeroTitle: string;
   catalogHeroDescription: string;
+  // Services — SectionHero
+  servicesHeroTitle: string;
+  servicesHeroDescription: string;
+  servicesCategoriesLabel: string;
   // Products — modal / buttons
   consultWhatsApp: string;
   clearList: string;

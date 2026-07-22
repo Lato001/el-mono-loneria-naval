@@ -107,7 +107,7 @@ describe("Card", () => {
     expect(pill!.className).toContain("bg-sc-ocean-blue");
     const text = screen.getByText("Seleccionado");
     expect(text.className).toContain("opacity-100");
-    expect(text.className).toContain("max-w-[7.5rem]");
+    expect(text.className).toContain("max-w-30");
     expect(text.className).toContain("text-white");
   });
 
@@ -118,10 +118,10 @@ describe("Card", () => {
     expect(article.className).toContain("border-pr-aquamarine");
   });
 
-  it("enforces uniform mobile card height via h-[351px] and content-driven desktop height via md:h-auto", () => {
+  it("enforces uniform mobile card height via inline style and content-driven desktop height via md:h-auto", () => {
     render(<Card title="Broche Test" description="Some description" />);
     const article = screen.getByRole("article");
-    expect(article.className).toContain("h-[351px]");
+    expect(article.style.height).toBe("351px");
     expect(article.className).toContain("md:h-auto");
   });
 
