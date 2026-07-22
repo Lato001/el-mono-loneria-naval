@@ -1,39 +1,25 @@
 import { useState } from "react";
-import {
-  Card,
-  ImgCard,
-  SectionHero,
-  SectionTabs,
-  SectionWrapper,
-} from "../../components/ui";
+import { SectionHero, SectionTabs, SectionWrapper, RotatingCard } from "../../components/ui";
 import { data } from "../../mocks/data";
-// import type { ServiceSection } from "../../mocks/types";
+import type { ServiceSection } from "../../mocks/types";
 import herobg from "../../assets/backgrounds/formas-olas-sec.svg";
 
 /**
- * Services page — hero + sticky category tabs + a single dynamic
- * content area (SectionWrapper + StackedCarousel with autoplay) that
- * swaps when the active tab changes. The first tab is active on
- * initial render (no tab selected → first tab is the default).
+ * Services page — hero + sticky category tabs + a content area
+ * (SectionWrapper + RotatingCard) that swaps when the active tab changes.
+ * The first tab is active on initial render.
  */
 export function Services() {
-  const [activeId, setActiveId] = useState<string | null>(
-    data.servicesPage.tabs[0]?.id ?? null,
+  const [activeId, setActiveId] = useState<string>(
+    data.servicesPage.tabs[0]?.id ?? "",
   );
 
-  // Fall back to the first tab if the active id is unknown (defensive).
   const activeTab =
     data.servicesPage.tabs.find((t) => t.id === activeId) ??
     data.servicesPage.tabs[0];
 
-  // The data is keyed by tab id, but TypeScript narrows `content` to
-  // the specific keys from the literal object, so we cast to the index
-  // signature for the lookup.
-  // const contentByTab = data.servicesPage.content as Record<
-  //   string,
-  //   ServiceSection
-  // >;
-  // const activeContent = contentByTab[activeTab.id];
+  const contentByTab = data.servicesPage.content as Record<string, ServiceSection>;
+  const activeContent = contentByTab[activeTab.id];
 
   return (
     <>
@@ -50,14 +36,7 @@ export function Services() {
       />
 
       <SectionWrapper eyebrow="Servicios" title={activeTab.name} theme="light">
-        <div className="flex justify-around">
-          <ImgCard></ImgCard>
-          <Card
-            className=""
-            title={`${activeTab.name}`}
-            description={"lorem"}
-          ></Card>
-        </div>
+        <RotatingCard items={activeContent.items} />
       </SectionWrapper>
     </>
   );
