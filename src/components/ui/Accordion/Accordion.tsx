@@ -23,10 +23,10 @@ export function Accordion({ items, className = "" }: AccordionProps) {
         <AccordionPrimitive.Item
           key={item.id}
           value={item.id}
-          className="rounded-xl border border-pr-aquamarine/30 bg-white/5 transition-colors hover:border-pr-aquamarine/60"
+          className="rounded-xl border border-pr-aquamarine/40 bg-white/[0.07] transition-colors hover:border-pr-aquamarine hover:bg-white/10"
         >
           <AccordionPrimitive.Header>
-            <AccordionPrimitive.Trigger className="group flex w-full cursor-pointer items-center justify-between gap-4 px-6 py-5 text-left">
+            <AccordionPrimitive.Trigger className="group flex w-full cursor-pointer items-center justify-between gap-4 px-6 py-6 text-left sm:px-8">
               <span className="font-poppins text-lg font-semibold text-white">
                 {item.q}
               </span>
@@ -34,8 +34,8 @@ export function Accordion({ items, className = "" }: AccordionProps) {
             </AccordionPrimitive.Trigger>
           </AccordionPrimitive.Header>
           <AccordionPrimitive.Content className="data-[state=open]:animate-slideDown data-[state=closed]:animate-slideUp overflow-hidden">
-            <div className="border-t border-pr-aquamarine/20 px-6 pb-5 pt-4">
-              <p className="font-poppins text-base leading-relaxed text-white/80">
+            <div className="border-t border-pr-aquamarine/30 px-6 pb-6 pt-5 sm:px-8">
+              <p className="font-poppins text-base leading-relaxed text-white/85">
                 {item.a}
               </p>
             </div>
