@@ -216,3 +216,17 @@ export interface AboutUsSection {
 }
 
 export type Section = ReviewsSection | AboutUsSection;
+
+// ─── FAQ ─────────────────────────────────────────────────────────────────
+/**
+ * The 4 dimensions a customer asks about when evaluating a lonería.
+ * Each one maps to an icon in `src/assets/logos/icons/`.
+ */
+export type FaqCategory = "insumos" | "servicios" | "tiempos" | "trabajos";
+
+export interface FaqItem {
+  id: string;
+  category: FaqCategory;
+  q: string;
+  a: string;
+}

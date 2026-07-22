@@ -35,6 +35,7 @@ import type {
   AboutUsContent,
   AboutUsSection,
   BrandData,
+  FaqItem,
   FooterNav,
   GlobalData,
   HeroData,
@@ -100,30 +101,35 @@ const reviews = [
 const faqs = [
   {
     id: "faq1",
+    category: "insumos",
     q: "¿Qué tipo de materiales utilizan?",
     a: "Trabajamos con lonas técnicas náuticas, vinilos de primera calidad y textiles de alta performance como Sunbrella y Sailrite. Cada material se elige según el uso final y la exposición al sol, sal y viento.",
   },
   {
     id: "faq2",
+    category: "tiempos",
     q: "¿Cuánto tarda la confección de un trabajo a medida?",
     a: "Depende de la complejidad. Trabajos estándar como cubreautos o fundas simples se entregan en 5 a 10 días hábiles. Proyectos a medida como capotas de embarcaciones o cerramientos pueden llevar entre 2 y 4 semanas.",
   },
   {
     id: "faq3",
+    category: "servicios",
     q: "¿Ofrecen garantía sobre sus trabajos?",
     a: "Sí. Todos nuestros trabajos cuentan con garantía de confección. La cobertura específica varía según el material y el tipo de producto, pero en general cubre defectos de fabricación y costuras.",
   },
   {
     id: "faq4",
+    category: "trabajos",
     q: "¿Puedo llevar mi propio diseño o tienen catálogo?",
     a: "Las dos cosas. Trabajamos a medida desde un diseño propio, una idea, una foto o una necesidad específica. Si preferís ver opciones, tenemos catálogo de modelos probados que podemos adaptar a tus medidas.",
   },
   {
     id: "faq5",
+    category: "servicios",
     q: "¿Realizan colocación e instalación?",
     a: "Sí. Para lonas, capotas y cerramientos ofrecemos el servicio completo de confección, colocación e instalación en domicilio o en el taller. En el caso de cubreautos y fundas, la entrega incluye instrucciones de uso.",
   },
-];
+] satisfies FaqItem[];
 
 const reviewsSection: ReviewsSection = {
   id: "reviews",

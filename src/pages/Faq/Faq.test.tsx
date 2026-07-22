@@ -28,14 +28,24 @@ describe("Faq page", () => {
     expect(screen.getByText(faqSection.eyebrow)).toBeInTheDocument();
   });
 
+  it("renders the 4-up category grid with all category labels", () => {
+    renderFaq();
+    // The grid is exposed as a labelled landmark.
+    expect(
+      screen.getByRole("region", { name: /categorías de preguntas/i }),
+    ).toBeInTheDocument();
+    // Each default category is visible.
+    for (const label of ["Servicios", "Tiempos", "Insumos", "Trabajos"]) {
+      expect(screen.getByText(label)).toBeInTheDocument();
+    }
+  });
+
   it("renders 3 FAQ bubbles with the first 3 questions from data", () => {
     renderFaq();
     for (const bubble of bubbles) {
-      // The question is rendered as a heading.
       expect(
         screen.getByRole("heading", { level: 2, name: bubble.q }),
       ).toBeInTheDocument();
-      // The answer is rendered as a paragraph.
       expect(screen.getByText(bubble.a)).toBeInTheDocument();
     }
   });
@@ -53,9 +63,6 @@ describe("Faq page", () => {
 
   it("lays out the bubbles with alternating alignments: start, end, start", () => {
     const { container } = renderFaq();
-    // Each bubble renders a wrapping div with the alignment in its className.
-    // We assert on the alignment classes directly (a behavioral proxy: the
-    // classes ARE the contract for this flex layout).
     const bubbleWrappers = container.querySelectorAll(
       "div.flex.w-full.flex-col.gap-6",
     );

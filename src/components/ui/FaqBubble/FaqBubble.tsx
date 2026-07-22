@@ -41,11 +41,7 @@ export function FaqBubble({
     : "rounded-[0_48px_48px_48px]";
 
   // Offset for the answer so it sits away from the question (chat-tail effect).
-  const answerOffset = isStart
-    ? "md:ml-20"
-    : isEnd
-      ? "md:mr-20"
-      : "";
+  const answerOffset = isStart ? "md:ml-20" : isEnd ? "md:mr-20" : "";
 
   // Container alignment: where the pair sits inside its parent.
   const containerAlign = isEnd
@@ -60,7 +56,7 @@ export function FaqBubble({
       <div
         className={`
           w-full max-w-md
-          bg-[#4B56A8]
+          bg-pr-hero-blue
           text-white
           px-8 py-8
           ${questionRounded}
@@ -82,7 +78,7 @@ export function FaqBubble({
       <div
         className={`
           w-full max-w-md
-          bg-sky-400
+          bg-pr-aquamarine/70
           text-white
           px-8 py-8
           ${answerRounded}
