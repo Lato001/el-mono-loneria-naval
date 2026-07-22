@@ -1,6 +1,6 @@
 import { useCallback, useRef } from "react";
 
-export function useProductCarousel(_itemCount: number) {
+export function useProductCarousel() {
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const prev = useCallback(() => {
