@@ -38,7 +38,7 @@ export function FaqCategoryGrid({
     <div
       role="region"
       aria-label="Categorías de preguntas frecuentes"
-      className={`rounded-2xl bg-pr-aquamarine/[0.08] p-8 md:p-10 ${className ?? ""}`}
+      className={`rounded-2xl border border-dashed   bg-pr-aquamarine/8 p-8 md:p-10 ${className ?? ""}`}
     >
       <div className="grid grid-cols-2 gap-x-6 gap-y-10 md:grid-cols-4">
         {categories.map((cat) => (
@@ -52,7 +52,7 @@ export function FaqCategoryGrid({
               className="h-16 w-16 object-contain"
               loading="lazy"
             />
-            <span className="font-poppins text-sm font-semibold uppercase tracking-[0.15em] text-pr-aquamarine">
+            <span className="font-poppins text-sm font-semibold uppercase tracking-[0.15em] text-sc-chalk">
               {cat.label}
             </span>
           </div>
