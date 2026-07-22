@@ -19,7 +19,11 @@ export function SectionWrapper({
   title,
   theme = "dark",
   titlesAlign = "start",
+  headingLevel = "h2",
 }: SectionWrapperProps) {
+  const Heading = headingLevel;
+  const headingClasses = `font-poppins mb-8 font-bold uppercase leading-[1.05] text-[clamp(1.8rem,3.5vw,2.8rem)] ${theme === "dark" ? "text-white" : "text-pr-hero-blue"} `;
+
   return (
     <section
       className={`${theme === "dark" ? "bg-sc-ocean-blue" : "bg-white"} py-20 text-white  ${className ?? ""}`}
@@ -35,11 +39,7 @@ export function SectionWrapper({
                 {eyebrow}
               </p>
             )}
-            <h2
-              className={`font-poppins mb-8 font-bold uppercase leading-[1.05] text-[clamp(1.8rem,3.5vw,2.8rem)] ${theme === "dark" ? "text-white" : "text-pr-hero-blue"} `}
-            >
-              {title}
-            </h2>
+            <Heading className={headingClasses}>{title}</Heading>
           </div>
         </div>
         <div className="mt-8 w-full">{children}</div>
