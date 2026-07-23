@@ -30,11 +30,9 @@ describe("Faq page", () => {
 
   it("renders the 4-up category grid with all category labels", () => {
     renderFaq();
-    // The grid is exposed as a labelled landmark.
     expect(
       screen.getByRole("region", { name: /categorías de preguntas/i }),
     ).toBeInTheDocument();
-    // Each default category is visible.
     for (const label of ["Servicios", "Tiempos", "Insumos", "Trabajos"]) {
       expect(screen.getByText(label)).toBeInTheDocument();
     }
@@ -63,13 +61,27 @@ describe("Faq page", () => {
 
   it("lays out the bubbles with alternating alignments: start, end, start", () => {
     const { container } = renderFaq();
-    const bubbleWrappers = container.querySelectorAll(
-      "div.flex.w-full.flex-col.gap-6",
+    // Each bubble's outer layout wrapper has md:flex-row or md:flex-row-reverse.
+    const layouts = container.querySelectorAll(
+      "div.flex.w-full.gap-6.flex-col.items-stretch",
     );
-    expect(bubbleWrappers).toHaveLength(3);
+    expect(layouts).toHaveLength(3);
     for (let i = 0; i < aligns.length; i++) {
-      const expected = aligns[i] === "start" ? "items-start" : "items-end";
-      expect(bubbleWrappers[i].className).toContain(expected);
+      const expected = aligns[i] === "start" ? "md:flex-row" : "md:flex-row-reverse";
+      expect(layouts[i].className).toContain(expected);
     }
+  });
+
+  it("renders a dashed image placeholder for every bubble", () => {
+    renderFaq();
+    // Each bubble has an image slot; 3 bubbles = 3 placeholders.
+    // Filter by accessible name prefix so we don't count the 4 PNG icons
+    // rendered by FaqCategoryGrid (which use bare category names).
+    const placeholders = screen.getAllByRole("img", { name: /imagen de/i });
+    expect(placeholders).toHaveLength(3);
+    // Each placeholder exposes a category-specific label.
+    expect(
+      screen.getByRole("img", { name: /imagen de tiempos/i }),
+    ).toBeInTheDocument();
   });
 });
