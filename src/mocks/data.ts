@@ -108,8 +108,8 @@ const faqs = [
   {
     id: "faq2",
     category: "tiempos",
-    q: "¿Cuánto tarda la confección de un trabajo a medida?",
-    a: "Depende de la complejidad. Trabajos estándar como cubreautos o fundas simples se entregan en 5 a 10 días hábiles. Proyectos a medida como capotas de embarcaciones o cerramientos pueden llevar entre 2 y 4 semanas.",
+    q: "¿Cuánto tardamos en hacer tu lona?",
+    a: "Por lo general demoramos unos 15 dias aprox. desde el pago del adelanto. Ésto puede variar según las dimensiones del trabajo!",
   },
   {
     id: "faq3",
