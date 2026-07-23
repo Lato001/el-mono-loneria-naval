@@ -9,10 +9,10 @@ import services02 from "../../assets/img/services/services-02.jpg";
 import services04 from "../../assets/img/services/services-04.jpg";
 import services05 from "../../assets/img/services/services-05.jpg";
 
-import insumosLogo from "../../assets/logos/icons/insumos-logo.png";
-import serviciosLogo from "../../assets/logos/icons/servicios-logo.png";
-import tiemposLogo from "../../assets/logos/icons/tiempos-logo.png";
-import trabajosLogo from "../../assets/logos/icons/trabajos-logo.png";
+import insumosLogo from "../../assets/logos/icons/insumos/insumos-rounded.svg";
+import serviciosLogo from "../../assets/logos/icons/servicios/servicios-rounded.svg";
+import tiemposLogo from "../../assets/logos/icons/tiempos/tiempos-rounded.svg";
+import trabajosLogo from "../../assets/logos/icons/trabajos/trabajos-rounded.svg";
 
 /**
  * Map of FAQ category id → placeholder label. The label doubles as the

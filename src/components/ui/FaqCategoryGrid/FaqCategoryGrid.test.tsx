@@ -1,10 +1,10 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { FaqCategoryGrid } from "./FaqCategoryGrid";
-import insumosLogo from "../../../assets/logos/icons/insumos-logo.png";
-import serviciosLogo from "../../../assets/logos/icons/servicios-logo.png";
-import tiemposLogo from "../../../assets/logos/icons/tiempos-logo.png";
-import trabajosLogo from "../../../assets/logos/icons/trabajos-logo.png";
+import insumosLogo from "../../../assets/logos/icons/insumos/insumos-rounded.svg";
+import serviciosLogo from "../../../assets/logos/icons/servicios/servicios-rounded.svg";
+import tiemposLogo from "../../../assets/logos/icons/tiempos/tiempos-rounded.svg";
+import trabajosLogo from "../../../assets/logos/icons/trabajos/trabajos-rounded.svg";
 
 describe("FaqCategoryGrid", () => {
   it("renders all 4 default categories with their labels and icons", () => {
