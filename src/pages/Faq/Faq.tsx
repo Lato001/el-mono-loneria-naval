@@ -136,6 +136,7 @@ export function Faq() {
                     alt: CATEGORY_LABELS[category],
                   }}
                   watermark={CATEGORY_WATERMARKS[category]}
+                  peekIcon={CATEGORY_WATERMARKS[category]}
                 />
               ))}
             </div>

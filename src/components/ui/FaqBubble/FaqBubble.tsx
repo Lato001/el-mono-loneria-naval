@@ -35,6 +35,14 @@ export interface FaqBubbleProps {
    * "category-stamped" feel.
    */
   watermark?: string;
+  /**
+   * Optional PNG (or SVG) used as a "peek" icon behind the ImgCard.
+   * Half the icon sticks out from behind the ImgCard on the side
+   * opposite the bubble (i.e. away from the chat pair), so the icon
+   * reads as a sticker layered over the photograph. Decorative —
+   * `aria-hidden`, `pointer-events: none`.
+   */
+  peekIcon?: string;
 }
 
 /**
@@ -56,6 +64,7 @@ export function FaqBubble({
   align = "start",
   image,
   watermark,
+  peekIcon,
 }: FaqBubbleProps) {
   const parts = highlight ? question.split(highlight) : [question];
 
@@ -101,7 +110,13 @@ export function FaqBubble({
       : "md:items-start";
 
   // Constrain the ImgCard so it doesn't fight the chat pair for attention.
-  const imageWrapperClass = "flex w-full md:w-64 lg:w-72";
+  const imageWrapperClass = "relative flex w-full md:w-64 lg:w-72";
+
+  // The peek icon sticks out from behind the ImgCard on the OUTER side
+  // (away from the chat pair). start → image is on the right, so the
+  // peek icon overflows to the right. end → image on the left, peek to
+  // the left.
+  const peekOffset = isStart ? "-right-1/2" : "-left-1/2";
 
   return (
     <div className={`relative flex w-full gap-6 md:gap-2 ${layoutDirection} ${layoutCross}`}>
@@ -153,16 +168,30 @@ export function FaqBubble({
         </div>
       </div>
 
-      {/* Imagen representativa (ImgCard) */}
+      {/* Imagen representativa (ImgCard) + peek icon behind it */}
       {image && (
         <div className={imageWrapperClass}>
-          <ImgCard
-            src={image.src}
-            alt={image.alt}
-            images={image.images}
-            title={image.title}
-            className="max-w-none"
-          />
+          {peekIcon && (
+            <img
+              src={peekIcon}
+              alt=""
+              aria-hidden="true"
+              className={`
+                pointer-events-none absolute top-1/2 z-0
+                h-full w-full -translate-y-1/2 object-contain
+                ${peekOffset}
+              `}
+            />
+          )}
+          <div className="relative z-10 w-full">
+            <ImgCard
+              src={image.src}
+              alt={image.alt}
+              images={image.images}
+              title={image.title}
+              className="max-w-none"
+            />
+          </div>
         </div>
       )}
     </div>
