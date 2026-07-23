@@ -3,6 +3,8 @@ import type { ReactNode } from "react";
 export interface SectionWrapperProps {
   children: ReactNode;
   className?: string;
+  /** Optional HTML id, useful for in-page anchors (e.g. scroll-to). */
+  id?: string;
   /** Small uppercase label above the title. Optional. */
   eyebrow?: string;
   /** Section title. Required. */
