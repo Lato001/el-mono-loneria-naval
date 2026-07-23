@@ -123,12 +123,6 @@ const faqs = [
     q: "¿Puedo llevar mi propio diseño o tienen catálogo?",
     a: "Las dos cosas. Trabajamos a medida desde un diseño propio, una idea, una foto o una necesidad específica. Si preferís ver opciones, tenemos catálogo de modelos probados que podemos adaptar a tus medidas.",
   },
-  {
-    id: "faq5",
-    category: "servicios",
-    q: "¿Realizan colocación e instalación?",
-    a: "Sí. Para lonas, capotas y cerramientos ofrecemos el servicio completo de confección, colocación e instalación en domicilio o en el taller. En el caso de cubreautos y fundas, la entrega incluye instrucciones de uso.",
-  },
 ] satisfies FaqItem[];
 
 const reviewsSection: ReviewsSection = {
