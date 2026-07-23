@@ -119,7 +119,7 @@ describe("FaqBubble", () => {
         'img[src="https://example.com/peek.png"]',
       ) as HTMLElement;
       expect(peek.className).toContain("-bottom-1/2");
-      expect(peek.className).toContain("md:-left-1/2");
+      expect(peek.className).toContain("md:left-[-50%]");
     });
 
     it("uses -bottom-1/2 (mobile) + -right-1/2 (desktop) when align=end", () => {
@@ -139,7 +139,7 @@ describe("FaqBubble", () => {
         'img[src="https://example.com/peek.png"]',
       ) as HTMLElement;
       expect(peek.className).toContain("-bottom-1/2");
-      expect(peek.className).toContain("md:-right-1/2");
+      expect(peek.className).toContain("md:right-[-50%]");
     });
 
     it("does NOT render any peek icon <img> when peekIcon is omitted", () => {

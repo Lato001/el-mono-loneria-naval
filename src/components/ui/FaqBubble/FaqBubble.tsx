@@ -75,11 +75,7 @@ export function FaqBubble({
     : "rounded-[0_48px_48px_48px]";
 
   // Offset for the answer so it sits away from the question (chat-tail effect).
-  const answerOffset = isStart
-    ? "md:ml-20"
-    : isEnd
-      ? "md:mr-20"
-      : "";
+  const answerOffset = isStart ? "md:ml-20" : isEnd ? "md:mr-20" : "";
 
   // Container alignment (vertical axis): where the pair sits inside its parent.
   const pairAlign = isEnd
@@ -112,21 +108,26 @@ export function FaqBubble({
   //   overflows toward the INNER side (toward the chat pair, into
   //   the page). start → image on the right, peek overflows to the
   //   left. end → image on the left, peek overflows to the right.
+  //   Uses arbitrary values for the overflow axis (md:left-[-50%] /
+  //   md:right-[-50%]) so the cascade order can't drop the desktop
+  //   offset in favour of the mobile left-1/2 or md:left-auto utilities.
   const peekMobile = "left-1/2 -translate-x-1/2 -bottom-1/2";
   const peekDesktop = isStart
-    ? "md:left-auto md:-translate-x-0 md:bottom-auto md:top-1/2 md:-translate-y-1/2 md:-left-1/2"
-    : "md:left-auto md:-translate-x-0 md:bottom-auto md:top-1/2 md:-translate-y-1/2 md:-right-1/2";
+    ? "md:right-auto md:bottom-auto md:top-1/2 md:-translate-x-0 md:-translate-y-1/2 md:left-[-50%]"
+    : "md:left-auto md:bottom-auto md:top-1/2 md:-translate-x-0 md:-translate-y-1/2 md:right-[-50%]";
   const peekPositionClasses = `${peekMobile} ${peekDesktop}`;
 
   return (
-    <div className={`relative flex w-full gap-6 md:gap-2 ${layoutDirection} ${layoutCross}`}>
+    <div
+      className={`relative flex w-full gap-6 md:gap-2 ${layoutDirection} ${layoutCross}`}
+    >
       {/* Chat pair: question + answer */}
       <div className={`flex min-w-0 flex-1 flex-col gap-6 ${pairAlign}`}>
         {/* Pregunta */}
         <div
           className={`
             w-full max-w-md
-            bg-[#4B56A8]
+            bg-pr-hero-blue/50
             text-white
             px-8 py-8
             ${questionRounded}
@@ -148,7 +149,7 @@ export function FaqBubble({
         <div
           className={`
             w-full max-w-md
-            bg-sky-400
+            bg-pr-aquamarine/80
             text-white
             px-8 py-8
             ${answerRounded}
@@ -169,7 +170,8 @@ export function FaqBubble({
               aria-hidden="true"
               className={`
                 pointer-events-none absolute z-0
-                h-full w-full object-contain
+                hidden h-full w-full object-contain
+                md:block
                 ${peekPositionClasses}
               `}
             />
