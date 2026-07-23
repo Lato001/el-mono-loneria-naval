@@ -135,6 +135,21 @@ export interface ServiceSection {
 export interface ServicesPageData {
   tabs: ServiceTab[];
   content: Record<string, ServiceSection>;
+  /**
+   * Photo album rendered as a masonry on the services page.
+   * `src` is an imageKey resolved by the consuming page via a
+   * `Record<imageKey, string>` map (kept in Services.tsx so the
+   * Vite import + URL plumbing lives next to the component).
+   */
+  album: {
+    images: AlbumImage[];
+  };
+}
+
+export interface AlbumImage {
+  id: string;
+  src: string;
+  alt: string;
 }
 
 // ─── UI copy ─────────────────────────────────────────────────────────────
