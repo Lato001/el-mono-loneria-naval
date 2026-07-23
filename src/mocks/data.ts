@@ -293,10 +293,9 @@ export const data = {
       primaryCta: "Solicitar presupuesto",
       secondaryCta: "Ver Productos",
       images: [
-        { src: "services-01", alt: "Lona naval" },
-        { src: "services-02", alt: "Capota a medida" },
-        { src: "services-04", alt: "Cubreauto" },
-        { src: "services-05", alt: "Funda para moto de agua" },
+        { src: "services-06", alt: "Carpa" },
+        { src: "services-07", alt: "Toneau" },
+        { src: "services-08", alt: "Capota" },
       ],
     } satisfies HeroData,
 
