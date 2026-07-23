@@ -15,6 +15,7 @@ const titlesTextClasses = {
 export function SectionWrapper({
   children,
   className,
+  id,
   eyebrow,
   title,
   theme = "dark",
@@ -26,6 +27,7 @@ export function SectionWrapper({
 
   return (
     <section
+      id={id}
       className={`${theme === "dark" ? "bg-sc-ocean-blue" : "bg-white"} py-20 text-white  ${className ?? ""}`}
       aria-label={title}
     >
