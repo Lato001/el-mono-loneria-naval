@@ -85,31 +85,8 @@ describe("FaqBubble", () => {
     expect(screen.queryByRole("img")).not.toBeInTheDocument();
   });
 
-  describe("watermark", () => {
-    it("renders a hidden watermark <img> when watermark is provided", () => {
-      render(
-        <FaqBubble
-          question="q"
-          answer="a"
-          watermark="https://example.com/mark.png"
-        />,
-      );
-      const watermark = document.querySelector(
-        'img[src="https://example.com/mark.png"]',
-      );
-      expect(watermark).toBeInTheDocument();
-      expect(watermark).toHaveAttribute("aria-hidden", "true");
-      expect(watermark).toHaveAttribute("alt", "");
-    });
-
-    it("does NOT render any watermark <img> when watermark is omitted", () => {
-      const { container } = render(<FaqBubble question="q" answer="a" />);
-      expect(container.querySelector("img")).toBeNull();
-    });
-  });
-
   describe("peekIcon", () => {
-    it("renders a hidden peek icon <img> behind the ImgCard when provided (align=start)", () => {
+    it("renders a hidden peek icon <img> behind the ImgCard when provided", () => {
       render(
         <FaqBubble
           question="q"
@@ -118,18 +95,32 @@ describe("FaqBubble", () => {
           peekIcon="https://example.com/peek.png"
         />,
       );
-      // 2 imgs: the ImgCard (named "Lona") + the peek (hidden).
       const peek = document.querySelector(
         'img[src="https://example.com/peek.png"]',
       );
       expect(peek).toBeInTheDocument();
       expect(peek).toHaveAttribute("aria-hidden", "true");
       expect(peek).toHaveAttribute("alt", "");
-      // align=start → image is on the right → peek icon overflows to the right.
-      expect((peek as HTMLElement).className).toContain("-right-1/2");
     });
 
-    it("flips the peek direction (overflows left) when align=end", () => {
+    it("peeks toward the chat pair (left) when align=start", () => {
+      render(
+        <FaqBubble
+          question="q"
+          answer="a"
+          image={{ src: "https://example.com/x.jpg", alt: "Lona" }}
+          peekIcon="https://example.com/peek.png"
+        />,
+      );
+      // align=start → image is on the right → peek icon overflows to the
+      // LEFT (toward the chat pair).
+      const peek = document.querySelector(
+        'img[src="https://example.com/peek.png"]',
+      );
+      expect((peek as HTMLElement).className).toContain("-left-1/2");
+    });
+
+    it("peeks toward the chat pair (right) when align=end", () => {
       render(
         <FaqBubble
           question="q"
@@ -139,11 +130,12 @@ describe("FaqBubble", () => {
           peekIcon="https://example.com/peek.png"
         />,
       );
+      // align=end → image is on the left → peek icon overflows to the
+      // RIGHT (toward the chat pair).
       const peek = document.querySelector(
         'img[src="https://example.com/peek.png"]',
       );
-      // align=end → image is on the left → peek icon overflows to the left.
-      expect((peek as HTMLElement).className).toContain("-left-1/2");
+      expect((peek as HTMLElement).className).toContain("-right-1/2");
     });
 
     it("does NOT render any peek icon <img> when peekIcon is omitted", () => {
