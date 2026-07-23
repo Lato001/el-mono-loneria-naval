@@ -27,6 +27,26 @@ describe("FaqCategoryGrid", () => {
     }
   });
 
+  it("renders the default categories in the canonical order: insumos, tiempos, servicios, trabajos", () => {
+    render(<FaqCategoryGrid />);
+    const labels = screen
+      .getAllByText(/Insumos|Tiempos|Servicios|Trabajos/)
+      .map((el) => el.textContent);
+    expect(labels).toEqual(["Insumos", "Tiempos", "Servicios", "Trabajos"]);
+  });
+
+  it("renders the same canonical order in interactive mode (button labels)", () => {
+    render(<FaqCategoryGrid onSelect={() => {}} />);
+    const buttons = screen.getAllByRole("button", { name: /ir a/i });
+    const labels = buttons.map((b) => b.textContent);
+    expect(labels).toEqual([
+      "Insumos",
+      "Tiempos",
+      "Servicios",
+      "Trabajos",
+    ]);
+  });
+
   it("exposes a region landmark by default (decorative mode)", () => {
     render(<FaqCategoryGrid />);
     expect(

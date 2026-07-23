@@ -113,4 +113,28 @@ describe("Faq page", () => {
     const imgs = screen.getAllByRole("img", { name: /imagen de/i });
     expect(imgs).toHaveLength(data.home.faqs.length);
   });
+
+  it("renders the category sections in canonical order: insumos, tiempos, servicios, trabajos", () => {
+    const { container } = renderFaq();
+    // The 4 category SectionWrappers have ids faq-cat-<id>.
+    const sections = container.querySelectorAll(
+      "section[id^='faq-cat-']",
+    );
+    const ids = Array.from(sections).map((s) => s.id);
+    expect(ids).toEqual([
+      "faq-cat-insumos",
+      "faq-cat-tiempos",
+      "faq-cat-servicios",
+      "faq-cat-trabajos",
+    ]);
+  });
+
+  it("renders a hidden watermark logo behind every bubble", () => {
+    const { container } = renderFaq();
+    // Every bubble has a watermark <img aria-hidden="true">.
+    const watermarks = container.querySelectorAll(
+      'img[aria-hidden="true"]',
+    );
+    expect(watermarks).toHaveLength(data.home.faqs.length);
+  });
 });

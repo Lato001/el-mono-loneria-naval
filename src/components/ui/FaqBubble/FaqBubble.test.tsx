@@ -57,7 +57,6 @@ describe("FaqBubble", () => {
         image={{ src: "https://example.com/x.jpg", alt: "Una lona" }}
       />,
     );
-    // The ImgCard renders an <img> with the given alt.
     const img = screen.getByRole("img", { name: "Una lona" });
     expect(img.tagName).toBe("IMG");
     expect(img).toHaveAttribute("src", "https://example.com/x.jpg");
@@ -76,8 +75,6 @@ describe("FaqBubble", () => {
         image={{ alt: "Galería", images: slides }}
       />,
     );
-    // All 3 slides render as <img> tags (ImgCard shows the first
-    // one and stacks the rest with opacity-0).
     expect(screen.getByRole("img", { name: "Slide A" })).toBeInTheDocument();
     expect(screen.getByRole("img", { name: "Slide B" })).toBeInTheDocument();
     expect(screen.getByRole("img", { name: "Slide C" })).toBeInTheDocument();
@@ -85,7 +82,31 @@ describe("FaqBubble", () => {
 
   it("does NOT render any image slot when no image prop is passed", () => {
     render(<FaqBubble question="q" answer="a" />);
-    // Only the <h2> and <p> exist; no <img> tags anywhere.
     expect(screen.queryByRole("img")).not.toBeInTheDocument();
+  });
+
+  describe("watermark", () => {
+    it("renders a hidden watermark <img> when watermark is provided", () => {
+      render(
+        <FaqBubble
+          question="q"
+          answer="a"
+          watermark="https://example.com/mark.png"
+        />,
+      );
+      // The watermark must NOT be exposed to assistive tech.
+      const watermark = document.querySelector(
+        'img[src="https://example.com/mark.png"]',
+      );
+      expect(watermark).toBeInTheDocument();
+      expect(watermark).toHaveAttribute("aria-hidden", "true");
+      expect(watermark).toHaveAttribute("alt", "");
+    });
+
+    it("does NOT render any watermark <img> when watermark is omitted", () => {
+      const { container } = render(<FaqBubble question="q" answer="a" />);
+      // The outer container should not contain an <img> at all.
+      expect(container.querySelector("img")).toBeNull();
+    });
   });
 });
