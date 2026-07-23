@@ -1,9 +1,9 @@
 import { Button } from "../Button";
 import { ImgCard } from "../Card";
-import aboutImg1 from "../../../assets/img/services/services-01.jpg";
-import aboutImg2 from "../../../assets/img/services/services-02.jpg";
-import aboutImg3 from "../../../assets/img/services/services-04.jpg";
-import aboutImg4 from "../../../assets/img/services/services-05.jpg";
+import aboutImg1 from "../../../assets/img/works/works-01.webp";
+import aboutImg2 from "../../../assets/img/works/works-02.webp";
+import aboutImg3 from "../../../assets/img/works/works-03.webp";
+import aboutImg4 from "../../../assets/img/works/works-04.webp";
 import type { AboutSectionProps } from "./AboutSection.types";
 
 // TODO: move out of the component when real workshop gallery is available
