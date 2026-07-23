@@ -103,7 +103,7 @@ describe("FaqBubble", () => {
       expect(peek).toHaveAttribute("alt", "");
     });
 
-    it("peeks toward the chat pair (left) when align=start", () => {
+    it("uses -bottom-1/2 (mobile) + -left-1/2 (desktop) when align=start", () => {
       render(
         <FaqBubble
           question="q"
@@ -112,15 +112,17 @@ describe("FaqBubble", () => {
           peekIcon="https://example.com/peek.png"
         />,
       );
-      // align=start → image is on the right → peek icon overflows to the
-      // LEFT (toward the chat pair).
+      // align=start → image on the right. On mobile the peek overflows
+      // downward; on desktop it overflows to the left toward the chat
+      // pair.
       const peek = document.querySelector(
         'img[src="https://example.com/peek.png"]',
-      );
-      expect((peek as HTMLElement).className).toContain("-left-1/2");
+      ) as HTMLElement;
+      expect(peek.className).toContain("-bottom-1/2");
+      expect(peek.className).toContain("md:-left-1/2");
     });
 
-    it("peeks toward the chat pair (right) when align=end", () => {
+    it("uses -bottom-1/2 (mobile) + -right-1/2 (desktop) when align=end", () => {
       render(
         <FaqBubble
           question="q"
@@ -130,12 +132,14 @@ describe("FaqBubble", () => {
           peekIcon="https://example.com/peek.png"
         />,
       );
-      // align=end → image is on the left → peek icon overflows to the
-      // RIGHT (toward the chat pair).
+      // align=end → image on the left. On mobile the peek overflows
+      // downward; on desktop it overflows to the right toward the chat
+      // pair.
       const peek = document.querySelector(
         'img[src="https://example.com/peek.png"]',
-      );
-      expect((peek as HTMLElement).className).toContain("-right-1/2");
+      ) as HTMLElement;
+      expect(peek.className).toContain("-bottom-1/2");
+      expect(peek.className).toContain("md:-right-1/2");
     });
 
     it("does NOT render any peek icon <img> when peekIcon is omitted", () => {
@@ -146,7 +150,6 @@ describe("FaqBubble", () => {
           image={{ src: "https://example.com/x.jpg", alt: "Lona" }}
         />,
       );
-      // Only the ImgCard's <img> is present (the one with alt "Lona").
       const imgs = container.querySelectorAll("img");
       expect(imgs).toHaveLength(1);
       expect(imgs[0]).toHaveAttribute("alt", "Lona");
