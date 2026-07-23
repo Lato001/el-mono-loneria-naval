@@ -1,8 +1,8 @@
 import type { FaqCategory } from "../../../mocks/types";
-import insumosLogo from "../../../assets/logos/icons/insumos-logo.png";
-import serviciosLogo from "../../../assets/logos/icons/servicios-logo.png";
-import tiemposLogo from "../../../assets/logos/icons/tiempos-logo.png";
-import trabajosLogo from "../../../assets/logos/icons/trabajos-logo.png";
+import insumosLogo from "../../../assets/logos/icons/insumos/insumos-rounded.svg";
+import serviciosLogo from "../../../assets/logos/icons/servicios/servicios-rounded.svg";
+import tiemposLogo from "../../../assets/logos/icons/tiempos/tiempos-rounded.svg";
+import trabajosLogo from "../../../assets/logos/icons/trabajos/trabajos-rounded.svg";
 
 export interface FaqCategoryEntry {
   id: FaqCategory;
@@ -57,7 +57,7 @@ export function FaqCategoryGrid({
     <div
       role={isInteractive ? "navigation" : "region"}
       aria-label="Categorías de preguntas frecuentes"
-      className={`rounded-2xl border border-dashed bg-pr-aquamarine/8 p-8 md:p-10 ${className ?? ""}`}
+      className={`rounded-2xl border border-pr-aquamarine shadow shadow-pr-aquamarine bg-pr-aquamarine/8 p-8 md:p-10 ${className ?? ""}`}
     >
       <div className="grid grid-cols-2 gap-x-6 gap-y-10 md:grid-cols-4">
         {categories.map((cat) => {
