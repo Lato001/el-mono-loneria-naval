@@ -25,8 +25,6 @@ describe("FaqBubble", () => {
       />,
     );
 
-    // Highlight is wrapped in a <span>, the rest of the question is split
-    // into the part before and the part after.
     const heading = screen.getByRole("heading", { level: 2 });
     expect(heading.textContent).toBe("¿Cuánto tarda tu lona?");
   });
@@ -35,10 +33,8 @@ describe("FaqBubble", () => {
     const { container } = render(
       <FaqBubble question="q" answer="a" image={{ alt: "img" }} />,
     );
-    // The pair wrapper is the first child of the outer flex.
     const outer = container.firstChild as HTMLElement;
     expect(outer.className).toContain("md:flex-row");
-    // The pair itself uses items-start when align=start.
     const pair = outer.firstChild as HTMLElement;
     expect(pair.className).toContain("items-start");
   });
@@ -53,14 +49,7 @@ describe("FaqBubble", () => {
     expect(pair.className).toContain("items-end");
   });
 
-  it("renders a dashed placeholder when no image src is provided", () => {
-    render(<FaqBubble question="q" answer="a" image={{ alt: "Tiempos" }} />);
-    // The placeholder exposes the alt as its accessible name and label.
-    expect(screen.getByRole("img", { name: "Tiempos" })).toBeInTheDocument();
-    expect(screen.getByText("Tiempos")).toBeInTheDocument();
-  });
-
-  it("renders a real <img> when image.src is provided", () => {
+  it("renders an ImgCard with a single image when image.src is provided", () => {
     render(
       <FaqBubble
         question="q"
@@ -68,14 +57,35 @@ describe("FaqBubble", () => {
         image={{ src: "https://example.com/x.jpg", alt: "Una lona" }}
       />,
     );
+    // The ImgCard renders an <img> with the given alt.
     const img = screen.getByRole("img", { name: "Una lona" });
     expect(img.tagName).toBe("IMG");
     expect(img).toHaveAttribute("src", "https://example.com/x.jpg");
   });
 
+  it("renders an ImgCard slideshow when image.images has 2+ entries", () => {
+    const slides = [
+      { src: "https://example.com/a.jpg", alt: "Slide A" },
+      { src: "https://example.com/b.jpg", alt: "Slide B" },
+      { src: "https://example.com/c.jpg", alt: "Slide C" },
+    ];
+    render(
+      <FaqBubble
+        question="q"
+        answer="a"
+        image={{ alt: "Galería", images: slides }}
+      />,
+    );
+    // All 3 slides render as <img> tags (ImgCard shows the first
+    // one and stacks the rest with opacity-0).
+    expect(screen.getByRole("img", { name: "Slide A" })).toBeInTheDocument();
+    expect(screen.getByRole("img", { name: "Slide B" })).toBeInTheDocument();
+    expect(screen.getByRole("img", { name: "Slide C" })).toBeInTheDocument();
+  });
+
   it("does NOT render any image slot when no image prop is passed", () => {
     render(<FaqBubble question="q" answer="a" />);
-    // Only the <h2> and <p> exist; no role=img.
+    // Only the <h2> and <p> exist; no <img> tags anywhere.
     expect(screen.queryByRole("img")).not.toBeInTheDocument();
   });
 });
