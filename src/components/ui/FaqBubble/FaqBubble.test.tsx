@@ -94,7 +94,6 @@ describe("FaqBubble", () => {
           watermark="https://example.com/mark.png"
         />,
       );
-      // The watermark must NOT be exposed to assistive tech.
       const watermark = document.querySelector(
         'img[src="https://example.com/mark.png"]',
       );
@@ -105,8 +104,60 @@ describe("FaqBubble", () => {
 
     it("does NOT render any watermark <img> when watermark is omitted", () => {
       const { container } = render(<FaqBubble question="q" answer="a" />);
-      // The outer container should not contain an <img> at all.
       expect(container.querySelector("img")).toBeNull();
+    });
+  });
+
+  describe("peekIcon", () => {
+    it("renders a hidden peek icon <img> behind the ImgCard when provided (align=start)", () => {
+      render(
+        <FaqBubble
+          question="q"
+          answer="a"
+          image={{ src: "https://example.com/x.jpg", alt: "Lona" }}
+          peekIcon="https://example.com/peek.png"
+        />,
+      );
+      // 2 imgs: the ImgCard (named "Lona") + the peek (hidden).
+      const peek = document.querySelector(
+        'img[src="https://example.com/peek.png"]',
+      );
+      expect(peek).toBeInTheDocument();
+      expect(peek).toHaveAttribute("aria-hidden", "true");
+      expect(peek).toHaveAttribute("alt", "");
+      // align=start → image is on the right → peek icon overflows to the right.
+      expect((peek as HTMLElement).className).toContain("-right-1/2");
+    });
+
+    it("flips the peek direction (overflows left) when align=end", () => {
+      render(
+        <FaqBubble
+          question="q"
+          answer="a"
+          align="end"
+          image={{ src: "https://example.com/x.jpg", alt: "Lona" }}
+          peekIcon="https://example.com/peek.png"
+        />,
+      );
+      const peek = document.querySelector(
+        'img[src="https://example.com/peek.png"]',
+      );
+      // align=end → image is on the left → peek icon overflows to the left.
+      expect((peek as HTMLElement).className).toContain("-left-1/2");
+    });
+
+    it("does NOT render any peek icon <img> when peekIcon is omitted", () => {
+      const { container } = render(
+        <FaqBubble
+          question="q"
+          answer="a"
+          image={{ src: "https://example.com/x.jpg", alt: "Lona" }}
+        />,
+      );
+      // Only the ImgCard's <img> is present (the one with alt "Lona").
+      const imgs = container.querySelectorAll("img");
+      expect(imgs).toHaveLength(1);
+      expect(imgs[0]).toHaveAttribute("alt", "Lona");
     });
   });
 });

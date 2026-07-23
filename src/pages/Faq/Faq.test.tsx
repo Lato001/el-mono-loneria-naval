@@ -129,12 +129,11 @@ describe("Faq page", () => {
     ]);
   });
 
-  it("renders a hidden watermark logo behind every bubble", () => {
+  it("renders a hidden watermark AND a hidden peek icon behind every bubble", () => {
     const { container } = renderFaq();
-    // Every bubble has a watermark <img aria-hidden="true">.
-    const watermarks = container.querySelectorAll(
-      'img[aria-hidden="true"]',
-    );
-    expect(watermarks).toHaveLength(data.home.faqs.length);
+    // Each bubble has BOTH a watermark and a peek icon (both aria-hidden).
+    // 5 FAQs × 2 decorative imgs = 10.
+    const hidden = container.querySelectorAll('img[aria-hidden="true"]');
+    expect(hidden).toHaveLength(data.home.faqs.length * 2);
   });
 });
