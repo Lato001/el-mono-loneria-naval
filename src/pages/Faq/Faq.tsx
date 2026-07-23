@@ -4,10 +4,10 @@ import { FaqCategoryGrid } from "../../components/ui/FaqCategoryGrid";
 import { data } from "../../mocks/data";
 import type { FaqCategory, FaqItem } from "../../mocks/types";
 
-import services01 from "../../assets/img/services/services-01.jpg";
-import services02 from "../../assets/img/services/services-02.jpg";
-import services04 from "../../assets/img/services/services-04.jpg";
-import services05 from "../../assets/img/services/services-05.jpg";
+import faqimg01 from "../../assets/img/services/services-01.webp";
+import faqimg02 from "../../assets/img/services/services-02.webp";
+import faqimg03 from "../../assets/img/services/services-05.webp";
+import faqimg04 from "../../assets/img/works/works-05.webp";
 
 import insumosLogo from "../../assets/logos/icons/insumos/insumos-rounded.svg";
 import serviciosLogo from "../../assets/logos/icons/servicios/servicios-rounded.svg";
@@ -47,11 +47,10 @@ const CATEGORY_ALIGNS: Record<FaqCategory, "start" | "end"> = {
 // Stand-in real images, one per FAQ entry. Swap with category-specific
 // photography when it lands.
 const BUBBLE_IMAGES: Record<string, string> = {
-  faq1: services01,
-  faq2: services02,
-  faq3: services04,
-  faq4: services05,
-  faq5: services01,
+  faq1: faqimg01,
+  faq2: faqimg02,
+  faq3: faqimg03,
+  faq4: faqimg04,
 };
 
 /**
