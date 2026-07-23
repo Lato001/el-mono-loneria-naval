@@ -93,7 +93,7 @@ export function FaqBubble({
   const imageWrapperClass = "flex w-full md:w-64 lg:w-72";
 
   return (
-    <div className={`flex w-full gap-6 ${layoutDirection} ${layoutCross}`}>
+    <div className={`flex w-full gap-6 md:gap-2 ${layoutDirection} ${layoutCross}`}>
       {/* Chat pair: question + answer */}
       <div className={`flex min-w-0 flex-1 flex-col gap-6 ${pairAlign}`}>
         {/* Pregunta */}
