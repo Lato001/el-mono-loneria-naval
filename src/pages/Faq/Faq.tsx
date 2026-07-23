@@ -4,6 +4,10 @@ import { FaqCategoryGrid } from "../../components/ui/FaqCategoryGrid";
 import { data } from "../../mocks/data";
 import type { FaqCategory } from "../../mocks/types";
 
+import services01 from "../../assets/img/services/services-01.jpg";
+import services02 from "../../assets/img/services/services-02.jpg";
+import services04 from "../../assets/img/services/services-04.jpg";
+
 /**
  * Map of FAQ category id → placeholder label. The label doubles as the
  * image alt text. Prefixed with "Imagen de" so the placeholder text
@@ -24,12 +28,18 @@ const CATEGORY_LABELS: Record<FaqCategory, string> = {
  *   2. Three chat-style FaqBubble entries laid out as a conversation:
  *      start (left), end (right), start (left). Sourced from
  *      data.home.faqs.slice(0, 3). Each bubble is wrapped in a
- *      per-category SectionWrapper and carries an image placeholder.
+ *      per-category SectionWrapper and carries an ImgCard with a
+ *      real image from src/assets/img/services (as a stand-in until
+ *      category-specific photography is available).
  */
 export function Faq() {
   const faqSection = data.home.sections.faq;
   const bubbles = data.home.faqs.slice(0, 3);
   const aligns: Array<"start" | "end"> = ["start", "end", "start"];
+
+  // Stand-in real images, one per bubble. Swap with category-specific
+  // photography when it lands.
+  const bubbleImages = [services01, services02, services04];
 
   return (
     <SectionWrapper
@@ -54,7 +64,10 @@ export function Faq() {
               question={bubble.q}
               answer={bubble.a}
               align={aligns[index]}
-              image={{ alt: CATEGORY_LABELS[bubble.category] }}
+              image={{
+                src: bubbleImages[index],
+                alt: CATEGORY_LABELS[bubble.category],
+              }}
             />
           </SectionWrapper>
         ))}

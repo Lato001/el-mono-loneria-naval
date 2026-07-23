@@ -1,10 +1,17 @@
 import { ImgCard } from "../Card";
 
 export interface FaqBubbleImage {
-  /** Optional image source. When omitted, a placeholder is rendered. */
+  /** Optional single image source. */
   src?: string;
-  /** Alt text and placeholder label. Always required for a11y. */
+  /**
+   * Optional slideshow. When provided with 2+ entries, the ImgCard will
+   * auto-rotate through them. Use this for category galleries.
+   */
+  images?: { src: string; alt: string }[];
+  /** Alt text for the (first) image or placeholder. Always required for a11y. */
   alt: string;
+  /** Optional title rendered as a centered overlay on top of the image. */
+  title?: string;
 }
 
 export interface FaqBubbleProps {
@@ -25,15 +32,12 @@ export interface FaqBubbleProps {
 
 /**
  * FaqBubble — a single FAQ entry rendered as a chat-style pair of bubbles
- * (navy question on top, sky-blue answer below) with a rectangular image
- * slot on the opposite side. Mirrors the title-align values used by
- * SectionWrapper.
+ * (navy question on top, sky-blue answer below) with an ImgCard on the
+ * opposite side. Mirrors the title-align values used by SectionWrapper.
  *
- * When `image.src` is provided, the slot is rendered as an ImgCard that
- * stretches to the full height of the chat pair (h-full, aspect-auto so
- * it fills rather than being portrait 3:4). When src is omitted, a
- * dashed placeholder card is rendered in the same slot so the layout
- * is identical whether the artwork is ready or not.
+ * When `image` is omitted, no image slot is rendered. When `image` is
+ * provided without `src` or `images`, the ImgCard falls back to its
+ * internal placeholder behaviour.
  */
 export function FaqBubble({
   question,
@@ -85,6 +89,9 @@ export function FaqBubble({
       ? "md:items-center"
       : "md:items-start";
 
+  // Constrain the ImgCard so it doesn't fight the chat pair for attention.
+  const imageWrapperClass = "flex w-full md:w-64 lg:w-72";
+
   return (
     <div className={`flex w-full gap-6 ${layoutDirection} ${layoutCross}`}>
       {/* Chat pair: question + answer */}
@@ -126,30 +133,16 @@ export function FaqBubble({
         </div>
       </div>
 
-      {/* Imagen representativa (ImgCard) o placeholder */}
+      {/* Imagen representativa (ImgCard) */}
       {image && (
-        <div className="flex h-full shrink-0 md:w-72">
-          {image.src ? (
-            <ImgCard
-              src={image.src}
-              alt={image.alt}
-              className="h-full w-full max-w-none aspect-auto"
-            />
-          ) : (
-            <div
-              role="img"
-              aria-label={image.alt}
-              className="
-                flex h-full w-full items-center justify-center
-                rounded-xl border border-dashed border-pr-aquamarine/40
-                bg-pr-aquamarine/5
-              "
-            >
-              <span className="font-poppins text-xs font-semibold uppercase tracking-[0.15em] text-pr-aquamarine/60">
-                {image.alt}
-              </span>
-            </div>
-          )}
+        <div className={imageWrapperClass}>
+          <ImgCard
+            src={image.src}
+            alt={image.alt}
+            images={image.images}
+            title={image.title}
+            className="max-w-none"
+          />
         </div>
       )}
     </div>
