@@ -104,12 +104,19 @@ export function FaqBubble({
   // Constrain the ImgCard so it doesn't fight the chat pair for attention.
   const imageWrapperClass = "relative flex w-full md:w-64 lg:w-72";
 
-  // The peek icon sticks out from behind the ImgCard on the INNER side
-  // (toward the chat pair, into the page). start → image is on the
-  // right, so the peek icon overflows to the left toward the pair. end
-  // → image on the left, peek icon overflows to the right toward the
-  // pair.
-  const peekOffset = isStart ? "-left-1/2" : "-right-1/2";
+  // Peek icon positioning.
+  // - Mobile: the ImgCard stacks BELOW the chat pair, so the peek
+  //   overflows downward (centred horizontally) — the half sticking
+  //   out appears below the photograph.
+  // - Desktop: the ImgCard sits NEXT to the chat pair. The peek
+  //   overflows toward the INNER side (toward the chat pair, into
+  //   the page). start → image on the right, peek overflows to the
+  //   left. end → image on the left, peek overflows to the right.
+  const peekMobile = "left-1/2 -translate-x-1/2 -bottom-1/2";
+  const peekDesktop = isStart
+    ? "md:left-auto md:-translate-x-0 md:bottom-auto md:top-1/2 md:-translate-y-1/2 md:-left-1/2"
+    : "md:left-auto md:-translate-x-0 md:bottom-auto md:top-1/2 md:-translate-y-1/2 md:-right-1/2";
+  const peekPositionClasses = `${peekMobile} ${peekDesktop}`;
 
   return (
     <div className={`relative flex w-full gap-6 md:gap-2 ${layoutDirection} ${layoutCross}`}>
@@ -161,9 +168,9 @@ export function FaqBubble({
               alt=""
               aria-hidden="true"
               className={`
-                pointer-events-none absolute top-1/2 z-0
-                h-full w-full -translate-y-1/2 object-contain
-                ${peekOffset}
+                pointer-events-none absolute z-0
+                h-full w-full object-contain
+                ${peekPositionClasses}
               `}
             />
           )}
