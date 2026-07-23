@@ -29,17 +29,10 @@ export interface FaqBubbleProps {
   /** Optional image to render on the opposite side of the chat pair. */
   image?: FaqBubbleImage;
   /**
-   * Optional PNG (or SVG) rendered as a faded background watermark behind
-   * the chat pair. Decorative — `aria-hidden`, `pointer-events: none`.
-   * Use the brand's category icon at low opacity for a subtle
-   * "category-stamped" feel.
-   */
-  watermark?: string;
-  /**
    * Optional PNG (or SVG) used as a "peek" icon behind the ImgCard.
-   * Half the icon sticks out from behind the ImgCard on the side
-   * opposite the bubble (i.e. away from the chat pair), so the icon
-   * reads as a sticker layered over the photograph. Decorative —
+   * Half the icon sticks out from behind the ImgCard toward the chat
+   * pair (i.e. toward the inside of the page), so the icon reads as
+   * a sticker layered over the photograph. Decorative —
    * `aria-hidden`, `pointer-events: none`.
    */
   peekIcon?: string;
@@ -54,8 +47,8 @@ export interface FaqBubbleProps {
  * provided without `src` or `images`, the ImgCard falls back to its
  * internal placeholder behaviour.
  *
- * When `watermark` is provided, a faded copy of the brand's category
- * icon sits behind the chat pair as a subtle stamp.
+ * When `peekIcon` is provided, half the icon is layered behind the
+ * ImgCard and peeks toward the chat pair.
  */
 export function FaqBubble({
   question,
@@ -63,7 +56,6 @@ export function FaqBubble({
   answer,
   align = "start",
   image,
-  watermark,
   peekIcon,
 }: FaqBubbleProps) {
   const parts = highlight ? question.split(highlight) : [question];
@@ -112,23 +104,15 @@ export function FaqBubble({
   // Constrain the ImgCard so it doesn't fight the chat pair for attention.
   const imageWrapperClass = "relative flex w-full md:w-64 lg:w-72";
 
-  // The peek icon sticks out from behind the ImgCard on the OUTER side
-  // (away from the chat pair). start → image is on the right, so the
-  // peek icon overflows to the right. end → image on the left, peek to
-  // the left.
-  const peekOffset = isStart ? "-right-1/2" : "-left-1/2";
+  // The peek icon sticks out from behind the ImgCard on the INNER side
+  // (toward the chat pair, into the page). start → image is on the
+  // right, so the peek icon overflows to the left toward the pair. end
+  // → image on the left, peek icon overflows to the right toward the
+  // pair.
+  const peekOffset = isStart ? "-left-1/2" : "-right-1/2";
 
   return (
     <div className={`relative flex w-full gap-6 md:gap-2 ${layoutDirection} ${layoutCross}`}>
-      {/* Watermark: faded brand icon stamped behind the chat pair. */}
-      {watermark && (
-        <img
-          src={watermark}
-          alt=""
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-0 m-auto h-3/4 w-3/4 max-w-lg object-contain opacity-[0.06] mix-blend-screen"
-        />
-      )}
       {/* Chat pair: question + answer */}
       <div className={`flex min-w-0 flex-1 flex-col gap-6 ${pairAlign}`}>
         {/* Pregunta */}

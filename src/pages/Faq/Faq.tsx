@@ -135,7 +135,6 @@ export function Faq() {
                     src: BUBBLE_IMAGES[bubble.id],
                     alt: CATEGORY_LABELS[category],
                   }}
-                  watermark={CATEGORY_WATERMARKS[category]}
                   peekIcon={CATEGORY_WATERMARKS[category]}
                 />
               ))}
