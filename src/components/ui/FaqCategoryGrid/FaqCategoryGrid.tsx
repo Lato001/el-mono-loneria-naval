@@ -27,9 +27,9 @@ interface FaqCategoryGridProps {
 }
 
 const DEFAULT_CATEGORIES: FaqCategoryEntry[] = [
-  { id: "servicios", label: "Servicios", icon: serviciosLogo },
-  { id: "tiempos", label: "Tiempos", icon: tiemposLogo },
   { id: "insumos", label: "Insumos", icon: insumosLogo },
+  { id: "tiempos", label: "Tiempos", icon: tiemposLogo },
+  { id: "servicios", label: "Servicios", icon: serviciosLogo },
   { id: "trabajos", label: "Trabajos", icon: trabajosLogo },
 ];
 

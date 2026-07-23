@@ -28,6 +28,13 @@ export interface FaqBubbleProps {
   align?: "start" | "center" | "end";
   /** Optional image to render on the opposite side of the chat pair. */
   image?: FaqBubbleImage;
+  /**
+   * Optional PNG (or SVG) rendered as a faded background watermark behind
+   * the chat pair. Decorative — `aria-hidden`, `pointer-events: none`.
+   * Use the brand's category icon at low opacity for a subtle
+   * "category-stamped" feel.
+   */
+  watermark?: string;
 }
 
 /**
@@ -38,6 +45,9 @@ export interface FaqBubbleProps {
  * When `image` is omitted, no image slot is rendered. When `image` is
  * provided without `src` or `images`, the ImgCard falls back to its
  * internal placeholder behaviour.
+ *
+ * When `watermark` is provided, a faded copy of the brand's category
+ * icon sits behind the chat pair as a subtle stamp.
  */
 export function FaqBubble({
   question,
@@ -45,6 +55,7 @@ export function FaqBubble({
   answer,
   align = "start",
   image,
+  watermark,
 }: FaqBubbleProps) {
   const parts = highlight ? question.split(highlight) : [question];
 
@@ -93,7 +104,16 @@ export function FaqBubble({
   const imageWrapperClass = "flex w-full md:w-64 lg:w-72";
 
   return (
-    <div className={`flex w-full gap-6 md:gap-2 ${layoutDirection} ${layoutCross}`}>
+    <div className={`relative flex w-full gap-6 md:gap-2 ${layoutDirection} ${layoutCross}`}>
+      {/* Watermark: faded brand icon stamped behind the chat pair. */}
+      {watermark && (
+        <img
+          src={watermark}
+          alt=""
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 m-auto h-3/4 w-3/4 max-w-lg object-contain opacity-[0.06] mix-blend-screen"
+        />
+      )}
       {/* Chat pair: question + answer */}
       <div className={`flex min-w-0 flex-1 flex-col gap-6 ${pairAlign}`}>
         {/* Pregunta */}

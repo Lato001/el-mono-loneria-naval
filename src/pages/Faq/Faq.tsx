@@ -9,6 +9,11 @@ import services02 from "../../assets/img/services/services-02.jpg";
 import services04 from "../../assets/img/services/services-04.jpg";
 import services05 from "../../assets/img/services/services-05.jpg";
 
+import insumosLogo from "../../assets/logos/icons/insumos-logo.png";
+import serviciosLogo from "../../assets/logos/icons/servicios-logo.png";
+import tiemposLogo from "../../assets/logos/icons/tiempos-logo.png";
+import trabajosLogo from "../../assets/logos/icons/trabajos-logo.png";
+
 /**
  * Map of FAQ category id → placeholder label. The label doubles as the
  * image alt text. Prefixed with "Imagen de" so the placeholder text
@@ -47,6 +52,17 @@ const BUBBLE_IMAGES: Record<string, string> = {
   faq3: services04,
   faq4: services05,
   faq5: services01,
+};
+
+/**
+ * Watermark logo per category. The same brand icons used in
+ * FaqCategoryGrid, rendered faded behind each chat pair.
+ */
+const CATEGORY_WATERMARKS: Record<FaqCategory, string> = {
+  insumos: insumosLogo,
+  tiempos: tiemposLogo,
+  servicios: serviciosLogo,
+  trabajos: trabajosLogo,
 };
 
 /**
@@ -119,6 +135,7 @@ export function Faq() {
                     src: BUBBLE_IMAGES[bubble.id],
                     alt: CATEGORY_LABELS[category],
                   }}
+                  watermark={CATEGORY_WATERMARKS[category]}
                 />
               ))}
             </div>
