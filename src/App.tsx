@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import { Footer, Header } from "./components/layout";
-import { AboutUs, Contact, Faq, Home, Products, Services } from "./pages";
+import { AboutUs, Contact, Faq, Home, Products, Works } from "./pages";
 import { PATHS } from "./routes/routes";
 
 export default function App() {
@@ -26,7 +26,7 @@ export default function App() {
       <Routes>
         <Route path={PATHS.HOME} element={<Home />} />
         <Route path={PATHS.PRODUCTS} element={<Products />} />
-        <Route path={PATHS.SERVICES} element={<Services />} />
+        <Route path={PATHS.WORKS} element={<Works />} />
         <Route path={PATHS.ABOUT_US} element={<AboutUs />} />
         <Route path={PATHS.FAQ} element={<Faq />} />
         <Route path={PATHS.CONTACT} element={<Contact />} />

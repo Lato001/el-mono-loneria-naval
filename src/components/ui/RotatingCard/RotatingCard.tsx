@@ -1,7 +1,7 @@
-import type { ServiceItem } from "../../../mocks/types";
+import type { WorkItem } from "../../../mocks/types";
 
 export interface RotatingCardProps {
-  items: ServiceItem[];
+  items: WorkItem[];
   className?: string;
 }
 

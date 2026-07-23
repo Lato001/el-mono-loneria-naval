@@ -288,11 +288,7 @@ const Masonry: React.FC<MasonryProps> = ({
         title={""}
         description={""}
       >
-        <ImgCard
-          src={selectedId!}
-          alt="NO SE ENCONTRO IMG"
-          className="overflow-hidden rounded-3xl"
-        ></ImgCard>
+        <ImgCard src={selectedId!} alt="NO SE ENCONTRO IMG"></ImgCard>
       </Modal>
     </>
   );

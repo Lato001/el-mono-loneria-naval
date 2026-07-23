@@ -2,9 +2,7 @@
 
 Landing page for "El Mono" lonería naval (marine canvas workshop).
 
-**Recent changes (testing-setup):** Added Vitest + @testing-library/react + jsdom test infrastructure. Initial tests for Button, Footer, AboutSection, and Home page (34 tests, all passing). Coverage v8 with v1 thresholds (40/35/35/40).
-
-**Recent changes (homepage-finalize):** Completed Button, Footer, and AboutSection implementations. Added ServiceGrid to Home page. Removed dead Reviews.tsx stub. Extended mock data with aboutus content fields. All barrels are clean (no duplicates).
+**Recent changes (rename-services-to-works):** Renamed Services → Works across the entire codebase: page directory, component (ServiceGrid → WorksGrid), types (Service → Work, ServiceTab → WorkTab, etc.), mock data keys (servicesPage → worksPage, servicesHeroTitle → worksHeroTitle), App.tsx imports/routes, barrel files, and vite.config.ts coverage exclusion. Fixed broken PATHS.SERVICES → PATHS.WORKS. 172 tests passing, 0 TS errors.
 
 ## Commands
 - `pnpm dev` — dev server
@@ -37,10 +35,11 @@ src/
 ├── assets/
 │   ├── backgrounds/   # formas-canales.svg, formas-lineas-onduladas.svg, formas-olas*.svg (5 SVGs)
 │   ├── fonts/         # brown-beige/ (1), nord/ (14), poppins/ (18) = 33 TTF files total
-│   ├── img/           # (empty)
+│   ├── img/           # services/ (8 webp), works/ (5 webp)
 │   └── logos/
 │       ├── brands/    # sauleda-logo.svg, sunbrella-logo.svg
-│       └── elmono/    # isotipo-elmono-01.png (Header), isotype-mono-color.svg (HomeSection icon), logo-elmono-horizontal.png
+│       ├── elmono/    # isotipo-elmono-01.png (Header), isotype-mono-color.svg (HomeSection icon), logo-elmono-horizontal.png
+│       └── icons/     # faq category icons (insumos, servicios, tiempos, trabajos)
 ├── components/
 │   ├── layout/
 │   │   ├── index.ts   # barrel: Footer, Header, Hero
@@ -48,7 +47,7 @@ src/
 │   │   ├── Header.tsx            # Unified nav + CTA + mobile sidebar
 │   │   └── Hero.tsx              # Gradient hero with props for extractable copy
 │   ├── ui/
-│   │   ├── index.ts   # barrel: Button, Card, Carousel, Marquee, HomeSection, ServiceGrid, AboutSection
+│   │   ├── index.ts   # barrel: Button, Card, Carousel, Marquee, HomeSection, WorksGrid, AboutSection
 │   │   ├── AboutSection/
 │   │   │   ├── index.ts
 │   │   │   ├── AboutSection.tsx   # 2-col: image + content/highlights/CTA
@@ -78,25 +77,26 @@ src/
 │   │   │   ├── Marquee.css       # @keyframes marquee-scroll
 │   │   │   ├── Marquee.types.ts
 │   │   │   └── BrandMarquee.tsx  # Brand logos marquee
-│   │   └── ServiceGrid/
-│   │       ├── index.ts
-│   │       ├── ServiceGrid.tsx   # Responsive grid of ServiceCard
-│   │       └── ServiceGrid.types.ts
+│   │   ├── WorksGrid/
+│   │   │   ├── index.ts
+│   │   │   ├── WorksGrid.tsx   # Responsive grid of WorkCard
+│   │   │   └── WorksGrid.types.ts
 │   └── index.ts       # barrel: layout + ui
 ├── hooks/              # (empty)
 ├── mocks/
-│   └── data.ts         # data.Home.Sections[] + Services[] + Reviews[] (typed)
+│   └── data.ts         # data.Home.Sections[] + Works[] + Reviews[] (typed)
 ├── pages/
-│   ├── index.ts        # barrel: AboutUs, Contact, Faq, Home, Products, Services
+│   ├── index.ts        # barrel: AboutUs, Contact, Faq, Home, Products, Works
 │   ├── Home/
 │   │   ├── index.ts
-│   │   └── Home.tsx    # Composes Hero + BrandMarquee + SplitCards + ServiceGrid + Reviews + AboutSection
+│   │   └── Home.tsx    # Composes Hero + BrandMarquee + SplitCards + WorksGrid + Reviews + AboutSection
 │   ├── Products/
 │   │   ├── index.ts
 │   │   └── Products.tsx  # Stub
-│   ├── Services/
+│   ├── Works/
 │   │   ├── index.ts
-│   │   └── Services.tsx  # Stub
+│   │   ├── Works.tsx     # Masonry album of work photos
+│   │   └── Works.test.tsx
 │   ├── AboutUs/
 │   │   ├── index.ts
 │   │   └── AboutUs.tsx   # Stub
@@ -107,7 +107,7 @@ src/
 │       ├── index.ts
 │       └── Contact.tsx   # Stub
 ├── routes/
-│   └── routes.ts       # PATHS constant (HOME, PRODUCTS, SERVICES, ABOUT_US, FAQ, CONTACT, NOT_FOUND)
+│   └── routes.ts       # PATHS constant (HOME, PRODUCTS, WORKS, ABOUT_US, FAQ, CONTACT, NOT_FOUND)
 ├── types/
 │   └── review.ts       # Review interface
 ├── App.tsx             # Header (sticky) + ScrollToTop + Routes + Footer (global)
@@ -144,7 +144,7 @@ src/
 |---|---|---|
 | `/` | Home | Implemented |
 | `/productos` | Products | Stub |
-| `/servicios` | Services | Stub |
+| `/trabajos` | Works | Implemented |
 | `/nosotros` | AboutUs | Stub |
 | `/faq` | Faq | Stub |
 | `/contacto` | Contact | Stub |
@@ -222,10 +222,15 @@ src/
 - `speed` (seconds), `direction` (left/right), `pauseOnHover` (sets `animationPlayState`)
 - `BrandMarquee` uses grayscale + low opacity, full color on group hover
 
-### ServiceGrid (`src/components/ui/ServiceGrid/`)
+### WorksGrid (`src/components/ui/WorksGrid/`)
 - Responsive: `grid gap-6 md:grid-cols-2 lg:grid-cols-3`
-- `ServiceCard` internal component: white bg, `rounded-lg`, `shadow-lg`, `p-6`
-- Props: `services: Service[]` where `Service = { id, title, description }`
+- `WorkCard` internal component: white bg, `rounded-lg`, `shadow-lg`, `p-6`
+- Props: `works: Work[]` where `Work = { id, title, description }`
+
+### Masonry (`src/components/ui/Masonry/`)
+- Used by Works page to display a photo album
+- GSAP-powered animation with configurable `ease`, `duration`, `stagger`, `animateFrom`
+- `scaleOnHover` + `hoverScale` + `colorShiftOnHover` options
 
 ### ScrollToTop (`src/components/ui/Button/ScrollToTop.tsx`)
 - Fixed bottom-right, visible when `scrollY > 200`
@@ -239,16 +244,16 @@ src/
 - Module resolution: `bundler`
 
 ## Data & env
-- `src/mocks/data.ts` — mock data for Home sections and services
+- `src/mocks/data.ts` — mock data for Home sections and works
 - `data.Home.Sections[]` — typed as `Section` with optional `content`, `image`, `imageAlt`, `highlights`, `cta` fields (aboutus section uses all of them)
-- `data.Home.Services[]` — typed as `Service[]` (3 services)
+- `data.Home.Works[]` — typed as `Work[]` (3 works)
 - `data.Home.Reviews[]` — typed as `Review[]` (5 reviews, imported from `src/types/review.ts`)
 - `src/data/*` is gitignored — local data stays off-disk
 - `.env` and `.env.dev` are gitignored
 - `.env` contains `VITE_WHATSAPP_URL` (WhatsApp deep link with preset message)
 
 ## Build status
-- `pnpm build`: 0 TypeScript errors, 6216 Vite modules
+- `pnpm build`: 0 TypeScript errors, 6363 Vite modules
 - Output: ~258 KB JS + ~33 KB CSS (gzipped)
 - React Compiler active in production
 
