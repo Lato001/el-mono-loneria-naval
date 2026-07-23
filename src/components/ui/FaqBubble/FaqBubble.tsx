@@ -1,3 +1,5 @@
+import { ImgCard } from "../Card";
+
 export interface FaqBubbleImage {
   /** Optional image source. When omitted, a placeholder is rendered. */
   src?: string;
@@ -27,8 +29,11 @@ export interface FaqBubbleProps {
  * slot on the opposite side. Mirrors the title-align values used by
  * SectionWrapper.
  *
- * When `image.src` is omitted, a dashed placeholder card is rendered so
- * designers/devs can see the slot before real artwork is available.
+ * When `image.src` is provided, the slot is rendered as an ImgCard that
+ * stretches to the full height of the chat pair (h-full, aspect-auto so
+ * it fills rather than being portrait 3:4). When src is omitted, a
+ * dashed placeholder card is rendered in the same slot so the layout
+ * is identical whether the artwork is ready or not.
  */
 export function FaqBubble({
   question,
@@ -121,21 +126,21 @@ export function FaqBubble({
         </div>
       </div>
 
-      {/* Imagen representativa (o placeholder) */}
+      {/* Imagen representativa (ImgCard) o placeholder */}
       {image && (
-        <div className="flex shrink-0 md:w-72">
+        <div className="flex h-full shrink-0 md:w-72">
           {image.src ? (
-            <img
+            <ImgCard
               src={image.src}
               alt={image.alt}
-              className="aspect-video w-full rounded-xl object-cover"
+              className="h-full w-full max-w-none aspect-auto"
             />
           ) : (
             <div
               role="img"
               aria-label={image.alt}
               className="
-                flex aspect-video w-full items-center justify-center
+                flex h-full w-full items-center justify-center
                 rounded-xl border border-dashed border-pr-aquamarine/40
                 bg-pr-aquamarine/5
               "
