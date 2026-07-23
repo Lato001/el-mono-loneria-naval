@@ -22,7 +22,7 @@ export function Modal({
       <Dialog.Portal>
         <Dialog.Overlay className="fixed inset-0 bg-black/50 data-[state=open]:animate-fadeIn" />
         <Dialog.Content
-          className={`fixed z-50 w-full bg-white p-6 shadow-2xl focus:outline-none flex flex-col ${positionClasses} ${className ?? ""}`}
+          className={`fixed z-50 w-full bg-sc-chalk p-4 focus:outline-none flex flex-col ${positionClasses} ${className ?? ""}`}
         >
           <Dialog.Title className="font-poppins mb-2 text-xl font-bold text-sc-ocean-blue">
             {title}
@@ -39,7 +39,7 @@ export function Modal({
             <button
               type="button"
               aria-label={data.ui.closeLabel}
-              className="absolute right-4 top-4 rounded-full p-1 text-sc-ocean-blue/60 transition-colors hover:bg-sc-chalk hover:text-sc-ocean-blue focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pr-aquamarine"
+              className="absolute right-4 top-4 rounded-full p-1 bg-black text-white transition-colors cursor-pointer hover:text-pr-aquamarine/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pr-aquamarine"
             >
               <IconX className="h-5 w-5" />
             </button>

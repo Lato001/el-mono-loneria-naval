@@ -415,6 +415,25 @@ export const data = {
         ],
       },
     },
+    album: {
+      // Photo album rendered by the Masonry on /servicios.
+      // `src` is an imageKey resolved by Services.tsx via a
+      // Record<imageKey, string> map. When new works land, just
+      // add the WebP to src/assets/img/ and a matching entry here.
+      images: [
+        { id: "svc-03", src: "services-03", alt: "Trabajo de lona" },
+        { id: "svc-04", src: "services-04", alt: "Cubreauto" },
+        { id: "svc-05", src: "services-05", alt: "Funda para moto de agua" },
+        { id: "svc-06", src: "services-06", alt: "Carpa" },
+        { id: "svc-07", src: "services-07", alt: "Toneau" },
+        { id: "svc-08", src: "services-08", alt: "Capota" },
+        { id: "wrk-01", src: "works-01", alt: "Trabajo de taller 1" },
+        { id: "wrk-02", src: "works-02", alt: "Trabajo de taller 2" },
+        { id: "wrk-03", src: "works-03", alt: "Trabajo de taller 3" },
+        { id: "wrk-04", src: "works-04", alt: "Trabajo de taller 4" },
+        { id: "wrk-05", src: "works-05", alt: "Trabajo de taller 5" },
+      ],
+    },
   } satisfies ServicesPageData,
 
   // ─── Brands ──────────────────────────────────────────────────────────

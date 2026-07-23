@@ -1,57 +1,64 @@
-import { useState } from "react";
-import {
-  RotatingCard,
-  SectionTabs,
-  SectionWrapper,
-} from "../../components/ui";
+import Masonry from "../../components/ui/Masonry/Masonry";
 import { data } from "../../mocks/data";
-import type { ServiceSection } from "../../mocks/types";
+import services03 from "../../assets/img/services/services-03.webp";
+import services04 from "../../assets/img/services/services-04.webp";
+import services05 from "../../assets/img/services/services-05.webp";
+import services06 from "../../assets/img/services/services-06.webp";
+import services07 from "../../assets/img/services/services-07.webp";
+import services08 from "../../assets/img/services/services-08.webp";
+import works01 from "../../assets/img/works/works-01.webp";
+import works02 from "../../assets/img/works/works-02.webp";
+import works03 from "../../assets/img/works/works-03.webp";
+import works04 from "../../assets/img/works/works-04.webp";
+import works05 from "../../assets/img/works/works-05.webp";
+import { SectionWrapper } from "../../components";
 
 /**
- * Services page — page-level SectionWrapper (h1) for the hero copy,
- * the sticky SectionTabs row, and a content SectionWrapper (h2) whose
- * title and content swap with the active tab. The first tab is the default.
+ * Image-key → URL map. The `src` field in `data.servicesPage.album.images`
+ * is an imageKey (a stable identifier, e.g. "services-01"). The page
+ * resolves it to the actual Vite-imported URL here so that `mocks/data.ts`
+ * stays free of Vite-specific import paths.
  */
+const imageMap: Record<string, string> = {
+  "services-03": services03,
+  "services-04": services04,
+  "services-05": services05,
+  "services-06": services06,
+  "services-07": services07,
+  "services-08": services08,
+  "works-01": works01,
+  "works-02": works02,
+  "works-03": works03,
+  "works-04": works04,
+  "works-05": works05,
+};
+
 export function Services() {
-  const [activeId, setActiveId] = useState<string>(
-    data.servicesPage.tabs[0]?.id ?? "",
-  );
-
-  const activeTab =
-    data.servicesPage.tabs.find((t) => t.id === activeId) ??
-    data.servicesPage.tabs[0];
-
-  const contentByTab = data.servicesPage.content as Record<string, ServiceSection>;
-  const activeContent = contentByTab[activeTab.id];
+  const images = data.servicesPage.album.images.map((item) => ({
+    id: item.id,
+    img: imageMap[item.src] ?? "",
+    url: "",
+    height: 400,
+    alt: item.alt,
+  }));
 
   return (
     <>
       <SectionWrapper
-        eyebrow="Servicios"
-        title={data.ui.servicesHeroTitle}
-        theme="light"
-        titlesAlign="start"
-        headingLevel="h1"
+        className="mx-auto"
+        eyebrow="Album de fotos"
+        title="Nuestros Trabajos"
       >
-        <p className="mb-8 max-w-2xl font-poppins text-base leading-relaxed text-sc-ocean-blue/70">
-          {data.ui.servicesHeroDescription}
-        </p>
-      </SectionWrapper>
-
-      <SectionTabs
-        categories={data.servicesPage.tabs}
-        activeId={activeTab.id}
-        onSelect={setActiveId}
-        ariaLabel={data.ui.servicesCategoriesLabel}
-      />
-
-      <SectionWrapper
-        title={activeTab.name}
-        theme="light"
-        titlesAlign="start"
-        headingLevel="h2"
-      >
-        <RotatingCard items={activeContent.items} />
+        <Masonry
+          items={images}
+          ease="power3.out"
+          duration={0.6}
+          stagger={0.05}
+          animateFrom="bottom"
+          scaleOnHover
+          hoverScale={0.95}
+          colorShiftOnHover={true}
+        />
       </SectionWrapper>
     </>
   );
