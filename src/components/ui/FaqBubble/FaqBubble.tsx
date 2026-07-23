@@ -162,7 +162,7 @@ export function FaqBubble({
 
       {/* Imagen representativa (ImgCard) + peek icon behind it */}
       {image && (
-        <div className={imageWrapperClass}>
+        <div className={`hidden md:block ${imageWrapperClass}`}>
           {peekIcon && (
             <img
               src={peekIcon}
