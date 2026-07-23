@@ -29,7 +29,7 @@
  *      in Footer.tsx.
  */
 
-import type { Service } from "../components/ui/ServiceGrid/ServiceGrid.types";
+import type { Work } from "../components/ui/WorksGrid/WorksGrid.types";
 import type { Review } from "../types/review";
 import type {
   AboutUsContent,
@@ -44,14 +44,14 @@ import type {
   ReviewsSection,
   Section,
   SectionsGroup,
-  ServicesPageData,
+  WorksPageData,
   SplitCardData,
   UICopy,
 } from "./types";
 
 // ─── Canonical data ──────────────────────────────────────────────────────
 
-const services = [
+const works = [
   {
     id: "srv1",
     title: "Lonas a Medida",
@@ -70,7 +70,7 @@ const services = [
     description:
       "Fundas protectoras para autos, motos de agua y equipamiento náutico, con materiales que cuidan la superficie y soportan el sol.",
   },
-] satisfies Service[];
+] satisfies Work[];
 
 const reviews = [
   {
@@ -170,10 +170,10 @@ export const data = {
     catalogHeroTitle: "Nuestros productos",
     catalogHeroDescription:
       "Explorá nuestra selección de artículos náuticos: broches, caballetes, cierres e hilos de la más alta calidad para tu embarcación.",
-    servicesHeroTitle: "Nuestros servicios",
-    servicesHeroDescription:
+    worksHeroTitle: "Nuestros servicios",
+    worksHeroDescription:
       "TODO: replace with real content — descripción general de los servicios que ofrece El Mono (lonas, capotas, cerramientos, etc.).",
-    servicesCategoriesLabel: "Categorías de servicios",
+    worksCategoriesLabel: "Categorías de servicios",
     consultWhatsApp: "Consultar por WhatsApp",
     clearList: "Vaciar lista",
     keepBrowsing: "Seguir viendo",
@@ -337,7 +337,7 @@ export const data = {
       cta: { text: "Trabajos Realizados", href: "/servicios" },
     } satisfies AboutUsContent,
 
-    services,
+    works,
     reviews,
     faqs,
     aboutUsSection,
@@ -375,8 +375,8 @@ export const data = {
     ] satisfies ProductCategoryData[],
   },
 
-  // ─── Services page ──────────────────────────────────────────────────
-  servicesPage: {
+  // ─── Works page ──────────────────────────────────────────────────────
+  worksPage: {
     tabs: [
       { id: "capotas", name: "Capotas" },
       { id: "cerramientos", name: "Cerramientos" },
@@ -416,8 +416,8 @@ export const data = {
       },
     },
     album: {
-      // Photo album rendered by the Masonry on /servicios.
-      // `src` is an imageKey resolved by Services.tsx via a
+      // Photo album rendered by the Masonry on /trabajos.
+      // `src` is an imageKey resolved by Works.tsx via a
       // Record<imageKey, string> map. When new works land, just
       // add the WebP to src/assets/img/ and a matching entry here.
       images: [
@@ -434,7 +434,7 @@ export const data = {
         { id: "wrk-05", src: "works-05", alt: "Trabajo de taller 5" },
       ],
     },
-  } satisfies ServicesPageData,
+  } satisfies WorksPageData,
 
   // ─── Brands ──────────────────────────────────────────────────────────
   brands: [
@@ -450,7 +450,7 @@ export const data = {
   /** @deprecated import from `data.home.reviews` instead. Kept for backward compatibility. */
   Home: {
     Sections: [reviewsSection, aboutUsSection] satisfies Section[],
-    Services: services,
+    Works: works,
     Reviews: reviews,
     FAQs: faqs,
   },

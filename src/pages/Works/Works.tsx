@@ -14,8 +14,8 @@ import works05 from "../../assets/img/works/works-05.webp";
 import { SectionWrapper } from "../../components";
 
 /**
- * Image-key → URL map. The `src` field in `data.servicesPage.album.images`
- * is an imageKey (a stable identifier, e.g. "services-01"). The page
+ * Image-key → URL map. The `src` field in `data.worksPage.album.images`
+ * is an imageKey (a stable identifier, e.g. "services-03"). The page
  * resolves it to the actual Vite-imported URL here so that `mocks/data.ts`
  * stays free of Vite-specific import paths.
  */
@@ -33,8 +33,8 @@ const imageMap: Record<string, string> = {
   "works-05": works05,
 };
 
-export function Services() {
-  const images = data.servicesPage.album.images.map((item) => ({
+export function Works() {
+  const images = data.worksPage.album.images.map((item) => ({
     id: item.id,
     img: imageMap[item.src] ?? "",
     url: "",
