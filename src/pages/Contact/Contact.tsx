@@ -5,7 +5,7 @@ import {
   IconPhone,
   type Icon,
 } from "@tabler/icons-react";
-import { MapSection, SectionWrapper } from "../../components/ui";
+import { LinkButton, MapSection, SectionWrapper } from "../../components/ui";
 import { data } from "../../mocks/data";
 import type { ContactIconKey } from "../../mocks/types";
 
@@ -104,6 +104,13 @@ export function Contact() {
           zoom={15}
           markerLabel="El Mono Lonería Naval"
         />
+        <div className="mt-10 flex justify-center">
+          <LinkButton
+            type="Google"
+            text="Abrir en Google Maps"
+            url="https://maps.app.goo.gl/5yJprtv3uSdtv13M7"
+          />
+        </div>
       </SectionWrapper>
     </>
   );
