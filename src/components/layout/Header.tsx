@@ -5,6 +5,7 @@ import logoSrc from "../../assets/logos/elmono/isotipo-elmono.png";
 import nameLogoSrc from "../../assets/logos/elmono/isotipo-elmono-name.png";
 import { PATHS } from "../../routes/routes";
 import { data } from "../../mocks/data";
+import { LinkButton } from "../ui/Button/LinkButton";
 
 const BREAKPOINT = 1024;
 
@@ -80,14 +81,7 @@ export function Header() {
           </nav>
         )}
 
-        {isDesktop && (
-          <Link
-            to={PATHS.CONTACT}
-            className="shrink-0 rounded-lg bg-white px-6 py-2.5 font-poppins font-semibold text-base text-sc-ocean-blue transition-colors hover:bg-sc-chalk"
-          >
-            {data.ui.ctaContactDesktop}
-          </Link>
-        )}
+        {isDesktop && <LinkButton text={data.ui.consultWhatsApp} />}
 
         {!isDesktop && (
           <button
@@ -119,12 +113,6 @@ export function Header() {
               isOpen ? "translate-x-0" : "translate-x-full"
             }`}
           >
-            {isOpen && (
-              <div
-                className="absolute -bottom-20 -left-20 w-60 h-60 rounded-full bg-pr-aquamarine/15 pointer-events-none select-none"
-                aria-hidden="true"
-              />
-            )}
             <div className="relative flex h-full flex-col px-6 pt-24 pb-6">
               <button
                 onClick={() => setIsOpen(false)}
@@ -154,13 +142,7 @@ export function Header() {
                 ))}
               </div>
               <div className="flex-1" />
-              <Link
-                to={PATHS.CONTACT}
-                onClick={() => setIsOpen(false)}
-                className="block rounded-lg bg-white px-6 py-2.5 font-poppins font-semibold text-base text-sc-ocean-blue text-center transition-colors hover:bg-sc-chalk"
-              >
-                {data.ui.ctaContactMobile}
-              </Link>
+              <LinkButton text={data.ui.consultWhatsApp}></LinkButton>
             </div>
           </aside>
         </>
