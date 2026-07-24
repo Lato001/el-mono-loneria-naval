@@ -32,7 +32,7 @@ export default defineConfig({
         'src/pages/AboutUs/**',
         'src/pages/Contact/**',
         'src/pages/Faq/**',
-        'src/pages/Services/**',
+        'src/pages/Works/**',
         // Not yet tested — will add in future batches
         'src/components/ui/Carousel/**',
         'src/components/ui/Button/ScrollToTop.tsx',

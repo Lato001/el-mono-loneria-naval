@@ -50,7 +50,7 @@ export function ImgCard({
         onMouseLeave={() => setIsHovered(false)}
         className={`
           w-full max-w-md aspect-3/4 relative
-          rounded-3xl border-2 border-b-sc-sand
+          rounded-3xl 
           overflow-hidden
           shadow-[0_20px_45px_-10px_rgba(0,0,0,0.55)]
           ${className}
@@ -99,7 +99,7 @@ export function ImgCard({
     <div
       className={`
          w-full max-w-md aspect-3/4 relative
-        rounded-3xl border-2 border-b-sc-sand
+        rounded-3xl
         overflow-hidden
         shadow-[0_20px_45px_-10px_rgba(0,0,0,0.55)]
         ${className}

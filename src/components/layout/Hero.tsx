@@ -1,15 +1,15 @@
-import { Link } from "react-router-dom";
-import { PATHS } from "../../routes/routes";
 import bgOlas from "../../assets/backgrounds/formas-olas-sec.svg";
+import { PATHS } from "../../routes/routes";
 import { BrandMarquee, ImgCard } from "../ui";
+import { LinkButton } from "../ui/Button/";
 
 interface HeroProps {
   eyebrow?: string;
   titlePrefix?: string;
   titleHighlight?: string;
   description?: string;
-  primaryCta?: string;
-  secondaryCta?: string;
+  primaryCta: string;
+  secondaryCta: string;
   images?: { src: string; alt: string }[];
 }
 
@@ -59,18 +59,12 @@ export function Hero({
             </p>
 
             <div className="flex flex-wrap gap-4 mt-8">
-              <Link
-                to={import.meta.env.VITE_WHATSAPP_URL}
-                className="inline-block rounded-lg bg-white px-6 py-3 font-poppins font-bold text-[clamp(1rem,1.5vw,1.1rem)] text-pr-hero-blue border border-white transition-colors hover:border-pr-aquamarine md:px-8 md:py-3.5"
-              >
-                {primaryCta}
-              </Link>
-              <Link
-                to={PATHS.PRODUCTS}
-                className="inline-block rounded-lg bg-transparent px-6 py-3 font-poppins font-bold text-[clamp(1rem,1.5vw,1.1rem)] text-white border border-white/40 transition-colors hover:border-white md:px-8 md:py-3.5"
-              >
-                {secondaryCta}
-              </Link>
+              <LinkButton type="Contact" text={primaryCta}></LinkButton>
+              <LinkButton
+                type="Redirect"
+                text={secondaryCta}
+                path={PATHS.PRODUCTS}
+              ></LinkButton>
             </div>
           </div>
           <ImgCard className="max-lg:hidden" images={images} interval={4000} />

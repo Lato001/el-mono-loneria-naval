@@ -5,7 +5,7 @@
 
 // ─── Re-exports from component type modules ──────────────────────────────
 export type { Highlight, AboutCta } from "../components/ui/AboutSection/AboutSection.types";
-export type { Service } from "../components/ui/ServiceGrid/ServiceGrid.types";
+export type { Work } from "../components/ui/WorksGrid/WorksGrid.types";
 export type { Review } from "../types/review";
 export type { AccordionItem } from "../components/ui/Accordion/Accordion";
 
@@ -112,29 +112,44 @@ export interface ProductCategoryData {
   products: ProductData[];
 }
 
-// ─── Services page ──────────────────────────────────────────────────────
-export interface ServiceTab {
+// ─── Works page ─────────────────────────────────────────────────────────
+export interface WorkTab {
   id: string;
   name: string;
 }
 
-export interface ServiceItem {
+export interface WorkItem {
   id: string;
   title: string;
   description: string;
   color?: string;
 }
 
-export interface ServiceSection {
+export interface WorkSection {
   title: string;
   description: string;
   /** Items rendered inside the StackedCarousel for this tab. */
-  items: ServiceItem[];
+  items: WorkItem[];
 }
 
-export interface ServicesPageData {
-  tabs: ServiceTab[];
-  content: Record<string, ServiceSection>;
+export interface WorksPageData {
+  tabs: WorkTab[];
+  content: Record<string, WorkSection>;
+  /**
+   * Photo album rendered as a masonry on the works page.
+   * `src` is an imageKey resolved by the consuming page via a
+   * `Record<imageKey, string>` map (kept in Works.tsx so the
+   * Vite import + URL plumbing lives next to the component).
+   */
+  album: {
+    images: AlbumImage[];
+  };
+}
+
+export interface AlbumImage {
+  id: string;
+  src: string;
+  alt: string;
 }
 
 // ─── UI copy ─────────────────────────────────────────────────────────────
@@ -150,10 +165,10 @@ export interface UICopy {
   // Products — SectionHero
   catalogHeroTitle: string;
   catalogHeroDescription: string;
-  // Services — SectionHero
-  servicesHeroTitle: string;
-  servicesHeroDescription: string;
-  servicesCategoriesLabel: string;
+  // Works — SectionHero
+  worksHeroTitle: string;
+  worksHeroDescription: string;
+  worksCategoriesLabel: string;
   // Products — modal / buttons
   consultWhatsApp: string;
   clearList: string;
