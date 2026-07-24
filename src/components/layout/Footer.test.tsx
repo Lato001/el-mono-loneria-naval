@@ -44,10 +44,8 @@ describe('Footer', () => {
   });
 
   it('renders nav sub-links as Link components (not raw <a> tags with full reload)', () => {
-    // Link from react-router-dom renders <a> in the DOM, but with the correct href
-    // Verify that the placeholder sub-links have the right hrefs
     const lonasLink = screen.getByRole('link', { name: 'Lonas a Medida' });
-    expect(lonasLink).toHaveAttribute('href', '/servicios/lonas-a-medida');
+    expect(lonasLink).toHaveAttribute('href', '/trabajos');
 
     const catalogoLink = screen.getByRole('link', { name: 'Catálogo' });
     expect(catalogoLink).toHaveAttribute('href', '/productos');
@@ -57,22 +55,22 @@ describe('Footer', () => {
   });
 
   it('renders phone contact item with tel: href', () => {
-    const phoneLink = screen.getByText('+54 9 11 0000-0000');
+    const phoneLink = screen.getByText('+54 9 11 6990-6255');
     expect(phoneLink).toBeInTheDocument();
-    expect(phoneLink.closest('a')).toHaveAttribute('href', 'tel:+5491100000000');
+    expect(phoneLink.closest('a')).toHaveAttribute('href', 'tel:+54 9 11 6990-6255');
   });
 
   it('renders email contact item with mailto: href', () => {
-    const emailLink = screen.getByText('contacto@elmono.com.ar');
+    const emailLink = screen.getByText('lonerianavalelmono@hotmail.com');
     expect(emailLink).toBeInTheDocument();
     expect(emailLink.closest('a')).toHaveAttribute(
       'href',
-      'mailto:contacto@elmono.com.ar',
+      'mailto:lonerianavalelmono@hotmail.com',
     );
   });
 
   it('renders address contact item', () => {
-    expect(screen.getByText('Buenos Aires, Argentina')).toBeInTheDocument();
+    expect(screen.getByText('Tigre, Buenos Aires, Argentina')).toBeInTheDocument();
   });
 
   it('renders the copyright text', () => {

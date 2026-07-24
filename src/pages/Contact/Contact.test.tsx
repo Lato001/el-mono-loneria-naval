@@ -4,6 +4,18 @@ import { afterEach, describe, it, expect } from "vitest";
 import { Contact } from "./Contact";
 import { data } from "../../mocks/data";
 
+vi.mock("react-map-gl/maplibre", () => ({
+  default: ({ children }: { children?: React.ReactNode }) => (
+    <div data-testid="mock-map">{children}</div>
+  ),
+  Marker: ({ longitude, latitude }: { longitude: number; latitude: number }) => (
+    <div data-testid="mock-marker" data-lng={longitude} data-lat={latitude} />
+  ),
+  Popup: ({ children }: { children?: React.ReactNode }) => (
+    <div data-testid="mock-popup">{children}</div>
+  ),
+}));
+
 const WHATSAPP_URL = "https://wa.me/123";
 
 describe("Contact page", () => {
@@ -83,5 +95,30 @@ describe("Contact page", () => {
     });
     expect(whatsappLink).toHaveAttribute("target", "_blank");
     expect(whatsappLink).toHaveAttribute("rel", "noopener noreferrer");
+  });
+
+  it("renders the map section with heading", () => {
+    vi.stubEnv("VITE_WHATSAPP_URL", WHATSAPP_URL);
+    renderContact();
+
+    const headings = screen.getAllByRole("heading", { level: 2 });
+    expect(headings.length).toBeGreaterThanOrEqual(3);
+    expect(screen.getByText(/ubicacion/i)).toBeInTheDocument();
+  });
+
+  it("renders the map with a marker at Tigre coordinates", () => {
+    vi.stubEnv("VITE_WHATSAPP_URL", WHATSAPP_URL);
+    renderContact();
+
+    const marker = screen.getByTestId("mock-marker");
+    expect(marker).toHaveAttribute("data-lat", "-34.4351676");
+    expect(marker).toHaveAttribute("data-lng", "-58.5956366");
+  });
+
+  it("renders the map container", () => {
+    vi.stubEnv("VITE_WHATSAPP_URL", WHATSAPP_URL);
+    renderContact();
+
+    expect(screen.getByTestId("mock-map")).toBeInTheDocument();
   });
 });

@@ -5,7 +5,7 @@ import {
   IconPhone,
   type Icon,
 } from "@tabler/icons-react";
-import { SectionWrapper } from "../../components/ui";
+import { MapSection, SectionWrapper } from "../../components/ui";
 import { data } from "../../mocks/data";
 import type { ContactIconKey } from "../../mocks/types";
 
@@ -91,6 +91,15 @@ export function Contact() {
           </a>
         </div>
       </div>
+
+      <SectionWrapper title="Nuestro Taller" eyebrow="Ubicacion" theme="light">
+        <MapSection
+          latitude={-34.4351676}
+          longitude={-58.5956366}
+          zoom={15}
+          markerLabel="El Mono Lonería Naval"
+        />
+      </SectionWrapper>
     </SectionWrapper>
   );
 }
