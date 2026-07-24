@@ -104,16 +104,6 @@ export function Contact() {
           zoom={15}
           markerLabel="El Mono Lonería Naval"
         />
-        <a
-          href="https://maps.app.goo.gl/5yJprtv3uSdtv13M7"
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="Abrir ubicación en Google Maps"
-          className="mt-6 inline-flex items-center gap-2 rounded-md bg-pr-aquamarine px-6 py-3 font-poppins font-medium text-sc-ocean-blue transition-colors hover:bg-pr-aquamarine/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
-        >
-          <IconMapPin size={20} aria-hidden="true" />
-          Abrir en Google Maps
-        </a>
       </SectionWrapper>
     </>
   );
