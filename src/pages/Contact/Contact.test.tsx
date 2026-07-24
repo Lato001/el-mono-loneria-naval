@@ -11,9 +11,6 @@ vi.mock("react-map-gl/maplibre", () => ({
   Marker: ({ longitude, latitude }: { longitude: number; latitude: number }) => (
     <div data-testid="mock-marker" data-lng={longitude} data-lat={latitude} />
   ),
-  Popup: ({ children }: { children?: React.ReactNode }) => (
-    <div data-testid="mock-popup">{children}</div>
-  ),
 }));
 
 const WHATSAPP_URL = "https://wa.me/123";

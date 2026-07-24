@@ -27,72 +27,77 @@ export function Contact() {
   const whatsappUrl = import.meta.env.VITE_WHATSAPP_URL;
 
   return (
-    <SectionWrapper
-      eyebrow="Contacto"
-      title="Hablemos de tu proyecto"
-      theme="light"
-      titlesAlign="start"
-      headingLevel="h1"
-    >
-      <p className="mb-8 max-w-2xl font-poppins text-base leading-relaxed text-sc-ocean-blue/70">
-        {PAGE_DESCRIPTION}
-      </p>
+    <>
+      <SectionWrapper
+        eyebrow="Contacto"
+        title="Hablemos de tu proyecto"
+        theme="light"
+        titlesAlign="start"
+        headingLevel="h1"
+      >
+        <p className="mb-8 max-w-2xl font-poppins text-base leading-relaxed text-sc-ocean-blue/70">
+          {PAGE_DESCRIPTION}
+        </p>
 
-      <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
-        {/* Left column: Contact info card */}
-        <div className="rounded-lg bg-sc-chalk p-8 shadow-lg">
-          <h2 className="font-poppins mb-6 text-xl font-bold text-sc-ocean-blue">
-            {data.ui.contactSectionTitle}
-          </h2>
-          <ul className="flex flex-col gap-4">
-            {contactItems.map((item) => {
-              const Icon = contactIconMap[item.iconKey];
-              return (
-                <li key={item.label} className="flex items-start gap-3">
-                  <Icon
-                    size={20}
-                    className="mt-0.5 shrink-0 text-pr-hero-blue"
-                    aria-hidden="true"
-                  />
-                  <div className="flex flex-col">
-                    <span className="font-poppins text-sm font-semibold text-sc-ocean-blue">
-                      {item.label}
-                    </span>
-                    <a
-                      href={item.href}
-                      className="font-poppins text-sm text-sc-ocean-blue/70 transition-colors hover:text-pr-hero-blue hover:underline"
-                    >
-                      {item.value}
-                    </a>
-                  </div>
-                </li>
-              );
-            })}
-          </ul>
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
+          {/* Left column: Contact info card */}
+          <div className="rounded-lg bg-sc-chalk p-8 shadow-lg">
+            <h2 className="font-poppins mb-6 text-xl font-bold text-sc-ocean-blue">
+              {data.ui.contactSectionTitle}
+            </h2>
+            <ul className="flex flex-col gap-4">
+              {contactItems.map((item) => {
+                const Icon = contactIconMap[item.iconKey];
+                return (
+                  <li key={item.label} className="flex items-start gap-3">
+                    <Icon
+                      size={20}
+                      className="mt-0.5 shrink-0 text-pr-hero-blue"
+                      aria-hidden="true"
+                    />
+                    <div className="flex flex-col">
+                      <span className="font-poppins text-sm font-semibold text-sc-ocean-blue">
+                        {item.label}
+                      </span>
+                      <a
+                        href={item.href}
+                        className="font-poppins text-sm text-sc-ocean-blue/70 transition-colors hover:text-pr-hero-blue hover:underline"
+                      >
+                        {item.value}
+                      </a>
+                    </div>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+
+          {/* Right column: WhatsApp CTA */}
+          <div className="flex flex-col items-center justify-center rounded-lg bg-sc-chalk p-8 shadow-lg">
+            <h2 className="font-poppins mb-4 text-xl font-bold text-sc-ocean-blue">
+              ¿Preferís WhatsApp?
+            </h2>
+            <p className="font-poppins mb-6 text-center text-sm text-sc-ocean-blue/70">
+              Escribinos directamente y te respondemos a la brevedad.
+            </p>
+            <a
+              href={whatsappUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Contactar por WhatsApp"
+              className="inline-flex items-center gap-2 rounded-md bg-green-500 px-6 py-3 font-poppins font-medium text-white transition-colors hover:bg-green-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-300"
+            >
+              <IconBrandWhatsapp size={20} aria-hidden="true" />
+              Contactar por WhatsApp
+            </a>
+          </div>
         </div>
-
-        {/* Right column: WhatsApp CTA */}
-        <div className="flex flex-col items-center justify-center rounded-lg bg-sc-chalk p-8 shadow-lg">
-          <h2 className="font-poppins mb-4 text-xl font-bold text-sc-ocean-blue">
-            ¿Preferís WhatsApp?
-          </h2>
-          <p className="font-poppins mb-6 text-center text-sm text-sc-ocean-blue/70">
-            Escribinos directamente y te respondemos a la brevedad.
-          </p>
-          <a
-            href={whatsappUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Contactar por WhatsApp"
-            className="inline-flex items-center gap-2 rounded-md bg-green-500 px-6 py-3 font-poppins font-medium text-white transition-colors hover:bg-green-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-300"
-          >
-            <IconBrandWhatsapp size={20} aria-hidden="true" />
-            Contactar por WhatsApp
-          </a>
-        </div>
-      </div>
-
-      <SectionWrapper title="Nuestro Taller" eyebrow="Ubicacion" theme="light">
+      </SectionWrapper>
+      <SectionWrapper
+        eyebrow="Ubicacion"
+        title="Donde encontrarnos"
+        className="bg-sc-ocean-blue w-full p-10 mb-20"
+      >
         <MapSection
           latitude={-34.4351676}
           longitude={-58.5956366}
@@ -100,6 +105,6 @@ export function Contact() {
           markerLabel="El Mono Lonería Naval"
         />
       </SectionWrapper>
-    </SectionWrapper>
+    </>
   );
 }

@@ -5,11 +5,8 @@ vi.mock("react-map-gl/maplibre", () => ({
   default: ({ children }: { children?: React.ReactNode }) => (
     <div data-testid="mock-map">{children}</div>
   ),
-  Marker: ({ longitude, latitude }: { longitude: number; latitude: number }) => (
-    <div data-testid="mock-marker" data-lng={longitude} data-lat={latitude} />
-  ),
-  Popup: ({ children }: { children?: React.ReactNode }) => (
-    <div data-testid="mock-popup">{children}</div>
+  Marker: ({ longitude, latitude, children }: { longitude: number; latitude: number; children?: React.ReactNode }) => (
+    <div data-testid="mock-marker" data-lng={longitude} data-lat={latitude}>{children}</div>
   ),
 }));
 
@@ -26,7 +23,7 @@ describe("MapSection", () => {
     expect(marker).toHaveAttribute("data-lng", "-58.5956366");
   });
 
-  it("renders the default marker label", () => {
+  it("renders a single marker with the default label", () => {
     render(<MapSection latitude={-34.4351676} longitude={-58.5956366} />);
     expect(screen.getByText("El Mono Lonería Naval")).toBeInTheDocument();
   });
@@ -42,10 +39,9 @@ describe("MapSection", () => {
     expect(screen.getByText("Mi Negocio")).toBeInTheDocument();
   });
 
-  it("renders a popup with the marker label", () => {
+  it("renders only one marker", () => {
     render(<MapSection latitude={-34.4351676} longitude={-58.5956366} />);
-    const popups = screen.getAllByTestId("mock-popup");
-    expect(popups.length).toBeGreaterThanOrEqual(1);
-    expect(screen.getByText("El Mono Lonería Naval")).toBeInTheDocument();
+    const markers = screen.getAllByTestId("mock-marker");
+    expect(markers).toHaveLength(1);
   });
 });

@@ -1,10 +1,10 @@
-import Map, { Marker, Popup } from "react-map-gl/maplibre";
+import Map, { Marker } from "react-map-gl/maplibre";
 import type { MapSectionProps } from "./MapSection.types";
 
 export function MapSection({
   latitude,
   longitude,
-  zoom = 15,
+  zoom = 17,
   height = "400px",
   markerLabel = "El Mono Lonería Naval",
   className,
@@ -21,7 +21,7 @@ export function MapSection({
           zoom,
         }}
         style={{ width: "100%", height: "100%" }}
-        mapStyle="https://basemaps.cartocdn.com/gl/positron-gl-style/style.json"
+        mapStyle="https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json"
       >
         <Marker longitude={longitude} latitude={latitude} anchor="bottom">
           <div className="flex flex-col items-center">
@@ -31,17 +31,6 @@ export function MapSection({
             <div className="h-0 w-0 border-l-[6px] border-r-[6px] border-t-[6px] border-l-transparent border-r-transparent border-t-sc-ocean-blue" />
           </div>
         </Marker>
-        <Popup
-          longitude={longitude}
-          latitude={latitude}
-          anchor="bottom"
-          offset={35}
-          closeButton={false}
-        >
-          <div className="font-poppins text-sm font-semibold text-sc-ocean-blue">
-            {markerLabel}
-          </div>
-        </Popup>
       </Map>
     </div>
   );
