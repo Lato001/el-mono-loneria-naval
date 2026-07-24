@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import { Footer, Header } from "./components/layout";
-import { AboutUs, Contact, Faq, Home, Products, Services } from "./pages";
+import { AboutUs, Contact, Faq, Home, Products, Works } from "./pages";
 import { PATHS } from "./routes/routes";
+import { ScrollToTop } from "./components";
 
 export default function App() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -16,6 +17,7 @@ export default function App() {
 
   return (
     <>
+      <ScrollToTop />
       <div
         className={`sticky top-0 z-50 transition-all duration-300 ${
           isScrolled ? "bg-sc-ocean-blue/90" : ""
@@ -26,7 +28,7 @@ export default function App() {
       <Routes>
         <Route path={PATHS.HOME} element={<Home />} />
         <Route path={PATHS.PRODUCTS} element={<Products />} />
-        <Route path={PATHS.SERVICES} element={<Services />} />
+        <Route path={PATHS.WORKS} element={<Works />} />
         <Route path={PATHS.ABOUT_US} element={<AboutUs />} />
         <Route path={PATHS.FAQ} element={<Faq />} />
         <Route path={PATHS.CONTACT} element={<Contact />} />

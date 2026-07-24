@@ -29,7 +29,7 @@
  *      in Footer.tsx.
  */
 
-import type { Service } from "../components/ui/ServiceGrid/ServiceGrid.types";
+import type { Work } from "../components/ui/WorksGrid/WorksGrid.types";
 import type { Review } from "../types/review";
 import type {
   AboutUsContent,
@@ -44,14 +44,14 @@ import type {
   ReviewsSection,
   Section,
   SectionsGroup,
-  ServicesPageData,
+  WorksPageData,
   SplitCardData,
   UICopy,
 } from "./types";
 
 // ─── Canonical data ──────────────────────────────────────────────────────
 
-const services = [
+const works = [
   {
     id: "srv1",
     title: "Lonas a Medida",
@@ -70,7 +70,7 @@ const services = [
     description:
       "Fundas protectoras para autos, motos de agua y equipamiento náutico, con materiales que cuidan la superficie y soportan el sol.",
   },
-] satisfies Service[];
+] satisfies Work[];
 
 const reviews = [
   {
@@ -165,15 +165,15 @@ export const data = {
 
   // ─── UI copy (buttons, modals, aria-labels, empty states) ────────────
   ui: {
-    ctaContactDesktop: "Contactame",
+    ctaContactDesktop: "Pedi tu Presupuesto",
     ctaContactMobile: "Cotizar",
     catalogHeroTitle: "Nuestros productos",
     catalogHeroDescription:
       "Explorá nuestra selección de artículos náuticos: broches, caballetes, cierres e hilos de la más alta calidad para tu embarcación.",
-    servicesHeroTitle: "Nuestros servicios",
-    servicesHeroDescription:
+    worksHeroTitle: "Nuestros servicios",
+    worksHeroDescription:
       "TODO: replace with real content — descripción general de los servicios que ofrece El Mono (lonas, capotas, cerramientos, etc.).",
-    servicesCategoriesLabel: "Categorías de servicios",
+    worksCategoriesLabel: "Categorías de servicios",
     consultWhatsApp: "Consultar por WhatsApp",
     clearList: "Vaciar lista",
     keepBrowsing: "Seguir viendo",
@@ -217,18 +217,19 @@ export const data = {
     header: [
       { label: "Inicio", href: "/" },
       { label: "Productos", href: "/productos" },
-      { label: "Servicios", href: "/servicios" },
+      { label: "Trabajos", href: "/trabajos" },
       { label: "Nosotros", href: "/nosotros" },
       { label: "FAQ", href: "/faq" },
+      { label: "Contacto", href: "/contacto" },
     ] satisfies NavLink[],
     footer: {
       groups: [
         {
           title: "Servicios",
           links: [
-            { label: "Lonas a Medida", href: "/servicios/lonas-a-medida" },
-            { label: "Capotas para Embarcaciones", href: "/servicios/capotas" },
-            { label: "Cubreautos y Fundas", href: "/servicios/cubreautos" },
+            { label: "Lonas a Medida", href: "/trabajos" },
+            { label: "Capotas para Embarcaciones", href: "/trabajos" },
+            { label: "Cubreautos y Fundas", href: "/trabajos" },
           ],
         },
         {
@@ -239,7 +240,7 @@ export const data = {
           title: "Nosotros",
           links: [
             { label: "Sobre el Taller", href: "/nosotros" },
-            { label: "Equipo", href: "/nosotros/equipo" },
+            { label: "Equipo", href: "/nosotros" },
           ],
         },
         {
@@ -251,33 +252,33 @@ export const data = {
         },
       ],
       social: [
-        { platform: "Facebook", href: "#" },
-        { platform: "Instagram", href: "#" },
-        { platform: "WhatsApp", href: "#" },
+        { platform: "Facebook", href: "https://www.facebook.com/profile.php?id=100071098357153" },
+        { platform: "Instagram", href: "https://www.instagram.com/lonerianavalelmono/" },
+        { platform: "WhatsApp", href: `${import.meta.env.VITE_WHATSAPP_URL}` },
       ],
       contact: [
         {
           label: "Teléfono",
-          value: "+54 9 11 0000-0000",
-          href: "tel:+5491100000000",
+          value: "+54 9 11 6990-6255",
+          href: "tel:+54 9 11 6990-6255",
           iconKey: "phone",
         },
         {
           label: "Email",
-          value: "contacto@elmono.com.ar",
-          href: "mailto:contacto@elmono.com.ar",
+          value: "lonerianavalelmono@hotmail.com",
+          href: "mailto:lonerianavalelmono@hotmail.com",
           iconKey: "mail",
         },
         {
           label: "Dirección",
-          value: "Buenos Aires, Argentina",
-          href: "#",
+          value: "Tigre, Buenos Aires, Argentina",
+          href: "https://maps.app.goo.gl/5yJprtv3uSdtv13M7",
           iconKey: "mapPin",
         },
       ],
-      tagline: "El Mono · Lonería Naval desde [año]",
+      tagline: "El Mono · Lonería Naval desde 2026",
       copyright:
-        "© 2026 El Mono Lonería Naval. Todos los derechos reservados.",
+        "© 2026 El Mono Lonería Naval. Desarrollado por CameSites",
       contactTitle: "Contacto",
     } satisfies FooterNav,
   },
@@ -337,7 +338,7 @@ export const data = {
       cta: { text: "Trabajos Realizados", href: "/servicios" },
     } satisfies AboutUsContent,
 
-    services,
+    works,
     reviews,
     faqs,
     aboutUsSection,
@@ -375,8 +376,8 @@ export const data = {
     ] satisfies ProductCategoryData[],
   },
 
-  // ─── Services page ──────────────────────────────────────────────────
-  servicesPage: {
+  // ─── Works page ──────────────────────────────────────────────────────
+  worksPage: {
     tabs: [
       { id: "capotas", name: "Capotas" },
       { id: "cerramientos", name: "Cerramientos" },
@@ -415,7 +416,26 @@ export const data = {
         ],
       },
     },
-  } satisfies ServicesPageData,
+    album: {
+      // Photo album rendered by the Masonry on /trabajos.
+      // `src` is an imageKey resolved by Works.tsx via a
+      // Record<imageKey, string> map. When new works land, just
+      // add the WebP to src/assets/img/ and a matching entry here.
+      images: [
+        { id: "svc-03", src: "services-03", alt: "Trabajo de lona" },
+        { id: "svc-04", src: "services-04", alt: "Cubreauto" },
+        { id: "svc-05", src: "services-05", alt: "Funda para moto de agua" },
+        { id: "svc-06", src: "services-06", alt: "Carpa" },
+        { id: "svc-07", src: "services-07", alt: "Toneau" },
+        { id: "svc-08", src: "services-08", alt: "Capota" },
+        { id: "wrk-01", src: "works-01", alt: "Trabajo de taller 1" },
+        { id: "wrk-02", src: "works-02", alt: "Trabajo de taller 2" },
+        { id: "wrk-03", src: "works-03", alt: "Trabajo de taller 3" },
+        { id: "wrk-04", src: "works-04", alt: "Trabajo de taller 4" },
+        { id: "wrk-05", src: "works-05", alt: "Trabajo de taller 5" },
+      ],
+    },
+  } satisfies WorksPageData,
 
   // ─── Brands ──────────────────────────────────────────────────────────
   brands: [
@@ -431,7 +451,7 @@ export const data = {
   /** @deprecated import from `data.home.reviews` instead. Kept for backward compatibility. */
   Home: {
     Sections: [reviewsSection, aboutUsSection] satisfies Section[],
-    Services: services,
+    Works: works,
     Reviews: reviews,
     FAQs: faqs,
   },
