@@ -227,9 +227,9 @@ export const data = {
         {
           title: "Servicios",
           links: [
-            { label: "Lonas a Medida", href: "/servicios/lonas-a-medida" },
-            { label: "Capotas para Embarcaciones", href: "/servicios/capotas" },
-            { label: "Cubreautos y Fundas", href: "/servicios/cubreautos" },
+            { label: "Lonas a Medida", href: "/trabajos" },
+            { label: "Capotas para Embarcaciones", href: "/trabajos" },
+            { label: "Cubreautos y Fundas", href: "/trabajos" },
           ],
         },
         {
@@ -240,7 +240,7 @@ export const data = {
           title: "Nosotros",
           links: [
             { label: "Sobre el Taller", href: "/nosotros" },
-            { label: "Equipo", href: "/nosotros/equipo" },
+            { label: "Equipo", href: "/nosotros" },
           ],
         },
         {
@@ -252,33 +252,33 @@ export const data = {
         },
       ],
       social: [
-        { platform: "Facebook", href: "#" },
-        { platform: "Instagram", href: "#" },
-        { platform: "WhatsApp", href: "#" },
+        { platform: "Facebook", href: "https://www.facebook.com/profile.php?id=100071098357153" },
+        { platform: "Instagram", href: "https://www.instagram.com/lonerianavalelmono/" },
+        { platform: "WhatsApp", href: `${import.meta.env.VITE_WHATSAPP_URL}` },
       ],
       contact: [
         {
           label: "Teléfono",
-          value: "+54 9 11 0000-0000",
-          href: "tel:+5491100000000",
+          value: "+54 9 11 6990-6255",
+          href: "tel:+54 9 11 6990-6255",
           iconKey: "phone",
         },
         {
           label: "Email",
-          value: "contacto@elmono.com.ar",
-          href: "mailto:contacto@elmono.com.ar",
+          value: "lonerianavalelmono@hotmail.com",
+          href: "mailto:lonerianavalelmono@hotmail.com",
           iconKey: "mail",
         },
         {
           label: "Dirección",
-          value: "Buenos Aires, Argentina",
-          href: "#",
+          value: "Tigre, Buenos Aires, Argentina",
+          href: "https://maps.app.goo.gl/5yJprtv3uSdtv13M7",
           iconKey: "mapPin",
         },
       ],
-      tagline: "El Mono · Lonería Naval desde [año]",
+      tagline: "El Mono · Lonería Naval desde 2026",
       copyright:
-        "© 2026 El Mono Lonería Naval. Todos los derechos reservados.",
+        "© 2026 El Mono Lonería Naval. Desarrollado por CameSites",
       contactTitle: "Contacto",
     } satisfies FooterNav,
   },
