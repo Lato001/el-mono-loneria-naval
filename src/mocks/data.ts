@@ -165,7 +165,7 @@ export const data = {
 
   // ─── UI copy (buttons, modals, aria-labels, empty states) ────────────
   ui: {
-    ctaContactDesktop: "Contactame",
+    ctaContactDesktop: "Pedi tu Presupuesto",
     ctaContactMobile: "Cotizar",
     catalogHeroTitle: "Nuestros productos",
     catalogHeroDescription:
@@ -217,9 +217,10 @@ export const data = {
     header: [
       { label: "Inicio", href: "/" },
       { label: "Productos", href: "/productos" },
-      { label: "Servicios", href: "/servicios" },
+      { label: "Trabajos", href: "/trabajos" },
       { label: "Nosotros", href: "/nosotros" },
       { label: "FAQ", href: "/faq" },
+      { label: "Contacto", href: "/contacto" },
     ] satisfies NavLink[],
     footer: {
       groups: [
