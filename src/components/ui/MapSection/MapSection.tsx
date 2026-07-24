@@ -1,4 +1,5 @@
 import Map, { Marker } from "react-map-gl/maplibre";
+import logoElMono from "../../../assets/logos/elmono/isotipo-elmono.png";
 import type { MapSectionProps } from "./MapSection.types";
 
 export function MapSection({
@@ -25,10 +26,15 @@ export function MapSection({
       >
         <Marker longitude={longitude} latitude={latitude} anchor="bottom">
           <div className="flex flex-col items-center">
-            <div className="rounded-lg bg-sc-ocean-blue px-3 py-1.5 font-poppins text-xs font-semibold text-white shadow-lg">
+            <img
+              src={logoElMono}
+              alt={markerLabel}
+              className="h-16 w-16 rounded-full  shadow-lg bg-sc-ocean-blue"
+              style={{ display: "block" }}
+            />
+            <div className="mt-1 rounded-md bg-sc-ocean-blue px-2 py-1 font-poppins text-[10px] font-semibold text-white shadow-lg">
               {markerLabel}
             </div>
-            <div className="h-0 w-0 border-l-[6px] border-r-[6px] border-t-[6px] border-l-transparent border-r-transparent border-t-sc-ocean-blue" />
           </div>
         </Marker>
       </Map>
