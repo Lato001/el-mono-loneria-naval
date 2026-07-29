@@ -2,15 +2,18 @@ import { useMemo, useState } from "react";
 import { IconX } from "@tabler/icons-react";
 import { useSessionSelection } from "../../hooks/useSessionSelection";
 import { buildWhatsAppUrl } from "./whatsappUrl";
-import { SectionHero } from "../../components/ui/SectionHero";
-import { SectionTabs } from "../../components/ui/SectionTabs";
-import { ActionBar } from "../../components/ui/ActionBar";
-import { Modal } from "../../components/ui/Modal";
-import { Button } from "../../components/ui/Button";
-import { ProductCarousel } from "../../components/ui/ProductCarousel";
+import {
+  SectionHero,
+  SectionTabs,
+  ActionBar,
+  Modal,
+  Button,
+  ProductCarousel,
+} from "../../components/ui";
 import type { Product } from "../../components/ui/ProductCarousel/ProductCarousel.types";
 import type { Tab } from "../../components/ui/SectionTabs/SectionTabs.types";
 import { data } from "../../mocks/data";
+import { ImgCard } from "../../components";
 
 const STORAGE_KEY = "mono:quote-cart";
 
@@ -22,7 +25,26 @@ const productImages = import.meta.glob(
 
 const productsImageMap: Record<string, string> = Object.fromEntries(
   Object.entries(productImages).map(([path, url]) => {
-    const key = path.split("/").pop()!.replace(/\.[^.]+$/, "");
+    const key = path
+      .split("/")
+      .pop()!
+      .replace(/\.[^.]+$/, "");
+    return [key, url];
+  }),
+);
+
+// ─── Category "applied" images ─────────────────────────────────────────────
+const catImages = import.meta.glob(
+  "../../assets/img/services/**/*.{webp,png,jpg}",
+  { eager: true, import: "default" },
+) as Record<string, string>;
+
+const categoryImagesMap: Record<string, string> = Object.fromEntries(
+  Object.entries(catImages).map(([path, url]) => {
+    const key = path
+      .split("/")
+      .pop()!
+      .replace(/\.[^.]+$/, "");
     return [key, url];
   }),
 );
@@ -30,13 +52,25 @@ const productsImageMap: Record<string, string> = Object.fromEntries(
 // ─── Derived data ────────────────────────────────────────────────────────
 
 /** Converts ProductData (imageKey) → Product (imageSrc) for the carousel. */
-function toProduct(p: { id: string; title: string; description: string; imageKey: string }): Product {
-  return { id: p.id, title: p.title, description: p.description, imageSrc: productsImageMap[p.imageKey] };
+function toProduct(p: {
+  id: string;
+  title: string;
+  description: string;
+  imageKey: string;
+}): Product {
+  return {
+    id: p.id,
+    title: p.title,
+    description: p.description,
+    imageSrc: productsImageMap[p.imageKey],
+  };
 }
 
 const categories = data.products.categories.map((cat) => ({
   id: cat.id,
   name: cat.name,
+  description: cat.description,
+  imageKey: cat.imageKey,
   products: cat.products.map(toProduct),
 }));
 
@@ -127,7 +161,12 @@ export function Products() {
     useSessionSelection(STORAGE_KEY);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isClearModalOpen, setIsClearModalOpen] = useState(false);
-  const [activeCategoryId, setActiveCategoryId] = useState<string | null>(null);
+  const [activeCategoryId, setActiveCategoryId] = useState<string>(
+    categories[0].id,
+  );
+  const [showMobileInfo, setShowMobileInfo] = useState(false);
+
+  const activeCategory = categories.find((c) => c.id === activeCategoryId);
 
   const selectedProducts = useMemo<Product[]>(
     () =>
@@ -141,6 +180,15 @@ export function Products() {
     [selected],
   );
 
+  const selectedCounts = useMemo<Record<string, number>>(() => {
+    const counts: Record<string, number> = {};
+    for (const cat of categories) {
+      const catCount = cat.products.filter((p) => selected.has(p.id)).length;
+      if (catCount > 0) counts[cat.id] = catCount;
+    }
+    return counts;
+  }, [categories, selected]);
+
   const whatsappResult = useMemo(
     () =>
       buildWhatsAppUrl(
@@ -153,7 +201,7 @@ export function Products() {
 
   const handleTabSelect = (id: string) => {
     setActiveCategoryId(id);
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+    setShowMobileInfo(false);
   };
 
   const handleOpenModal = () => setIsModalOpen(true);
@@ -180,20 +228,57 @@ export function Products() {
       <div id="tabs" className="pb-28">
         <SectionTabs
           categories={tabs}
-          activeId={activeCategoryId ?? undefined}
+          activeId={activeCategoryId}
           onSelect={handleTabSelect}
+          selectedCounts={selectedCounts}
         />
 
-        {categories.map((cat) => (
-          <ProductCarousel
-            key={cat.id}
-            id={cat.id}
-            items={cat.products}
-            ariaLabel={cat.name}
-            isSelected={isSelected}
-            onToggle={toggle}
-          />
-        ))}
+        {activeCategory && (
+          <div className="mx-auto max-w-295 px-6 py-12">
+            <div className="flex flex-col gap-8 xl:flex-row">
+              <div className="w-full shrink-0 xl:w-96">
+                <div className="relative">
+                  <ImgCard
+                    src={categoryImagesMap[activeCategory.imageKey]}
+                    alt={activeCategory.name}
+                  />
+
+                  <button
+                    type="button"
+                    onClick={() => setShowMobileInfo((prev) => !prev)}
+                    className=" absolute top-1 right-1 z-20 flex h-10 w-10 items-center justify-center rounded-full bg-sc-sky-blue text-white shadow-lg transition-transform hover:scale-105 active:scale-95"
+                    aria-label={
+                      showMobileInfo ? "Cerrar información" : "Ver información"
+                    }
+                  >
+                    {showMobileInfo ? <IconX size={20} /> : "?"}
+                  </button>
+
+                  {showMobileInfo && (
+                    <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-4 rounded-3xl bg-pr-hero-blue/85 p-6">
+                      <h1 className="font-poppins text-center text-5xl font-bold leading-tight text-white">
+                        {activeCategory.name}
+                      </h1>
+                      <p className="font-poppins max-w-xs text-center text-md text-white/85">
+                        {activeCategory.description}
+                      </p>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              <div className="flex min-w-0 flex-1 flex-col">
+                <ProductCarousel
+                  id={activeCategory.id}
+                  items={activeCategory.products}
+                  ariaLabel={activeCategory.name}
+                  isSelected={isSelected}
+                  onToggle={toggle}
+                />
+              </div>
+            </div>
+          </div>
+        )}
       </div>
 
       <ActionBar
@@ -205,7 +290,9 @@ export function Products() {
 
       <Modal
         open={isModalVisible}
-        onOpenChange={(open) => { if (!open) handleCloseModal(); }}
+        onOpenChange={(open) => {
+          if (!open) handleCloseModal();
+        }}
         title={data.ui.quoteModal.title}
         description={data.ui.quoteModal.description}
       >
@@ -222,7 +309,9 @@ export function Products() {
 
       <Modal
         open={isClearModalOpen}
-        onOpenChange={(open) => { if (!open) handleCloseClearModal(); }}
+        onOpenChange={(open) => {
+          if (!open) handleCloseClearModal();
+        }}
         title={data.ui.clearModal.title}
         description={data.ui.clearModal.description}
       >

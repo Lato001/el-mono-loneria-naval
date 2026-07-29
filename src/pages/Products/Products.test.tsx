@@ -55,10 +55,53 @@ describe("Products page", () => {
     expect(tabs).toHaveLength(2);
   });
 
-  it("renders 2 carousel sections (tabpanels)", () => {
+  it("renders the first category name in a FaqBubble question by default", () => {
+    renderProducts();
+    expect(
+      screen.getByRole("heading", { level: 2, name: /Broches/i }),
+    ).toBeInTheDocument();
+  });
+
+  it("renders the first category description in a FaqBubble answer by default", () => {
+    renderProducts();
+    expect(
+      screen.getByText(/Broches de presión profesionales/i),
+    ).toBeInTheDocument();
+  });
+
+  it("renders an image for the active category", () => {
+    renderProducts();
+    const images = screen.getAllByRole("img");
+    // At least one image should be present (FaqBubble ImgCard)
+    expect(images.length).toBeGreaterThan(0);
+  });
+
+  it("switching tab updates title, description, and carousel", async () => {
+    const user = userEvent.setup();
+    renderProducts();
+
+    // Default: Broches
+    expect(
+      screen.getByRole("heading", { level: 2, name: /Broches/i }),
+    ).toBeInTheDocument();
+
+    // Click Caballetes tab
+    await user.click(screen.getByRole("tab", { name: /Caballetes/i }));
+
+    // Title switches
+    expect(
+      screen.getByRole("heading", { level: 2, name: /Caballetes/i }),
+    ).toBeInTheDocument();
+    // Description switches
+    expect(
+      screen.getByText(/Caballetes de acero inoxidable/i),
+    ).toBeInTheDocument();
+  });
+
+  it("renders 1 carousel section (tabpanel) for the active category", () => {
     renderProducts();
     const panels = screen.getAllByRole("tabpanel");
-    expect(panels).toHaveLength(2);
+    expect(panels).toHaveLength(1);
   });
 
   it("Presupuestar button is disabled when no products are selected", () => {

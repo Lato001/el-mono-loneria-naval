@@ -8,6 +8,7 @@ export function SectionTabs({
   onSelect,
   topOffset = "var(--header-h, 76px)",
   ariaLabel = data.ui.categoriesLabel,
+  selectedCounts,
 }: SectionTabsProps) {
   const tablistRef = useRef<HTMLDivElement>(null);
 
@@ -77,6 +78,11 @@ export function SectionTabs({
                 } focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pr-aquamarine`}
               >
                 {tab.name}
+                {selectedCounts?.[tab.id] != null && selectedCounts[tab.id] > 0 && (
+                  <span className="ml-2 inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-sc-ocean-blue px-1.5 text-xs font-bold text-white">
+                    {selectedCounts[tab.id]}
+                  </span>
+                )}
               </button>
             );
           })}

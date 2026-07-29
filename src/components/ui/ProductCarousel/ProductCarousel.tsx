@@ -33,9 +33,6 @@ export function ProductCarousel({
       className="relative min-w-0 py-8"
       style={{ scrollMarginTop: "var(--header-h, 76px)" }}
     >
-      <h2 className="font-brown text-2xl flex justify-center text-pr-hero-blue pb-10">
-        {id}
-      </h2>
       <div
         ref={scrollRef}
         className="flex gap-4 overflow-x-auto scroll-smooth snap-x snap-mandatory px-6 pb-4 scrollbar-hide"
@@ -44,13 +41,12 @@ export function ProductCarousel({
         {items.map((product) => (
           <div
             key={product.id}
-            className="w-[calc(75%-4px)] md:w-[calc(20%-13px)] shrink-0 snap-start"
+            className="w-[calc(75%-4px)] md:w-[calc(33.333%-11px)] shrink-0 snap-start"
           >
             <FadeInCard>
               <Card
                 imageSrc={product.imageSrc}
                 title={product.title}
-                description={product.description}
                 selected={isSelected?.(product.id)}
                 onSelectChange={() => onToggle?.(product.id)}
               />

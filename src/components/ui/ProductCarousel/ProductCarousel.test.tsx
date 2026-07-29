@@ -74,16 +74,6 @@ describe("ProductCarousel", () => {
     expect(section).toHaveAttribute("aria-labelledby", "tab-test-section");
   });
 
-  it("renders the section heading as h2 (not h1)", () => {
-    render(
-      <ProductCarousel items={mockProducts} ariaLabel="Test" id="test-section" />,
-    );
-
-    expect(
-      screen.getByRole("heading", { level: 2, name: "test-section" }),
-    ).toBeInTheDocument();
-  });
-
   it("passes isSelected and onToggle to each card", async () => {
     const user = userEvent.setup();
     const isSelected = vi.fn((id: string) => id === "p2");
