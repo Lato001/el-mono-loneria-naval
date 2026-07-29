@@ -4,7 +4,7 @@
  */
 
 // ─── Re-exports from component type modules ──────────────────────────────
-export type { Highlight, AboutCta } from "../components/ui/AboutSection/AboutSection.types";
+export type { Highlight, AboutCta } from "../types/about";
 export type { Work } from "../types/work";
 export type { Review } from "../types/review";
 export type { AccordionItem } from "../components/ui/Accordion/Accordion";
@@ -86,6 +86,14 @@ export interface AboutUsContent {
 export interface SplitCardData {
   title: string;
   /** Image key — resolved by the consuming page via a Record<imageKey, string> map. */
+  imageKey: string;
+}
+
+// ─── Stacked Cards (Home page) ────────────────────────────────────────────
+export interface StackedCardData {
+  id: string;
+  title: string;
+  description: string;
   imageKey: string;
 }
 
