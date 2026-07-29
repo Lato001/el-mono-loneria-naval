@@ -82,7 +82,7 @@ export function Home() {
         title={data.home.sections.testimonials.title}
       >
         <SplitReviews></SplitReviews>
-        <div className="mt-10 flex justify-center">
+        <div className=" mt-10 flex justify-center">
           <LinkButton
             type="Google"
             text="Ver Reseñas"
