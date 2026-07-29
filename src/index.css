@@ -23,9 +23,9 @@ body {
   }
 }
 
-/* KEEP IN SYNC with Header.tsx min-h-14 + py-2.5 (mobile) and +name-logo (lg) */
-:root { --header-h: 76px; }
-@media (min-width: 1024px) { :root { --header-h: 80px; } }
+/* KEEP IN SYNC with Header.tsx actual rendered height (~96px due to isotipo at w-24 h-auto) */
+:root { --header-h: 96px; }
+@media (min-width: 1024px) { :root { --header-h: 96px; } }
 
 /*IMPORT FONTS*/
 @theme {
