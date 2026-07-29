@@ -2,8 +2,6 @@ export * from './common/ScrollToTop';
 export * from './layout/Footer';
 export * from './layout/Header';
 export * from './layout/Hero';
-export * from './ui/AboutSection/AboutSection';
-export * from './ui/AboutSection/AboutSection.types';
 export * from './ui/Accordion/Accordion';
 export * from './ui/ActionBar/ActionBar';
 export * from './ui/ActionBar/ActionBar.types';

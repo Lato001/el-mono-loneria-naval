@@ -39,14 +39,14 @@ describe("AboutUs page", () => {
     expect(eyebrow).toBeInTheDocument();
   });
 
-  it("renders AboutSection content paragraphs from data", () => {
+  it("renders content paragraphs from data", () => {
     renderAboutUs();
     for (const paragraph of aboutUsData.content) {
       expect(screen.getByText(paragraph)).toBeInTheDocument();
     }
   });
 
-  it("renders AboutSection highlights from data", () => {
+  it("renders highlights from data", () => {
     renderAboutUs();
     for (const highlight of aboutUsData.highlights!) {
       expect(screen.getByText(highlight.value)).toBeInTheDocument();
@@ -54,7 +54,7 @@ describe("AboutUs page", () => {
     }
   });
 
-  it("renders AboutSection CTA with the correct href", () => {
+  it("renders CTA with the correct href", () => {
     renderAboutUs();
     const cta = aboutUsData.cta!;
     const ctaLink = screen.getByRole("link", { name: new RegExp(cta.text, "i") });

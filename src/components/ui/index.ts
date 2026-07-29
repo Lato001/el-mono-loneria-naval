@@ -1,7 +1,6 @@
 ﻿export * from './Button';
 export * from './Marquee';
 export * from './Card';
-export * from './AboutSection';
 export * from './SectionWrapper';
 export * from './SplitCards';
 export * from './Accordion';
