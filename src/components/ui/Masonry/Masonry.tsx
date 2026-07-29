@@ -7,7 +7,6 @@ import React, {
 } from "react";
 import { gsap } from "gsap";
 import { Modal } from "../Modal";
-import { ImgCard } from "../Card";
 
 const useMedia = (
   queries: string[],
@@ -48,24 +47,40 @@ const useMeasure = <T extends HTMLElement>() => {
   return [ref, size] as const;
 };
 
-const preloadImages = async (urls: string[]): Promise<void> => {
-  await Promise.all(
+interface ImageDimensions {
+  url: string;
+  naturalWidth: number;
+  naturalHeight: number;
+}
+
+const preloadImages = async (
+  urls: string[],
+): Promise<ImageDimensions[]> => {
+  const results = await Promise.all(
     urls.map(
       (src) =>
-        new Promise<void>((resolve) => {
+        new Promise<ImageDimensions>((resolve) => {
           const img = new Image();
+          img.onload = () =>
+            resolve({
+              url: src,
+              naturalWidth: img.naturalWidth,
+              naturalHeight: img.naturalHeight,
+            });
+          img.onerror = () =>
+            resolve({ url: src, naturalWidth: 4, naturalHeight: 3 });
           img.src = src;
-          img.onload = img.onerror = () => resolve();
         }),
     ),
   );
+  return results;
 };
 
 interface Item {
   id: string;
   img: string;
   url: string;
-  height: number;
+  alt?: string;
 }
 
 interface GridItem extends Item {
@@ -111,6 +126,9 @@ const Masonry: React.FC<MasonryProps> = ({
 
   const [containerRef, { width }] = useMeasure<HTMLDivElement>();
   const [imagesReady, setImagesReady] = useState(false);
+  const [dimensionsMap, setDimensionsMap] = useState<
+    Map<string, ImageDimensions>
+  >(new Map());
 
   const getInitialPosition = (item: GridItem) => {
     const containerRect = containerRef.current?.getBoundingClientRect();
@@ -144,7 +162,11 @@ const Masonry: React.FC<MasonryProps> = ({
   };
 
   useEffect(() => {
-    preloadImages(items.map((i) => i.img)).then(() => setImagesReady(true));
+    preloadImages(items.map((i) => i.img)).then((dims) => {
+      const map = new Map(dims.map((d) => [d.url, d]));
+      setDimensionsMap(map);
+      setImagesReady(true);
+    });
   }, [items]);
 
   const { grid, totalHeight } = useMemo(() => {
@@ -158,7 +180,11 @@ const Masonry: React.FC<MasonryProps> = ({
     items.forEach((child) => {
       const col = colHeights.indexOf(Math.min(...colHeights));
       const x = col * (columnWidth + gap);
-      const height = child.height / 2;
+      const dims = dimensionsMap.get(child.img);
+      const aspectRatio = dims
+        ? dims.naturalWidth / dims.naturalHeight
+        : 4 / 3;
+      const height = columnWidth / aspectRatio;
       const y = colHeights[col];
       colHeights[col] += height + gap;
       gridItems.push({ ...child, x, y, w: columnWidth, h: height });
@@ -167,7 +193,7 @@ const Masonry: React.FC<MasonryProps> = ({
     const totalHeight =
       gridItems.length > 0 ? Math.max(...colHeights) - gap : 0;
     return { grid: gridItems, totalHeight };
-  }, [columns, items, width]);
+  }, [columns, dimensionsMap, items, width]);
 
   const hasMounted = useRef(false);
 
@@ -240,14 +266,14 @@ const Masonry: React.FC<MasonryProps> = ({
     }
   };
 
-  // MODAL USE
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [selectedImg, setSelectedImg] = useState<string | null>(null);
+  const [selectedAlt, setSelectedAlt] = useState<string>("");
 
-  function handleOpenModal(id: string) {
-    setSelectedId(id);
+  function handleOpenModal(img: string, alt?: string) {
+    setSelectedImg(img);
+    setSelectedAlt(alt ?? "");
     setIsModalOpen(true);
-    console.log(id);
   }
 
   return (
@@ -263,7 +289,7 @@ const Masonry: React.FC<MasonryProps> = ({
             data-key={item.id}
             className="absolute box-content"
             style={{ willChange: "transform, width, height, opacity" }}
-            onClick={() => handleOpenModal(item.img)}
+            onClick={() => handleOpenModal(item.img, item.alt)}
             onMouseEnter={(e) => handleMouseEnter(item.id, e.currentTarget)}
             onMouseLeave={(e) => handleMouseLeave(item.id, e.currentTarget)}
           >
@@ -280,15 +306,21 @@ const Masonry: React.FC<MasonryProps> = ({
       </div>
 
       <Modal
-        className="border-none bg-transparent shadow-nonep-0"
+        variant="centered"
+        size="full"
+        className="!bg-transparent !p-0 !shadow-none !border-none"
         open={isModalOpen}
         onOpenChange={(open) => {
           setIsModalOpen(open);
         }}
-        title={""}
-        description={""}
       >
-        <ImgCard src={selectedId!} alt="NO SE ENCONTRO IMG"></ImgCard>
+        <div className="flex items-center justify-center">
+          <img
+            className="max-h-[90vh] max-w-[90vw] rounded-xl object-contain shadow-2xl"
+            src={selectedImg!}
+            alt={selectedAlt}
+          />
+        </div>
       </Modal>
     </>
   );

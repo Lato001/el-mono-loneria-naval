@@ -5,7 +5,7 @@
 
 // ─── Re-exports from component type modules ──────────────────────────────
 export type { Highlight, AboutCta } from "../components/ui/AboutSection/AboutSection.types";
-export type { Work } from "../components/ui/WorksGrid/WorksGrid.types";
+export type { Work } from "../types/work";
 export type { Review } from "../types/review";
 export type { AccordionItem } from "../components/ui/Accordion/Accordion";
 
