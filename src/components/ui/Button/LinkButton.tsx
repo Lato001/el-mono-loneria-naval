@@ -8,6 +8,7 @@ interface LinkButtonProps {
   type?: "Contact" | "Redirect" | "Google";
   path?: string;
   url?: string;
+  theme?: string;
 }
 
 export function LinkButton({
@@ -43,7 +44,9 @@ export function LinkButton({
           rel="noopener noreferrer"
           className={`group inline-flex items-center gap-4 rounded-full border border-zinc-100 bg-green py-2 pl-2 pr-6 shadow-[0_10px_30px_rgba(15,23,42,.08)] transition-all duration-300 hover:-translate-y-0.5 hover:border-zinc-200 hover:shadow-[0_16px_40px_rgba(15,23,42,.12)] active:scale-[0.98] ${className}`}
         >
-          <div className="flex h-10 w-10 items-center justify-center rounded-full border border-zinc-100 bg-zinc-50 shadow-sm transition-all duration-300 group-hover:scale-105 group-hover:bg-white group-hover:shadow-md">
+          <div
+            className={`bg-white flex h-10 w-10 items-center justify-center rounded-full border shadow-sm transition-all duration-300 group-hover:scale-105 group-hover:bg-white group-hover:shadow-md ${className} `}
+          >
             <img
               src={googleLogo}
               alt="Google"
