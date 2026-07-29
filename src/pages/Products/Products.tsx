@@ -137,21 +137,6 @@ function CotizacionModalContent({
           {data.ui.consultWhatsApp}
         </a>
       )}
-
-      <div className="flex gap-2">
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={onClear}
-          disabled={products.length === 0}
-          ariaLabel={data.ui.vaciarSelectionAriaLabel}
-        >
-          {data.ui.vaciarButton}
-        </Button>
-        <Button variant="ghost" size="sm" onClick={onClose}>
-          {data.ui.keepBrowsing}
-        </Button>
-      </div>
     </div>
   );
 }
