@@ -9,13 +9,21 @@ export function Modal({
   title,
   description,
   variant = "sheet",
+  size = "md",
   children,
   className,
 }: ModalProps) {
+  const sizeClasses: Record<string, string> = {
+    sm: "max-w-sm",
+    md: "max-w-md",
+    lg: "max-w-2xl",
+    full: "max-w-none w-auto",
+  };
+
   const positionClasses =
     variant === "sheet"
-      ? "inset-x-0 bottom-0 max-h-[85vh] rounded-t-2xl data-[state=open]:animate-modalSheetIn md:left-1/2 md:top-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:max-w-md md:rounded-2xl md-data-state-open:animate-fadeIn"
-      : "left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 max-w-md rounded-2xl data-[state=open]:animate-fadeIn";
+      ? `inset-x-0 bottom-0 max-h-[85vh] rounded-t-2xl data-[state=open]:animate-modalSheetIn md:left-1/2 md:top-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:rounded-2xl md-data-state-open:animate-fadeIn ${size === "full" ? "md:max-w-none" : sizeClasses[size]}`
+      : `left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-2xl data-[state=open]:animate-fadeIn ${sizeClasses[size]}`;
 
   return (
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
@@ -24,9 +32,11 @@ export function Modal({
         <Dialog.Content
           className={`fixed z-50 w-full bg-sc-chalk p-4 focus:outline-none flex flex-col ${positionClasses} ${className ?? ""}`}
         >
-          <Dialog.Title className="font-poppins mb-2 text-xl font-bold text-sc-ocean-blue">
-            {title}
-          </Dialog.Title>
+          {title && (
+            <Dialog.Title className="font-poppins mb-2 text-xl font-bold text-sc-ocean-blue">
+              {title}
+            </Dialog.Title>
+          )}
           {description && (
             <Dialog.Description className="font-poppins mb-4 text-sm text-sc-ocean-blue/70">
               {description}

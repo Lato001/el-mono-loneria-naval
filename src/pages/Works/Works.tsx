@@ -38,7 +38,6 @@ export function Works() {
     id: item.id,
     img: imageMap[item.src] ?? "",
     url: "",
-    height: 400,
     alt: item.alt,
   }));
 

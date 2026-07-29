@@ -37,5 +37,4 @@ export * from './ui/SelectionCounter/SelectionCounter';
 export * from './ui/SelectionCounter/SelectionCounter.types';
 export * from './ui/SplitCards/SplitCards';
 export * from './ui/SplitReviews/SplitReviews';
-export * from './ui/WorksGrid/WorksGrid';
-export * from './ui/WorksGrid/WorksGrid.types';
+

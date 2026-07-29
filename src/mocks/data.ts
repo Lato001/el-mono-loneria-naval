@@ -29,7 +29,7 @@
  *      in Footer.tsx.
  */
 
-import type { Work } from "../components/ui/WorksGrid/WorksGrid.types";
+import type { Work } from "../types/work";
 import type { Review } from "../types/review";
 import type {
   AboutUsContent,

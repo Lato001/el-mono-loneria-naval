@@ -1,6 +1,5 @@
 ﻿export * from './Button';
 export * from './Marquee';
-export * from './WorksGrid';
 export * from './Card';
 export * from './AboutSection';
 export * from './SectionWrapper';
