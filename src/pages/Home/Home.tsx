@@ -47,7 +47,7 @@ export function Home() {
         images={heroImages}
       />
       <SectionWrapper
-        theme={data.home.sections.whatWeOffer.theme}
+        theme="light"
         titlesAlign={data.home.sections.whatWeOffer.titlesAlign}
         eyebrow={data.home.sections.whatWeOffer.eyebrow}
         title={data.home.sections.whatWeOffer.title}
@@ -58,7 +58,8 @@ export function Home() {
         />
       </SectionWrapper>
       <SectionWrapper
-        theme={data.home.sections.aboutUs.theme}
+        theme="dark"
+        className="pb-32"
         titlesAlign={data.home.sections.aboutUs.titlesAlign}
         eyebrow={data.home.sections.aboutUs.eyebrow}
         title={data.home.sections.aboutUs.title}
@@ -75,7 +76,7 @@ export function Home() {
       </SectionWrapper>
 
       <SectionWrapper
-        theme={data.home.sections.testimonials.theme}
+        theme="light"
         titlesAlign={data.home.sections.testimonials.titlesAlign}
         eyebrow={data.home.sections.testimonials.eyebrow}
         title={data.home.sections.testimonials.title}
