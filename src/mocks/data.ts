@@ -175,7 +175,7 @@ export const data = {
     worksHeroDescription:
       "TODO: replace with real content — descripción general de los servicios que ofrece El Mono (lonas, capotas, cerramientos, etc.).",
     worksCategoriesLabel: "Categorías de servicios",
-    consultWhatsApp: "Consultar por WhatsApp",
+    consultWhatsApp: "Consultá por Whatsapp",
     clearList: "Vaciar lista",
     keepBrowsing: "Seguir viendo",
     cancel: "Cancelar",

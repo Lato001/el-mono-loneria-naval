@@ -1,7 +1,7 @@
 import { IconBrandWhatsapp } from "@tabler/icons-react";
 import { Link } from "react-router-dom";
 import googleLogo from "../../../assets/logos/icons/google/google-icon.svg";
-
+import "./WhatsappButton.css";
 interface LinkButtonProps {
   className?: string;
   text: string;
@@ -23,16 +23,20 @@ export function LinkButton({
       {type === "Contact" && (
         <Link
           to={path}
-          className={`inline-flex items-center gap-3 rounded-lg bg-green-600 px-4 py-2.5 font-poppins font-semibold text-sc-chalk shadow-lg transition-all duration-300 hover:scale-105 hover:bg-green-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-300 cursor-pointer ${className}`}
+          className={`inline-flex items-center gap-3 rounded-lg  px-4 py-2.5 font-poppins font-semibold text-sc-ocean-blue shadow-lg transition-all duration-300 hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-300 cursor-pointer animate-pulse-glow bg-sc-chalk ${className}`}
         >
-          <IconBrandWhatsapp size={28} aria-hidden="true" />
+          <IconBrandWhatsapp
+            className="text-green-600"
+            size={28}
+            aria-hidden="true"
+          />
           {text}
         </Link>
       )}
       {type === "Redirect" && (
         <Link
           to={path}
-          className={`inline-flex items-center gap-3 rounded-lg bg-pr-hero-blue px-4 py-2.5 font-poppins font-semibold text-sc-chalk shadow-lg transition-all duration-300 hover:scale-105 hover:bg-pr-aquamarine focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pr-aquamarine cursor-pointer ${className}`}
+          className={`inline-flex items-center gap-3 rounded-lg bg-sc-ocean-blue px-4 py-2.5 font-poppins font-semibold text-sc-chalk shadow-lg transition-all duration-300 hover:scale-105 hover:bg-sc-ocean-blue/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pr-aquamarine cursor-pointer ${className}`}
         >
           {text}
         </Link>
@@ -42,7 +46,7 @@ export function LinkButton({
           href={url}
           target="_blank"
           rel="noopener noreferrer"
-          className={`group inline-flex items-center gap-4 rounded-full border border-zinc-100 bg-green py-2 pl-2 pr-6 shadow-[0_10px_30px_rgba(15,23,42,.08)] transition-all duration-300 hover:-translate-y-0.5 hover:border-zinc-200 hover:shadow-[0_16px_40px_rgba(15,23,42,.12)] active:scale-[0.98] ${className}`}
+          className={`group inline-flex items-center gap-4 rounded-full border border-zinc-100 bg-green py-2 pl-2 pr-8 shadow-[0_10px_30px_rgba(15,23,42,.08)] transition-all duration-300 hover:-translate-y-0.5 hover:border-zinc-200 hover:shadow-[0_16px_40px_rgba(15,23,42,.12)] active:scale-[0.98] ${className}`}
         >
           <div
             className={`bg-white flex h-10 w-10 items-center justify-center rounded-full border shadow-sm transition-all duration-300 group-hover:scale-105 group-hover:bg-white group-hover:shadow-md ${className} `}
@@ -53,7 +57,7 @@ export function LinkButton({
               className="h-6 w-6 object-contain transition-transform duration-300 group-hover:rotate-6 group-hover:scale-110"
             />
           </div>
-          <span className="font-poppins text-lg font-semibold tracking-tight text-white">
+          <span className="ml-2 font-poppins text-lg font-semibold tracking-tight text-white">
             {text}
           </span>
         </a>
