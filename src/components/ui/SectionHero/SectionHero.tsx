@@ -1,6 +1,10 @@
 import { Button } from "../Button";
 import type { SectionHeroProps } from "./SectionHero.types";
-import bgOlas from "../../../assets/backgrounds/formas-canales.svg";
+
+const bgOlas = new URL(
+  "../../../assets/backgrounds/formas-olas-thr.svg",
+  import.meta.url,
+).href;
 export function SectionHero({
   img = bgOlas,
   title,
@@ -22,6 +26,7 @@ export function SectionHero({
         backgroundImage: `url(${img})`,
         backgroundSize: "cover",
         backgroundPosition: "center bottom",
+        opacity: 0.9,
       }}
     >
       <div className="mx-auto max-w-295 px-6">
