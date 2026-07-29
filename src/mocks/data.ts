@@ -330,7 +330,7 @@ export const data = {
 
     splitCards: [
       { title: "Productos", imageKey: "services-02" },
-      { title: "Servicios", imageKey: "services-04" },
+      { title: "Trabajos", imageKey: "services-04" },
     ] satisfies SplitCardData[],
 
     stackedCards: [
