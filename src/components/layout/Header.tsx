@@ -38,7 +38,7 @@ export function Header() {
   return (
     // KEEP IN SYNC with --header-h in src/index.css
     <header className="bg-sc-ocean-blue min-h-14">
-      <div className="m-auto flex items-center justify-between px-4 py-2.5 max-w-7xl md:px-6">
+      <div className="m-auto flex items-center justify-between px-4 max-w-7xl md:px-6">
         <Link to={PATHS.HOME} className="shrink-0">
           <div className="flex items-center w-24 lg:w-40">
             <img src={logoSrc} alt="El Mono" className="h-auto w-24" />
