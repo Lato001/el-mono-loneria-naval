@@ -117,6 +117,10 @@ export interface ProductData {
 export interface ProductCategoryData {
   id: string;
   name: string;
+  /** Category description — shown as the answer bubble beside the title. */
+  description: string;
+  /** Image key for the "applied" photo (product in use, not isolated). */
+  imageKey: string;
   products: ProductData[];
 }
 

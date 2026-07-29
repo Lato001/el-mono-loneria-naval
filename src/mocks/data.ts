@@ -375,6 +375,9 @@ export const data = {
       {
         id: "broches",
         name: "Broches",
+        description:
+          "Broches de presión profesionales para lonas, capotas y cubiertas náuticas. Disponibles en varios acabados y materiales para cada tipo de aplicación.",
+        imageKey: "services-01",
         products: [
           { id: "b1", title: "Broche Casco Bacan", description: "Broche a presión de carcasa tipo baca, acabado negro.", imageKey: "bacan-01" },
           { id: "b2", title: "Broche Casco Bacab", description: "Broche a presión de carcasa tipo baca, acabado blanco.", imageKey: "bacab-01" },
@@ -394,6 +397,9 @@ export const data = {
       {
         id: "caballetes",
         name: "Caballetes",
+        description:
+          "Caballetes de acero inoxidable diseñados para soportar las condiciones más exigentes. Resistentes a la corrosión y aptos para uso marino prolongado.",
+        imageKey: "services-02",
         products: [
           { id: "c1", title: "Caballete Caño Inox", description: "Caballete de caño de acero inoxidable, resistente a la corrosión y apto para intemperie.", imageKey: "ci-01" },
         ],
