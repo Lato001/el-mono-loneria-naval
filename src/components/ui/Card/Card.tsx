@@ -34,8 +34,8 @@ export const Card = ({
 
   return (
     <article
-      style={{ height: MOBILE_CARD_HEIGHT }}
-      className={`relative flex flex-col overflow-hidden rounded-xl border-2 transition-all duration-200 ease-out hover:-translate-y-1.5 hover:shadow-xl md:h-auto group
+      style={description ? { height: MOBILE_CARD_HEIGHT } : undefined}
+      className={`relative flex flex-col overflow-hidden rounded-xl border-2 transition-all duration-200 ease-out hover:-translate-y-1.5 hover:shadow-xl ${description ? "md:h-auto" : ""} group
       ${selected ? "border-pr-aquamarine ring-2 ring-pr-aquamarine" : "border-sc-ocean-blue/15 bg-white"}
       ${className ?? ""}`}
     >
