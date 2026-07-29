@@ -5,6 +5,7 @@ import { data } from "../../../mocks/data";
 export const MOBILE_CARD_HEIGHT = "351px";
 
 export interface CardProps {
+  id?: string;
   title?: string;
   description?: string;
   badge?: string;
@@ -81,10 +82,7 @@ export const Card = ({
             className="sr-only align-middle"
           />
           {selected ? (
-            <IconX
-              className="text-white h-5 w-5 shrink-0"
-              aria-hidden="true"
-            />
+            <IconX className="text-white h-5 w-5 shrink-0" aria-hidden="true" />
           ) : (
             <IconPlus
               className="text-white h-5 w-5 shrink-0"

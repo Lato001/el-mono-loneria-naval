@@ -1,12 +1,13 @@
 ﻿import { Hero } from "../../components/layout";
 import {
   Accordion,
-  AboutSection,
+  LinkButton,
   SectionWrapper,
   SplitCards,
   WhatsappButton,
 } from "../../components/ui";
 import { SplitReviews } from "../../components/ui/SplitReviews/SplitReviews";
+import { StackedCards } from "../../components/ui/StackedCards/StackedCards";
 import { data } from "../../mocks/data";
 
 // ─── Service images (auto-discovered via Vite glob) ────────────────────
@@ -62,10 +63,14 @@ export function Home() {
         eyebrow={data.home.sections.aboutUs.eyebrow}
         title={data.home.sections.aboutUs.title}
       >
-        <AboutSection
-          showControls
-          description={data.home.aboutSection.description}
-          cta={data.home.aboutSection.cta}
+        <StackedCards
+          cards={data.home.stackedCards.map((card) => ({
+            id: card.id,
+            image: heroImageMap[card.imageKey],
+            alt: card.title,
+            title: card.title,
+            description: card.description,
+          }))}
         />
       </SectionWrapper>
 
@@ -76,6 +81,14 @@ export function Home() {
         title={data.home.sections.testimonials.title}
       >
         <SplitReviews></SplitReviews>
+        <div className="mt-10 flex justify-center">
+          <LinkButton
+            type="Google"
+            text="Ver Reseñas"
+            className="bg-sc-ocean-blue"
+            url="https://maps.app.goo.gl/5yJprtv3uSdtv13M7"
+          />
+        </div>
       </SectionWrapper>
 
       <SectionWrapper
