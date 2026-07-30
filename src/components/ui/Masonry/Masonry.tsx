@@ -1,10 +1,12 @@
 import React, {
+  useCallback,
   useEffect,
   useLayoutEffect,
   useMemo,
   useRef,
   useState,
 } from "react";
+import { IconChevronLeft, IconChevronRight } from "@tabler/icons-react";
 import { gsap } from "gsap";
 import { Modal } from "../Modal";
 
@@ -127,6 +129,8 @@ const Masonry: React.FC<MasonryProps> = ({
     [5, 4, 3, 2],
     1,
   );
+
+  const isMobile = useMedia(["(max-width: 767px)"], [1], 0) === 1;
 
   const [containerRef, { width }] = useMeasure<HTMLDivElement>();
   const [imagesReady, setImagesReady] = useState(false);
@@ -309,6 +313,10 @@ const Masonry: React.FC<MasonryProps> = ({
     setIsModalOpen(true);
   }
 
+  if (isMobile && variant === "mosaic") {
+    return <MobileMosaicCarousel items={items} />;
+  }
+
   return (
     <>
       <div
@@ -382,3 +390,63 @@ const Masonry: React.FC<MasonryProps> = ({
 };
 
 export default Masonry;
+
+function MobileMosaicCarousel({ items }: { items: Item[] }) {
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  const prev = useCallback(() => {
+    scrollRef.current?.scrollBy({ left: -scrollRef.current.clientWidth, behavior: "smooth" });
+  }, []);
+
+  const next = useCallback(() => {
+    scrollRef.current?.scrollBy({ left: scrollRef.current.clientWidth, behavior: "smooth" });
+  }, []);
+
+  return (
+    <div className="relative w-full">
+      <div
+        ref={scrollRef}
+        className="flex gap-4 overflow-x-auto scroll-smooth snap-x snap-mandatory pb-4 scrollbar-hide"
+        style={{ scrollbarWidth: "none" }}
+      >
+        {items.map((item) => (
+          <div key={item.id} className="w-[80%] shrink-0 snap-start">
+            <a
+              href={item.redirectUrl ?? "/trabajos#album"}
+              className="group block rounded-lg transition-all duration-400 ease-out border-2 border-white/15 hover:border-pr-aquamarine hover:ring-2 hover:ring-pr-aquamarine"
+            >
+              <div className="relative w-full aspect-[4/3] overflow-hidden rounded-lg shadow-[0px_10px_50px_-10px_rgba(0,0,0,0.2)]">
+                <div
+                  className="absolute inset-0 bg-cover bg-center transition-all duration-600 ease-out brightness-50 grayscale-50 group-hover:brightness-100 group-hover:grayscale-0 group-hover:scale-105"
+                  style={{ backgroundImage: `url(${item.img})` }}
+                />
+                {item.title && (
+                  <h3 className="absolute inset-0 z-10 flex items-center justify-center font-brown uppercase tracking-wider text-white text-3xl drop-shadow-[0_2px_8px_rgba(0,0,0,0.65)] pointer-events-none">
+                    {item.title}
+                  </h3>
+                )}
+              </div>
+            </a>
+          </div>
+        ))}
+      </div>
+
+      <button
+        type="button"
+        aria-label="Anterior"
+        onClick={prev}
+        className="absolute left-2 top-1/2 -translate-y-1/2 z-10 rounded-full bg-white/80 p-3 shadow-md backdrop-blur-sm transition-colors hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pr-aquamarine"
+      >
+        <IconChevronLeft className="h-5 w-5 text-sc-ocean-blue" />
+      </button>
+      <button
+        type="button"
+        aria-label="Siguiente"
+        onClick={next}
+        className="absolute right-2 top-1/2 -translate-y-1/2 z-10 rounded-full bg-white/80 p-3 shadow-md backdrop-blur-sm transition-colors hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pr-aquamarine"
+      >
+        <IconChevronRight className="h-5 w-5 text-sc-ocean-blue" />
+      </button>
+    </div>
+  );
+}

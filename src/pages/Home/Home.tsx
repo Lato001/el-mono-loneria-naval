@@ -10,6 +10,7 @@ import Masonry from "../../components/ui/Masonry/Masonry";
 import { SplitReviews } from "../../components/ui/SplitReviews/SplitReviews";
 import type { MasonryItem } from "../../mocks/types";
 import { data } from "../../mocks/data";
+import { PATHS } from "../../routes/routes";
 
 // ─── Service images (auto-discovered via Vite glob) ────────────────────
 const serviceImages = import.meta.glob("../../assets/img/services/*", {
@@ -69,15 +70,23 @@ export function Home() {
         eyebrow={data.home.sections.aboutUs.eyebrow}
         title={data.home.sections.aboutUs.title}
       >
-        <Masonry
-          items={homeMasonryItems}
-          variant="mosaic"
-          ease="power3.out"
-          duration={0.6}
-          stagger={0.05}
-          animateFrom="bottom"
-          scaleOnHover
-          hoverScale={0.95}
+        <div className="pb-10">
+          <Masonry
+            items={homeMasonryItems}
+            variant="mosaic"
+            ease="power3.out"
+            duration={0.6}
+            stagger={0.05}
+            animateFrom="bottom"
+            scaleOnHover
+            hoverScale={0.95}
+          />
+        </div>
+        <LinkButton
+          type="Redirect"
+          text="Ver Galeria de Fotos"
+          theme="light"
+          path={PATHS.WORKS}
         />
       </SectionWrapper>
 
