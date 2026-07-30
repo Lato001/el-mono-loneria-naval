@@ -26,7 +26,7 @@ export function Hero({
     <>
       <section
         id="home"
-        className="relative overflow-hidden px-8 pt-27.5 pb-20 text-white bg-linear-to-br from-sc-ocean-blue to-pr-hero-blue"
+        className="relative overflow-hidden pt-27.5 text-white bg-linear-to-br from-sc-ocean-blue to-pr-hero-blue"
       >
         <div
           className="absolute -top-30 -right-30 w-105 h-105 rounded-full bg-pr-aquamarine/20 pointer-events-none select-none"
@@ -43,7 +43,7 @@ export function Hero({
             opacity: 0.4,
           }}
         />
-        <div className="relative z-10 flex items-center justify-around gap-8 mx-[clamp(1rem,10vw,12.5rem)]">
+        <div className="relative z-10 flex items-center justify-around gap-8 mx-[clamp(1rem,10vw,12.5rem)] px-8">
           <div className="relative max-w-150">
             <p className="font-poppins text-xs uppercase tracking-[0.2em] text-pr-aquamarine mb-4">
               {eyebrow}
@@ -74,8 +74,10 @@ export function Hero({
           </div>
           <ImgCard className="max-lg:hidden" images={images} interval={4000} />
         </div>
+        <div className="relative z-10 pt-20">
+          <BrandMarquee />
+        </div>
       </section>
-      <BrandMarquee className="bg-linear-to-br from-pr-hero-blue to-sc-ocean-blue" />
     </>
   );
 }
