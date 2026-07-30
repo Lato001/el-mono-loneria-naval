@@ -338,6 +338,7 @@ export const data = {
       { id: "hm-gallery-2", img: "services-04", url: "", alt: "Cubreautos a medida" },
       { id: "hm-gallery-3", img: "services-06", url: "", alt: "Carpa para embarcaciones" },
       { id: "hm-gallery-4", img: "services-08", url: "", alt: "Capota de lona" },
+      { id: "hm-gallery-5", img: "services-05", url: "", alt: "Funda para moto de agua" },
     ] satisfies MasonryItem[],
 
     aboutSection: {
