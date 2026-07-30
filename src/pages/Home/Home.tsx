@@ -6,8 +6,9 @@ import {
   SplitCards,
   WhatsappButton,
 } from "../../components/ui";
+import Masonry from "../../components/ui/Masonry/Masonry";
 import { SplitReviews } from "../../components/ui/SplitReviews/SplitReviews";
-import { StackedCards } from "../../components/ui/StackedCards/StackedCards";
+import type { MasonryItem } from "../../mocks/types";
 import { data } from "../../mocks/data";
 
 // ─── Service images (auto-discovered via Vite glob) ────────────────────
@@ -32,6 +33,11 @@ const heroImages = data.home.hero.images.map((img) => ({
 }));
 
 const splitCardsImageMap: Record<string, string> = heroImageMap;
+
+const homeMasonryItems: MasonryItem[] = data.home.masonryItems.map((item) => ({
+  ...item,
+  img: heroImageMap[item.img] ?? "",
+}));
 
 export function Home() {
   return (
@@ -59,19 +65,19 @@ export function Home() {
       </SectionWrapper>
       <SectionWrapper
         theme="dark"
-        className="pb-32"
         titlesAlign={data.home.sections.aboutUs.titlesAlign}
         eyebrow={data.home.sections.aboutUs.eyebrow}
         title={data.home.sections.aboutUs.title}
       >
-        <StackedCards
-          cards={data.home.stackedCards.map((card) => ({
-            id: card.id,
-            image: heroImageMap[card.imageKey],
-            alt: card.title,
-            title: card.title,
-            description: card.description,
-          }))}
+        <Masonry
+          items={homeMasonryItems}
+          variant="mosaic"
+          ease="power3.out"
+          duration={0.6}
+          stagger={0.05}
+          animateFrom="bottom"
+          scaleOnHover
+          hoverScale={0.95}
         />
       </SectionWrapper>
 

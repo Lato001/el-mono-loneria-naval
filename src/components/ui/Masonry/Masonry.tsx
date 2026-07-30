@@ -92,6 +92,7 @@ interface GridItem extends Item {
 
 interface MasonryProps {
   items: Item[];
+  variant?: "uniform" | "mosaic";
   ease?: string;
   duration?: number;
   stagger?: number;
@@ -104,6 +105,7 @@ interface MasonryProps {
 
 const Masonry: React.FC<MasonryProps> = ({
   items,
+  variant = "uniform",
   ease = "power3.out",
   duration = 0.6,
   stagger = 0.05,
@@ -177,23 +179,52 @@ const Masonry: React.FC<MasonryProps> = ({
     const columnWidth = (width - totalGaps) / columns;
     const gridItems: GridItem[] = [];
 
-    items.forEach((child) => {
-      const col = colHeights.indexOf(Math.min(...colHeights));
-      const x = col * (columnWidth + gap);
-      const dims = dimensionsMap.get(child.img);
-      const aspectRatio = dims
-        ? dims.naturalWidth / dims.naturalHeight
-        : 4 / 3;
-      const height = columnWidth / aspectRatio;
-      const y = colHeights[col];
-      colHeights[col] += height + gap;
-      gridItems.push({ ...child, x, y, w: columnWidth, h: height });
-    });
+    if (variant === "mosaic") {
+      const itemsPerRow = 2;
+
+      for (let rowIdx = 0; rowIdx < items.length; rowIdx += itemsPerRow) {
+        const rowItems = items.slice(rowIdx, rowIdx + itemsPerRow);
+        const flexes = rowItems.map((_, i) => (rowIdx + i) % 2 === 0 ? 2 : 1);
+        const totalFlex = flexes.reduce((s, v) => s + v, 0);
+        const usableWidth = width - (rowItems.length - 1) * gap;
+
+        const rowY = gridItems.length === 0
+          ? 0
+          : Math.max(...gridItems.map((g) => g.y + g.h)) + gap;
+        const rowHeight = usableWidth / 5;
+        let rowX = 0;
+
+        rowItems.forEach((child, i) => {
+          const itemWidth = (flexes[i] / totalFlex) * usableWidth;
+          gridItems.push({ ...child, x: rowX, y: rowY, w: itemWidth, h: rowHeight });
+          rowX += itemWidth + gap;
+        });
+      }
+
+      const totalHeight =
+        gridItems.length > 0
+          ? Math.max(...gridItems.map((g) => g.y + g.h)) - gap
+          : 0;
+      return { grid: gridItems, totalHeight };
+    } else {
+      items.forEach((child) => {
+        const col = colHeights.indexOf(Math.min(...colHeights));
+        const x = col * (columnWidth + gap);
+        const dims = dimensionsMap.get(child.img);
+        const aspectRatio = dims
+          ? dims.naturalWidth / dims.naturalHeight
+          : 4 / 3;
+        const height = columnWidth / aspectRatio;
+        const y = colHeights[col];
+        colHeights[col] += height + gap;
+        gridItems.push({ ...child, x, y, w: columnWidth, h: height });
+      });
+    }
 
     const totalHeight =
       gridItems.length > 0 ? Math.max(...colHeights) - gap : 0;
     return { grid: gridItems, totalHeight };
-  }, [columns, dimensionsMap, items, width]);
+  }, [columns, dimensionsMap, items, variant, width]);
 
   const hasMounted = useRef(false);
 
