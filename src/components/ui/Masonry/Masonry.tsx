@@ -33,20 +33,24 @@ const useMedia = (
 };
 
 const useMeasure = <T extends HTMLElement>() => {
-  const ref = useRef<T | null>(null);
+  const [node, setNode] = useState<T | null>(null);
   const [size, setSize] = useState({ width: 0, height: 0 });
 
   useLayoutEffect(() => {
-    if (!ref.current) return;
+    if (!node) return;
     const ro = new ResizeObserver(([entry]) => {
       const { width, height } = entry.contentRect;
       setSize({ width, height });
     });
-    ro.observe(ref.current);
+    ro.observe(node);
     return () => ro.disconnect();
+  }, [node]);
+
+  const ref = useCallback((element: T | null) => {
+    setNode(element);
   }, []);
 
-  return [ref, size] as const;
+  return [ref, size, node] as const;
 };
 
 interface ImageDimensions {
@@ -132,14 +136,14 @@ const Masonry: React.FC<MasonryProps> = ({
 
   const isMobile = useMedia(["(max-width: 767px)"], [1], 0) === 1;
 
-  const [containerRef, { width }] = useMeasure<HTMLDivElement>();
+  const [containerRef, { width }, containerNode] = useMeasure<HTMLDivElement>();
   const [imagesReady, setImagesReady] = useState(false);
   const [dimensionsMap, setDimensionsMap] = useState<
     Map<string, ImageDimensions>
   >(new Map());
 
   const getInitialPosition = (item: GridItem) => {
-    const containerRect = containerRef.current?.getBoundingClientRect();
+    const containerRect = containerNode?.getBoundingClientRect();
     if (!containerRect) return { x: item.x, y: item.y };
 
     let direction = animateFrom;
