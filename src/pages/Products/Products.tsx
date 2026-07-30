@@ -14,6 +14,7 @@ import type { Product } from "../../components/ui/ProductCarousel/ProductCarouse
 import type { Tab } from "../../components/ui/SectionTabs/SectionTabs.types";
 import { data } from "../../mocks/data";
 import { ImgCard } from "../../components";
+import MediaPlayer from "../../components/ui/MediaPlayer/MediaPLayer";
 
 const STORAGE_KEY = "mono:quote-cart";
 
@@ -210,60 +211,69 @@ export function Products() {
         description={data.ui.catalogHeroDescription}
       />
 
-      <div id="tabs" className="pb-28">
-        <SectionTabs
-          categories={tabs}
-          activeId={activeCategoryId}
-          onSelect={handleTabSelect}
-          selectedCounts={selectedCounts}
-        />
+      <div className="bg-sc-chalk">
+        <div id="tabs" className="pb-28">
+          <SectionTabs
+            categories={tabs}
+            activeId={activeCategoryId}
+            onSelect={handleTabSelect}
+            selectedCounts={selectedCounts}
+          />
 
-        {activeCategory && (
-          <div className="mx-auto max-w-295 px-6 py-12">
-            <div className="flex flex-col gap-8 xl:flex-row">
-              <div className="w-full shrink-0 xl:w-96">
-                <div className="relative">
-                  <ImgCard
-                    src={categoryImagesMap[activeCategory.imageKey]}
-                    alt={activeCategory.name}
-                  />
+          {activeCategory && (
+            <div className="mx-auto max-w-295 px-6 py-12">
+              <div className="flex flex-col gap-8 xl:flex-row">
+                <div className="w-full shrink-0 xl:w-96">
+                  <div className="relative">
+                    <ImgCard
+                      src={categoryImagesMap[activeCategory.imageKey]}
+                      alt={activeCategory.name}
+                    />
 
-                  <button
-                    type="button"
-                    onClick={() => setShowMobileInfo((prev) => !prev)}
-                    className=" absolute top-1 right-1 z-20 flex h-10 w-10 items-center justify-center rounded-full bg-sc-sky-blue text-white shadow-lg transition-transform hover:scale-105 active:scale-95"
-                    aria-label={
-                      showMobileInfo ? "Cerrar información" : "Ver información"
-                    }
-                  >
-                    {showMobileInfo ? <IconX size={20} /> : "?"}
-                  </button>
+                    <button
+                      type="button"
+                      onClick={() => setShowMobileInfo((prev) => !prev)}
+                      className=" absolute top-1 right-1 z-20 flex h-10 w-10 items-center justify-center rounded-full bg-sc-sky-blue text-white shadow-lg transition-transform hover:scale-105 active:scale-95"
+                      aria-label={
+                        showMobileInfo
+                          ? "Cerrar información"
+                          : "Ver información"
+                      }
+                    >
+                      {showMobileInfo ? <IconX size={20} /> : "?"}
+                    </button>
 
-                  {showMobileInfo && (
-                    <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-4 rounded-3xl bg-pr-hero-blue/85 p-6">
-                      <h1 className="font-poppins text-center text-5xl font-bold leading-tight text-white">
-                        {activeCategory.name}
-                      </h1>
-                      <p className="font-poppins max-w-xs text-center text-md text-white/85">
-                        {activeCategory.description}
-                      </p>
-                    </div>
-                  )}
+                    {showMobileInfo && (
+                      <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-4 rounded-3xl bg-pr-hero-blue/85 p-6">
+                        <h1 className="font-poppins text-center text-5xl font-bold leading-tight text-white">
+                          {activeCategory.name}
+                        </h1>
+                        <p className="font-poppins max-w-xs text-center text-md text-white/85">
+                          {activeCategory.description}
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+                <div>
+                  <MediaPlayer
+                    className="w-200"
+                    src="https://www.youtube.com/watch?v=MOekZ86yezA"
+                  ></MediaPlayer>
+                  <div className="flex min-w-0 flex-1 flex-col">
+                    <ProductCarousel
+                      id={activeCategory.id}
+                      items={activeCategory.products}
+                      ariaLabel={activeCategory.name}
+                      isSelected={isSelected}
+                      onToggle={toggle}
+                    />
+                  </div>
                 </div>
               </div>
-
-              <div className="flex min-w-0 flex-1 flex-col">
-                <ProductCarousel
-                  id={activeCategory.id}
-                  items={activeCategory.products}
-                  ariaLabel={activeCategory.name}
-                  isSelected={isSelected}
-                  onToggle={toggle}
-                />
-              </div>
             </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
 
       <ActionBar

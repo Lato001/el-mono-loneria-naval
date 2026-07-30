@@ -28,7 +28,7 @@ export function SectionWrapper({
   return (
     <section
       id={id}
-      className={`${theme === "dark" ? "bg-sc-ocean-blue" : "bg-sc-chalk"} py-20 text-white  ${className ?? ""}`}
+      className={`${theme === "dark" ? "bg-sc-ocean-blue " : "bg-sc-chalk"} py-20 text-white  ${className ?? ""}`}
       aria-label={title}
     >
       <div className="mx-auto max-w-295 px-6">
