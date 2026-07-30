@@ -82,12 +82,14 @@ export function Home() {
             hoverScale={0.95}
           />
         </div>
-        <LinkButton
-          type="Redirect"
-          text="Ver Galeria de Fotos"
-          theme="light"
-          path={PATHS.WORKS}
-        />
+        <div className="flex justify-center">
+          <LinkButton
+            type="Redirect"
+            text="Ver Galeria de Fotos"
+            theme="light"
+            path={PATHS.WORKS}
+          />
+        </div>
       </SectionWrapper>
 
       <SectionWrapper
