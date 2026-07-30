@@ -59,12 +59,17 @@ export function Hero({
             </p>
 
             <div className="flex flex-wrap gap-4 mt-8">
-              <LinkButton type="Contact" text={primaryCta}></LinkButton>
+              <LinkButton
+                type="Redirect"
+                text={primaryCta}
+                theme="light"
+                path={PATHS.PRODUCTS}
+              />
               <LinkButton
                 type="Redirect"
                 text={secondaryCta}
-                path={PATHS.PRODUCTS}
-              ></LinkButton>
+                path={PATHS.WORKS}
+              />
             </div>
           </div>
           <ImgCard className="max-lg:hidden" images={images} interval={4000} />

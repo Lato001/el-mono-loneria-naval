@@ -292,8 +292,8 @@ export const data = {
       titleHighlight: "resisten cualquier intemperie",
       description:
         "Confección de lonas, cerramientos, capotas, cubreautos y fundas para motos de agua. Trabajo a medida con materiales técnicos de alta durabilidad.",
-      primaryCta: "Solicitar presupuesto",
-      secondaryCta: "Ver Productos",
+      primaryCta: "Ver Productos",
+      secondaryCta: "Ver Trabajos",
       images: [
         { src: "services-06", alt: "Carpa" },
         { src: "services-07", alt: "Toneau" },
