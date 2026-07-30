@@ -81,6 +81,8 @@ interface Item {
   img: string;
   url: string;
   alt?: string;
+  title?: string;
+  redirectUrl?: string;
 }
 
 interface GridItem extends Item {
@@ -314,26 +316,48 @@ const Masonry: React.FC<MasonryProps> = ({
         className="relative w-full"
         style={{ height: totalHeight || undefined }}
       >
-        {grid.map((item) => (
-          <div
-            key={item.id}
-            data-key={item.id}
-            className="absolute box-content"
-            style={{ willChange: "transform, width, height, opacity" }}
-            onClick={() => handleOpenModal(item.img, item.alt)}
-            onMouseEnter={(e) => handleMouseEnter(item.id, e.currentTarget)}
-            onMouseLeave={(e) => handleMouseLeave(item.id, e.currentTarget)}
-          >
-            <div
-              className="relative w-full h-full bg-cover bg-center rounded-[10px] shadow-[0px_10px_50px_-10px_rgba(0,0,0,0.2)] uppercase text-[10px] leading-2.5 cursor-pointer"
-              style={{ backgroundImage: `url(${item.img})` }}
+        {grid.map((item) =>
+          item.redirectUrl ? (
+            <a
+              key={item.id}
+              data-key={item.id}
+              href={item.redirectUrl}
+              className="absolute box-content group block rounded-lg transition-all duration-400 ease-out border-2 border-sc-ocean-blue/15 hover:-translate-y-1.5 hover:shadow-xl hover:border-pr-aquamarine hover:ring-2 hover:ring-pr-aquamarine"
+              style={{ willChange: "transform, width, height, opacity" }}
             >
-              {colorShiftOnHover && (
-                <div className="color-overlay absolute inset-0 rounded-xl bg-linear-to-tr from-pr-aquamarine to-pr-hero-blue opacity-0 pointer-events-none" />
-              )}
+              <div className="relative w-full h-full overflow-hidden rounded-lg shadow-[0px_10px_50px_-10px_rgba(0,0,0,0.2)]">
+                <div
+                  className="absolute inset-0 bg-cover bg-center transition-all duration-600 ease-out brightness-50 grayscale-50 group-hover:brightness-100 group-hover:grayscale-0 group-hover:scale-105"
+                  style={{ backgroundImage: `url(${item.img})` }}
+                />
+                {item.title && (
+                  <h3 className="absolute inset-0 z-10 flex items-center justify-center font-brown uppercase tracking-wider text-white text-3xl drop-shadow-[0_2px_8px_rgba(0,0,0,0.65)] pointer-events-none">
+                    {item.title}
+                  </h3>
+                )}
+              </div>
+            </a>
+          ) : (
+            <div
+              key={item.id}
+              data-key={item.id}
+              className="absolute box-content"
+              style={{ willChange: "transform, width, height, opacity" }}
+              onClick={() => handleOpenModal(item.img, item.alt)}
+              onMouseEnter={(e) => handleMouseEnter(item.id, e.currentTarget)}
+              onMouseLeave={(e) => handleMouseLeave(item.id, e.currentTarget)}
+            >
+              <div
+                className="relative w-full h-full bg-cover bg-center rounded-[10px] shadow-[0px_10px_50px_-10px_rgba(0,0,0,0.2)] uppercase text-[10px] leading-2.5 cursor-pointer"
+                style={{ backgroundImage: `url(${item.img})` }}
+              >
+                {colorShiftOnHover && (
+                  <div className="color-overlay absolute inset-0 rounded-xl bg-linear-to-tr from-pr-aquamarine to-pr-hero-blue opacity-0 pointer-events-none" />
+                )}
+              </div>
             </div>
-          </div>
-        ))}
+          ),
+        )}
       </div>
 
       <Modal

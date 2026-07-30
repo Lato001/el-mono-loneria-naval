@@ -90,11 +90,13 @@ export interface SplitCardData {
 }
 
 // ─── Masonry Items (Home page) ────────────────────────────────────────────
-export interface MasonryItem{
+export interface MasonryItem {
   id: string;
   img: string;
   url: string;
   alt?: string;
+  title?: string;
+  redirectUrl?: string;
 }
 
 // ─── Brands ──────────────────────────────────────────────────────────────
