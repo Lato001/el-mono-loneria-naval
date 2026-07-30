@@ -9,19 +9,10 @@ export function Contact() {
   return (
     <>
       <SectionWrapper
-        eyebrow="Contacto"
-        title="Hablemos de tu proyecto"
-        titlesAlign="start"
-        headingLevel="h1"
-      >
-        <ContactGrid></ContactGrid>
-      </SectionWrapper>
-
-      <SectionWrapper
         eyebrow="Ubicacion"
         title="Donde encontrarnos"
         titlesAlign="center"
-        theme="light"
+        theme="dark"
         className="w-full p-10 "
       >
         <MapSection
@@ -34,10 +25,18 @@ export function Contact() {
           <LinkButton
             type="Google"
             text="Abrir en Google Maps"
-            className="bg-sc-ocean-blue"
             url="https://maps.app.goo.gl/5yJprtv3uSdtv13M7"
           />
         </div>
+      </SectionWrapper>
+      <SectionWrapper
+        eyebrow="Contacto"
+        title="Hablemos de tu proyecto"
+        titlesAlign="start"
+        headingLevel="h1"
+        theme="light"
+      >
+        <ContactGrid></ContactGrid>
       </SectionWrapper>
     </>
   );

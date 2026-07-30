@@ -54,7 +54,7 @@ export function SectionTabs({
       ref={tablistRef}
       role="tablist"
       aria-label={ariaLabel}
-      className="sticky z-40 border-b border-sc-ocean-blue/10 bg-sc-chalk"
+      className="sticky z-40 border-b border-white bg-sc-ocean-blue "
       style={{ top: topOffset }}
       onKeyDown={handleKeyDown}
     >
@@ -73,16 +73,17 @@ export function SectionTabs({
                 onClick={() => onSelect?.(tab.id)}
                 className={`font-poppins shrink-0 cursor-pointer border-b-2 px-4 py-3 text-sm font-medium transition-colors ${
                   isActive
-                    ? "border-pr-aquamarine font-bold text-sc-ocean-blue"
-                    : "border-transparent text-sc-ocean-blue/60 hover:text-sc-ocean-blue"
+                    ? "border-pr-aquamarine font-bold text-white"
+                    : "border-transparent text-white hover:text-pr-aquamarine"
                 } focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pr-aquamarine`}
               >
                 {tab.name}
-                {selectedCounts?.[tab.id] != null && selectedCounts[tab.id] > 0 && (
-                  <span className="ml-2 inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-sc-ocean-blue px-1.5 text-xs font-bold text-white">
-                    {selectedCounts[tab.id]}
-                  </span>
-                )}
+                {selectedCounts?.[tab.id] != null &&
+                  selectedCounts[tab.id] > 0 && (
+                    <span className="ml-2 inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-pr-aquamarine px-1.5 text-xs font-bold text-pr-hero-blue">
+                      {selectedCounts[tab.id]}
+                    </span>
+                  )}
               </button>
             );
           })}
