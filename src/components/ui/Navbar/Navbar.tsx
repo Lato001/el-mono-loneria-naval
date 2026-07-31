@@ -16,7 +16,7 @@ export function Navbar() {
   const isActive = (path: string) => location.pathname === path;
 
   return (
-    <header className="sticky top-4 z-50 mx-auto w-fit">
+    <header className="sticky top-4 z-50 mx-auto w-fit relative">
       <div className="bg-sc-ocean-blue/80 flex items-center gap-4 rounded-full border border-white/10 px-4 py-2 shadow-lg backdrop-blur-xl">
         <Link to={PATHS.HOME} className="flex items-center gap-2 pr-2">
           <img src={isotipo} alt="El Mono" className="h-9" />
@@ -74,7 +74,7 @@ export function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
-            className="bg-sc-ocean-blue fixed left-4 right-4 top-20 flex flex-col gap-1 rounded-3xl border border-white/10 p-4 shadow-lg lg:hidden"
+            className="bg-sc-ocean-blue absolute left-0 top-full mt-2 w-full flex flex-col gap-1 rounded-3xl border border-white/10 p-4 shadow-lg lg:hidden"
           >
             <button
               aria-label="Cerrar menú"
@@ -95,7 +95,7 @@ export function Navbar() {
                 {link.label}
               </Link>
             ))}
-          <LinkButton text={data.ui.consultWhatsApp} />
+            <LinkButton text={data.ui.consultWhatsApp} />
           </motion.div>
         )}
       </AnimatePresence>
