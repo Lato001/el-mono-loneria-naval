@@ -44,6 +44,7 @@ export function Works() {
   return (
     <>
       <SectionWrapper
+        id="album"
         className="mx-auto"
         eyebrow="Album de fotos"
         title="Nuestros Trabajos"
