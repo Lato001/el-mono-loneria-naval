@@ -29,10 +29,15 @@ export function SectionWrapper({
     ? "w-full"
     : "mx-auto max-w-295 px-6";
 
+  const bgGradient = theme === "dark"
+    ? "linear-gradient(to bottom, #001051 0%, #001051 calc(100% - 24px), #F4F4F4 100%)"
+    : "linear-gradient(to bottom, #F4F4F4 0%, #F4F4F4 calc(100% - 24px), #001051 100%)";
+
   return (
     <section
       id={id}
-      className={`${theme === "dark" ? "bg-sc-ocean-blue " : "bg-sc-chalk"} py-20 text-white  ${className ?? ""}`}
+      className={`py-20 text-white ${className ?? ""}`}
+      style={{ background: bgGradient }}
       aria-label={title}
     >
       <div className={containerClasses}>
