@@ -23,7 +23,7 @@ export function Navbar() {
           <img
             src={isotipoName}
             alt="El Mono Lonería Naval"
-            className="hidden h-6 lg:block"
+            className="hidden h-6 xl:block"
           />
         </Link>
 
