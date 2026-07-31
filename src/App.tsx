@@ -1,14 +1,15 @@
 import { Routes, Route } from "react-router-dom";
-import { Footer, Header } from "./components/layout";
+import { Footer } from "./components/layout";
 import { AboutUs, Contact, Faq, Home, Products, Works } from "./pages";
 import { PATHS } from "./routes/routes";
 import { ScrollToTop } from "./components";
+import { Navbar } from "./components/ui";
 
 export default function App() {
   return (
     <>
       <ScrollToTop />
-      <Header />
+      <Navbar></Navbar>
       <Routes>
         <Route path={PATHS.HOME} element={<Home />} />
         <Route path={PATHS.PRODUCTS} element={<Products />} />
