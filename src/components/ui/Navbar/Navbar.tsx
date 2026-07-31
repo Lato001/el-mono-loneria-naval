@@ -54,11 +54,6 @@ export function Navbar() {
           ))}
         </nav>
 
-        <LinkButton
-          text={data.ui.consultWhatsApp}
-          className="hidden lg:inline-flex"
-        />
-
         <button
           aria-label={mobileOpen ? "Cerrar menú" : "Abrir menú"}
           onClick={() => setMobileOpen((v) => !v)}
@@ -90,18 +85,15 @@ export function Navbar() {
                 to={link.href}
                 onClick={() => setMobileOpen(false)}
                 className={`rounded-full px-4 py-3 text-sm font-bold uppercase transition-colors hover:bg-white/10 ${
-                  isActive(link.href)
-                    ? "text-pr-aquamarine"
-                    : "text-white"
+                  isActive(link.href) ? "text-pr-aquamarine" : "text-white"
                 }`}
               >
                 {link.label}
               </Link>
             ))}
-            <LinkButton
-              text={data.ui.consultWhatsApp}
-              className="mt-2 flex items-center justify-center"
-            />
+        <div className="hidden lg:block">
+          <LinkButton text={data.ui.consultWhatsApp} />
+        </div>
           </motion.div>
         )}
       </AnimatePresence>
