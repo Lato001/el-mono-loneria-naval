@@ -279,7 +279,7 @@ export const data = {
       ],
       tagline: "El Mono · Lonería Naval desde 2026",
       copyright:
-        "© 2026 El Mono Lonería Naval. Desarrollado por CameSites",
+        "© 2026 El Mono Lonería Naval",
       contactTitle: "Contacto",
     } satisfies FooterNav,
   },
