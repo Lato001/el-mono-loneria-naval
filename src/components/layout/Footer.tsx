@@ -38,7 +38,7 @@ export function Footer() {
         {/* Top section: 12-col grid — brand(2) + nav(8) + contact(2) */}
         <div className="grid grid-cols-1 items-start gap-6 lg:grid-cols-12 lg:gap-8">
           {/* Col 1 — Brand (col-span-2) */}
-          <div className="flex flex-col gap-3 lg:col-span-2">
+          <div className="flex items-center flex-col gap-3 lg:col-span-2">
             {/* TODO: review logo — currently using isotipo SVG; may want a dedicated footer logo later */}
             <img
               src={isotipoElmono}
@@ -46,7 +46,7 @@ export function Footer() {
               className="h-20 w-20"
               onError={handleLogoError}
             />
-            <p className="font-poppins text-xl leading-snug text-white/70">
+            <p className="font-poppins text-lg leading-snug text-white/70">
               {tagline}
             </p>
             <div className="flex gap-2">
