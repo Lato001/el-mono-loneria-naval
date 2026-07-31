@@ -23,9 +23,9 @@ body {
   }
 }
 
-/* KEEP IN SYNC with Header.tsx actual rendered height (~96px due to isotipo at w-24 h-auto) */
-:root { --header-h: 96px; }
-@media (min-width: 1024px) { :root { --header-h: 96px; } }
+/* KEEP IN SYNC with Navbar actual rendered height (pill ≈ 36px + fixed top-4 = 52px) */
+:root { --header-h: 52px; }
+@media (min-width: 1024px) { :root { --header-h: 52px; } }
 
 /*IMPORT FONTS*/
 @theme {
