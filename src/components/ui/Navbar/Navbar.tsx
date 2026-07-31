@@ -74,7 +74,7 @@ export function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
-            className="bg-sc-ocean-blue absolute left-0 top-full mt-2 w-full flex flex-col gap-1 rounded-3xl border border-white/10 p-4 shadow-lg lg:hidden"
+            className="bg-sc-ocean-blue absolute top-full mt-2 w-full flex flex-col gap-1 rounded-3xl border border-white/10 p-4 shadow-lg lg:hidden"
           >
             <button
               aria-label="Cerrar menú"

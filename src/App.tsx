@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import { Footer, Header } from "./components/layout";
 import { AboutUs, Contact, Faq, Home, Products, Works } from "./pages";
@@ -6,25 +5,10 @@ import { PATHS } from "./routes/routes";
 import { ScrollToTop } from "./components";
 
 export default function App() {
-  const [isScrolled, setIsScrolled] = useState(false);
-
-  useEffect(() => {
-    const onScroll = () => setIsScrolled(window.scrollY > 50);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
   return (
     <>
       <ScrollToTop />
-      <div
-        className={`sticky top-0 z-50 bg-sc-ocean-blue transition-shadow duration-300 ${
-          isScrolled ? "shadow-lg" : ""
-        }`}
-      >
-        <Header />
-      </div>
+      <Header />
       <Routes>
         <Route path={PATHS.HOME} element={<Home />} />
         <Route path={PATHS.PRODUCTS} element={<Products />} />
