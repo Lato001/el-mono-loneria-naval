@@ -36,18 +36,10 @@ export function SectionWrapper({
   return (
     <section
       id={id}
-      className={`relative py-20 text-white ${className ?? ""}`}
+      className={`py-20 text-white ${className ?? ""}`}
       style={{ background: bgGradient }}
       aria-label={title}
     >
-      {/* Top edge glow */}
-      <div className="absolute top-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-pr-aquamarine/50 to-transparent" />
-      <div className="absolute top-0 left-[15%] right-[15%] h-[3px] bg-linear-to-r from-transparent via-pr-aquamarine/20 to-transparent blur-sm" />
-
-      {/* Bottom edge glow */}
-      <div className="absolute bottom-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-pr-aquamarine/50 to-transparent" />
-      <div className="absolute bottom-0 left-[15%] right-[15%] h-[3px] bg-linear-to-r from-transparent via-pr-aquamarine/20 to-transparent blur-sm" />
-
       <div className={containerClasses}>
         <div className={`flex ${titlesAlignClasses[titlesAlign]} `}>
           <div>
