@@ -23,7 +23,7 @@ export function Navbar() {
           <img
             src={isotipoName}
             alt="El Mono Lonería Naval"
-            className="hidden h-6 xl:block"
+            className="hidden h-6 lg:block"
           />
         </Link>
 
@@ -74,7 +74,7 @@ export function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
-            className="bg-sc-ocean-blue absolute left-0 right-0 mt-2 flex flex-col gap-1 rounded-3xl border border-white/10 p-4 shadow-lg lg:hidden"
+            className="bg-sc-ocean-blue fixed left-4 right-4 top-20 flex flex-col gap-1 rounded-3xl border border-white/10 p-4 shadow-lg lg:hidden"
           >
             <button
               aria-label="Cerrar menú"
