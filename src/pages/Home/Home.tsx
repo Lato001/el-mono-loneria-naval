@@ -4,7 +4,6 @@ import {
   LinkButton,
   SectionWrapper,
   SplitCards,
-  WhatsappButton,
 } from "../../components/ui";
 import Masonry from "../../components/ui/Masonry/Masonry";
 import { SplitReviews } from "../../components/ui/SplitReviews/SplitReviews";
@@ -43,7 +42,6 @@ const homeMasonryItems: MasonryItem[] = data.home.masonryItems.map((item) => ({
 export function Home() {
   return (
     <>
-      <WhatsappButton />
       <Hero
         eyebrow={data.home.hero.eyebrow}
         titlePrefix={data.home.hero.titlePrefix}

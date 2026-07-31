@@ -43,10 +43,10 @@ export function Footer() {
             <img
               src={isotipoElmono}
               alt={data.global.brandLogoAlt}
-              className="h-12 w-12"
+              className="h-20 w-20"
               onError={handleLogoError}
             />
-            <p className="font-poppins text-xs leading-snug text-white/70">
+            <p className="font-poppins text-xl leading-snug text-white/70">
               {tagline}
             </p>
             <div className="flex gap-2">
