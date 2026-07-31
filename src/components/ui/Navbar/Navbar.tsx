@@ -90,7 +90,7 @@ export function Navbar() {
                 key={link.href}
                 to={link.href}
                 onClick={() => setMobileOpen(false)}
-                className={`rounded-full px-4 py-3 text-sm font-bold uppercase transition-colors hover:bg-white/10 ${
+                className={`font-poppins rounded-full px-4 py-3 text-sm font-bold uppercase transition-colors hover:bg-white/10 ${
                   isActive(link.href) ? "text-pr-aquamarine" : "text-white"
                 }`}
               >

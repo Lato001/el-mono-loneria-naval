@@ -29,11 +29,6 @@ export function Hero({
         className="relative overflow-hidden pt-27.5 text-white bg-linear-to-br from-sc-ocean-blue to-pr-hero-blue"
       >
         <div
-          className="absolute -top-30 -right-30 w-105 h-105 rounded-full bg-pr-aquamarine/20 pointer-events-none select-none"
-          aria-hidden="true"
-        />
-
-        <div
           className="absolute inset-0 pointer-events-none select-none"
           aria-hidden="true"
           style={{
@@ -74,7 +69,7 @@ export function Hero({
           </div>
           <ImgCard className="max-lg:hidden" images={images} interval={4000} />
         </div>
-        <div className="relative z-10 pt-20">
+        <div className="relative z-10 mt-11.5">
           <BrandMarquee />
         </div>
       </section>

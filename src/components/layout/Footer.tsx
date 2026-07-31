@@ -40,7 +40,7 @@ export function Footer() {
   ];
 
   return (
-    <footer className="bg-sc-ocean-blue pb-10 ">
+    <footer className="bg-sc-ocean-blue p-10 ">
       <div className="mx-auto flex max-w-295 pb-4 flex-col items-center gap-6 lg:flex-row lg:justify-between border-b border-pr-aquamarine/60">
         {/* Logo */}
         <div>
