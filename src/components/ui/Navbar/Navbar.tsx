@@ -54,6 +54,10 @@ export function Navbar() {
           ))}
         </nav>
 
+        <div className="hidden lg:block">
+          <LinkButton text={data.ui.consultWhatsApp} />
+        </div>
+
         <button
           aria-label={mobileOpen ? "Cerrar menú" : "Abrir menú"}
           onClick={() => setMobileOpen((v) => !v)}
@@ -91,9 +95,7 @@ export function Navbar() {
                 {link.label}
               </Link>
             ))}
-        <div className="hidden lg:block">
           <LinkButton text={data.ui.consultWhatsApp} />
-        </div>
           </motion.div>
         )}
       </AnimatePresence>
