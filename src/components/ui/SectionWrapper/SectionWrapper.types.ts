@@ -18,4 +18,6 @@ export interface SectionWrapperProps {
    * Default: "h2".
    */
   headingLevel?: "h1" | "h2" | "h3";
+  /** If true, removes max-w and px constraints for full-width children. */
+  fullWidth?: boolean;
 }

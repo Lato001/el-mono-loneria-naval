@@ -80,16 +80,12 @@ const tabs: Tab[] = categories.map((c) => ({ id: c.id, name: c.name }));
 function CotizacionModalContent({
   products,
   onRemove,
-  onClear,
-  onClose,
   whatsappHref,
   isWhatsAppDisabled,
   whatsappDisabledReason,
 }: {
   products: Product[];
   onRemove: (id: string) => void;
-  onClear: () => void;
-  onClose: () => void;
   whatsappHref: string;
   isWhatsAppDisabled: boolean;
   whatsappDisabledReason?: string;
@@ -256,10 +252,7 @@ export function Products() {
                   </div>
                 </div>
                 <div>
-                  <MediaPlayer
-                    className="w-200"
-                    src="https://www.youtube.com/watch?v=MOekZ86yezA"
-                  ></MediaPlayer>
+                  <MediaPlayer src="https://www.youtube.com/watch?v=MOekZ86yezA"></MediaPlayer>
                   <div className="flex min-w-0 flex-1 flex-col">
                     <ProductCarousel
                       id={activeCategory.id}
@@ -294,8 +287,6 @@ export function Products() {
         <CotizacionModalContent
           products={selectedProducts}
           onRemove={remove}
-          onClear={clear}
-          onClose={handleCloseModal}
           whatsappHref={whatsappResult.href}
           isWhatsAppDisabled={whatsappResult.isTooLong}
           whatsappDisabledReason={data.ui.whatsappDisabledReason}

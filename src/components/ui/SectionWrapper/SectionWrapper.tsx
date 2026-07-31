@@ -21,9 +21,13 @@ export function SectionWrapper({
   theme = "dark",
   titlesAlign = "start",
   headingLevel = "h1",
+  fullWidth,
 }: SectionWrapperProps) {
   const Heading = headingLevel;
   const headingClasses = `font-poppins mb-8 font-bold uppercase  text-3xl ${theme === "dark" ? "text-white" : "text-pr-hero-blue"} `;
+  const containerClasses = fullWidth
+    ? "w-full"
+    : "mx-auto max-w-295 px-6";
 
   return (
     <section
@@ -31,7 +35,7 @@ export function SectionWrapper({
       className={`${theme === "dark" ? "bg-sc-ocean-blue " : "bg-sc-chalk"} py-20 text-white  ${className ?? ""}`}
       aria-label={title}
     >
-      <div className="mx-auto max-w-295 px-6">
+      <div className={containerClasses}>
         <div className={`flex ${titlesAlignClasses[titlesAlign]} `}>
           <div>
             {eyebrow && (
@@ -44,7 +48,7 @@ export function SectionWrapper({
             <Heading className={headingClasses}>{title}</Heading>
           </div>
         </div>
-        <div className="mt-4 w-full">{children}</div>
+        <div className={`mt-4 w-full ${fullWidth ? "overflow-hidden" : ""}`}>{children}</div>
       </div>
     </section>
   );
