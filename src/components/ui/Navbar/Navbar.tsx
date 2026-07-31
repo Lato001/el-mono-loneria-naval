@@ -16,8 +16,8 @@ export function Navbar() {
   const isActive = (path: string) => location.pathname === path;
 
   return (
-    <header className="sticky top-4 z-50 mx-auto w-fit relative">
-      <div className="bg-sc-ocean-blue/80 flex items-center gap-4 rounded-full border border-white/10 px-4 py-2 shadow-lg backdrop-blur-xl">
+    <header className="sticky top-0 z-50 relative">
+      <div className="bg-sc-ocean-blue/80 flex items-center gap-4 px-4 py-2 shadow-lg backdrop-blur-xl">
         <Link to={PATHS.HOME} className="flex items-center gap-2 pr-2">
           <img src={isotipo} alt="El Mono" className="h-9" />
           <img
