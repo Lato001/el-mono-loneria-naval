@@ -36,6 +36,17 @@ export interface FaqBubbleProps {
    * `aria-hidden`, `pointer-events: none`.
    */
   peekIcon?: string;
+  /** Optional extra classes appended to the question bubble. */
+  questionClassName?: string;
+  /** Optional extra classes appended to the answer bubble. */
+  answerClassName?: string;
+  /**
+   * Render the chat-tail offset on the answer bubble (md:ml-20 / md:mr-20).
+   * Disable it when the pair renders inside a constrained container
+   * (e.g. the overlay inside an ImgCard), where the offset would push
+   * the answer out of the card and get clipped.
+   */
+  showChatTail?: boolean;
 }
 
 /**
@@ -57,6 +68,9 @@ export function FaqBubble({
   align = "start",
   image,
   peekIcon,
+  questionClassName,
+  answerClassName,
+  showChatTail = true,
 }: FaqBubbleProps) {
   const parts = highlight ? question.split(highlight) : [question];
 
@@ -75,7 +89,15 @@ export function FaqBubble({
     : "rounded-[0_48px_48px_48px]";
 
   // Offset for the answer so it sits away from the question (chat-tail effect).
-  const answerOffset = isStart ? "md:ml-20" : isEnd ? "md:mr-20" : "";
+  // Skipped when showChatTail is false (e.g. inside a constrained overlay
+  // container) to avoid overflowing and getting clipped.
+  const answerOffset = showChatTail
+    ? isStart
+      ? "md:ml-20"
+      : isEnd
+        ? "md:mr-20"
+        : ""
+    : "";
 
   // Container alignment (vertical axis): where the pair sits inside its parent.
   const pairAlign = isEnd
@@ -127,13 +149,15 @@ export function FaqBubble({
         <div
           className={`
             w-full max-w-md
-            bg-pr-hero-blue/50
+            bg-sc-ocean-blue
             text-white
-            px-8 py-8
+            border-10 border-sc-chalk
+            px-[clamp(1.25rem,4.1667vw,2rem)] py-[clamp(1rem,4.1667vw,2rem)]
             ${questionRounded}
+            ${questionClassName}
           `}
         >
-          <h2 className="text-4xl font-bold leading-tight">
+          <h2 className="text-[clamp(1.5rem,4.6875vw,2.25rem)] font-bold leading-tight">
             {parts[0]}
 
             {highlight && (
@@ -149,14 +173,18 @@ export function FaqBubble({
         <div
           className={`
             w-full max-w-md
-            bg-pr-aquamarine/80
+            bg-sc-sky-blue
             text-white
-            px-8 py-8
+            border-10 border-sc-chalk
+            px-[clamp(1.25rem,4.1667vw,2rem)] py-[clamp(1rem,4.1667vw,2rem)]
             ${answerRounded}
             ${answerOffset}
+            ${answerClassName}
           `}
         >
-          <p className="text-lg leading-relaxed font-medium">{answer}</p>
+          <p className="text-[clamp(0.875rem,2.0833vw,1rem)] leading-relaxed font-medium">
+            {answer}
+          </p>
         </div>
       </div>
 

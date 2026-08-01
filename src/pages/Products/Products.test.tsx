@@ -238,13 +238,13 @@ describe("Products page", () => {
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
   });
 
-  it("renders the 'Borrar lista' button (red, disabled when no selection)", () => {
+  it("renders the 'Borrar lista' button (aquamarine, disabled when no selection)", () => {
     renderProducts();
     const clearButton = within(getActionBar()).getByRole("button", {
       name: /borrar lista/i,
     });
     expect(clearButton).toBeInTheDocument();
-    expect(clearButton.className).toContain("bg-red-500");
+    expect(clearButton.className).toContain("bg-pr-aquamarine");
     expect(clearButton).toBeDisabled();
   });
 
@@ -336,5 +336,69 @@ describe("Products page", () => {
         name: /borrar lista/i,
       }),
     ).toBeDisabled();
+  });
+
+  it("DOM order is ImgCard → ProductCarousel → MediaPlayer", () => {
+    renderProducts();
+    const tabpanel = screen.getByRole("tabpanel");
+    const layoutContainer = tabpanel.closest(".xl\\:grid-cols-2")!;
+    expect(layoutContainer).not.toBeNull();
+    const children = Array.from(layoutContainer.children);
+
+    const imgCardChild = children.find((c) =>
+      c.querySelector("img") !== null && !c.querySelector(".aspect-video"),
+    );
+    const carouselChild = children.find((c) =>
+      c.querySelector("[role='tabpanel']") !== null,
+    );
+    const playerChild = children.find((c) =>
+      c.querySelector(".aspect-video") !== null,
+    );
+
+    expect(imgCardChild).toBeDefined();
+    expect(carouselChild).toBeDefined();
+    expect(playerChild).toBeDefined();
+
+    const imgIndex = children.indexOf(imgCardChild!);
+    const carouselIndex = children.indexOf(carouselChild!);
+    const playerIndex = children.indexOf(playerChild!);
+
+    expect(imgIndex).toBeLessThan(carouselIndex);
+    expect(carouselIndex).toBeLessThan(playerIndex);
+  });
+
+  it("layout container has xl grid classes", () => {
+    renderProducts();
+    const tabpanel = screen.getByRole("tabpanel");
+    const layoutContainer = tabpanel.closest(".xl\\:grid-cols-2")!;
+    expect(layoutContainer).not.toBeNull();
+    const cn = layoutContainer.className;
+    expect(cn).toContain("xl:grid");
+    expect(cn).toContain("xl:grid-cols-2");
+    expect(cn).toContain(
+      "xl:grid-rows-[minmax(0,1fr)_minmax(0,1.5fr)]",
+    );
+  });
+
+  it("mobile info toggle button works", async () => {
+    const user = userEvent.setup();
+    renderProducts();
+    const toggleBtn = screen.getByLabelText(/ver información/i);
+    expect(toggleBtn).toBeInTheDocument();
+    await user.click(toggleBtn);
+    expect(screen.getByLabelText(/cerrar información/i)).toBeInTheDocument();
+  });
+
+  it("toggles the overlay with the isotipo and the MONO TIP bubble", async () => {
+    const user = userEvent.setup();
+    renderProducts();
+    expect(screen.queryByText(/MONO TIP/i)).not.toBeInTheDocument();
+    await user.click(screen.getByLabelText(/ver información/i));
+    expect(screen.getByText(/MONO TIP/i)).toBeInTheDocument();
+    expect(
+      screen.getByRole("img", { name: /isotipo el mono/i }),
+    ).toBeInTheDocument();
+    await user.click(screen.getByLabelText(/cerrar información/i));
+    expect(screen.queryByText(/MONO TIP/i)).not.toBeInTheDocument();
   });
 });

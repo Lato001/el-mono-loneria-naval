@@ -10,7 +10,7 @@ function FadeInCard({ children }: { children: React.ReactNode }) {
   return (
     <div
       ref={ref}
-      className={`transition-all duration-500 ease-out ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"}`}
+      className={`h-full transition-all duration-500 ease-out ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"}`}
     >
       {children}
     </div>
@@ -30,7 +30,7 @@ export function ProductCarousel({
       id={id}
       role="tabpanel"
       aria-labelledby={`tab-${id}`}
-      className="relative min-w-0 py-8"
+      className="relative min-w-0 py-4 md:py-8"
       style={{ scrollMarginTop: "var(--header-h, 76px)" }}
     >
       <div
@@ -41,7 +41,7 @@ export function ProductCarousel({
         {items.map((product) => (
           <div
             key={product.id}
-            className="w-[calc(75%-4px)] md:w-[calc(33.333%-11px)] shrink-0 snap-start"
+            className="h-full w-[calc(80%-16px)] shrink-0 snap-start md:w-[calc(50%-8px)] lg:w-[calc(33.333%-11px)]"
           >
             <FadeInCard>
               <Card

@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import type { ReactNode } from "react";
 import { IconChevronLeft, IconChevronRight } from "@tabler/icons-react";
 
 interface ImgCardProps {
@@ -10,6 +11,8 @@ interface ImgCardProps {
   title?: string;
   imageClassName?: string;
   showControls?: boolean;
+  actionButton?: ReactNode;
+  overlay?: ReactNode;
 }
 
 export function ImgCard({
@@ -21,6 +24,8 @@ export function ImgCard({
   title,
   imageClassName = "",
   showControls = false,
+  actionButton,
+  overlay,
 }: ImgCardProps) {
   const hasSlideshow = images && images.length > 1;
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -42,6 +47,14 @@ export function ImgCard({
     if (!images || images.length === 0) return;
     setCurrentIndex((i) => (i + 1) % images.length);
   };
+
+  const actionButtonSlot = actionButton ? (
+    <div className="absolute right-2 top-2 z-40">{actionButton}</div>
+  ) : null;
+
+  const overlaySlot = overlay ? (
+    <div className="absolute inset-0 z-30">{overlay}</div>
+  ) : null;
 
   if (hasSlideshow) {
     return (
@@ -91,6 +104,8 @@ export function ImgCard({
             {title}
           </h2>
         )}
+        {overlaySlot}
+        {actionButtonSlot}
       </div>
     );
   }
@@ -116,6 +131,8 @@ export function ImgCard({
           {title}
         </h2>
       )}
+      {overlaySlot}
+      {actionButtonSlot}
     </div>
   );
 }
