@@ -1,9 +1,6 @@
 ﻿import { IconPlus, IconX } from "@tabler/icons-react";
 import { data } from "../../../mocks/data";
 
-/* KEEP IN SYNC with measured height of Broche Lona Macho Bronze Blanco at 375px */
-export const MOBILE_CARD_HEIGHT = "351px";
-
 export interface CardProps {
   id?: string;
   title?: string;
@@ -34,8 +31,7 @@ export const Card = ({
 
   return (
     <article
-      style={description ? { height: MOBILE_CARD_HEIGHT } : undefined}
-      className={`relative flex flex-col overflow-hidden rounded-xl border-2 transition-all duration-200 ease-out hover:-translate-y-1.5 hover:shadow-xl ${description ? "md:h-auto" : ""} group
+      className={`relative flex h-full flex-col overflow-hidden rounded-xl border-2 transition-all duration-200 ease-out hover:-translate-y-1.5 hover:shadow-xl group
       ${selected ? "border-pr-aquamarine ring-2 ring-pr-aquamarine" : "border-sc-ocean-blue/15 bg-white"}
       ${className ?? ""}`}
     >
@@ -68,10 +64,10 @@ export const Card = ({
 
       {isInteractive && (
         <label
-          className={`absolute top-3 right-3 z-20 inline-flex h-11 items-center overflow-hidden rounded-full border-2 border-sc-ocean-blue bg-sc-ocean-blue transition-all duration-200 ease-out cursor-pointer hover:brightness-110 ${
+          className={`absolute top-3 right-3 z-20 inline-flex h-11 items-center overflow-hidden rounded-full border-2  transition-all duration-200 ease-out cursor-pointer hover:brightness-110 ${
             selected
-              ? "w-auto justify-start gap-2 pl-1 pr-3"
-              : "w-11 justify-center gap-0"
+              ? "w-auto justify-start gap-2 pl-1 pr-3 border-2 border-pr-aquamarine bg-sc-ocean-blue "
+              : "w-11 justify-center gap-0 border-sc-ocean-blue bg-sc-ocean-blue"
           }`}
         >
           <input
@@ -82,17 +78,19 @@ export const Card = ({
             className="sr-only align-middle"
           />
           {selected ? (
-            <IconX className="text-white h-5 w-5 shrink-0" aria-hidden="true" />
-          ) : (
-            <IconPlus
-              className="text-white h-5 w-5 shrink-0"
+            <IconX
+              className="text-sc-chalk border-r-2 border-pr-aquamarine rounded-2xl   "
               aria-hidden="true"
             />
+          ) : (
+            <IconPlus className="text-sc-chalk" stroke={2} aria-hidden="true" />
           )}
           <span
             aria-hidden="true"
-            className={`whitespace-nowrap text-sm font-medium text-white transition-all duration-200 ease-out ${
-              selected ? "max-w-30 opacity-100" : "max-w-0 opacity-0"
+            className={`whitespace-nowrap text-base font-semibold transition-all duration-200 ease-out ${
+              selected
+                ? "max-w-30 opacity-100 text-sc-chalk"
+                : "max-w-0 opacity-0 text-sc-chalk"
             }`}
           >
             {data.ui.selectedLabel}
@@ -103,7 +101,7 @@ export const Card = ({
       {hasContent && (
         <div className="flex flex-1 flex-col justify-between p-6">
           {title && (
-            <h3 className="mb-2 line-clamp-1 text-2xl font-poppins font-bold text-sc-ocean-blue">
+            <h3 className="mb-2 font-poppins font-bold text-sc-ocean-blue text-lg md:text-xl">
               {title}
             </h3>
           )}

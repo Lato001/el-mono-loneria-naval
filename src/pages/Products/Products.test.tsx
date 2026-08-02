@@ -8,6 +8,12 @@ vi.mock("../../hooks/useFadeInOnView", () => ({
   useFadeInOnView: () => ({ ref: { current: null }, visible: true }),
 }));
 
+// Mock react-player so MediaPlayer doesn't load youtube-video-element
+// (which throws unhandled rejections in jsdom).
+vi.mock("react-player", () => ({
+  default: () => <div data-testid="mock-player" />,
+}));
+
 // Set VITE_WHATSAPP_URL for tests
 beforeAll(() => {
   Object.defineProperty(import.meta, "env", {
@@ -55,15 +61,19 @@ describe("Products page", () => {
     expect(tabs).toHaveLength(2);
   });
 
-  it("renders the first category name in a FaqBubble question by default", () => {
+  it("renders the first category (Broches) as the active tab by default", () => {
     renderProducts();
     expect(
-      screen.getByRole("heading", { level: 2, name: /Broches/i }),
-    ).toBeInTheDocument();
+      screen.getByRole("tab", { name: /broches/i }),
+    ).toHaveAttribute("aria-selected", "true");
+    expect(screen.getByRole("img", { name: /broches/i })).toBeInTheDocument();
   });
 
-  it("renders the first category description in a FaqBubble answer by default", () => {
+  it("shows the category description in the info overlay", async () => {
+    const user = userEvent.setup();
     renderProducts();
+
+    await user.click(screen.getByLabelText(/ver información/i));
     expect(
       screen.getByText(/Broches de presión profesionales/i),
     ).toBeInTheDocument();
@@ -76,23 +86,26 @@ describe("Products page", () => {
     expect(images.length).toBeGreaterThan(0);
   });
 
-  it("switching tab updates title, description, and carousel", async () => {
+  it("switching tab updates the active category, carousel, and overlay description", async () => {
     const user = userEvent.setup();
     renderProducts();
 
     // Default: Broches
     expect(
-      screen.getByRole("heading", { level: 2, name: /Broches/i }),
-    ).toBeInTheDocument();
+      screen.getByRole("tab", { name: /broches/i }),
+    ).toHaveAttribute("aria-selected", "true");
 
     // Click Caballetes tab
     await user.click(screen.getByRole("tab", { name: /Caballetes/i }));
 
-    // Title switches
+    // Tab switches and the carousel shows the new category products
     expect(
-      screen.getByRole("heading", { level: 2, name: /Caballetes/i }),
-    ).toBeInTheDocument();
-    // Description switches
+      screen.getByRole("tab", { name: /Caballetes/i }),
+    ).toHaveAttribute("aria-selected", "true");
+    expect(screen.getByText("Caballete Caño Inox")).toBeInTheDocument();
+
+    // Overlay description switches too
+    await user.click(screen.getByLabelText(/ver información/i));
     expect(
       screen.getByText(/Caballetes de acero inoxidable/i),
     ).toBeInTheDocument();
@@ -173,7 +186,7 @@ describe("Products page", () => {
     expect(within(getActionBar()).getByText("1")).toBeInTheDocument();
   });
 
-  it("Vaciar clears all selection and closes modal", async () => {
+  it("removing the last product from the quote modal closes it", async () => {
     const user = userEvent.setup();
     renderProducts();
 
@@ -188,9 +201,9 @@ describe("Products page", () => {
     expect(screen.getByRole("dialog")).toBeInTheDocument();
 
     const dialog = screen.getByRole("dialog");
-    await user.click(within(dialog).getByRole("button", { name: /vaciar/i }));
+    await user.click(within(dialog).getByLabelText(/quitar/i));
 
-    // Modal auto-closes because selection is now empty
+    // Quote modal auto-closes because the selection is now empty
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
     // Presupuestar is disabled again (count = 0)
     expect(
@@ -212,8 +225,10 @@ describe("Products page", () => {
       }),
     );
 
-    const whatsappLink = screen.getByText("Consultar por WhatsApp");
-    expect(whatsappLink.closest("a")).toHaveAttribute(
+    const whatsappLink = screen.getByRole("link", {
+      name: /habla con nosotros/i,
+    });
+    expect(whatsappLink).toHaveAttribute(
       "href",
       expect.stringContaining("Broche%20Casco%20Bacan"),
     );
@@ -238,13 +253,13 @@ describe("Products page", () => {
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
   });
 
-  it("renders the 'Borrar lista' button (red, disabled when no selection)", () => {
+  it("renders the 'Borrar lista' button (aquamarine, disabled when no selection)", () => {
     renderProducts();
     const clearButton = within(getActionBar()).getByRole("button", {
       name: /borrar lista/i,
     });
     expect(clearButton).toBeInTheDocument();
-    expect(clearButton.className).toContain("bg-red-500");
+    expect(clearButton.className).toContain("bg-pr-aquamarine");
     expect(clearButton).toBeDisabled();
   });
 
@@ -336,5 +351,69 @@ describe("Products page", () => {
         name: /borrar lista/i,
       }),
     ).toBeDisabled();
+  });
+
+  it("DOM order is ImgCard → ProductCarousel → MediaPlayer", () => {
+    renderProducts();
+    const tabpanel = screen.getByRole("tabpanel");
+    const layoutContainer = tabpanel.closest(".xl\\:grid-cols-2")!;
+    expect(layoutContainer).not.toBeNull();
+    const children = Array.from(layoutContainer.children);
+
+    const imgCardChild = children.find((c) =>
+      c.querySelector("img") !== null && !c.querySelector(".aspect-video"),
+    );
+    const carouselChild = children.find((c) =>
+      c.querySelector("[role='tabpanel']") !== null,
+    );
+    const playerChild = children.find((c) =>
+      c.querySelector(".aspect-video") !== null,
+    );
+
+    expect(imgCardChild).toBeDefined();
+    expect(carouselChild).toBeDefined();
+    expect(playerChild).toBeDefined();
+
+    const imgIndex = children.indexOf(imgCardChild!);
+    const carouselIndex = children.indexOf(carouselChild!);
+    const playerIndex = children.indexOf(playerChild!);
+
+    expect(imgIndex).toBeLessThan(carouselIndex);
+    expect(carouselIndex).toBeLessThan(playerIndex);
+  });
+
+  it("layout container has xl grid classes", () => {
+    renderProducts();
+    const tabpanel = screen.getByRole("tabpanel");
+    const layoutContainer = tabpanel.closest(".xl\\:grid-cols-2")!;
+    expect(layoutContainer).not.toBeNull();
+    const cn = layoutContainer.className;
+    expect(cn).toContain("xl:grid");
+    expect(cn).toContain("xl:grid-cols-2");
+    expect(cn).toContain(
+      "xl:grid-rows-[minmax(0,1fr)_minmax(0,1.5fr)]",
+    );
+  });
+
+  it("mobile info toggle button works", async () => {
+    const user = userEvent.setup();
+    renderProducts();
+    const toggleBtn = screen.getByLabelText(/ver información/i);
+    expect(toggleBtn).toBeInTheDocument();
+    await user.click(toggleBtn);
+    expect(screen.getByLabelText(/cerrar información/i)).toBeInTheDocument();
+  });
+
+  it("toggles the overlay with the isotipo and the MONO TIP bubble", async () => {
+    const user = userEvent.setup();
+    renderProducts();
+    expect(screen.queryByText(/MONO TIP/i)).not.toBeInTheDocument();
+    await user.click(screen.getByLabelText(/ver información/i));
+    expect(screen.getByText(/MONO TIP/i)).toBeInTheDocument();
+    expect(
+      screen.getByRole("img", { name: /isotipo el mono/i }),
+    ).toBeInTheDocument();
+    await user.click(screen.getByLabelText(/cerrar información/i));
+    expect(screen.queryByText(/MONO TIP/i)).not.toBeInTheDocument();
   });
 });

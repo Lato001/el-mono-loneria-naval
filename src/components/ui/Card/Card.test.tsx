@@ -65,22 +65,26 @@ describe("Card", () => {
     expect(pill!.className).not.toMatch(/\bw-11\b/);
   });
 
-  it("shows the + icon (IconPlus) when unselected and the × icon (IconX) when selected, at h-5 w-5 (20px)", () => {
+  it("shows the + icon (IconPlus) when unselected and the × icon (IconX) when selected", () => {
     const { rerender, container } = render(
       <Card title="Broche Test" onSelectChange={() => {}} />,
     );
     const plusIcon = container.querySelector(".tabler-icon-plus");
     expect(plusIcon).toBeInTheDocument();
-    expect(plusIcon).toHaveClass("h-5");
-    expect(plusIcon).toHaveClass("w-5");
+    expect(plusIcon).toHaveClass("text-sc-chalk");
+    expect(plusIcon).not.toHaveClass("h-5");
+    expect(plusIcon).not.toHaveClass("w-5");
     expect(container.querySelector(".tabler-icon-x")).not.toBeInTheDocument();
 
     rerender(<Card title="Broche Test" selected={true} onSelectChange={() => {}} />);
     const xIcon = container.querySelector(".tabler-icon-x");
     expect(container.querySelector(".tabler-icon-plus")).not.toBeInTheDocument();
     expect(xIcon).toBeInTheDocument();
-    expect(xIcon).toHaveClass("h-5");
-    expect(xIcon).toHaveClass("w-5");
+    expect(xIcon).toHaveClass("text-sc-chalk");
+    expect(xIcon).toHaveClass("border-r-2");
+    expect(xIcon).toHaveClass("border-pr-aquamarine");
+    expect(xIcon).not.toHaveClass("h-5");
+    expect(xIcon).not.toHaveClass("w-5");
   });
 
   it("keeps the native checkbox accessible via sr-only (for screen readers and click handling)", () => {
@@ -96,11 +100,11 @@ describe("Card", () => {
     const text = screen.getByText("Seleccionado");
     expect(text.className).toContain("opacity-0");
     expect(text.className).toContain("max-w-0");
-    expect(text.className).toContain("text-white");
+    expect(text.className).toContain("text-sc-chalk");
     expect(text.getAttribute("aria-hidden")).toBe("true");
   });
 
-  it("shows the white 'Seleccionado' text on the navy pill when selected (unfolded pill)", () => {
+  it("shows the chalk 'Seleccionado' text on the navy pill when selected (unfolded pill)", () => {
     render(<Card title="Broche Test" selected={true} onSelectChange={() => {}} />);
     const checkbox = screen.getByRole("checkbox");
     const pill = checkbox.closest("label");
@@ -108,7 +112,7 @@ describe("Card", () => {
     const text = screen.getByText("Seleccionado");
     expect(text.className).toContain("opacity-100");
     expect(text.className).toContain("max-w-30");
-    expect(text.className).toContain("text-white");
+    expect(text.className).toContain("text-sc-chalk");
   });
 
   it("keeps the aquamarine ring on the card when selected (card visual unchanged)", () => {
@@ -118,17 +122,23 @@ describe("Card", () => {
     expect(article.className).toContain("border-pr-aquamarine");
   });
 
-  it("enforces uniform mobile card height via inline style and content-driven desktop height via md:h-auto", () => {
+  it("fills its container height via h-full for equal-height rows", () => {
     render(<Card title="Broche Test" description="Some description" />);
     const article = screen.getByRole("article");
-    expect(article.style.height).toBe("351px");
-    expect(article.className).toContain("md:h-auto");
+    expect(article.className).toContain("h-full");
+    expect(article.style.height).toBe("");
+    expect(article.className).not.toContain("md:h-auto");
   });
 
-  it("truncates the title to a single line via line-clamp-1", () => {
-    render(<Card title="A very long title that should be truncated" />);
+  it("scales the title responsively via text-lg md:text-xl and renders it complete", () => {
+    render(<Card title="A long title that wraps instead of clamping" />);
     const heading = screen.getByRole("heading", { level: 3 });
-    expect(heading.className).toContain("line-clamp-1");
+    expect(heading.className).toContain("text-lg");
+    expect(heading.className).toContain("md:text-xl");
+    expect(heading.className).not.toContain("line-clamp-1");
+    expect(heading).toHaveTextContent(
+      "A long title that wraps instead of clamping",
+    );
   });
 
   it("truncates the description to two lines via line-clamp-2", () => {

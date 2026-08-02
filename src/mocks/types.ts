@@ -46,8 +46,8 @@ export interface FooterNav {
 }
 
 // ─── Hero ────────────────────────────────────────────────────────────────
-export interface HeroImage {
-  /** Image key — resolved by the consuming page via a Record<imageKey, string> map. */
+export interface HeroVideo {
+  /** Public video URL (static assets under `public/`). */
   src: string;
   alt: string;
 }
@@ -59,7 +59,7 @@ export interface HeroData {
   description: string;
   primaryCta: string;
   secondaryCta: string;
-  images: HeroImage[];
+  videos: HeroVideo[];
 }
 
 // ─── Sections ────────────────────────────────────────────────────────────
@@ -200,6 +200,7 @@ export interface UICopy {
   prevLabel: string;
   nextLabel: string;
   goToProductLabel: string;
+  goToVideoLabel: string;
   categoriesLabel: string;
   contactWhatsAppLabel: string;
   selectedCountLabel: string;
