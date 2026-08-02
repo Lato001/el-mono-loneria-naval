@@ -25,12 +25,12 @@ describe("WhatsappButton", () => {
     expect(link.className).toContain("z-50");
   });
 
-  it("has WhatsApp green background, rounded-full shape, and white icon color", () => {
+  it("has chalk background, rounded-full shape, and green icon color", () => {
     render(<WhatsappButton />);
     const link = screen.getByRole("link", { name: /whatsapp/i });
-    expect(link.className).toContain("bg-green-500");
+    expect(link.className).toContain("bg-sc-chalk");
     expect(link.className).toContain("rounded-full");
-    expect(link.className).toContain("text-white");
+    expect(link.className).toContain("text-green-600");
   });
 
   it("has hover and focus interaction styles", () => {

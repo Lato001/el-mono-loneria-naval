@@ -7,7 +7,6 @@ export interface SectionTabsProps {
   categories: Tab[];
   activeId?: string;
   onSelect?: (id: string) => void;
-  topOffset?: string | number;
   ariaLabel?: string;
   selectedCounts?: Record<string, number>;
 }

@@ -32,7 +32,6 @@ describe("SectionHero", () => {
   it("calls scrollIntoView on CTA click", async () => {
     const user = userEvent.setup();
 
-    // Create a target element
     const target = document.createElement("div");
     target.id = "tabs";
     target.scrollIntoView = vi.fn();
@@ -51,5 +50,27 @@ describe("SectionHero", () => {
   it("does not render the CTA button when ctaLabel is omitted", () => {
     render(<SectionHero title="Nuestros productos" description="Sin CTA" />);
     expect(screen.queryByRole("button")).not.toBeInTheDocument();
+  });
+
+  it("renders background as a separate layer and content at full opacity", () => {
+    const { container } = render(
+      <SectionHero title="Catálogo" description="Texto completo" img="/test-bg.svg" />,
+    );
+    const section = container.querySelector("section")!;
+    expect(section.style.opacity).toBe("");
+    const bgLayer = section.querySelector<HTMLElement>("[data-testid='hero-bg']");
+    expect(bgLayer).not.toBeNull();
+    const contentWrapper = section.querySelector<HTMLElement>("[data-testid='hero-content']");
+    expect(contentWrapper).not.toBeNull();
+    expect(screen.getByRole("heading")).toHaveTextContent("Catálogo");
+    expect(screen.getByText("Texto completo")).toBeInTheDocument();
+  });
+
+  it("uses default fallback background when no img prop is given", () => {
+    const { container } = render(<SectionHero title="Test" />);
+    const bgLayer = container.querySelector<HTMLElement>("[data-testid='hero-bg']");
+    expect(bgLayer).not.toBeNull();
+    const contentWrapper = container.querySelector<HTMLElement>("[data-testid='hero-content']");
+    expect(contentWrapper).not.toBeNull();
   });
 });

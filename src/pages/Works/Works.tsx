@@ -11,6 +11,16 @@ import works02 from "../../assets/img/works/works-02.webp";
 import works03 from "../../assets/img/works/works-03.webp";
 import works04 from "../../assets/img/works/works-04.webp";
 import works05 from "../../assets/img/works/works-05.webp";
+import works06 from "../../assets/img/works/works-06.webp";
+import works07 from "../../assets/img/works/works-07.webp";
+import works08 from "../../assets/img/works/works-08.webp";
+import works09 from "../../assets/img/works/works-09.webp";
+import works10 from "../../assets/img/works/works-10.webp";
+import works11 from "../../assets/img/works/works-11.webp";
+import works12 from "../../assets/img/works/works-12.webp";
+import works13 from "../../assets/img/works/works-13.webp";
+import works14 from "../../assets/img/works/works-14.webp";
+
 import { SectionWrapper } from "../../components";
 
 /**
@@ -31,6 +41,15 @@ const imageMap: Record<string, string> = {
   "works-03": works03,
   "works-04": works04,
   "works-05": works05,
+  "works-06": works06,
+  "works-07": works07,
+  "works-08": works08,
+  "works-09": works09,
+  "works-10": works10,
+  "works-11": works11,
+  "works-12": works12,
+  "works-13": works13,
+  "works-14": works14,
 };
 
 export function Works() {

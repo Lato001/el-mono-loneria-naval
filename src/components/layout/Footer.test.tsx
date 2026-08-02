@@ -1,93 +1,55 @@
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { Footer } from './Footer';
+import { data } from '../../mocks/data';
 
-function renderWithRouter(ui: React.ReactElement) {
-  return render(ui, { wrapper: MemoryRouter });
+function renderFooter() {
+  return render(<Footer />, { wrapper: MemoryRouter });
 }
 
 describe('Footer', () => {
-  beforeEach(() => {
-    renderWithRouter(<Footer />);
-  });
-
-  it('renders the logo image', () => {
-    const logo = screen.getByAltText('El Mono — Lonería Naval');
-    expect(logo).toBeInTheDocument();
-    expect(logo.tagName).toBe('IMG');
-  });
-
-  it('renders 4 navigation group titles', () => {
-    const groupTitles = ['Servicios', 'Productos', 'Nosotros', 'Ayuda'];
-    for (const title of groupTitles) {
-      expect(screen.getByText(title)).toBeInTheDocument();
+  it('renders the two brand logo images', () => {
+    renderFooter();
+    const logos = screen.getAllByAltText('El Mono — Lonería Naval');
+    expect(logos).toHaveLength(2);
+    for (const logo of logos) {
+      expect(logo.tagName).toBe('IMG');
     }
   });
 
-  it('renders placeholder sub-links in each nav group', () => {
-    const expectedLinks = [
-      'Lonas a Medida',
-      'Capotas para Embarcaciones',
-      'Cubreautos y Fundas',
-      'Catálogo',
-      'Sobre el Taller',
-      'Equipo',
-      'FAQ',
-      'Contacto',
-    ];
-
-    for (const label of expectedLinks) {
-      const link = screen.getByRole('link', { name: label });
-      expect(link).toBeInTheDocument();
-      expect(link.tagName).toBe('A');
+  it('renders the main navigation links from nav.header', () => {
+    renderFooter();
+    for (const link of data.nav.header) {
+      const rendered = screen.getByRole('link', { name: link.label });
+      expect(rendered).toBeInTheDocument();
+      expect(rendered.tagName).toBe('A');
+      expect(rendered).toHaveAttribute('href', link.href);
     }
   });
 
-  it('renders nav sub-links as Link components (not raw <a> tags with full reload)', () => {
-    const lonasLink = screen.getByRole('link', { name: 'Lonas a Medida' });
-    expect(lonasLink).toHaveAttribute('href', '/trabajos');
-
-    const catalogoLink = screen.getByRole('link', { name: 'Catálogo' });
-    expect(catalogoLink).toHaveAttribute('href', '/productos');
-
-    const faqLink = screen.getByRole('link', { name: 'FAQ' });
-    expect(faqLink).toHaveAttribute('href', '/faq');
+  it('renders social and contact icon links with the expected hrefs', () => {
+    renderFooter();
+    for (const item of data.nav.footer.social) {
+      expect(document.querySelector(`a[href="${item.href}"]`)).not.toBeNull();
+    }
+    for (const item of data.nav.footer.contact) {
+      expect(document.querySelector(`a[href="${item.href}"]`)).not.toBeNull();
+    }
   });
 
-  it('renders phone contact item with tel: href', () => {
-    const phoneLink = screen.getByText('+54 9 11 6990-6255');
-    expect(phoneLink).toBeInTheDocument();
-    expect(phoneLink.closest('a')).toHaveAttribute('href', 'tel:+54 9 11 6990-6255');
-  });
-
-  it('renders email contact item with mailto: href', () => {
-    const emailLink = screen.getByText('lonerianavalelmono@hotmail.com');
-    expect(emailLink).toBeInTheDocument();
-    expect(emailLink.closest('a')).toHaveAttribute(
-      'href',
-      'mailto:lonerianavalelmono@hotmail.com',
+  it('opens external social links in a new tab with rel=noopener', () => {
+    renderFooter();
+    const facebook = document.querySelector(
+      `a[href="${data.nav.footer.social[0].href}"]`,
     );
-  });
-
-  it('renders address contact item', () => {
-    expect(screen.getByText('Tigre, Buenos Aires, Argentina')).toBeInTheDocument();
+    expect(facebook).toHaveAttribute('target', '_blank');
+    expect(facebook).toHaveAttribute('rel', 'noopener noreferrer');
   });
 
   it('renders the copyright text', () => {
+    renderFooter();
     expect(
       screen.getByText(/2026 El Mono Lonería Naval/),
-    ).toBeInTheDocument();
-  });
-
-  it('renders social links', () => {
-    expect(
-      screen.getByRole('link', { name: 'Facebook' }),
-    ).toBeInTheDocument();
-    expect(
-      screen.getByRole('link', { name: 'Instagram' }),
-    ).toBeInTheDocument();
-    expect(
-      screen.getByRole('link', { name: 'WhatsApp' }),
     ).toBeInTheDocument();
   });
 });

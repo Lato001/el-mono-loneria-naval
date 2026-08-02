@@ -33,13 +33,13 @@ interface BrandMarqueeProps {
 export function BrandMarquee({ className }: BrandMarqueeProps) {
   return (
     <Marquee
-      className={`  rounded-r-3xl shadow-lg shadow-black/5  ${className}`}
+      className={`  rounded-r-3xl shadow-lg shadow-black/5 bg-sc-ocean-blue ${className}`}
       items={brandItems}
       speed={10}
       pauseOnHover={false}
       renderItem={(item) => (
         <div
-          className={`mx-10 h-24 w-full opacity-70 transition-all duration-300 group-hover:grayscale-0 group-hover:opacity-100 `}
+          className={`mx-10 h-24 w-full transition-all duration-300 group-hover:grayscale-0   `}
         >
           <a href={item.link}>
             <img

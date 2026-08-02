@@ -6,7 +6,6 @@ export function SectionTabs({
   categories,
   activeId,
   onSelect,
-  topOffset = "var(--header-h, 76px)",
   ariaLabel = data.ui.categoriesLabel,
   selectedCounts,
 }: SectionTabsProps) {
@@ -54,8 +53,7 @@ export function SectionTabs({
       ref={tablistRef}
       role="tablist"
       aria-label={ariaLabel}
-      className="sticky z-40 border-b border-white bg-sc-ocean-blue "
-      style={{ top: topOffset }}
+      className="border-b border-white bg-sc-ocean-blue"
       onKeyDown={handleKeyDown}
     >
       <div className="mx-auto flex max-w-295 items-center gap-3 overflow-x-auto scrollbar-hide">

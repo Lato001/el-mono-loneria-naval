@@ -1,5 +1,5 @@
-import { useMemo, useState } from "react";
-import { IconX } from "@tabler/icons-react";
+import { useLayoutEffect, useMemo, useRef, useState } from "react";
+import { IconX, IconBulb } from "@tabler/icons-react";
 import { useSessionSelection } from "../../hooks/useSessionSelection";
 import { buildWhatsAppUrl } from "./whatsappUrl";
 import {
@@ -9,12 +9,14 @@ import {
   Modal,
   Button,
   ProductCarousel,
+  FaqBubble,
 } from "../../components/ui";
 import type { Product } from "../../components/ui/ProductCarousel/ProductCarousel.types";
 import type { Tab } from "../../components/ui/SectionTabs/SectionTabs.types";
 import { data } from "../../mocks/data";
 import { ImgCard } from "../../components";
 import MediaPlayer from "../../components/ui/MediaPlayer/MediaPLayer";
+import isotipoElMono from "../../assets/logos/elmono/isotipo-elmono.png";
 
 const STORAGE_KEY = "mono:quote-cart";
 
@@ -147,6 +149,25 @@ export function Products() {
     categories[0].id,
   );
   const [showMobileInfo, setShowMobileInfo] = useState(false);
+  const [tipFits, setTipFits] = useState(true);
+  const overlayBoxRef = useRef<HTMLDivElement>(null);
+  const overlayContentRef = useRef<HTMLDivElement>(null);
+
+  // Fit-or-hide: the full category description renders at its natural size.
+  // If it would overflow the ImgCard (very narrow viewports), the overlay
+  // content is hidden instead of scrolling or clipping a bubble.
+  useLayoutEffect(() => {
+    if (!showMobileInfo) return;
+    const box = overlayBoxRef.current;
+    const content = overlayContentRef.current;
+    if (!box || !content) return;
+    const check = () => setTipFits(content.scrollHeight <= box.clientHeight);
+    check();
+    const ro = new ResizeObserver(check);
+    ro.observe(box);
+    ro.observe(content);
+    return () => ro.disconnect();
+  }, [showMobileInfo, activeCategoryId]);
 
   const activeCategory = categories.find((c) => c.id === activeCategoryId);
 
@@ -218,41 +239,62 @@ export function Products() {
 
           {activeCategory && (
             <div className="mx-auto max-w-295 px-6 py-12">
-              <div className="flex flex-col gap-8 xl:flex-row">
-                <div className="w-full shrink-0 xl:w-96">
-                  <div className="relative">
-                    <ImgCard
-                      src={categoryImagesMap[activeCategory.imageKey]}
-                      alt={activeCategory.name}
-                    />
-
-                    <button
-                      type="button"
-                      onClick={() => setShowMobileInfo((prev) => !prev)}
-                      className=" absolute top-1 right-1 z-20 flex h-10 w-10 items-center justify-center rounded-full bg-sc-sky-blue text-white shadow-lg transition-transform hover:scale-105 active:scale-95"
-                      aria-label={
-                        showMobileInfo
-                          ? "Cerrar información"
-                          : "Ver información"
-                      }
-                    >
-                      {showMobileInfo ? <IconX size={20} /> : "?"}
-                    </button>
-
-                    {showMobileInfo && (
-                      <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-4 rounded-3xl bg-pr-hero-blue/85 p-6">
-                        <h1 className="font-poppins text-center text-5xl font-bold leading-tight text-white">
-                          {activeCategory.name}
-                        </h1>
-                        <p className="font-poppins max-w-xs text-center text-md text-white/85">
-                          {activeCategory.description}
-                        </p>
-                      </div>
-                    )}
-                  </div>
+              <div className="flex flex-col gap-8 xl:h-catalog-section xl:grid xl:grid-cols-2 xl:grid-rows-[minmax(0,1fr)_minmax(0,1.5fr)]">
+                <div className="flex w-full shrink-0 justify-center xl:col-start-1 xl:row-start-1 xl:row-span-2 xl:block xl:h-full">
+                  <ImgCard
+                    src={categoryImagesMap[activeCategory.imageKey]}
+                    alt={activeCategory.name}
+                    actionButton={
+                      <button
+                        type="button"
+                        onClick={() => setShowMobileInfo((prev) => !prev)}
+                        className="flex size-12 items-center justify-center rounded-full border border-pr-aquamarine bg-sc-ocean-blue text-sc-chalk shadow-lg transition-transform hover:scale-105 active:scale-95"
+                        aria-label={
+                          showMobileInfo
+                            ? "Cerrar información"
+                            : "Ver información"
+                        }
+                      >
+                        {showMobileInfo ? (
+                          <IconX size={30} stroke={2.5} />
+                        ) : (
+                          <IconBulb size={30} stroke={2} />
+                        )}
+                      </button>
+                    }
+                    overlay={
+                      showMobileInfo ? (
+                        <div
+                          ref={overlayBoxRef}
+                          className="h-full overflow-hidden bg-black/5 p-6 backdrop-brightness-70 backdrop-blur-sm card:flex-row card:items-center card:justify-center card:p-10"
+                        >
+                          <div
+                            ref={overlayContentRef}
+                            className="flex w-full flex-col items-center gap-6 card:flex-row card:items-center card:justify-center card:gap-8 card:pl-0"
+                          ></div>
+                          <div className="absolute right-6 top-1 flex justify-center items-center gap-4 card:right-10 card:top-0 ">
+                            <div className="flex justify-center items-center  ">
+                              <img
+                                src={isotipoElMono}
+                                alt="Isotipo El Mono"
+                                className="size-16 card:size-24"
+                              />
+                              <FaqBubble
+                                question="MONO TIP"
+                                answer={activeCategory.description}
+                                align="end"
+                                showChatTail={false}
+                                questionClassName="shadow-2xl mt-26 text-center "
+                                answerClassName={`shadow-2xl text-center ${tipFits ? "" : "invisible"}`}
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      ) : undefined
+                    }
+                  />
                 </div>
-                <div>
-                  <MediaPlayer src="https://www.youtube.com/watch?v=MOekZ86yezA"></MediaPlayer>
+                <div className="xl:col-start-2 xl:row-start-2 xl:h-full xl:min-h-0">
                   <div className="flex min-w-0 flex-1 flex-col">
                     <ProductCarousel
                       id={activeCategory.id}
@@ -262,6 +304,12 @@ export function Products() {
                       onToggle={toggle}
                     />
                   </div>
+                </div>
+                <div className="xl:col-start-2 xl:row-start-1 xl:h-full">
+                  <MediaPlayer
+                    src="https://www.youtube.com/watch?v=MOekZ86yezA"
+                    className="xl:aspect-auto xl:h-full"
+                  />
                 </div>
               </div>
             </div>

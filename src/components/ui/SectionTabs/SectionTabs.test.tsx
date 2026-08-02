@@ -103,4 +103,12 @@ describe("SectionTabs", () => {
     expect(tabs[0]).toHaveAttribute("tabindex", "-1");
     expect(tabs[1]).toHaveAttribute("tabindex", "0");
   });
+
+  it("tablist is not sticky and has no inline top style", () => {
+    render(<SectionTabs categories={categories} />);
+    const tablist = screen.getByRole("tablist");
+    expect(tablist.className).not.toContain("sticky");
+    expect(tablist.className).not.toContain("z-40");
+    expect(tablist.style.top).toBe("");
+  });
 });

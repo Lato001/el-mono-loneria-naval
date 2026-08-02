@@ -1,7 +1,6 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import type { MarqueeProps } from "./Marquee.types";
 import "./Marquee.css";
-
 export function Marquee({
   items,
   renderItem,

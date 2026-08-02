@@ -13,15 +13,15 @@ describe('Home page', () => {
   });
 
   it('renders the Hero section', () => {
-    // Hero default primaryCta is "Solicitar presupuesto"
+    // Hero primary CTA comes from data.home.hero.primaryCta
     expect(
-      screen.getByRole('link', { name: /solicitar presupuesto/i }),
+      screen.getByRole('link', { name: /^ver productos$/i }),
     ).toBeInTheDocument();
   });
 
   it('renders the Hero secondary CTA', () => {
     expect(
-      screen.getByRole('link', { name: /^ver productos$/i }),
+      screen.getByRole('link', { name: /^ver trabajos$/i }),
     ).toBeInTheDocument();
   });
 
@@ -39,9 +39,9 @@ describe('Home page', () => {
     expect(screen.getByText('¿Qué ofrecemos?')).toBeInTheDocument();
     expect(screen.getByText('Encontrá lo que buscas')).toBeInTheDocument();
 
-    // ImgCards: "Productos" and "Servicios" titles
+    // ImgCards: "Productos" and "Trabajos" titles
     expect(screen.getByText('Productos')).toBeInTheDocument();
-    expect(screen.getByText('Servicios')).toBeInTheDocument();
+    expect(screen.getByText('Trabajos')).toBeInTheDocument();
   });
 
   it('renders the reviews section with 3 ReviewCards', () => {

@@ -12,7 +12,7 @@ const variantClasses: Record<NonNullable<ButtonProps["variant"]>, string> = {
     "text-white hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50",
   hero: "bg-pr-hero-blue text-white hover:bg-pr-hero-blue/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pr-aquamarine",
   danger:
-    "bg-red-500 text-white hover:bg-red-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-300",
+    "bg-pr-aquamarine text-sc-ocean-blue focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-300",
 };
 
 const sizeClasses: Record<NonNullable<ButtonProps["size"]>, string> = {
