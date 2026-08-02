@@ -27,11 +27,6 @@ const heroImageMap: Record<string, string> = Object.fromEntries(
   ]),
 );
 
-const heroImages = data.home.hero.images.map((img) => ({
-  src: heroImageMap[img.src],
-  alt: img.alt,
-}));
-
 const splitCardsImageMap: Record<string, string> = heroImageMap;
 
 const homeMasonryItems: MasonryItem[] = data.home.masonryItems.map((item) => ({
@@ -49,7 +44,7 @@ export function Home() {
         description={data.home.hero.description}
         primaryCta={data.home.hero.primaryCta}
         secondaryCta={data.home.hero.secondaryCta}
-        images={heroImages}
+        videos={data.home.hero.videos}
       />
       <SectionWrapper
         theme="light"

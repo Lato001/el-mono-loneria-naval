@@ -1,6 +1,6 @@
 import bgOlas from "../../assets/backgrounds/formas-olas-sec.svg";
 import { PATHS } from "../../routes/routes";
-import { BrandMarquee, ImgCard } from "../ui";
+import { BrandMarquee, VideoCarousel } from "../ui";
 import { LinkButton } from "../ui/Button/";
 
 interface HeroProps {
@@ -10,7 +10,7 @@ interface HeroProps {
   description?: string;
   primaryCta: string;
   secondaryCta: string;
-  images?: { src: string; alt: string }[];
+  videos?: { src: string; alt: string }[];
 }
 
 export function Hero({
@@ -20,7 +20,7 @@ export function Hero({
   description,
   primaryCta,
   secondaryCta,
-  images,
+  videos,
 }: HeroProps) {
   return (
     <>
@@ -67,7 +67,10 @@ export function Hero({
               />
             </div>
           </div>
-          <ImgCard className="max-lg:hidden" images={images} interval={4000} />
+          <VideoCarousel videos={videos ?? []} className="max-lg:hidden" />
+        </div>
+        <div className="relative z-10 mt-11.5">
+          <BrandMarquee />
         </div>
         <div className="relative z-10 mt-11.5">
           <BrandMarquee />

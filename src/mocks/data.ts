@@ -198,6 +198,7 @@ export const data = {
     prevLabel: "Anterior",
     nextLabel: "Siguiente",
     goToProductLabel: "Ir a producto",
+    goToVideoLabel: "Ir a video",
     categoriesLabel: "Categorías de productos",
     contactWhatsAppLabel: "Contactar por WhatsApp",
     selectedCountLabel: "productos seleccionados",
@@ -294,10 +295,10 @@ export const data = {
         "Confección de lonas, cerramientos, capotas, cubreautos y fundas para motos de agua. Trabajo a medida con materiales técnicos de alta durabilidad.",
       primaryCta: "Ver Productos",
       secondaryCta: "Ver Trabajos",
-      images: [
-        { src: "services-06", alt: "Carpa" },
-        { src: "services-07", alt: "Toneau" },
-        { src: "services-08", alt: "Capota" },
+      videos: [
+        { src: "/videos/work-video-01.mp4", alt: "Trabajo de taller — confección de lona" },
+        { src: "/videos/work-video-02.mp4", alt: "Trabajo de taller — lonería naval" },
+        { src: "/videos/work-video-03.mp4", alt: "Trabajo de taller — confección de lona" },
       ],
     } satisfies HeroData,
 
