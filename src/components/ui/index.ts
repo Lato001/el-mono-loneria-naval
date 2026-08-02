@@ -14,5 +14,4 @@ export * from './RotatingCard';
 export * from './FaqBubble';
 export * from './FaqCategoryGrid';
 export * from './MapSection';
-export * from './Navbar';
 export * from './VideoCarousel';
