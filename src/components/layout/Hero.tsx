@@ -72,9 +72,6 @@ export function Hero({
         <div className="relative z-10 mt-11.5">
           <BrandMarquee />
         </div>
-        <div className="relative z-10 mt-11.5">
-          <BrandMarquee />
-        </div>
       </section>
     </>
   );
