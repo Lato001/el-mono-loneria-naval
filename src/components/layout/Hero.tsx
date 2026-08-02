@@ -26,13 +26,8 @@ export function Hero({
     <>
       <section
         id="home"
-        className="relative overflow-hidden px-8 pt-27.5 pb-20 text-white bg-linear-to-br from-sc-ocean-blue to-pr-hero-blue"
+        className="relative overflow-hidden pt-27.5 text-white bg-linear-to-br from-sc-ocean-blue to-pr-hero-blue"
       >
-        <div
-          className="absolute -top-30 -right-30 w-105 h-105 rounded-full bg-pr-aquamarine/20 pointer-events-none select-none"
-          aria-hidden="true"
-        />
-
         <div
           className="absolute inset-0 pointer-events-none select-none"
           aria-hidden="true"
@@ -43,7 +38,7 @@ export function Hero({
             opacity: 0.4,
           }}
         />
-        <div className="relative z-10 flex items-center justify-around gap-8 mx-[clamp(1rem,10vw,12.5rem)]">
+        <div className="relative z-10 flex items-center justify-around gap-8 mx-[clamp(1rem,10vw,12.5rem)] px-8">
           <div className="relative max-w-150">
             <p className="font-poppins text-xs uppercase tracking-[0.2em] text-pr-aquamarine mb-4">
               {eyebrow}
@@ -59,18 +54,25 @@ export function Hero({
             </p>
 
             <div className="flex flex-wrap gap-4 mt-8">
-              <LinkButton type="Contact" text={primaryCta}></LinkButton>
+              <LinkButton
+                type="Redirect"
+                text={primaryCta}
+                theme="light"
+                path={PATHS.PRODUCTS}
+              />
               <LinkButton
                 type="Redirect"
                 text={secondaryCta}
-                path={PATHS.PRODUCTS}
-              ></LinkButton>
+                path={PATHS.WORKS}
+              />
             </div>
           </div>
           <VideoCarousel videos={videos ?? []} className="max-lg:hidden" />
         </div>
+        <div className="relative z-10 mt-11.5">
+          <BrandMarquee />
+        </div>
       </section>
-      <BrandMarquee className="bg-linear-to-br from-pr-hero-blue to-sc-ocean-blue" />
     </>
   );
 }

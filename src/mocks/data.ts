@@ -44,10 +44,10 @@ import type {
   ReviewsSection,
   Section,
   SectionsGroup,
-  StackedCardData,
   WorksPageData,
   SplitCardData,
   UICopy,
+  MasonryItem,
 } from "./types";
 
 // ─── Canonical data ──────────────────────────────────────────────────────
@@ -175,7 +175,7 @@ export const data = {
     worksHeroDescription:
       "TODO: replace with real content — descripción general de los servicios que ofrece El Mono (lonas, capotas, cerramientos, etc.).",
     worksCategoriesLabel: "Categorías de servicios",
-    consultWhatsApp: "Consultá por Whatsapp",
+    consultWhatsApp: "Habla con nosotros",
     clearList: "Vaciar lista",
     keepBrowsing: "Seguir viendo",
     cancel: "Cancelar",
@@ -280,7 +280,7 @@ export const data = {
       ],
       tagline: "El Mono · Lonería Naval desde 2026",
       copyright:
-        "© 2026 El Mono Lonería Naval. Desarrollado por CameSites",
+        "© 2026 El Mono Lonería Naval",
       contactTitle: "Contacto",
     } satisfies FooterNav,
   },
@@ -293,8 +293,8 @@ export const data = {
       titleHighlight: "resisten cualquier intemperie",
       description:
         "Confección de lonas, cerramientos, capotas, cubreautos y fundas para motos de agua. Trabajo a medida con materiales técnicos de alta durabilidad.",
-      primaryCta: "Solicitar presupuesto",
-      secondaryCta: "Ver Productos",
+      primaryCta: "Ver Productos",
+      secondaryCta: "Ver Trabajos",
       videos: [
         { src: "/videos/work-video-01.mp4", alt: "Trabajo de taller — confección de lona" },
         { src: "/videos/work-video-02.mp4", alt: "Trabajo de taller — lonería naval" },
@@ -334,29 +334,12 @@ export const data = {
       { title: "Trabajos", imageKey: "services-04" },
     ] satisfies SplitCardData[],
 
-    stackedCards: [
-      {
-        id: "capotas",
-        title: "Capotas",
-        description:
-          "Capotas a medida para embarcaciones, confeccionadas con materiales técnicos de alta resistencia.",
-        imageKey: "services-01",
-      },
-      {
-        id: "cerramientos",
-        title: "Cerramientos",
-        description:
-          "Cerramientos marinos que protegen del sol, viento y lluvia sin sacrificar la estética.",
-        imageKey: "services-03",
-      },
-      {
-        id: "fundas",
-        title: "Fundas y Cubiertos",
-        description:
-          "Fundas para motos de agua, cubreautos y protectores a medida con materiales de larga duración.",
-        imageKey: "services-05",
-      },
-    ] satisfies StackedCardData[],
+    masonryItems: [
+      { id: "hm-gallery-1", img: "services-03", url: "", alt: "Cerramientos marinos", title: "Capotas", redirectUrl: "/trabajos#album" },
+      { id: "hm-gallery-2", img: "services-04", url: "", alt: "Cubreautos a medida", title: "Cubreautos", redirectUrl: "/trabajos#album" },
+      { id: "hm-gallery-3", img: "services-06", url: "", alt: "Carpa para embarcaciones", title: "Toldos", redirectUrl: "/trabajos#album" },
+      { id: "hm-gallery-4", img: "services-08", url: "", alt: "Capota de lona", title: "Tonos", redirectUrl: "/trabajos#album" },
+    ] satisfies MasonryItem[],
 
     aboutSection: {
       description:

@@ -4,6 +4,7 @@ import googleLogo from "../../../assets/logos/icons/google/google-icon.svg";
 import "./WhatsappButton.css";
 interface LinkButtonProps {
   className?: string;
+  size?: "sm" | "md";
   text: string;
   type?: "Contact" | "Redirect" | "Google";
   path?: string;
@@ -13,21 +14,29 @@ interface LinkButtonProps {
 
 export function LinkButton({
   className,
+  size = "md",
   text,
   type = "Contact",
   path = import.meta.env.VITE_WHATSAPP_URL,
+  theme,
   url,
 }: LinkButtonProps) {
+  const isSmall = size === "sm";
+
   return (
     <>
       {type === "Contact" && (
         <Link
           to={path}
-          className={`inline-flex items-center gap-3 rounded-lg  px-4 py-2.5 font-poppins font-semibold text-sc-ocean-blue shadow-lg transition-all duration-300 hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-300 cursor-pointer animate-pulse-glow bg-sc-chalk ${className}`}
+          className={`inline-flex items-center gap-3 whitespace-nowrap font-poppins font-semibold text-sc-ocean-blue shadow-lg transition-all duration-300 hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-300 cursor-pointer animate-pulse-glow bg-sc-chalk ${
+            isSmall
+              ? "rounded-full px-3 py-1.5 text-sm"
+              : "rounded-full px-4 py-2.5"
+          } ${className}`}
         >
           <IconBrandWhatsapp
             className="text-green-600"
-            size={28}
+            size={isSmall ? 20 : 28}
             aria-hidden="true"
           />
           {text}
@@ -36,7 +45,11 @@ export function LinkButton({
       {type === "Redirect" && (
         <Link
           to={path}
-          className={`inline-flex items-center gap-3 rounded-lg bg-sc-ocean-blue px-4 py-2.5 font-poppins font-semibold text-sc-chalk shadow-lg transition-all duration-300 hover:scale-105 hover:bg-sc-ocean-blue/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pr-aquamarine cursor-pointer ${className}`}
+          className={`inline-flex items-center gap-3 rounded-lg px-4 py-2.5 font-poppins font-semibold shadow-lg transition-all duration-300 hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pr-aquamarine cursor-pointer ${
+            theme === "light"
+              ? "bg-sc-chalk text-sc-ocean-blue "
+              : "bg-sc-ocean-blue text-sc-chalk hover:bg-sc-ocean-blue/80"
+          } ${className}`}
         >
           {text}
         </Link>

@@ -89,12 +89,14 @@ export interface SplitCardData {
   imageKey: string;
 }
 
-// ─── Stacked Cards (Home page) ────────────────────────────────────────────
-export interface StackedCardData {
+// ─── Masonry Items (Home page) ────────────────────────────────────────────
+export interface MasonryItem {
   id: string;
-  title: string;
-  description: string;
-  imageKey: string;
+  img: string;
+  url: string;
+  alt?: string;
+  title?: string;
+  redirectUrl?: string;
 }
 
 // ─── Brands ──────────────────────────────────────────────────────────────

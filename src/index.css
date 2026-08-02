@@ -23,15 +23,18 @@ body {
   }
 }
 
-/* KEEP IN SYNC with Header.tsx actual rendered height (~96px due to isotipo at w-24 h-auto) */
-:root { --header-h: 96px; }
-@media (min-width: 1024px) { :root { --header-h: 96px; } }
+/* KEEP IN SYNC with Navbar actual rendered height (pill --nav-h + fixed top-4) */
+:root {
+  --nav-h: clamp(2.75rem, 2vw + 2rem, 3.75rem);
+  --header-h: calc(var(--nav-h) + 1rem);
+}
 
 /*IMPORT FONTS*/
 @theme {
   --font-brown: "Brown Beige", sans-serif;
   --font-poppins: "Poppins", sans-serif;
   --font-nord: "Nord", sans-serif;
+  --breakpoint-xl2: 95rem; /* 1520px — Navbar switches to desktop format */
 }
 /*COLOR PALETTE*/
 @theme{

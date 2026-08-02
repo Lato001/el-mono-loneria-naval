@@ -9,7 +9,7 @@ export function WhatsappButton() {
       target="_blank"
       rel="noopener noreferrer"
       aria-label={data.ui.contactWhatsAppLabel}
-      className="fixed bottom-8 right-8 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-sc-ocean-blue text-green-600  shadow-lg transition-all duration-300 hover:scale-105 hover:bg-green-600 hover:text-sc-chalk focus:outline-none focus-visible:ring-2 focus-visible:ring-green-300 animate-pulse-glow cursor-pointer"
+      className="fixed bottom-8 right-8 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-sc-chalk text-green-600  shadow-lg transition-all duration-300 hover:scale-105 hover:bg-green-600 hover:text-sc-chalk focus:outline-none focus-visible:ring-2 focus-visible:ring-green-300 animate-pulse-glow cursor-pointer"
     >
       <IconBrandWhatsapp size={28} aria-hidden="true" />
     </a>
