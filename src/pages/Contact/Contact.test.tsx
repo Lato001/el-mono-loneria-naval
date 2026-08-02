@@ -40,12 +40,14 @@ describe("Contact page", () => {
     ).toBeInTheDocument();
   });
 
-  it("renders the page description", () => {
+  it("renders the WhatsApp CTA card copy", () => {
     vi.stubEnv("VITE_WHATSAPP_URL", WHATSAPP_URL);
     renderContact();
 
     expect(
-      screen.getByText(/estamos disponibles para responder tus consultas/i),
+      screen.getByText(
+        /Escribinos directamente y te respondemos a la brevedad/i,
+      ),
     ).toBeInTheDocument();
   });
 
@@ -78,20 +80,21 @@ describe("Contact page", () => {
     renderContact();
 
     const whatsappLink = screen.getByRole("link", {
-      name: /contactar por whatsapp/i,
+      name: /habl[aá] con nosotros/i,
     });
     expect(whatsappLink).toHaveAttribute("href", WHATSAPP_URL);
   });
 
-  it("renders the WhatsApp CTA that opens in a new tab", () => {
+  it("renders the WhatsApp icon inside the CTA", () => {
     vi.stubEnv("VITE_WHATSAPP_URL", WHATSAPP_URL);
     renderContact();
 
     const whatsappLink = screen.getByRole("link", {
-      name: /contactar por whatsapp/i,
+      name: /habl[aá] con nosotros/i,
     });
-    expect(whatsappLink).toHaveAttribute("target", "_blank");
-    expect(whatsappLink).toHaveAttribute("rel", "noopener noreferrer");
+    expect(
+      whatsappLink.querySelector(".tabler-icon-brand-whatsapp"),
+    ).toBeInTheDocument();
   });
 
   it("renders the map section with heading", () => {
@@ -99,7 +102,7 @@ describe("Contact page", () => {
     renderContact();
 
     const headings = screen.getAllByRole("heading", { level: 2 });
-    expect(headings.length).toBeGreaterThanOrEqual(3);
+    expect(headings.length).toBeGreaterThanOrEqual(2);
     expect(screen.getByText(/ubicacion/i)).toBeInTheDocument();
   });
 

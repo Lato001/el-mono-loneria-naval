@@ -8,6 +8,12 @@ vi.mock("../../hooks/useFadeInOnView", () => ({
   useFadeInOnView: () => ({ ref: { current: null }, visible: true }),
 }));
 
+// Mock react-player so MediaPlayer doesn't load youtube-video-element
+// (which throws unhandled rejections in jsdom).
+vi.mock("react-player", () => ({
+  default: () => <div data-testid="mock-player" />,
+}));
+
 // Set VITE_WHATSAPP_URL for tests
 beforeAll(() => {
   Object.defineProperty(import.meta, "env", {
@@ -55,15 +61,19 @@ describe("Products page", () => {
     expect(tabs).toHaveLength(2);
   });
 
-  it("renders the first category name in a FaqBubble question by default", () => {
+  it("renders the first category (Broches) as the active tab by default", () => {
     renderProducts();
     expect(
-      screen.getByRole("heading", { level: 2, name: /Broches/i }),
-    ).toBeInTheDocument();
+      screen.getByRole("tab", { name: /broches/i }),
+    ).toHaveAttribute("aria-selected", "true");
+    expect(screen.getByRole("img", { name: /broches/i })).toBeInTheDocument();
   });
 
-  it("renders the first category description in a FaqBubble answer by default", () => {
+  it("shows the category description in the info overlay", async () => {
+    const user = userEvent.setup();
     renderProducts();
+
+    await user.click(screen.getByLabelText(/ver información/i));
     expect(
       screen.getByText(/Broches de presión profesionales/i),
     ).toBeInTheDocument();
@@ -76,23 +86,26 @@ describe("Products page", () => {
     expect(images.length).toBeGreaterThan(0);
   });
 
-  it("switching tab updates title, description, and carousel", async () => {
+  it("switching tab updates the active category, carousel, and overlay description", async () => {
     const user = userEvent.setup();
     renderProducts();
 
     // Default: Broches
     expect(
-      screen.getByRole("heading", { level: 2, name: /Broches/i }),
-    ).toBeInTheDocument();
+      screen.getByRole("tab", { name: /broches/i }),
+    ).toHaveAttribute("aria-selected", "true");
 
     // Click Caballetes tab
     await user.click(screen.getByRole("tab", { name: /Caballetes/i }));
 
-    // Title switches
+    // Tab switches and the carousel shows the new category products
     expect(
-      screen.getByRole("heading", { level: 2, name: /Caballetes/i }),
-    ).toBeInTheDocument();
-    // Description switches
+      screen.getByRole("tab", { name: /Caballetes/i }),
+    ).toHaveAttribute("aria-selected", "true");
+    expect(screen.getByText("Caballete Caño Inox")).toBeInTheDocument();
+
+    // Overlay description switches too
+    await user.click(screen.getByLabelText(/ver información/i));
     expect(
       screen.getByText(/Caballetes de acero inoxidable/i),
     ).toBeInTheDocument();
@@ -173,7 +186,7 @@ describe("Products page", () => {
     expect(within(getActionBar()).getByText("1")).toBeInTheDocument();
   });
 
-  it("Vaciar clears all selection and closes modal", async () => {
+  it("removing the last product from the quote modal closes it", async () => {
     const user = userEvent.setup();
     renderProducts();
 
@@ -188,9 +201,9 @@ describe("Products page", () => {
     expect(screen.getByRole("dialog")).toBeInTheDocument();
 
     const dialog = screen.getByRole("dialog");
-    await user.click(within(dialog).getByRole("button", { name: /vaciar/i }));
+    await user.click(within(dialog).getByLabelText(/quitar/i));
 
-    // Modal auto-closes because selection is now empty
+    // Quote modal auto-closes because the selection is now empty
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
     // Presupuestar is disabled again (count = 0)
     expect(
@@ -212,8 +225,10 @@ describe("Products page", () => {
       }),
     );
 
-    const whatsappLink = screen.getByText("Consultar por WhatsApp");
-    expect(whatsappLink.closest("a")).toHaveAttribute(
+    const whatsappLink = screen.getByRole("link", {
+      name: /habla con nosotros/i,
+    });
+    expect(whatsappLink).toHaveAttribute(
       "href",
       expect.stringContaining("Broche%20Casco%20Bacan"),
     );

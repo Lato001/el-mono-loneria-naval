@@ -31,7 +31,7 @@ describe("Works page", () => {
   it("renders the SectionWrapper with the correct eyebrow and title", () => {
     renderWorks();
     expect(screen.getByText("Album de fotos")).toBeInTheDocument();
-    expect(screen.getByRole("heading", { level: 2, name: "Nuestros Trabajos" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { level: 1, name: "Nuestros Trabajos" })).toBeInTheDocument();
   });
 
   it("passes all album images to the Masonry component", () => {
