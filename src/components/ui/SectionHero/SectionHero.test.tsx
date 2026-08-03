@@ -60,6 +60,9 @@ describe("SectionHero", () => {
     expect(section.style.opacity).toBe("");
     const bgLayer = section.querySelector<HTMLElement>("[data-testid='hero-bg']");
     expect(bgLayer).not.toBeNull();
+    expect(bgLayer?.getAttribute("src")).toContain("/test-bg.svg");
+    expect(bgLayer?.getAttribute("aria-hidden")).toBe("true");
+    expect(bgLayer?.className).toContain("object-cover");
     const contentWrapper = section.querySelector<HTMLElement>("[data-testid='hero-content']");
     expect(contentWrapper).not.toBeNull();
     expect(screen.getByRole("heading")).toHaveTextContent("Catálogo");
@@ -70,6 +73,7 @@ describe("SectionHero", () => {
     const { container } = render(<SectionHero title="Test" />);
     const bgLayer = container.querySelector<HTMLElement>("[data-testid='hero-bg']");
     expect(bgLayer).not.toBeNull();
+    expect(bgLayer?.getAttribute("src")).toContain("formas-acuarela-01.jpg");
     const contentWrapper = container.querySelector<HTMLElement>("[data-testid='hero-content']");
     expect(contentWrapper).not.toBeNull();
   });
