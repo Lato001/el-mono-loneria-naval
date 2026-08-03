@@ -36,13 +36,13 @@ export function SectionHero({
       />
       <div
         data-testid="hero-content"
-        className="relative z-10 mx-auto max-w-295 px-6"
+        className="relative z-10 mx-auto max-w-295 px-6  "
       >
-        <h1 className="font-poppins mb-6 font-bold uppercase text-[clamp(1.8rem,3.5vw,2.8rem)] text-sc-ocean-blue">
+        <h1 className="font-poppins mb-6 font-bold uppercase text-[clamp(1.8rem,3.5vw,2.8rem)] text-sc-chalk ">
           {title}
         </h1>
         {description && (
-          <p className="font-poppins mb-8 max-w-2xl text-base leading-relaxed text-sc-ocean-blue">
+          <p className="font-poppins mb-8 max-w-2xl text-base leading-relaxed text-sc-chalk  ">
             {description}
           </p>
         )}

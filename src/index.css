@@ -1,6 +1,7 @@
 @import "tailwindcss";
 @import "maplibre-gl/dist/maplibre-gl.css" layer(base);
 @import "./fonts.css";
+@tailwind utilities;
 
 /* Prevent page-level horizontal scroll.
    overflow-x: clip on html avoids creating a scroll container (unlike hidden).
