@@ -246,7 +246,7 @@ describe("Products page", () => {
     );
 
     const whatsappLink = screen.getByRole("link", {
-      name: /habla con nosotros/i,
+      name: /cotizá tus productos/i,
     });
     expect(whatsappLink).toHaveAttribute(
       "href",

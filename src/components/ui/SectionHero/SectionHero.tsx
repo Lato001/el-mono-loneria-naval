@@ -19,13 +19,13 @@ export function SectionHero({
   const bgImage = img ?? defaultImg;
 
   return (
-    <section className=" relative overflow-hidden bg-sc-chalk py-20 xl:pt-30  md:py-20 ">
+    <section className=" relative overflow-hidden  py-20 xl:pt-30  md:py-20 ">
       <img
         data-testid="hero-bg"
         src={bgImage}
         alt=""
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 m-auto h-full w-full object-cover"
+        className="pointer-events-none absolute inset-0 m-auto h-full w-full object-cover brightness-50"
       />
       <img
         data-testid="hero-logo"

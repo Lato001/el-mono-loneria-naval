@@ -110,15 +110,15 @@ function CotizacionModalContent({
           {products.map((p) => (
             <li
               key={p.id}
-              className="flex items-center justify-between gap-3 rounded-md border border-sc-ocean-blue/15 px-3 py-2"
+              className="flex items-center justify-between gap-3 rounded-md border-2 border-pr-aquamarine px-3 py-2"
             >
               <span className="flex min-w-0 items-center gap-3">
                 <img
                   src={p.imageSrc}
                   alt={p.title}
-                  className="size-10 shrink-0 rounded object-cover"
+                  className="size-14 shrink-0 rounded object-cover"
                 />
-                <span className="truncate text-sm text-sc-ocean-blue">
+                <span className="truncate text-base font-poppins font-semibold text-sc-ocean-blue">
                   {p.title}
                 </span>
               </span>
@@ -126,9 +126,9 @@ function CotizacionModalContent({
                 type="button"
                 onClick={() => onRemove(p.id)}
                 aria-label={`Quitar ${p.title}`}
-                className="rounded-full p-1 text-sc-ocean-blue/60 transition-colors hover:bg-sc-chalk hover:text-sc-ocean-blue focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pr-aquamarine"
+                className="rounded-full p-1 text-sc-chalk bg-sc-ocean-blue transition-colors hover:bg-sc-chalk hover:text-sc-ocean-blue  hover:ring-2 hover:cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pr-aquamarine"
               >
-                <IconX className="h-4 w-4" />
+                <IconX className="h-5 w-5" stroke={3} />
               </button>
             </li>
           ))}
@@ -147,7 +147,7 @@ function CotizacionModalContent({
           href={whatsappHref}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center justify-center gap-2 rounded-md bg-pr-hero-blue px-5 py-2.5 text-base font-medium text-white transition-colors hover:bg-pr-hero-blue/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pr-aquamarine"
+          className="inline-flex items-center justify-center gap-2 rounded-md bg-sc-ocean-blue px-5 py-2.5 text-base font-medium text-white transition-colors hover:bg-pr-hero-blue/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pr-aquamarine"
         >
           {data.ui.consultWhatsApp}
         </a>

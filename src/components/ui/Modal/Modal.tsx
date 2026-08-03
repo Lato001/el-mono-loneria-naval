@@ -22,7 +22,7 @@ export function Modal({
 
   const positionClasses =
     variant === "sheet"
-      ? `inset-x-0 bottom-0 max-h-[85vh] rounded-t-2xl data-[state=open]:animate-modalSheetIn md:left-1/2 md:top-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:rounded-2xl md-data-state-open:animate-fadeIn ${size === "full" ? "md:max-w-none" : sizeClasses[size]}`
+      ? `inset-x-0 bottom-0 max-md:mx-auto max-h-[85vh] rounded-t-2xl data-[state=open]:animate-modalSheetIn md:left-1/2 md:top-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:rounded-2xl md-data-state-open:animate-fadeIn ${size === "full" ? "md:max-w-none" : sizeClasses[size]}`
       : `left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-2xl data-[state=open]:animate-fadeIn ${sizeClasses[size]}`;
 
   return (
@@ -49,9 +49,9 @@ export function Modal({
             <button
               type="button"
               aria-label={data.ui.closeLabel}
-              className="absolute right-4 top-4 rounded-full p-1 bg-sc-ocean-blue text-sc-chalk transition-colors cursor-pointer hover:text-pr-aquamarine/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pr-aquamarine"
+              className="absolute right-4 top-4 rounded-full p-1 bg-sc-ocean-blue text-sc-chalk transition-colors cursor-pointer hover:text-pr-aquamarine focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pr-aquamarine"
             >
-              <IconX className="h-5 w-5" />
+              <IconX className="size-5" stroke={3} />
             </button>
           </Dialog.Close>
         </Dialog.Content>

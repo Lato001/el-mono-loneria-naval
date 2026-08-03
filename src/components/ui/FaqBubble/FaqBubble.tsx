@@ -157,7 +157,7 @@ export function FaqBubble({
             ${questionClassName}
           `}
         >
-          <h2 className="text-[clamp(1.5rem,4.6875vw,2.25rem)] font-bold leading-tight">
+          <h2 className="text-4xl font-poppins font-bold leading-tight">
             {parts[0]}
 
             {highlight && (
@@ -182,9 +182,7 @@ export function FaqBubble({
             ${answerClassName}
           `}
         >
-          <p className="text-[clamp(0.875rem,2.0833vw,1rem)] leading-relaxed font-medium">
-            {answer}
-          </p>
+          <p className="text-xl font-semibold font-poppins">{answer}</p>
         </div>
       </div>
 
