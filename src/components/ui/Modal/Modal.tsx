@@ -49,7 +49,7 @@ export function Modal({
             <button
               type="button"
               aria-label={data.ui.closeLabel}
-              className="absolute right-4 top-4 rounded-full p-1 bg-black text-white transition-colors cursor-pointer hover:text-pr-aquamarine/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pr-aquamarine"
+              className="absolute right-4 top-4 rounded-full p-1 bg-sc-ocean-blue text-sc-chalk transition-colors cursor-pointer hover:text-pr-aquamarine/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pr-aquamarine"
             >
               <IconX className="h-5 w-5" />
             </button>

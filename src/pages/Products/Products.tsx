@@ -112,7 +112,16 @@ function CotizacionModalContent({
               key={p.id}
               className="flex items-center justify-between gap-3 rounded-md border border-sc-ocean-blue/15 px-3 py-2"
             >
-              <span className="text-sm text-sc-ocean-blue">{p.title}</span>
+              <span className="flex min-w-0 items-center gap-3">
+                <img
+                  src={p.imageSrc}
+                  alt={p.title}
+                  className="size-10 shrink-0 rounded object-cover"
+                />
+                <span className="truncate text-sm text-sc-ocean-blue">
+                  {p.title}
+                </span>
+              </span>
               <button
                 type="button"
                 onClick={() => onRemove(p.id)}
@@ -261,7 +270,7 @@ export function Products() {
                       <button
                         type="button"
                         onClick={() => setShowMobileInfo((prev) => !prev)}
-                        className="flex size-12 items-center justify-center rounded-full border border-pr-aquamarine bg-sc-ocean-blue text-sc-chalk shadow-lg transition-transform hover:scale-105 active:scale-95"
+                        className="flex size-12 items-center justify-center rounded-full bg-sc-sky-blue text-sc-chalk shadow-lg transition-transform hover:scale-105 active:scale-95"
                         aria-label={
                           showMobileInfo
                             ? "Cerrar información"
@@ -326,11 +335,11 @@ export function Products() {
                       type="button"
                       aria-label={data.ui.prevLabel}
                       onClick={prev}
-                      className="group absolute left-10 top-1/2 z-10 hidden -translate-y-1/2 rounded-full bg-pr-aquamarine p-3 shadow-md backdrop-blur-sm transition-colors hover:bg-sc-ocean-blue  focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pr-aquamarine xl:block"
+                      className="group absolute left-10 top-1/2 z-10 hidden -translate-y-1/2 rounded-full bg-sc-ocean-blue p-3 shadow-md backdrop-blur-sm transition-colors hover:bg-pr-aquamarine/60  focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pr-aquamarine xl:block"
                     >
                       <IconChevronLeft
                         stroke={4}
-                        className="h-5 w-5 text-sc-ocean-blue transition-colors group-hover:text-sc-chalk"
+                        className="h-5 w-5 text-sc-chalk transition-colors group-hover:text-sc-ocean-blue"
                       />
                     </button>
                     <div className="xl:mx-auto  xl:h-full xl:w-150 xl:max-w-full">
@@ -347,11 +356,11 @@ export function Products() {
                       type="button"
                       aria-label={data.ui.nextLabel}
                       onClick={next}
-                      className="group absolute right-8 top-1/2 z-10 hidden -translate-y-1/2 rounded-full bg-pr-aquamarine p-3 shadow-md backdrop-blur-sm transition-colors hover:bg-sc-ocean-blue  focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pr-aquamarine xl:block"
+                      className="group absolute right-8 top-1/2 z-10 hidden -translate-y-1/2 rounded-full bg-sc-ocean-blue p-3 shadow-md backdrop-blur-sm transition-colors hover:bg-pr-aquamarine/60  focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pr-aquamarine xl:block"
                     >
                       <IconChevronRight
                         stroke={4}
-                        className="h-5 w-5 text-sc-ocean-blue transition-colors group-hover:text-sc-chalk"
+                        className="h-5 w-5 text-sc-chalk transition-colors group-hover:text-sc-ocean-blue"
                       />
                     </button>
                   </div>
@@ -393,6 +402,8 @@ export function Products() {
         }}
         title={data.ui.clearModal.title}
         description={data.ui.clearModal.description}
+        variant="centered"
+        size="sm"
       >
         <div className="font-poppins mt-4 flex flex-col gap-4">
           <p className="text-sm text-sc-ocean-blue">
