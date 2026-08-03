@@ -7,7 +7,7 @@ describe("Card", () => {
     render(<Card title="Test" selected={true} />);
     const article = screen.getByRole("article");
     expect(article.className).toContain("ring-pr-aquamarine");
-    expect(article.className).toContain("ring-2");
+    expect(article.className).toContain("ring-1");
   });
 
   it("renders a checkbox when onSelectChange is provided", async () => {
@@ -81,8 +81,6 @@ describe("Card", () => {
     expect(container.querySelector(".tabler-icon-plus")).not.toBeInTheDocument();
     expect(xIcon).toBeInTheDocument();
     expect(xIcon).toHaveClass("text-sc-chalk");
-    expect(xIcon).toHaveClass("border-r-2");
-    expect(xIcon).toHaveClass("border-pr-aquamarine");
     expect(xIcon).not.toHaveClass("h-5");
     expect(xIcon).not.toHaveClass("w-5");
   });

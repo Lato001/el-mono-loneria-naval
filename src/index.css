@@ -50,12 +50,6 @@ body {
   --color-sc-sand: #EAD9C1;
 }
 
-/* Catalog section height on desktop — anchored to the ImgCard (max-w-md 448px × aspect-3/4).
-   Keeps the ImgCard / carousel / media player grid harmonious without card overflow. */
-@theme{
-  --height-catalog-section: 597px;
-}
-
 /* Radix Accordion animations (slide height) */
 @keyframes slideDown {
   from { height: 0; opacity: 0; }

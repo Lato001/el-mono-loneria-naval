@@ -1,6 +1,12 @@
 import { useLayoutEffect, useMemo, useRef, useState } from "react";
-import { IconX, IconBulb } from "@tabler/icons-react";
+import {
+  IconX,
+  IconBulb,
+  IconChevronLeft,
+  IconChevronRight,
+} from "@tabler/icons-react";
 import { useSessionSelection } from "../../hooks/useSessionSelection";
+import { useProductCarousel } from "../../components/ui/ProductCarousel/useProductCarousel";
 import { buildWhatsAppUrl } from "./whatsappUrl";
 import {
   SectionHero,
@@ -74,6 +80,7 @@ const categories = data.products.categories.map((cat) => ({
   name: cat.name,
   description: cat.description,
   imageKey: cat.imageKey,
+  videoUrl: cat.videoUrl,
   products: cat.products.map(toProduct),
 }));
 
@@ -143,6 +150,7 @@ function CotizacionModalContent({
 export function Products() {
   const { selected, isSelected, toggle, remove, clear, count } =
     useSessionSelection(STORAGE_KEY);
+  const { scrollRef, prev, next } = useProductCarousel();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isClearModalOpen, setIsClearModalOpen] = useState(false);
   const [activeCategoryId, setActiveCategoryId] = useState<string>(
@@ -190,7 +198,7 @@ export function Products() {
       if (catCount > 0) counts[cat.id] = catCount;
     }
     return counts;
-  }, [categories, selected]);
+  }, [selected]);
 
   const whatsappResult = useMemo(
     () =>
@@ -229,7 +237,7 @@ export function Products() {
       />
 
       <div className="bg-sc-chalk">
-        <div id="tabs" className="pb-28">
+        <div id="tabs">
           <SectionTabs
             categories={tabs}
             activeId={activeCategoryId}
@@ -238,12 +246,17 @@ export function Products() {
           />
 
           {activeCategory && (
-            <div className="mx-auto max-w-295 px-6 py-12">
-              <div className="flex flex-col gap-8 xl:h-catalog-section xl:grid xl:grid-cols-2 xl:grid-rows-[minmax(0,1fr)_minmax(0,1.5fr)]">
-                <div className="flex w-full shrink-0 justify-center xl:col-start-1 xl:row-start-1 xl:row-span-2 xl:block xl:h-full">
+            <div className="px-6 pt-10 pb-20 xl:mx-auto xl:max-w-400">
+              <div
+                data-testid="catalog-layout"
+                className="flex flex-col gap-8 xl:grid xl:grid-cols-12 xl:gap-8 xl:h-176"
+              >
+                {/* COLUMNA IZQUIERDA (Tarjeta de Imagen) */}
+                <div className="flex shrink-0 justify-center xl:col-span-5 xl:h-full xl:items-center">
                   <ImgCard
                     src={categoryImagesMap[activeCategory.imageKey]}
                     alt={activeCategory.name}
+                    className="xl:max-w-120 xl:max-h-200"
                     actionButton={
                       <button
                         type="button"
@@ -272,8 +285,8 @@ export function Products() {
                             ref={overlayContentRef}
                             className="flex w-full flex-col items-center gap-6 card:flex-row card:items-center card:justify-center card:gap-8 card:pl-0"
                           ></div>
-                          <div className="absolute right-6 top-1 flex justify-center items-center gap-4 card:right-10 card:top-0 ">
-                            <div className="flex justify-center items-center  ">
+                          <div className="absolute right-6 top-1 flex justify-center items-center gap-4 card:right-10 card:top-0">
+                            <div className="flex justify-center items-center">
                               <img
                                 src={isotipoElMono}
                                 alt="Isotipo El Mono"
@@ -284,7 +297,7 @@ export function Products() {
                                 answer={activeCategory.description}
                                 align="end"
                                 showChatTail={false}
-                                questionClassName="shadow-2xl mt-26 text-center "
+                                questionClassName="shadow-2xl mt-26 text-center"
                                 answerClassName={`shadow-2xl text-center ${tipFits ? "" : "invisible"}`}
                               />
                             </div>
@@ -294,22 +307,54 @@ export function Products() {
                     }
                   />
                 </div>
-                <div className="xl:col-start-2 xl:row-start-2 xl:h-full xl:min-h-0">
-                  <div className="flex min-w-0 flex-1 flex-col">
-                    <ProductCarousel
-                      id={activeCategory.id}
-                      items={activeCategory.products}
-                      ariaLabel={activeCategory.name}
-                      isSelected={isSelected}
-                      onToggle={toggle}
-                    />
+
+                {/* COLUMNA DERECHA (Video + Productos) */}
+                <div className="flex w-full min-w-0 flex-col-reverse gap-6 xl:h-full xl:flex-col xl:col-span-7 xl:gap-8">
+                  {/* Video: 16:9 centrado en la mitad superior */}
+                  <div className="w-full min-w-0 xl:flex xl:flex-1 xl:min-h-0 xl:items-center xl:justify-center">
+                    <div className="w-full overflow-hidden rounded-2xl aspect-video xl:h-full xl:w-auto xl:max-w-full xl:mt-16">
+                      <MediaPlayer
+                        key={activeCategory.id}
+                        src={activeCategory.videoUrl}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
                   </div>
-                </div>
-                <div className="xl:col-start-2 xl:row-start-1 xl:h-full">
-                  <MediaPlayer
-                    src="https://www.youtube.com/watch?v=MOekZ86yezA"
-                    className="xl:aspect-auto xl:h-full"
-                  />
+                  {/* Carousel: mitad inferior */}
+                  <div className="relative flex w-full min-w-0 flex-1 flex-col xl:min-h-0">
+                    <button
+                      type="button"
+                      aria-label={data.ui.prevLabel}
+                      onClick={prev}
+                      className="group absolute left-10 top-1/2 z-10 hidden -translate-y-1/2 rounded-full bg-pr-aquamarine p-3 shadow-md backdrop-blur-sm transition-colors hover:bg-sc-ocean-blue  focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pr-aquamarine xl:block"
+                    >
+                      <IconChevronLeft
+                        stroke={4}
+                        className="h-5 w-5 text-sc-ocean-blue transition-colors group-hover:text-sc-chalk"
+                      />
+                    </button>
+                    <div className="xl:mx-auto  xl:h-full xl:w-150 xl:max-w-full">
+                      <ProductCarousel
+                        id={activeCategory.id}
+                        items={activeCategory.products}
+                        ariaLabel={activeCategory.name}
+                        isSelected={isSelected}
+                        onToggle={toggle}
+                        scrollRef={scrollRef}
+                      />
+                    </div>
+                    <button
+                      type="button"
+                      aria-label={data.ui.nextLabel}
+                      onClick={next}
+                      className="group absolute right-8 top-1/2 z-10 hidden -translate-y-1/2 rounded-full bg-pr-aquamarine p-3 shadow-md backdrop-blur-sm transition-colors hover:bg-sc-ocean-blue  focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pr-aquamarine xl:block"
+                    >
+                      <IconChevronRight
+                        stroke={4}
+                        className="h-5 w-5 text-sc-ocean-blue transition-colors group-hover:text-sc-chalk"
+                      />
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>

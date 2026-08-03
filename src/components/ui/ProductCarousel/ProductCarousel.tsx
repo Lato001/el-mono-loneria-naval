@@ -1,8 +1,6 @@
-import { IconChevronLeft, IconChevronRight } from "@tabler/icons-react";
+import { useRef } from "react";
 import { Card } from "../Card";
 import { useFadeInOnView } from "../../../hooks/useFadeInOnView";
-import { useProductCarousel } from "./useProductCarousel";
-import { data } from "../../../mocks/data";
 import type { ProductCarouselProps } from "./ProductCarousel.types";
 
 function FadeInCard({ children }: { children: React.ReactNode }) {
@@ -22,31 +20,34 @@ export function ProductCarousel({
   id,
   isSelected,
   onToggle,
+  scrollRef,
 }: ProductCarouselProps) {
-  const { scrollRef, prev, next } = useProductCarousel();
+  const internalRef = useRef<HTMLDivElement>(null);
+  const ref = scrollRef ?? internalRef;
 
   return (
     <section
       id={id}
       role="tabpanel"
       aria-labelledby={`tab-${id}`}
-      className="relative min-w-0 py-4 md:py-8"
+      className="flex h-full min-w-0 flex-col py-4 md:py-8"
       style={{ scrollMarginTop: "var(--header-h, 76px)" }}
     >
       <div
-        ref={scrollRef}
-        className="flex gap-4 overflow-x-auto scroll-smooth snap-x snap-mandatory px-6 pb-4 scrollbar-hide"
+        ref={ref}
+        className="flex min-h-0 flex-1 gap-4 overflow-x-auto scroll-smooth snap-x snap-mandatory px-6 pb-4 scrollbar-hide"
         style={{ scrollbarWidth: "none" }}
       >
         {items.map((product) => (
           <div
             key={product.id}
-            className="h-full w-[calc(80%-16px)] shrink-0 snap-start md:w-[calc(50%-8px)] lg:w-[calc(33.333%-11px)]"
+            className="h-full w-[calc(80%-16px)] shrink-0 snap-start md:w-[calc(50%-8px)] lg:w-[calc(33.333%-11px)] xl:w-[calc(50%-8px)]"
           >
             <FadeInCard>
               <Card
                 imageSrc={product.imageSrc}
                 title={product.title}
+                imageClassName="xl:h-1/2"
                 selected={isSelected?.(product.id)}
                 onSelectChange={() => onToggle?.(product.id)}
               />
@@ -54,24 +55,6 @@ export function ProductCarousel({
           </div>
         ))}
       </div>
-
-      {/* Prev/Next buttons */}
-      <button
-        type="button"
-        aria-label={data.ui.prevLabel}
-        onClick={prev}
-        className="absolute left-2 top-1/2 -translate-y-1/2 z-10 rounded-full bg-white/80 p-3 shadow-md backdrop-blur-sm transition-colors hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pr-aquamarine"
-      >
-        <IconChevronLeft className="h-5 w-5 text-sc-ocean-blue" />
-      </button>
-      <button
-        type="button"
-        aria-label={data.ui.nextLabel}
-        onClick={next}
-        className="absolute right-2 top-1/2 -translate-y-1/2 z-10 rounded-full bg-white/80 p-3 shadow-md backdrop-blur-sm transition-colors hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pr-aquamarine"
-      >
-        <IconChevronRight className="h-5 w-5 text-sc-ocean-blue" />
-      </button>
     </section>
   );
 }

@@ -53,7 +53,7 @@ export function SectionTabs({
       ref={tablistRef}
       role="tablist"
       aria-label={ariaLabel}
-      className="border-b border-white bg-sc-ocean-blue"
+      className="sticky top-0 z-40 border-b border-white bg-sc-ocean-blue xl:static"
       onKeyDown={handleKeyDown}
     >
       <div className="mx-auto flex max-w-295 items-center gap-3 overflow-x-auto scrollbar-hide">
