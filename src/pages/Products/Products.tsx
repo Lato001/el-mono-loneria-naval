@@ -270,7 +270,7 @@ export function Products() {
                       <button
                         type="button"
                         onClick={() => setShowMobileInfo((prev) => !prev)}
-                        className="flex size-12 items-center justify-center rounded-full bg-sc-sky-blue text-sc-chalk shadow-lg transition-transform hover:scale-105 active:scale-95"
+                        className="flex size-12 items-center justify-center rounded-full bg-sc-sky-blue text-sc-chalk shadow-lg transition-transform hover:scale-105 active:scale-95 hover:cursor-pointer"
                         aria-label={
                           showMobileInfo
                             ? "Cerrar información"
@@ -335,7 +335,7 @@ export function Products() {
                       type="button"
                       aria-label={data.ui.prevLabel}
                       onClick={prev}
-                      className="group absolute left-10 top-1/2 z-10 hidden -translate-y-1/2 rounded-full bg-sc-ocean-blue p-3 shadow-md backdrop-blur-sm transition-colors hover:bg-pr-aquamarine/60  focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pr-aquamarine xl:block"
+                      className="group absolute left-10 top-1/2 z-10 hidden -translate-y-1/2 rounded-full bg-sc-ocean-blue p-3 shadow-md backdrop-blur-sm transition-colors hover:bg-pr-aquamarine/60  focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pr-aquamarine xl:block hover:cursor-pointer"
                     >
                       <IconChevronLeft
                         stroke={4}
@@ -356,7 +356,7 @@ export function Products() {
                       type="button"
                       aria-label={data.ui.nextLabel}
                       onClick={next}
-                      className="group absolute right-8 top-1/2 z-10 hidden -translate-y-1/2 rounded-full bg-sc-ocean-blue p-3 shadow-md backdrop-blur-sm transition-colors hover:bg-pr-aquamarine/60  focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pr-aquamarine xl:block"
+                      className="group absolute right-8 top-1/2 z-10 hidden -translate-y-1/2 rounded-full bg-sc-ocean-blue p-3 shadow-md backdrop-blur-sm transition-colors hover:bg-pr-aquamarine/60  focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pr-aquamarine xl:block hover:cursor-pointer"
                     >
                       <IconChevronRight
                         stroke={4}
