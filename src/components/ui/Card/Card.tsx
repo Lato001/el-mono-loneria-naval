@@ -8,6 +8,7 @@ export interface CardProps {
   badge?: string;
   imageSrc?: string;
   className?: string;
+  imageClassName?: string;
   color?: string;
   badgeClassName?: string;
   selected?: boolean;
@@ -20,6 +21,7 @@ export const Card = ({
   badge,
   imageSrc,
   className,
+  imageClassName = "",
   color = "#F4F4F4",
   badgeClassName = "bg-pr-aquamarine/80",
   selected,
@@ -31,12 +33,14 @@ export const Card = ({
 
   return (
     <article
-      className={`relative flex h-full flex-col overflow-hidden rounded-xl border-2 transition-all duration-200 ease-out hover:-translate-y-1.5 hover:shadow-xl group
-      ${selected ? "border-pr-aquamarine ring-2 ring-pr-aquamarine" : "border-sc-ocean-blue/15 bg-white"}
+      className={`bg-sc-chalk relative flex h-full flex-col overflow-hidden rounded-xl border transition-all duration-200 ease-out hover:-translate-y-1.5 hover:shadow-xl group
+      ${selected ? "border-pr-aquamarine ring-1 ring-pr-aquamarine" : "border-sc-ocean-blue/15 bg-white"}
       ${className ?? ""}`}
     >
       {hasImage && (
-        <div className="relative aspect-4/3 w-full shrink-0 overflow-hidden">
+        <div
+          className={`relative aspect-4/3 w-full shrink-0 overflow-hidden ${imageClassName}`}
+        >
           {badge && (
             <span
               className={`text-black absolute top-4 left-4 z-10 rounded-full px-3 py-1 text-xs font-medium ${badgeClassName ?? "bg-sc-sand"}`}
@@ -78,10 +82,7 @@ export const Card = ({
             className="sr-only align-middle"
           />
           {selected ? (
-            <IconX
-              className="text-sc-chalk border-r-2 border-pr-aquamarine rounded-2xl   "
-              aria-hidden="true"
-            />
+            <IconX className="text-sc-chalk " aria-hidden="true" />
           ) : (
             <IconPlus className="text-sc-chalk" stroke={2} aria-hidden="true" />
           )}
@@ -99,7 +100,7 @@ export const Card = ({
       )}
 
       {hasContent && (
-        <div className="flex flex-1 flex-col justify-between p-6">
+        <div className="flex flex-1 flex-col justify-start p-6">
           {title && (
             <h3 className="mb-2 font-poppins font-bold text-sc-ocean-blue text-lg md:text-xl">
               {title}

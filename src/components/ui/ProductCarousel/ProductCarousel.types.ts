@@ -1,3 +1,5 @@
+import type { RefObject } from "react";
+
 export interface Product {
   id: string;
   title: string;
@@ -11,4 +13,5 @@ export interface ProductCarouselProps {
   id: string;
   isSelected?: (id: string) => boolean;
   onToggle?: (id: string) => void;
+  scrollRef?: RefObject<HTMLDivElement | null>;
 }

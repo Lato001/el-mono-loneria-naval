@@ -24,44 +24,28 @@ describe("ProductCarousel", () => {
     expect(articles).toHaveLength(3);
   });
 
-  it("renders prev and next buttons with correct aria-labels", () => {
+  it("does not render prev/next controls (they live in the parent)", () => {
     render(
       <ProductCarousel items={mockProducts} ariaLabel="Test" id="test-section" />,
     );
 
-    expect(screen.getByLabelText("Anterior")).toBeInTheDocument();
-    expect(screen.getByLabelText("Siguiente")).toBeInTheDocument();
+    expect(screen.queryByLabelText("Anterior")).not.toBeInTheDocument();
+    expect(screen.queryByLabelText("Siguiente")).not.toBeInTheDocument();
   });
 
-  it("calls scrollBy on next button click", async () => {
-    const user = userEvent.setup();
+  it("attaches the provided scrollRef to the scroll container", () => {
+    const scrollRef = { current: null as HTMLDivElement | null };
     render(
-      <ProductCarousel items={mockProducts} ariaLabel="Test" id="test-section" />,
+      <ProductCarousel
+        items={mockProducts}
+        ariaLabel="Test"
+        id="test-section"
+        scrollRef={scrollRef}
+      />,
     );
 
-    const scrollContainer = document.querySelector(".overflow-x-auto") as HTMLElement;
-    // jsdom doesn't implement scrollBy — define it before spying
-    scrollContainer.scrollBy = vi.fn();
-
-    await user.click(screen.getByLabelText("Siguiente"));
-    expect(scrollContainer.scrollBy).toHaveBeenCalledWith(
-      expect.objectContaining({ behavior: "smooth" }),
-    );
-  });
-
-  it("calls scrollBy on prev button click", async () => {
-    const user = userEvent.setup();
-    render(
-      <ProductCarousel items={mockProducts} ariaLabel="Test" id="test-section" />,
-    );
-
-    const scrollContainer = document.querySelector(".overflow-x-auto") as HTMLElement;
-    scrollContainer.scrollBy = vi.fn();
-
-    await user.click(screen.getByLabelText("Anterior"));
-    expect(scrollContainer.scrollBy).toHaveBeenCalledWith(
-      expect.objectContaining({ behavior: "smooth" }),
-    );
+    const scrollContainer = document.querySelector(".overflow-x-auto");
+    expect(scrollContainer).toBe(scrollRef.current);
   });
 
   it("renders section with correct role and aria-labelledby", () => {
@@ -99,15 +83,6 @@ describe("ProductCarousel", () => {
     // Clicking p1's checkbox should call onToggle with "p1"
     await user.click(checkboxes[0]);
     expect(onToggle).toHaveBeenCalledWith("p1");
-  });
-
-  it("renders prev/next buttons with 44px touch target (p-3)", () => {
-    render(
-      <ProductCarousel items={mockProducts} ariaLabel="Test" id="test-section" />,
-    );
-
-    expect(screen.getByLabelText("Anterior")).toHaveClass("p-3");
-    expect(screen.getByLabelText("Siguiente")).toHaveClass("p-3");
   });
 
   it("does not render dot indicators", () => {

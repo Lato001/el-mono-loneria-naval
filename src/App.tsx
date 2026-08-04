@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import { Footer } from "./components/layout";
 import { AboutUs, Contact, Faq, Home, Products, Works } from "./pages";
 import { PATHS } from "./routes/routes";
@@ -6,11 +6,14 @@ import { ScrollToTop } from "./components";
 import { Navbar, WhatsappButton } from "./components/ui";
 
 export default function App() {
+  const location = useLocation();
   return (
     <>
       <ScrollToTop />
       <Navbar></Navbar>
-      <WhatsappButton></WhatsappButton>
+      {location.pathname !== PATHS.PRODUCTS && (
+        <WhatsappButton></WhatsappButton>
+      )}
       <Routes>
         <Route path={PATHS.HOME} element={<Home />} />
         <Route path={PATHS.PRODUCTS} element={<Products />} />

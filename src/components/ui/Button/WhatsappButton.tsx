@@ -1,7 +1,6 @@
 import { IconBrandWhatsapp } from "@tabler/icons-react";
 import { data } from "../../../mocks/data";
 import "./WhatsappButton.css";
-
 export function WhatsappButton() {
   return (
     <a

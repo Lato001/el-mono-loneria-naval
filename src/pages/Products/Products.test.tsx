@@ -11,7 +11,9 @@ vi.mock("../../hooks/useFadeInOnView", () => ({
 // Mock react-player so MediaPlayer doesn't load youtube-video-element
 // (which throws unhandled rejections in jsdom).
 vi.mock("react-player", () => ({
-  default: () => <div data-testid="mock-player" />,
+  default: (props: { src?: string }) => (
+    <div data-testid="mock-player" data-src={props.src} />
+  ),
 }));
 
 // Set VITE_WHATSAPP_URL for tests
@@ -109,6 +111,24 @@ describe("Products page", () => {
     expect(
       screen.getByText(/Caballetes de acero inoxidable/i),
     ).toBeInTheDocument();
+  });
+
+  it("shows the selected category's video short", async () => {
+    const user = userEvent.setup();
+    renderProducts();
+
+    // Default: Broches
+    expect(screen.getByTestId("mock-player")).toHaveAttribute(
+      "data-src",
+      "https://www.youtube.com/shorts/7iIYvMahPw4",
+    );
+
+    // Switching category swaps the video src
+    await user.click(screen.getByRole("tab", { name: /Caballetes/i }));
+    expect(screen.getByTestId("mock-player")).toHaveAttribute(
+      "data-src",
+      "https://www.youtube.com/shorts/0h23LH36LJE",
+    );
   });
 
   it("renders 1 carousel section (tabpanel) for the active category", () => {
@@ -226,7 +246,7 @@ describe("Products page", () => {
     );
 
     const whatsappLink = screen.getByRole("link", {
-      name: /habla con nosotros/i,
+      name: /cotizá tus productos/i,
     });
     expect(whatsappLink).toHaveAttribute(
       "href",
@@ -353,45 +373,70 @@ describe("Products page", () => {
     ).toBeDisabled();
   });
 
-  it("DOM order is ImgCard → ProductCarousel → MediaPlayer", () => {
+  it("DOM order is ImgCard → MediaPlayer → ProductCarousel", () => {
     renderProducts();
     const tabpanel = screen.getByRole("tabpanel");
-    const layoutContainer = tabpanel.closest(".xl\\:grid-cols-2")!;
+    const layoutContainer = tabpanel.closest('[data-testid="catalog-layout"]')!;
     expect(layoutContainer).not.toBeNull();
     const children = Array.from(layoutContainer.children);
 
-    const imgCardChild = children.find((c) =>
-      c.querySelector("img") !== null && !c.querySelector(".aspect-video"),
+    const imgCardChild = children.find(
+      (c) =>
+        c.querySelector("img") !== null &&
+        !c.querySelector(".aspect-video"),
     );
-    const carouselChild = children.find((c) =>
+    const rightChild = children.find((c) =>
       c.querySelector("[role='tabpanel']") !== null,
-    );
-    const playerChild = children.find((c) =>
-      c.querySelector(".aspect-video") !== null,
     );
 
     expect(imgCardChild).toBeDefined();
-    expect(carouselChild).toBeDefined();
-    expect(playerChild).toBeDefined();
+    expect(rightChild).toBeDefined();
 
-    const imgIndex = children.indexOf(imgCardChild!);
-    const carouselIndex = children.indexOf(carouselChild!);
-    const playerIndex = children.indexOf(playerChild!);
+    expect(children.indexOf(imgCardChild!)).toBeLessThan(
+      children.indexOf(rightChild!),
+    );
 
-    expect(imgIndex).toBeLessThan(carouselIndex);
-    expect(carouselIndex).toBeLessThan(playerIndex);
+    const rightChildren = Array.from(rightChild!.children);
+    const videoIndex = rightChildren.findIndex((c) =>
+      c.querySelector(".aspect-video") !== null,
+    );
+    const carouselIndex = rightChildren.findIndex((c) =>
+      c.querySelector("[role='tabpanel']") !== null,
+    );
+
+    expect(videoIndex).toBeGreaterThanOrEqual(0);
+    expect(carouselIndex).toBeGreaterThan(videoIndex);
   });
 
   it("layout container has xl grid classes", () => {
     renderProducts();
     const tabpanel = screen.getByRole("tabpanel");
-    const layoutContainer = tabpanel.closest(".xl\\:grid-cols-2")!;
+    const layoutContainer = tabpanel.closest('[data-testid="catalog-layout"]')!;
     expect(layoutContainer).not.toBeNull();
     const cn = layoutContainer.className;
     expect(cn).toContain("xl:grid");
-    expect(cn).toContain("xl:grid-cols-2");
-    expect(cn).toContain(
-      "xl:grid-rows-[minmax(0,1fr)_minmax(0,1.5fr)]",
+    expect(cn).toContain("xl:grid-cols-12");
+  });
+
+  it("prev and next buttons scroll the carousel container", async () => {
+    const user = userEvent.setup();
+    renderProducts();
+
+    const panel = screen.getByRole("tabpanel");
+    const scrollContainer = panel.querySelector(
+      ".overflow-x-auto",
+    ) as HTMLElement;
+    expect(scrollContainer).not.toBeNull();
+    scrollContainer.scrollBy = vi.fn();
+
+    await user.click(screen.getByLabelText("Siguiente"));
+    expect(scrollContainer.scrollBy).toHaveBeenCalledWith(
+      expect.objectContaining({ behavior: "smooth" }),
+    );
+
+    await user.click(screen.getByLabelText("Anterior"));
+    expect(scrollContainer.scrollBy).toHaveBeenCalledWith(
+      expect.objectContaining({ behavior: "smooth" }),
     );
   });
 

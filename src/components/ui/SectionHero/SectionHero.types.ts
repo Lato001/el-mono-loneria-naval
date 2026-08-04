@@ -1,5 +1,5 @@
 export interface SectionHeroProps {
-  img? : string;
+  img?: string;
   title: string;
   description?: string;
   ctaLabel?: string;

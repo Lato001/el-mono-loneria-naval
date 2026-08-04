@@ -151,13 +151,13 @@ export function FaqBubble({
             w-full max-w-md
             bg-sc-ocean-blue
             text-white
-            border-10 border-sc-chalk
+            border-5 border-sc-chalk
             px-[clamp(1.25rem,4.1667vw,2rem)] py-[clamp(1rem,4.1667vw,2rem)]
             ${questionRounded}
             ${questionClassName}
           `}
         >
-          <h2 className="text-[clamp(1.5rem,4.6875vw,2.25rem)] font-bold leading-tight">
+          <h2 className="text-4xl font-poppins font-bold leading-tight">
             {parts[0]}
 
             {highlight && (
@@ -175,16 +175,14 @@ export function FaqBubble({
             w-full max-w-md
             bg-sc-sky-blue
             text-white
-            border-10 border-sc-chalk
+            border-5 border-sc-chalk
             px-[clamp(1.25rem,4.1667vw,2rem)] py-[clamp(1rem,4.1667vw,2rem)]
             ${answerRounded}
             ${answerOffset}
             ${answerClassName}
           `}
         >
-          <p className="text-[clamp(0.875rem,2.0833vw,1rem)] leading-relaxed font-medium">
-            {answer}
-          </p>
+          <p className="text-xl font-semibold font-poppins">{answer}</p>
         </div>
       </div>
 
