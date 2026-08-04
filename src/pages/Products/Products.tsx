@@ -1,6 +1,12 @@
 import { useLayoutEffect, useMemo, useRef, useState } from "react";
-import { IconX, IconBulb } from "@tabler/icons-react";
+import {
+  IconX,
+  IconBulb,
+  IconChevronLeft,
+  IconChevronRight,
+} from "@tabler/icons-react";
 import { useSessionSelection } from "../../hooks/useSessionSelection";
+import { useProductCarousel } from "../../components/ui/ProductCarousel/useProductCarousel";
 import { buildWhatsAppUrl } from "./whatsappUrl";
 import {
   SectionHero,
@@ -74,6 +80,7 @@ const categories = data.products.categories.map((cat) => ({
   name: cat.name,
   description: cat.description,
   imageKey: cat.imageKey,
+  videoUrl: cat.videoUrl,
   products: cat.products.map(toProduct),
 }));
 
@@ -103,16 +110,25 @@ function CotizacionModalContent({
           {products.map((p) => (
             <li
               key={p.id}
-              className="flex items-center justify-between gap-3 rounded-md border border-sc-ocean-blue/15 px-3 py-2"
+              className="flex items-center justify-between gap-3 rounded-md border-2 border-pr-aquamarine px-3 py-2"
             >
-              <span className="text-sm text-sc-ocean-blue">{p.title}</span>
+              <span className="flex min-w-0 items-center gap-3">
+                <img
+                  src={p.imageSrc}
+                  alt={p.title}
+                  className="size-14 shrink-0 rounded object-cover"
+                />
+                <span className="truncate text-base font-poppins font-semibold text-sc-ocean-blue">
+                  {p.title}
+                </span>
+              </span>
               <button
                 type="button"
                 onClick={() => onRemove(p.id)}
                 aria-label={`Quitar ${p.title}`}
-                className="rounded-full p-1 text-sc-ocean-blue/60 transition-colors hover:bg-sc-chalk hover:text-sc-ocean-blue focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pr-aquamarine"
+                className="rounded-full p-1 text-sc-chalk bg-sc-ocean-blue transition-colors hover:bg-sc-chalk hover:text-sc-ocean-blue  hover:ring-2 hover:cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pr-aquamarine"
               >
-                <IconX className="h-4 w-4" />
+                <IconX className="h-5 w-5" stroke={3} />
               </button>
             </li>
           ))}
@@ -131,7 +147,7 @@ function CotizacionModalContent({
           href={whatsappHref}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center justify-center gap-2 rounded-md bg-pr-hero-blue px-5 py-2.5 text-base font-medium text-white transition-colors hover:bg-pr-hero-blue/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pr-aquamarine"
+          className="inline-flex items-center justify-center gap-2 rounded-md bg-sc-ocean-blue px-5 py-2.5 text-base font-medium text-white transition-colors hover:bg-pr-hero-blue/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pr-aquamarine"
         >
           {data.ui.consultWhatsApp}
         </a>
@@ -143,6 +159,7 @@ function CotizacionModalContent({
 export function Products() {
   const { selected, isSelected, toggle, remove, clear, count } =
     useSessionSelection(STORAGE_KEY);
+  const { scrollRef, prev, next } = useProductCarousel();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isClearModalOpen, setIsClearModalOpen] = useState(false);
   const [activeCategoryId, setActiveCategoryId] = useState<string>(
@@ -190,7 +207,7 @@ export function Products() {
       if (catCount > 0) counts[cat.id] = catCount;
     }
     return counts;
-  }, [categories, selected]);
+  }, [selected]);
 
   const whatsappResult = useMemo(
     () =>
@@ -229,7 +246,7 @@ export function Products() {
       />
 
       <div className="bg-sc-chalk">
-        <div id="tabs" className="pb-28">
+        <div id="tabs">
           <SectionTabs
             categories={tabs}
             activeId={activeCategoryId}
@@ -238,17 +255,22 @@ export function Products() {
           />
 
           {activeCategory && (
-            <div className="mx-auto max-w-295 px-6 py-12">
-              <div className="flex flex-col gap-8 xl:h-catalog-section xl:grid xl:grid-cols-2 xl:grid-rows-[minmax(0,1fr)_minmax(0,1.5fr)]">
-                <div className="flex w-full shrink-0 justify-center xl:col-start-1 xl:row-start-1 xl:row-span-2 xl:block xl:h-full">
+            <div className="px-6 pt-10 pb-20 xl:mx-auto xl:max-w-400">
+              <div
+                data-testid="catalog-layout"
+                className="flex flex-col gap-8 xl:grid xl:grid-cols-12 xl:gap-8 xl:h-176"
+              >
+                {/* COLUMNA IZQUIERDA (Tarjeta de Imagen) */}
+                <div className="flex shrink-0 justify-center xl:col-span-5 xl:h-full xl:items-center">
                   <ImgCard
                     src={categoryImagesMap[activeCategory.imageKey]}
                     alt={activeCategory.name}
+                    className="xl:max-w-120 xl:max-h-200"
                     actionButton={
                       <button
                         type="button"
                         onClick={() => setShowMobileInfo((prev) => !prev)}
-                        className="flex size-12 items-center justify-center rounded-full border border-pr-aquamarine bg-sc-ocean-blue text-sc-chalk shadow-lg transition-transform hover:scale-105 active:scale-95"
+                        className="flex size-12 items-center justify-center rounded-full bg-sc-sky-blue text-sc-chalk shadow-lg transition-transform hover:scale-105 active:scale-95 hover:cursor-pointer"
                         aria-label={
                           showMobileInfo
                             ? "Cerrar información"
@@ -272,8 +294,8 @@ export function Products() {
                             ref={overlayContentRef}
                             className="flex w-full flex-col items-center gap-6 card:flex-row card:items-center card:justify-center card:gap-8 card:pl-0"
                           ></div>
-                          <div className="absolute right-6 top-1 flex justify-center items-center gap-4 card:right-10 card:top-0 ">
-                            <div className="flex justify-center items-center  ">
+                          <div className="absolute right-6 top-1 flex justify-center items-center gap-4 card:right-10 card:top-0">
+                            <div className="flex justify-center items-center">
                               <img
                                 src={isotipoElMono}
                                 alt="Isotipo El Mono"
@@ -284,7 +306,7 @@ export function Products() {
                                 answer={activeCategory.description}
                                 align="end"
                                 showChatTail={false}
-                                questionClassName="shadow-2xl mt-26 text-center "
+                                questionClassName="shadow-2xl mt-26 text-center"
                                 answerClassName={`shadow-2xl text-center ${tipFits ? "" : "invisible"}`}
                               />
                             </div>
@@ -294,22 +316,54 @@ export function Products() {
                     }
                   />
                 </div>
-                <div className="xl:col-start-2 xl:row-start-2 xl:h-full xl:min-h-0">
-                  <div className="flex min-w-0 flex-1 flex-col">
-                    <ProductCarousel
-                      id={activeCategory.id}
-                      items={activeCategory.products}
-                      ariaLabel={activeCategory.name}
-                      isSelected={isSelected}
-                      onToggle={toggle}
-                    />
+
+                {/* COLUMNA DERECHA (Video + Productos) */}
+                <div className="flex w-full min-w-0 flex-col-reverse gap-6 xl:h-full xl:flex-col xl:col-span-7 xl:gap-8">
+                  {/* Video: 16:9 centrado en la mitad superior */}
+                  <div className="w-full min-w-0 xl:flex xl:flex-1 xl:min-h-0 xl:items-center xl:justify-center">
+                    <div className="w-full overflow-hidden rounded-2xl aspect-video xl:h-full xl:w-auto xl:max-w-full xl:mt-16">
+                      <MediaPlayer
+                        key={activeCategory.id}
+                        src={activeCategory.videoUrl}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
                   </div>
-                </div>
-                <div className="xl:col-start-2 xl:row-start-1 xl:h-full">
-                  <MediaPlayer
-                    src="https://www.youtube.com/watch?v=MOekZ86yezA"
-                    className="xl:aspect-auto xl:h-full"
-                  />
+                  {/* Carousel: mitad inferior */}
+                  <div className="relative flex w-full min-w-0 flex-1 flex-col xl:min-h-0">
+                    <button
+                      type="button"
+                      aria-label={data.ui.prevLabel}
+                      onClick={prev}
+                      className="group absolute left-10 top-1/2 z-10 hidden -translate-y-1/2 rounded-full bg-sc-ocean-blue p-3 shadow-md backdrop-blur-sm transition-colors hover:bg-pr-aquamarine/60  focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pr-aquamarine xl:block hover:cursor-pointer"
+                    >
+                      <IconChevronLeft
+                        stroke={4}
+                        className="h-5 w-5 text-sc-chalk transition-colors group-hover:text-sc-ocean-blue"
+                      />
+                    </button>
+                    <div className="xl:mx-auto  xl:h-full xl:w-150 xl:max-w-full">
+                      <ProductCarousel
+                        id={activeCategory.id}
+                        items={activeCategory.products}
+                        ariaLabel={activeCategory.name}
+                        isSelected={isSelected}
+                        onToggle={toggle}
+                        scrollRef={scrollRef}
+                      />
+                    </div>
+                    <button
+                      type="button"
+                      aria-label={data.ui.nextLabel}
+                      onClick={next}
+                      className="group absolute right-8 top-1/2 z-10 hidden -translate-y-1/2 rounded-full bg-sc-ocean-blue p-3 shadow-md backdrop-blur-sm transition-colors hover:bg-pr-aquamarine/60  focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pr-aquamarine xl:block hover:cursor-pointer"
+                    >
+                      <IconChevronRight
+                        stroke={4}
+                        className="h-5 w-5 text-sc-chalk transition-colors group-hover:text-sc-ocean-blue"
+                      />
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -348,6 +402,8 @@ export function Products() {
         }}
         title={data.ui.clearModal.title}
         description={data.ui.clearModal.description}
+        variant="centered"
+        size="sm"
       >
         <div className="font-poppins mt-4 flex flex-col gap-4">
           <p className="text-sm text-sc-ocean-blue">
