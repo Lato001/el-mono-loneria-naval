@@ -48,6 +48,7 @@ export function ProductCarousel({
                 imageSrc={product.imageSrc}
                 title={product.title}
                 imageClassName="xl:h-1/2"
+                imageFit="contain"
                 selected={isSelected?.(product.id)}
                 onSelectChange={() => onToggle?.(product.id)}
               />

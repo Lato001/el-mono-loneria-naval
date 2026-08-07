@@ -362,21 +362,20 @@ export const data = {
         description:
           "Broches de presión profesionales para lonas, capotas y cubiertas náuticas. Disponibles en varios acabados y materiales para cada tipo de aplicación.",
         imageKey: "services-01",
-        videoUrl: "https://www.youtube.com/shorts/7iIYvMahPw4",
         products: [
-          { id: "b1", title: "Broche Casco Bacan", description: "Broche a presión de carcasa tipo baca, acabado negro.", imageKey: "bacan-01" },
-          { id: "b2", title: "Broche Casco Bacab", description: "Broche a presión de carcasa tipo baca, acabado blanco.", imageKey: "bacab-01" },
-          { id: "b3", title: "Broche Casco Bacp", description: "Broche a presión de carcasa tipo bacp, para uso intensivo.", imageKey: "bacp-01" },
-          { id: "b4", title: "Broche Casco Bar", description: "Broche a presión de carcasa tipo bar, para decoración naval.", imageKey: "bar-01" },
-          { id: "b5", title: "Broche Lona Hembra Bronze", description: "Broche lona hembra en bronce, para sujeción de lonas y correas.", imageKey: "hb-01" },
-          { id: "b6", title: "Broche Lona Hembra Inox", description: "Broche lona hembra en acero inoxidable, para sujeción de lonas y correas.", imageKey: "hi-01" },
-          { id: "b7", title: "Broche Lona Macho Bronze Blanco", description: "Broche lona macho en bronce blanco, para sujeción de lonas.", imageKey: "bb-01" },
-          { id: "b8", title: "Broche Lona Macho Bronze Gris", description: "Broche lona macho en bronce gris, para sujeción de lonas.", imageKey: "bg-01" },
-          { id: "b9", title: "Broche Lona Macho Bronze Negro", description: "Broche lona macho en bronce negro, para sujeción de lonas.", imageKey: "bn-01" },
-          { id: "b10", title: "Broche Lona Macho Comun Bronze", description: "Broche lona macho común en bronce, para sujeción de lonas.", imageKey: "cb-01" },
-          { id: "b11", title: "Broche Lona Macho Comun Cubeta", description: "Broche lona macho común con cubeta, para sujeción de lonas.", imageKey: "cc-01" },
-          { id: "b12", title: "Broche Lona Macho Comun Inox", description: "Broche lona macho común en acero inoxidable, para sujeción de lonas.", imageKey: "ci-broche-01" },
-          { id: "b13", title: "Broche Lona Macho Negro Cubeta", description: "Broche lona macho en negro con cubeta, para sujeción de lonas.", imageKey: "nc-01" },
+          { id: "b7", title: "Broche Lona Macho Bronce Blanco", description: "Broche lona macho en bronce blanco, para sujeción de lonas.", imageKey: "bronze-blanco" },
+          { id: "b8", title: "Broche Lona Macho Bronce Gris", description: "Broche lona macho en bronce gris, para sujeción de lonas.", imageKey: "broze-gris" },
+          { id: "b9", title: "Broche Lona Macho Bronce Negro", description: "Broche lona macho en bronce negro, para sujeción de lonas.", imageKey: "bronze-negro" },
+          { id: "b10", title: "Broche Lona Macho Común Bronce", description: "Broche lona macho común en bronce, para sujeción de lonas.", imageKey: "comun-bronze" },
+          { id: "b11", title: "Broche Lona Macho Común Con Cubeta", description: "Broche lona macho común con cubeta, para sujeción de lonas.", imageKey: "comun-con-cubeta" },
+          { id: "b12", title: "Broche Lona Macho Común Acero Inoxidable", description: "Broche lona macho común en acero inoxidable, para sujeción de lonas.", imageKey: "comun-inox" },
+          { id: "b13", title: "Broche Lona Macho Negro Con Cubeta", description: "Broche lona macho en negro con cubeta, para sujeción de lonas.", imageKey: "negro-con-cubeta" },
+          { id: "b5", title: "Broche Lona Hembra Bronce", description: "Broche lona hembra en bronce, para sujeción de lonas y correas.", imageKey: "hembra-bronze" },
+          { id: "b6", title: "Broche Lona Hembra Acero Inoxidable", description: "Broche lona hembra en acero inoxidable, para sujeción de lonas y correas.", imageKey: "hembra-inox" },
+          { id: "b1", title: "Broche Casco Atornillado Negro", description: "Broche a presión de carcasa tipo baca, acabado negro.", imageKey: "atornillado-negro" },
+          { id: "b2", title: "Broche Casco Pegado Blanco", description: "Broche a presión de carcasa tipo baca, acabado blanco.", imageKey: "pegado" },
+          { id: "b3", title: "Broche Casco Atornillado Acero Inoxidable", description: "Broche a presión de carcasa tipo bacp, para uso intensivo.", imageKey: "atornillado-inox" },
+          { id: "b4", title: "Broche Rompevientos", description: "Broche a presión de carcasa tipo bar, para decoración naval.", imageKey: "rompevientos" },
         ],
       },
       {
@@ -385,9 +384,106 @@ export const data = {
         description:
           "Caballetes de acero inoxidable diseñados para soportar las condiciones más exigentes. Resistentes a la corrosión y aptos para uso marino prolongado.",
         imageKey: "services-02",
-        videoUrl: "https://www.youtube.com/shorts/0h23LH36LJE",
         products: [
-          { id: "c1", title: "Caballete Caño Inox", description: "Caballete de caño de acero inoxidable, resistente a la corrosión y apto para intemperie.", imageKey: "ci-01" },
+          { id: "c1", title: "Caballete Tubo Acero Inoxidable", description: "Caballete de caño de acero inoxidable, resistente a la corrosión y apto para intemperie.", imageKey: "tubo-inox" },
+        ],
+      },
+      {
+        id: "capota",
+        name: "Herrajes",
+        description:
+          "Bases, codos y palos de soporte para capotas. Herrajes en acero inoxidable y terminaciones blancas y negras para anclar la estructura de tu capota a la embarcación.",
+        imageKey: "services-02",
+        products: [
+          { id: "cp1", title: "Base Blanca", description: "Base de anclaje para capota, terminación blanca.", imageKey: "base-blanca" },
+          { id: "cp2", title: "Base Acero Inoxidable Phillips", description: "Base de anclaje en acero inoxidable con tornillo Phillips.", imageKey: "base-inox-phillips" },
+          { id: "cp3", title: "Base Acero Inoxidable Plana", description: "Base de anclaje en acero inoxidable de perfil plano.", imageKey: "base-inox-plano" },
+          { id: "cp4", title: "Base Acero Inoxidable Simple", description: "Base de anclaje en acero inoxidable, modelo simple.", imageKey: "base-inox-simple" },
+          { id: "cp5", title: "Base Negra", description: "Base de anclaje para capota, terminación negra.", imageKey: "base-negro" },
+          { id: "cp6", title: "Codo Final Blanco", description: "Codo de terminación final en color blanco.", imageKey: "codo-final-blanco" },
+          { id: "cp7", title: "Codo Final Acero Inoxidable", description: "Codo de terminación final en acero inoxidable.", imageKey: "codo-final-inox" },
+          { id: "cp8", title: "Codo Final Negro", description: "Codo de terminación final en color negro.", imageKey: "codo-final-negro" },
+          { id: "cp9", title: "Codo Acero Inoxidable", description: "Codo de acero inoxidable para estructura de capota.", imageKey: "codo-inox" },
+          { id: "cp10", title: "Palo Común", description: "Palo de soporte común para capota.", imageKey: "palo-comun" },
+          { id: "cp11", title: "Palo Rebatible", description: "Palo de soporte rebatible para guardado fácil de la capota.", imageKey: "palo-rebatible" },
+        ],
+      },
+      {
+        id: "carros",
+        name: "Carros",
+        description:
+          "Carros y perros de plástico y chapa para cremalleras de lonas y capotas. En medidas estándar y terminados blanco o negro según tu estructura.",
+        imageKey: "services-01",
+        products: [
+          { id: "cr6", title: "Carros Perro N5 Blanco", description: "Perro en color blanco, medida N5.", imageKey: "perro-n5-blanco" },
+          { id: "cr7", title: "Carros Perro N5 Negro", description: "Perro en color negro, medida N5.", imageKey: "perro-n5-negro" },
+          { id: "cr1", title: "Carros Mono N8", description: "Carro mono de arrastre, medida N8.", imageKey: "mono-n8" },
+          { id: "cr2", title: "Carros Perro Chapa N10 Blanco", description: "Perro de chapeta en color blanco, medida N10.", imageKey: "perro-n10-chapa-blanco" },
+          { id: "cr3", title: "Carros Perro Chapa N10 Negro", description: "Perro de chapeta en color negro, medida N10.", imageKey: "perro-n10-chapa-negro" },
+          { id: "cr4", title: "Carros Perro Plástico N10 Blanco", description: "Perro de plástico en color blanco, medida N10.", imageKey: "perro-n10-plastico-blanco" },
+          { id: "cr5", title: "Carros Perro Plástico N10 Negro", description: "Perro de plástico en color negro, medida N10.", imageKey: "perro-n10-plastico-negro" },
+        ],
+      },
+      {
+        id: "correas",
+        name: "Correas",
+        description:
+          "Correas y tensores para fijación y ajuste de lonas, capotas y cubiertas. Con terminales inox y blanco según el acabado de tu trabajo.",
+        imageKey: "services-03",
+        products: [
+          { id: "co1", title: "Correa Blanca", description: "Correa de sujeción en color blanco.", imageKey: "correa-blanca" },
+          { id: "co5", title: "Correa Negra", description: "Correa de ajuste en color negro.", imageKey: "correa-negra" },
+          { id: "co6", title: "Tensor Correa Mosquetón", description: "Tensor de correa con mosquetón de fijación rápida.", imageKey: "tensa-correa-mosqueton" },
+          { id: "co3", title: "Correa Acero Inoxidable", description: "Correa de casco con terminación acero inoxidable.", imageKey: "correa-casco-inox" },
+          { id: "co2", title: "Correa Casco Blanco", description: "Correa de casco en color blanco.", imageKey: "correa-casco-blanca" },
+          { id: "co4", title: "Correa Casco Negro", description: "Correa de casco en color negro.", imageKey: "correa-casco-negra" },
+        ],
+      },
+      {
+        id: "hilos",
+        name: "Hilos",
+        description:
+          "Hilos de costura resistentes para alones y lonería naval, en los colores más usados. Pensados para soportar tensión, sol y salitre.",
+        imageKey: "services-04",
+        products: [
+          { id: "h1", title: "Hilo Blanco", description: "Hilo de costura alta resistencia en color blanco.", imageKey: "hilo-blanco" },
+          { id: "h3", title: "Hilo Negro", description: "Hilo de costura alta resistencia en color negro.", imageKey: "hilo-negro" },
+          { id: "h2", title: "Hilo Gris", description: "Hilo de costura alta resistencia en color gris.", imageKey: "hilo-gris" },
+        ],
+      },
+      {
+        id: "omegas",
+        name: "Omegas",
+        description:
+          "Omegas de refuerzo para tornamos y refuerzos de tela. En acero inoxidable o plástico, con terminación acorde a cada uso náutico.",
+        imageKey: "services-05",
+        products: [
+          { id: "o1", title: "Omega Acero Inoxidable", description: "Omega de refuerzo en acero inoxidable.", imageKey: "omega-inox" },
+          { id: "o2", title: "Omega Plástico Blanco", description: "Omega de refuerzo en plástico color blanco.", imageKey: "omega-plastico-blanca" },
+          { id: "o3", title: "Omega Plástico Negro", description: "Omega de refuerzo en plástico color negro.", imageKey: "omega-plastico-negra" },
+        ],
+      },
+      {
+        id: "tomas-de-aire",
+        name: "Tomas de Aire",
+        description:
+          "Ventilación y tomas de aire para embarcaciones. Mantienen la circulación y evitan condensación en compartimientos cerrados.",
+        imageKey: "services-06",
+        products: [
+          { id: "t1", title: "Toma Boat Vent 3", description: "Toma de aire estilo Boat Vent, modelo 3.", imageKey: "toma-boat-vent-3" },
+          { id: "t2", title: "Toma Boat Vent", description: "Toma de aire estilo Boat Vent para ventilación interior.", imageKey: "toma-boat-vent" },
+          { id: "t3", title: "Toma Genérica", description: "Toma de aire genérica para compartimientos cerrados.", imageKey: "toma-generica" },
+        ],
+      },
+      {
+        id: "trabamochilas",
+        name: "Trabamochilas",
+        description:
+          "Trabamochilas para cierre de mochilas y bolillos de transporte. Terminaciones blanco y negro para ajustarse a tu trabajo.",
+        imageKey: "services-07",
+        products: [
+          { id: "tm1", title: "Trabamochilas Blanco", description: "Trabamochilas para cierre en color blanco.", imageKey: "trabamochilas-blanco" },
+          { id: "tm2", title: "Trabamochilas Negro", description: "Trabamochilas para cierre en color negro.", imageKey: "trabamochilas-negro" },
         ],
       },
     ] satisfies ProductCategoryData[],

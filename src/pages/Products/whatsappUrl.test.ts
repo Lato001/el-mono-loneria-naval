@@ -6,22 +6,22 @@ const PAGE_URL = "https://example.com/productos";
 describe("buildWhatsAppUrl", () => {
   it("preserves selection order in the message", () => {
     const products = [
-      { title: "Broche Casco Bacan" },
-      { title: "Broche Lona Hembra Bronze" },
-      { title: "Caballete Caño Inox" },
+      { title: "Broche Lona Macho Bronce Blanco" },
+      { title: "Broche Lona Hembra Bronce" },
+      { title: "Caballete Tubo Acero Inoxidable" },
     ];
 
     const result = buildWhatsAppUrl(products, BASE_URL, PAGE_URL);
 
     // The URL should contain the titles in order, with bullet separators
     // "•" (U+2022) encodes to %E2%80%A2, newline to %0A
-    expect(result.href).toContain("Broche%20Casco%20Bacan");
-    expect(result.href).toContain("%E2%80%A2%20Broche%20Lona%20Hembra%20Bronze");
-    expect(result.href).toContain("%E2%80%A2%20Caballete%20Ca%C3%B1o%20Inox");
+    expect(result.href).toContain("Broche%20Lona%20Macho%20Bronce%20Blanco");
+    expect(result.href).toContain("%E2%80%A2%20Broche%20Lona%20Hembra%20Bronce");
+    expect(result.href).toContain("%E2%80%A2%20Caballete%20Tubo%20Acero%20Inoxidable");
 
     // Verify order: b1 title appears before b2 title in the URL
-    const idx1 = result.href.indexOf("Broche%20Casco%20Bacan");
-    const idx2 = result.href.indexOf("Broche%20Lona%20Hembra%20Bronze");
+    const idx1 = result.href.indexOf("Broche%20Lona%20Macho%20Bronce%20Blanco");
+    const idx2 = result.href.indexOf("Broche%20Lona%20Hembra%20Bronce");
     const idx3 = result.href.indexOf("Caballete");
     expect(idx1).toBeLessThan(idx2);
     expect(idx2).toBeLessThan(idx3);
