@@ -31,6 +31,7 @@
 
 import type { Work } from "../types/work";
 import type { Review } from "../types/review";
+import taller01 from "../assets/img/about/taller-01.webp";
 import type {
   AboutUsContent,
   AboutUsSection,
@@ -141,15 +142,13 @@ const aboutUsSection: AboutUsSection = {
   content: [
     /* TODO: replace with real content */
     "En El Mono combinamos tradición y técnica para crear lonas que resisten el mar. Cada pieza es confeccionada a mano con materiales de primera calidad, garantizando durabilidad y protección en las condiciones más exigentes.",
-    /* TODO: replace with real content */
-    "Nuestro taller es donde la experiencia se encuentra con la innovación. Trabajamos con lonas técnicas, vinilos náuticos y tejidos de alta performance para ofrecer soluciones a medida que superan las expectativas.",
   ],
-  // TODO: replace with real image when available
-  imageAlt: "Equipo de El Mono trabajando en el taller",
+  image: taller01,
+  imageAlt: "Taller de El Mono",
   highlights: [
-    { label: "Años de oficio (TODO: real number)", value: "+20" },
-    { label: "Proyectos entregados (TODO)", value: "+500" },
-    { label: "Clientes satisfechos (TODO)", value: "+300" },
+    { label: "Años de oficio", value: "+20" },
+    { label: "Proyectos entregados", value: "+500" },
+    { label: "Clientes satisfechos", value: "+300" },
   ],
   cta: { text: "Conocé más sobre nosotros", href: "/nosotros" },
 };
