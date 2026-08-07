@@ -1,4 +1,4 @@
-import { useLayoutEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import {
   IconX,
   IconBulb,
@@ -19,6 +19,7 @@ import {
 } from "../../components/ui";
 import type { Product } from "../../components/ui/ProductCarousel/ProductCarousel.types";
 import type { Tab } from "../../components/ui/SectionTabs/SectionTabs.types";
+import type { ProductCategoryData } from "../../mocks/types";
 import { data } from "../../mocks/data";
 import { ImgCard } from "../../components";
 import MediaPlayer from "../../components/ui/MediaPlayer/MediaPLayer";
@@ -75,7 +76,11 @@ function toProduct(p: {
   };
 }
 
-const categories = data.products.categories.map((cat) => ({
+// The data literal's inferred type drops optional fields, so widen to the
+// contract to read `videoUrl?: string` safely.
+const categoryData = data.products.categories as ProductCategoryData[];
+
+const categories = categoryData.map((cat) => ({
   id: cat.id,
   name: cat.name,
   description: cat.description,
@@ -159,7 +164,8 @@ function CotizacionModalContent({
 export function Products() {
   const { selected, isSelected, toggle, remove, clear, count } =
     useSessionSelection(STORAGE_KEY);
-  const { scrollRef, prev, next } = useProductCarousel();
+  const { scrollRef, prev, next, canPrev, canNext, recompute } =
+    useProductCarousel();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isClearModalOpen, setIsClearModalOpen] = useState(false);
   const [activeCategoryId, setActiveCategoryId] = useState<string>(
@@ -218,6 +224,13 @@ export function Products() {
       ),
     [selectedProducts],
   );
+
+  // Reset the product carousel scroll to the first item whenever the category
+  // changes (after the new products have rendered).
+  useEffect(() => {
+    scrollRef.current?.scrollTo?.({ left: 0 });
+    recompute();
+  }, [activeCategoryId, scrollRef, recompute]);
 
   const handleTabSelect = (id: string) => {
     setActiveCategoryId(id);
@@ -321,12 +334,18 @@ export function Products() {
                 <div className="flex w-full min-w-0 flex-col-reverse gap-6 xl:h-full xl:flex-col xl:col-span-7 xl:gap-8">
                   {/* Video: 16:9 centrado en la mitad superior */}
                   <div className="w-full min-w-0 xl:flex xl:flex-1 xl:min-h-0 xl:items-center xl:justify-center">
-                    <div className="w-full overflow-hidden rounded-2xl aspect-video xl:h-full xl:w-auto xl:max-w-full xl:mt-16">
-                      <MediaPlayer
-                        key={activeCategory.id}
-                        src={activeCategory.videoUrl}
-                        className="w-full h-full object-cover"
-                      />
+                    <div className="flex w-full overflow-hidden rounded-2xl aspect-video xl:h-full xl:w-auto xl:max-w-full xl:mt-16">
+                      {activeCategory.videoUrl ? (
+                        <MediaPlayer
+                          key={activeCategory.id}
+                          src={activeCategory.videoUrl}
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <div className="flex h-full w-full items-center justify-center bg-sc-ocean-blue/5 font-poppins text-sm text-sc-ocean-blue/50">
+                          Video próximamente
+                        </div>
+                      )}
                     </div>
                   </div>
                   {/* Carousel: mitad inferior */}
@@ -335,7 +354,8 @@ export function Products() {
                       type="button"
                       aria-label={data.ui.prevLabel}
                       onClick={prev}
-                      className="group absolute left-10 top-1/2 z-10 hidden -translate-y-1/2 rounded-full bg-sc-ocean-blue p-3 shadow-md backdrop-blur-sm transition-colors hover:bg-pr-aquamarine/60  focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pr-aquamarine xl:block hover:cursor-pointer"
+                      disabled={!canPrev}
+                      className="group absolute left-10 top-1/2 z-10 hidden -translate-y-1/2 rounded-full bg-sc-ocean-blue p-3 shadow-md backdrop-blur-sm transition-colors hover:bg-pr-aquamarine/60 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-sc-ocean-blue focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pr-aquamarine xl:block hover:cursor-pointer"
                     >
                       <IconChevronLeft
                         stroke={4}
@@ -356,7 +376,8 @@ export function Products() {
                       type="button"
                       aria-label={data.ui.nextLabel}
                       onClick={next}
-                      className="group absolute right-8 top-1/2 z-10 hidden -translate-y-1/2 rounded-full bg-sc-ocean-blue p-3 shadow-md backdrop-blur-sm transition-colors hover:bg-pr-aquamarine/60  focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pr-aquamarine xl:block hover:cursor-pointer"
+                      disabled={!canNext}
+                      className="group absolute right-8 top-1/2 z-10 hidden -translate-y-1/2 rounded-full bg-sc-ocean-blue p-3 shadow-md backdrop-blur-sm transition-colors hover:bg-pr-aquamarine/60 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-sc-ocean-blue focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pr-aquamarine xl:block hover:cursor-pointer"
                     >
                       <IconChevronRight
                         stroke={4}

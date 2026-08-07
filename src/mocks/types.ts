@@ -123,8 +123,8 @@ export interface ProductCategoryData {
   description: string;
   /** Image key for the "applied" photo (product in use, not isolated). */
   imageKey: string;
-  /** YouTube Short URL reproduced in the category's MediaPlayer. */
-  videoUrl: string;
+  /** YouTube Short URL reproduced in the category's MediaPlayer. Optional while a video isn't available. */
+  videoUrl?: string;
   products: ProductData[];
 }
 

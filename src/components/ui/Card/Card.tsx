@@ -9,6 +9,8 @@ export interface CardProps {
   imageSrc?: string;
   className?: string;
   imageClassName?: string;
+  /** How the photo fits its frame. `cover` crops to fill; `contain` shows the whole image. */
+  imageFit?: "cover" | "contain";
   color?: string;
   badgeClassName?: string;
   selected?: boolean;
@@ -22,6 +24,7 @@ export const Card = ({
   imageSrc,
   className,
   imageClassName = "",
+  imageFit = "cover",
   color = "#F4F4F4",
   badgeClassName = "bg-pr-aquamarine/80",
   selected,
@@ -33,8 +36,8 @@ export const Card = ({
 
   return (
     <article
-      className={`bg-sc-chalk relative flex h-full flex-col overflow-hidden rounded-xl border transition-all duration-200 ease-out hover:-translate-y-1.5 hover:shadow-xl group
-      ${selected ? "border-pr-aquamarine ring-1 ring-pr-aquamarine" : "border-sc-ocean-blue/15 bg-white"}
+      className={`bg-sc-chalk relative flex h-full flex-col overflow-hidden rounded-xl transition-all duration-200 ease-out hover:-translate-y-1.5 hover:shadow-xl group
+      ${selected ? "bg-white/80 ring-2 ring-pr-aquamarine" : "bg-white"}
       ${className ?? ""}`}
     >
       {hasImage && (
@@ -54,7 +57,9 @@ export const Card = ({
               src={imageSrc}
               alt=""
               aria-hidden="true"
-              className="h-full w-full object-cover transition-transform duration-300 ease-out group-hover:scale-105"
+              className={`h-full w-full ${
+                imageFit === "contain" ? "object-contain" : "object-cover"
+              } transition-transform duration-300 ease-out group-hover:scale-105`}
             />
           ) : (
             <div

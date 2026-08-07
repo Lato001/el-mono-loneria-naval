@@ -2,6 +2,7 @@ import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { MemoryRouter } from "react-router-dom";
 import { Products } from "./Products";
+import { data } from "../../mocks/data";
 
 // Mock useFadeInOnView to avoid IntersectionObserver complexity
 vi.mock("../../hooks/useFadeInOnView", () => ({
@@ -57,10 +58,10 @@ describe("Products page", () => {
     ).toBeInTheDocument();
   });
 
-  it("renders 2 category tabs", () => {
+  it("renders one tab per product category", () => {
     renderProducts();
     const tabs = screen.getAllByRole("tab");
-    expect(tabs).toHaveLength(2);
+    expect(tabs).toHaveLength(data.products.categories.length);
   });
 
   it("renders the first category (Broches) as the active tab by default", () => {
@@ -104,7 +105,7 @@ describe("Products page", () => {
     expect(
       screen.getByRole("tab", { name: /Caballetes/i }),
     ).toHaveAttribute("aria-selected", "true");
-    expect(screen.getByText("Caballete Caño Inox")).toBeInTheDocument();
+    expect(screen.getByText("Caballete Tubo Acero Inoxidable")).toBeInTheDocument();
 
     // Overlay description switches too
     await user.click(screen.getByLabelText(/ver información/i));
@@ -113,28 +114,31 @@ describe("Products page", () => {
     ).toBeInTheDocument();
   });
 
-  it("shows the selected category's video short", async () => {
+  it("shows the 'Video próximamente' placeholder when no video is linked", async () => {
     const user = userEvent.setup();
     renderProducts();
 
-    // Default: Broches
-    expect(screen.getByTestId("mock-player")).toHaveAttribute(
-      "data-src",
-      "https://www.youtube.com/shorts/7iIYvMahPw4",
-    );
+    // Default: Broches (no videoUrl) → placeholder instead of the player
+    expect(screen.getByText("Video próximamente")).toBeInTheDocument();
+    expect(screen.queryByTestId("mock-player")).not.toBeInTheDocument();
 
-    // Switching category swaps the video src
+    // Switching category keeps the placeholder (no videos linked yet)
     await user.click(screen.getByRole("tab", { name: /Caballetes/i }));
-    expect(screen.getByTestId("mock-player")).toHaveAttribute(
-      "data-src",
-      "https://www.youtube.com/shorts/0h23LH36LJE",
-    );
+    expect(screen.getByText("Video próximamente")).toBeInTheDocument();
+    expect(screen.queryByTestId("mock-player")).not.toBeInTheDocument();
   });
 
   it("renders 1 carousel section (tabpanel) for the active category", () => {
     renderProducts();
     const panels = screen.getAllByRole("tabpanel");
     expect(panels).toHaveLength(1);
+  });
+
+  it("disables prev/next when there is nothing to scroll", () => {
+    renderProducts();
+    // jsdom has no real overflow, so the carousel cannot scroll → both disabled.
+    expect(screen.getByRole("button", { name: /anterior/i })).toBeDisabled();
+    expect(screen.getByRole("button", { name: /siguiente/i })).toBeDisabled();
   });
 
   it("Presupuestar button is disabled when no products are selected", () => {
@@ -173,7 +177,7 @@ describe("Products page", () => {
     );
 
     const dialog = screen.getByRole("dialog");
-    expect(within(dialog).getByText("Broche Casco Bacan")).toBeInTheDocument();
+    expect(within(dialog).getByText("Broche Lona Macho Bronce Blanco")).toBeInTheDocument();
   });
 
   it("× removes a product from the modal and updates selection", async () => {
@@ -191,8 +195,8 @@ describe("Products page", () => {
 
     const dialog = screen.getByRole("dialog");
     // Modal should list both
-    expect(within(dialog).getByText("Broche Casco Bacan")).toBeInTheDocument();
-    expect(within(dialog).getByText("Broche Casco Bacab")).toBeInTheDocument();
+    expect(within(dialog).getByText("Broche Lona Macho Bronce Blanco")).toBeInTheDocument();
+    expect(within(dialog).getByText("Broche Lona Macho Bronce Gris")).toBeInTheDocument();
 
     // Remove first product
     const removeButtons = within(dialog).getAllByLabelText(/Quitar/);
@@ -200,7 +204,7 @@ describe("Products page", () => {
 
     // First product should be gone from the modal
     expect(
-      within(dialog).queryByText("Broche Casco Bacan"),
+      within(dialog).queryByText("Broche Lona Macho Bronce Blanco"),
     ).not.toBeInTheDocument();
     // Counter should show 1
     expect(within(getActionBar()).getByText("1")).toBeInTheDocument();
@@ -250,7 +254,7 @@ describe("Products page", () => {
     });
     expect(whatsappLink).toHaveAttribute(
       "href",
-      expect.stringContaining("Broche%20Casco%20Bacan"),
+      expect.stringContaining("Broche%20Lona%20Macho%20Bronce%20Blanco"),
     );
   });
 
@@ -427,7 +431,23 @@ describe("Products page", () => {
       ".overflow-x-auto",
     ) as HTMLElement;
     expect(scrollContainer).not.toBeNull();
+
+    // Fake a scrollable overflow so the buttons become enabled.
+    Object.defineProperty(scrollContainer, "clientWidth", {
+      value: 100,
+      configurable: true,
+    });
+    Object.defineProperty(scrollContainer, "scrollWidth", {
+      value: 300,
+      configurable: true,
+    });
+    Object.defineProperty(scrollContainer, "scrollLeft", {
+      value: 150,
+      configurable: true,
+    });
     scrollContainer.scrollBy = vi.fn();
+    // Trigger recompute so canPrev/canNext reflect the faked layout.
+    scrollContainer.dispatchEvent(new Event("scroll"));
 
     await user.click(screen.getByLabelText("Siguiente"));
     expect(scrollContainer.scrollBy).toHaveBeenCalledWith(
