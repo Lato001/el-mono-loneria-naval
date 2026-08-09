@@ -59,18 +59,19 @@ export function LinkButton({
           href={url}
           target="_blank"
           rel="noopener noreferrer"
-          className={`group inline-flex items-center gap-4 rounded-full border border-zinc-100 bg-green py-2 pl-2 pr-8 shadow-[0_10px_30px_rgba(15,23,42,.08)] transition-all duration-300 hover:-translate-y-0.5 hover:border-zinc-200 hover:shadow-[0_16px_40px_rgba(15,23,42,.12)] active:scale-[0.98] ${className}`}
+          className={` group inline-flex items-center gap-4 rounded-full border border-zinc-100 bg-green py-2 pl-2 pr-8 shadow-[0_10px_30px_rgba(15,23,42,.08)] transition-all duration-300 hover:-translate-y-0.5 hover:border-zinc-200 
+            hover:shadow-[0_16px_40px_rgba(15,23,42,.12)] active:scale-[0.98] ${className} ${theme === "light" ? "bg-white border-white" : "bg-sc-ocean-blue border-sc-ocean-blue"}`}
         >
           <div
-            className={`bg-white flex h-10 w-10 items-center justify-center rounded-full border shadow-sm transition-all duration-300 group-hover:scale-105 group-hover:bg-white group-hover:shadow-md ${className} `}
+            className={`bg-white flex h-10 w-10 items-center justify-center rounded-full border shadow-xl transition-all duration-300 group-hover:scale-105 group-hover:bg-white group-hover:shadow-md ${className}`}
           >
             <img
               src={googleLogo}
               alt="Google"
-              className="h-6 w-6 object-contain transition-transform duration-300 group-hover:rotate-6 group-hover:scale-110"
+              className={`h-6 w-6 object-contain transition-transform duration-300 group-hover:rotate-6 group-hover:scale-110 `}
             />
           </div>
-          <span className="ml-2 font-poppins text-lg font-semibold tracking-tight text-white">
+          <span className={`ml-2 font-poppins text-lg font-semibold tracking-tight ${theme === "light" ? "text-black/75 " : "text-white"}`}>
             {text}
           </span>
         </a>

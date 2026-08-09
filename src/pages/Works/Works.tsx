@@ -70,6 +70,7 @@ export function Works() {
       >
         <Masonry
           items={images}
+          variant="uniform"
           ease="power3.out"
           duration={0.6}
           stagger={0.05}

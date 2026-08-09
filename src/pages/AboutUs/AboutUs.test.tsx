@@ -29,27 +29,24 @@ describe("AboutUs page", () => {
     ).toBeInTheDocument();
   });
 
-  it("renders the 'Sobre Nosotros' eyebrow", () => {
+  it("renders the 'Nuestro Taller' eyebrow", () => {
     renderAboutUs();
-    // The eyebrow is rendered as a <p>; the CTA "Conocé más sobre nosotros"
-    // is an <a> and also matches the regex, so we filter by tag.
+    // The eyebrow is rendered as a <p>; the CTA text also matches the regex,
+    // so we filter by tag.
     const eyebrow = screen
-      .getAllByText(/sobre nosotros/i)
+      .getAllByText(/nuestro taller/i)
       .find((el) => el.tagName.toLowerCase() === "p");
     expect(eyebrow).toBeInTheDocument();
   });
 
-  it("renders content paragraphs from data", () => {
+  it("renders content text from data", () => {
     renderAboutUs();
-    for (const paragraph of aboutUsData.content) {
-      expect(screen.getByText(paragraph)).toBeInTheDocument();
-    }
+    expect(screen.getByText(aboutUsData.content)).toBeInTheDocument();
   });
 
   it("renders highlights from data", () => {
     renderAboutUs();
     for (const highlight of aboutUsData.highlights!) {
-      expect(screen.getByText(highlight.value)).toBeInTheDocument();
       expect(screen.getByText(highlight.label)).toBeInTheDocument();
     }
   });

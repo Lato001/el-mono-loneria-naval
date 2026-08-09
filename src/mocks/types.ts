@@ -240,10 +240,10 @@ export interface AboutUsSection {
   kind: "aboutus";
   eyebrow: string;
   title: string;
-  content: string[];
+  content: string;
   image?: string;
   imageAlt?: string;
-  highlights?: { label: string; value: string }[];
+  highlights?: { label: string; value: number }[];
   cta?: { text: string; href: string };
 }
 

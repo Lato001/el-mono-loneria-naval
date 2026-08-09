@@ -31,7 +31,7 @@
 
 import type { Work } from "../types/work";
 import type { Review } from "../types/review";
-import taller01 from "../assets/img/about/taller-01.webp";
+import taller02 from "../assets/img/about/taller-02.webp";
 import type {
   AboutUsContent,
   AboutUsSection,
@@ -137,20 +137,18 @@ const reviewsSection: ReviewsSection = {
 const aboutUsSection: AboutUsSection = {
   id: "aboutus",
   kind: "aboutus",
-  eyebrow: "Quiénes somos",
-  title: "Oficio de lonería, mentalidad náutica",
-  content: [
-    /* TODO: replace with real content */
-    "En El Mono combinamos tradición y técnica para crear lonas que resisten el mar. Cada pieza es confeccionada a mano con materiales de primera calidad, garantizando durabilidad y protección en las condiciones más exigentes.",
-  ],
-  image: taller01,
+  eyebrow: "Nuestro Taller",
+  title: "Oficio de lonería - Trabajo Artesanal",
+  content: 
+    "En nuestro taller combinamos tradición y técnica para crear lonas que resisten el mar. Cada pieza es confeccionada a mano con materiales de primera calidad, garantizando durabilidad y protección en las condiciones más exigentes.",
+  image: taller02,
   imageAlt: "Taller de El Mono",
   highlights: [
-    { label: "Años de oficio", value: "+20" },
-    { label: "Proyectos entregados", value: "+500" },
-    { label: "Clientes satisfechos", value: "+300" },
+    { label: "Años de oficio", value: 20 },
+    { label: "Proyectos entregados", value: 500 },
+    { label: "Clientes satisfechos", value: 300 },
   ],
-  cta: { text: "Conocé más sobre nosotros", href: "/nosotros" },
+  cta: { text: "Conocé más sobre nuestro trabajo!", href: "/trabajos" },
 };
 
 // ─── Exported data object ────────────────────────────────────────────────

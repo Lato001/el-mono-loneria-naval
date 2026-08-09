@@ -96,7 +96,7 @@ export function Home() {
           <LinkButton
             type="Google"
             text="Ver Reseñas"
-            className="bg-sc-ocean-blue"
+            theme="dark"
             url="https://maps.app.goo.gl/5yJprtv3uSdtv13M7"
           />
         </div>

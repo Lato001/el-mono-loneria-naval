@@ -13,7 +13,7 @@ export function Contact() {
         title="Donde encontrarnos"
         titlesAlign="center"
         theme="dark"
-        className="w-full p-10 "
+        className="w-full pt-34 "
       >
         <MapSection
           latitude={-34.4351676}
@@ -23,6 +23,7 @@ export function Contact() {
         />
         <div className="mt-10 flex justify-center">
           <LinkButton
+          theme="light"
             type="Google"
             text="Abrir en Google Maps"
             url="https://maps.app.goo.gl/5yJprtv3uSdtv13M7"
