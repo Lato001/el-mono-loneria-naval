@@ -8,6 +8,8 @@ const mockImages: WorksCarouselImage[] = [
   { src: "/img2.jpg", alt: "Image 2", originalIndex: 1 },
   { src: "/img3.jpg", alt: "Image 3", originalIndex: 2 },
   { src: "/img4.jpg", alt: "Image 4", originalIndex: 3 },
+  { src: "/img5.jpg", alt: "Image 5", originalIndex: 4 },
+  { src: "/img6.jpg", alt: "Image 6", originalIndex: 5 },
 ];
 
 describe("WorksCarousel", () => {
@@ -69,6 +71,72 @@ describe("WorksCarousel", () => {
       // Each thumbnail should have the responsive width classes
       expect(thumb).toHaveClass("w-[calc(50%-8px)]");
       expect(thumb).toHaveClass("lg:w-[calc(25%-12px)]");
+    });
+  });
+
+  // --- Page indicator dots (new feature) ---
+  describe("page indicator dots", () => {
+    it("renders no dots when only 1 page (2 images, 2 per page)", () => {
+      render(<WorksCarousel images={mockImages.slice(0, 2)} onThumbSelect={vi.fn()} />);
+
+      const dots = screen.queryAllByRole("tab", { name: /página \d+ de \d+/i });
+      expect(dots).toHaveLength(0); // 2 images, 2 per page (mobile) = 1 page, no dots needed
+    });
+
+    it("renders dots when 3 or more images provided (multiple pages)", () => {
+      // 3 images, 2 per page = 2 pages
+      render(<WorksCarousel images={mockImages.slice(0, 3)} onThumbSelect={vi.fn()} />);
+
+      const dots = screen.getAllByRole("tab", { name: /página \d+ de \d+/i });
+      expect(dots).toHaveLength(2);
+    });
+
+    it("renders correct number of dots for multiple pages (mobile: 2 per page)", () => {
+      // 5 images, 2 per page (mobile) = 3 pages
+      render(<WorksCarousel images={mockImages.slice(0, 5)} onThumbSelect={vi.fn()} />);
+
+      const dots = screen.getAllByRole("tab", { name: /página \d+ de \d+/i });
+      expect(dots).toHaveLength(3);
+    });
+
+    it("highlights the active dot (first page active by default)", () => {
+      render(<WorksCarousel images={mockImages.slice(0, 5)} onThumbSelect={vi.fn()} />);
+
+      const dots = screen.getAllByRole("tab", { name: /página \d+ de \d+/i });
+      expect(dots[0]).toHaveClass("bg-pr-aquamarine"); // active dot
+      expect(dots[1]).not.toHaveClass("bg-pr-aquamarine"); // inactive
+      expect(dots[2]).not.toHaveClass("bg-pr-aquamarine"); // inactive
+    });
+
+    it("clicking a dot scrolls to that page", async () => {
+      const onThumbSelect = vi.fn();
+      render(<WorksCarousel images={mockImages.slice(0, 5)} onThumbSelect={onThumbSelect} />);
+
+      const user = userEvent.setup();
+      const dots = screen.getAllByRole("tab", { name: /página \d+ de \d+/i });
+
+      // Click the second page dot
+      await user.click(dots[1]);
+
+      // The active dot should update to page 2
+      const updatedDots = screen.getAllByRole("tab", { name: /página \d+ de \d+/i });
+      expect(updatedDots[0]).not.toHaveClass("bg-pr-aquamarine");
+      expect(updatedDots[1]).toHaveClass("bg-pr-aquamarine");
+      expect(updatedDots[2]).not.toHaveClass("bg-pr-aquamarine");
+    });
+
+    it("dots are hidden when carousel is hidden (< 2 images)", () => {
+      render(<WorksCarousel images={mockImages.slice(0, 1)} onThumbSelect={vi.fn()} />);
+
+      const dots = screen.queryAllByRole("tab", { name: /página \d+ de \d+/i });
+      expect(dots).toHaveLength(0);
+    });
+
+    it("dots render between thumbnails and prev/next buttons", () => {
+      render(<WorksCarousel images={mockImages.slice(0, 5)} onThumbSelect={vi.fn()} />);
+
+      const dotsContainer = screen.getByTestId("works-carousel-dots");
+      expect(dotsContainer).toBeInTheDocument();
     });
   });
 });

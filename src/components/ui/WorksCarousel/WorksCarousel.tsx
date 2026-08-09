@@ -1,3 +1,4 @@
+import { useCallback, useState } from "react";
 import { IconChevronLeft, IconChevronRight } from "@tabler/icons-react";
 import { useProductCarousel } from "../ProductCarousel/useProductCarousel";
 import type { WorksCarouselProps } from "./WorksCarousel.types";
@@ -10,10 +11,37 @@ export function WorksCarousel({ images, onThumbSelect }: WorksCarouselProps) {
 
   const { scrollRef, prev, next, canPrev, canNext } = useProductCarousel();
 
+  // Mobile-first: 2 items per page (matching w-[calc(50%-8px)])
+  const ITEMS_PER_PAGE = 2;
+  const totalPages = Math.ceil(images.length / ITEMS_PER_PAGE);
+  const [currentPage, setCurrentPage] = useState(0);
+
+  const handleScroll = useCallback(() => {
+    const container = scrollRef.current;
+    if (!container) return;
+    // Each item takes ~50% of container width (mobile), so page = round(scrollLeft / (clientWidth / 2))
+    const pageWidth = container.clientWidth / ITEMS_PER_PAGE;
+    const page = Math.round(container.scrollLeft / pageWidth);
+    setCurrentPage(Math.max(0, Math.min(page, totalPages - 1)));
+  }, [scrollRef, totalPages]);
+
+  const goToPage = useCallback(
+    (page: number) => {
+      const container = scrollRef.current;
+      if (!container) return;
+      const clampedPage = Math.max(0, Math.min(page, totalPages - 1));
+      const pageWidth = container.clientWidth / ITEMS_PER_PAGE;
+      container.scrollLeft = clampedPage * pageWidth;
+      setCurrentPage(clampedPage);
+    },
+    [scrollRef, totalPages],
+  );
+
   return (
-    <div className="mt-8">
+    <div className="mt-8" role="region" aria-label="Works carousel">
       <div
         ref={scrollRef}
+        onScroll={handleScroll}
         className="flex gap-4 overflow-x-auto scroll-smooth snap-x snap-mandatory pb-4 scrollbar-hide"
         style={{ scrollbarWidth: "none" }}
       >
@@ -41,6 +69,28 @@ export function WorksCarousel({ images, onThumbSelect }: WorksCarouselProps) {
           </button>
         ))}
       </div>
+
+      {/* Page indicator dots */}
+      {totalPages > 1 && (
+        <div data-testid="works-carousel-dots" className="flex justify-center gap-2 mt-4" role="tablist" aria-label="Páginas del carrusel">
+          {Array.from({ length: totalPages }, (_, i) => (
+            <button
+              key={i}
+              type="button"
+              onClick={() => goToPage(i)}
+              role="tab"
+              aria-selected={i === currentPage}
+              aria-label={`Página ${i + 1} de ${totalPages}`}
+              className={`
+                w-2 h-2 rounded-full transition-colors
+                ${i === currentPage
+                  ? "bg-pr-aquamarine"
+                  : "bg-white/30 hover:bg-white/50"}
+              `}
+            />
+          ))}
+        </div>
+      )}
 
       <div className="flex justify-center gap-3 mt-4">
         <button
