@@ -1,22 +1,17 @@
 import { render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { Works } from "./Works";
-import { data } from "../../mocks/data";
 
-vi.mock("../../components/ui/Masonry/Masonry", () => ({
-  default: function MockMasonry({ items }: { items: { alt: string }[] }) {
+vi.mock("../../components/ui/WorksSection/WorksSection", () => ({
+  WorksSection: function MockWorksSection({ imageMap: _imageMap }: { imageMap: Record<string, string> }) {
     return (
-      <div data-testid="masonry">
-        {items.map((item) => (
-          <img key={item.alt} alt={item.alt} src="" />
-        ))}
+      <div data-testid="works-section">
+        <h1 data-testid="works-section-title">Nuestros Trabajos</h1>
+        <p data-testid="works-section-eyebrow">Trabajos</p>
+        <div data-testid="works-album">Más del taller</div>
       </div>
     );
   },
-}));
-
-vi.mock("../../hooks/useFadeInOnView", () => ({
-  useFadeInOnView: () => ({ ref: { current: null }, visible: true }),
 }));
 
 function renderWorks() {
@@ -28,23 +23,19 @@ function renderWorks() {
 }
 
 describe("Works page", () => {
-  it("renders the SectionWrapper with the correct eyebrow and title", () => {
+  it("renders WorksSection component", () => {
     renderWorks();
-    expect(screen.getByText("Album de fotos")).toBeInTheDocument();
-    expect(screen.getByRole("heading", { level: 1, name: "Nuestros Trabajos" })).toBeInTheDocument();
+    expect(screen.getByTestId("works-section")).toBeInTheDocument();
   });
 
-  it("passes all album images to the Masonry component", () => {
+  it("renders the showcase title and eyebrow via WorksSection", () => {
     renderWorks();
-    const masonry = screen.getByTestId("masonry");
-    const images = masonry.querySelectorAll("img");
-    expect(images).toHaveLength(data.worksPage.album.images.length);
+    expect(screen.getByTestId("works-section-title")).toHaveTextContent("Nuestros Trabajos");
+    expect(screen.getByTestId("works-section-eyebrow")).toHaveTextContent("Trabajos");
   });
 
-  it("renders each album image with its alt text", () => {
+  it("renders the album section via WorksSection", () => {
     renderWorks();
-    for (const img of data.worksPage.album.images) {
-      expect(screen.getByAltText(img.alt)).toBeInTheDocument();
-    }
+    expect(screen.getByTestId("works-album")).toHaveTextContent("Más del taller");
   });
 });

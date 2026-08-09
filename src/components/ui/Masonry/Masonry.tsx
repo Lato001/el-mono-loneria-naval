@@ -82,13 +82,17 @@ const preloadImages = async (
   return results;
 };
 
-interface Item {
+export interface Item {
   id: string;
   img: string;
   url: string;
   alt?: string;
   title?: string;
   redirectUrl?: string;
+  /** ID of the trabajo this image belongs to — enables click→showcase navigation */
+  trabajoId?: string;
+  /** Category slug — enables filtering and hash sync */
+  categoria?: string;
 }
 
 interface GridItem extends Item {
@@ -109,6 +113,8 @@ interface MasonryProps {
   hoverScale?: number;
   blurToFocus?: boolean;
   colorShiftOnHover?: boolean;
+  /** Optional click handler — when provided, clicking an item calls this instead of opening the internal Modal */
+  onItemClick?: (item: Item, index: number) => void;
 }
 
 const Masonry: React.FC<MasonryProps> = ({
@@ -122,6 +128,7 @@ const Masonry: React.FC<MasonryProps> = ({
   hoverScale = 0.95,
   blurToFocus = true,
   colorShiftOnHover = false,
+  onItemClick,
 }) => {
   const columns = useMedia(
     [
@@ -328,7 +335,7 @@ const Masonry: React.FC<MasonryProps> = ({
         className="relative w-full"
         style={{ height: totalHeight || undefined }}
       >
-        {grid.map((item) =>
+        {grid.map((item, index) =>
           item.redirectUrl ? (
             <a
               key={item.id}
@@ -355,7 +362,7 @@ const Masonry: React.FC<MasonryProps> = ({
               data-key={item.id}
               className="absolute box-content"
               style={{ willChange: "transform, width, height, opacity" }}
-              onClick={() => handleOpenModal(item.img, item.alt)}
+              onClick={() => onItemClick ? onItemClick(item, index) : handleOpenModal(item.img, item.alt)}
               onMouseEnter={(e) => handleMouseEnter(item.id, e.currentTarget)}
               onMouseLeave={(e) => handleMouseLeave(item.id, e.currentTarget)}
             >
@@ -392,8 +399,6 @@ const Masonry: React.FC<MasonryProps> = ({
     </>
   );
 };
-
-export default Masonry;
 
 function MobileMosaicCarousel({ items }: { items: Item[] }) {
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -454,3 +459,5 @@ function MobileMosaicCarousel({ items }: { items: Item[] }) {
     </div>
   );
 }
+
+export default Masonry;
