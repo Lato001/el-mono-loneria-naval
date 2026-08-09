@@ -29,7 +29,6 @@
  *      in Footer.tsx.
  */
 
-import type { Work } from "../types/work";
 import type { Review } from "../types/review";
 import type {
   AboutUsContent,
@@ -48,30 +47,179 @@ import type {
   SplitCardData,
   UICopy,
   MasonryItem,
+  AlbumImage,
+  Trabajo,
 } from "./types";
 
-// ─── Canonical data ──────────────────────────────────────────────────────
+// ─── Works page — Trabajos data ────────────────────────────────────────────
+const trabajos: Trabajo[] = [
+  // Toneau
+  {
+    id: "trab-toneau-1",
+    categoria: "toneau",
+    titulo: "Toneau para pick-up Ford Ranger",
+    descripcion:
+      "Toneau a medida en lona vinílica negra con estructura de aluminio anodizado. Sistema de apertura enrollable con tensores de acero inoxidable. Impermeable y resistente a rayos UV.",
+    imagenes: ["services-07"],
+    destacado: true,
+  },
+  // Cubrevidrios
+  {
+    id: "trab-cubrevidrios-1",
+    categoria: "cubrevidrios",
+    titulo: "Cubrevidrios para lancha cabinada 22 pies",
+    descripcion:
+      "Protección total de parabrisas y laterales en Sunbrella Pacific Blue. Sistema de fijación con broches de presión y elásticos reforzados. Incluye bolsillo de guardado.",
+    imagenes: ["works-01"],
+    destacado: true,
+  },
+  // Cubre Fly
+  {
+    id: "trab-cubre-fly-1",
+    categoria: "cubre-fly",
+    titulo: "Cubre Flybridge para yate 38 pies",
+    descripcion:
+      "Cobertura completa del flybridge en lona acrílica gris claro. Ventanas de PVC transparente con cremalleras YKK marinas. Refuerzos en esquinas y costuras selladas.",
+    imagenes: ["works-02"],
+    destacado: true,
+  },
+  // Cerramientos
+  {
+    id: "trab-cerramientos-1",
+    categoria: "cerramientos",
+    titulo: "Cerramiento lateral para embarcación deportiva",
+    descripcion:
+      "Cerramiento de babor en lona vinílica transparente con marco de aluminio. Paneles desmontables con cremalleras perimetrales. Aislante térmico y cortaviento.",
+    imagenes: ["services-03"],
+    destacado: true,
+  },
+  {
+    id: "trab-cerramientos-2",
+    categoria: "cerramientos",
+    titulo: "Cerramiento frontal con puerta enrollable",
+    descripcion:
+      "Frontal completo en crystal clear 30 gauge. Puerta central enrollable con imanes de sujeción. Ventilación lateral con mosquitero integrado. Ideal para pesca nocturna.",
+    imagenes: ["services-04"],
+  },
+  // Carpas (default category - must have at least one)
+  {
+    id: "trab-carpas-1",
+    categoria: "carpas",
+    titulo: "Carpa toldo para embarcación neumática",
+    descripcion:
+      "Toldo bimini de 3 arcos en acero inoxidable 316L con lona Sunbrella Captain Navy. Montaje rápido sin herramientas. Incluye funda de guardado y tensores regulables.",
+    imagenes: ["services-06", "services-05", "works-03"],
+    destacado: true,
+  },
+  {
+    id: "trab-carpas-2",
+    categoria: "carpas",
+    titulo: "Carpa de proa para lancha abierta",
+    descripcion:
+      "Extensión de proa en lona vinílica blanca con estructura de tubo redondo inox. Protección solar y contra salpicaduras. Desmontable en segundos.",
+    imagenes: ["works-14"],
+  },
+  // Capotas
+  {
+    id: "trab-capotas-1",
+    categoria: "capotas",
+    titulo: "Capota rígida para consola central 24 pies",
+    descripcion:
+      "Estructura de aluminio anodizado con paneles de policarbonato ahumado. Puertas laterales corredizas con cerradura. Ventilación superior con compuertas ajustables.",
+    imagenes: ["services-08"],
+    destacado: true,
+  },
+  {
+    id: "trab-capotas-2",
+    categoria: "capotas",
+    titulo: "Capota de lona para embarcación clásica",
+    descripcion:
+      "Capota tradicional en lona algodón encerado color beige. Varillas de bronce pulido y herrajes de latón. Estética vintage con materiales modernos resistentes.",
+    imagenes: ["works-04"],
+  },
+  // Motos de agua
+  {
+    id: "trab-motos-de-agua-1",
+    categoria: "motos-de-agua",
+    titulo: "Funda integral para moto de agua Yamaha FX",
+    descripcion:
+      "Funda a medida en poliéster 600D con recubrimiento PU plateado. Cremallera perimetral reforzada y sistema de tensión elástico. Protección total contra intemperie.",
+    imagenes: ["works-05"],
+    destacado: true,
+  },
+  {
+    id: "trab-motos-de-agua-2",
+    categoria: "motos-de-agua",
+    titulo: "Cubre asiento y manillar para Sea-Doo GTX",
+    descripcion:
+      "Protección parcial en neopreno 3mm con costuras selladas. Ajuste elástico perimetral. Resistente a salitre y radiación UV. Fácil colocación.",
+    imagenes: ["works-06"],
+  },
+  // Gomones
+  {
+    id: "trab-gomones-1",
+    categoria: "gomones",
+    titulo: "Cubierta total para gomón semirrígido 5.5m",
+    descripcion:
+      "Cubierta en lona vinílica gris con refuerzos en tubos de flotación. Sistema de sujeción por cinchas con tensores inox. Acceso a consola y bañera mediante cremalleras.",
+    imagenes: ["works-07"],
+    destacado: true,
+  },
+  {
+    id: "trab-gomones-2",
+    categoria: "gomones",
+    titulo: "Funda de consola para gomón Zodiac",
+    descripcion:
+      "Funda específica de consola en Sunbrella Jockey Red. Ajuste por elástico perimetral y broches a presión. Bolsillo frontal para documentación náutica.",
+    imagenes: ["works-08"],
+  },
+  // Bitácora
+  {
+    id: "trab-bitacora-1",
+    categoria: "bitacora",
+    titulo: "Bitácora de navegación personalizada",
+    descripcion:
+      "Carpeta de bitácora en cuero náutico tratado con costuras a contraste. Interior con fundas para cartas, libretas e instrumentos. Cierre magnético oculto.",
+    imagenes: ["works-09"],
+    destacado: true,
+  },
+  // Extra
+  {
+    id: "trab-extra-1",
+    categoria: "extra",
+    titulo: "Cubre motor fuera de borda 150HP",
+    descripcion:
+      "Funda de motor en lona transpirable gris antracita. Sistema de ventilación pasiva anti-condensación. Ajuste universal con cinchas regulables y hebillas inox.",
+    imagenes: ["works-10"],
+    destacado: true,
+  },
+  {
+    id: "trab-extra-2",
+    categoria: "extra",
+    titulo: "Bolsa estanca para equipamiento de cubierta",
+    descripcion:
+      "Bolsa seca 40L en PVC soldadura de alta frecuencia. Cierre roll-top con hebillas de acetal. Correas de hombro acolchadas y anclajes MOLLE laterales.",
+    imagenes: ["works-11"],
+  },
+  {
+    id: "trab-extra-3",
+    categoria: "extra",
+    titulo: "Protector de proa para amarre",
+    descripcion:
+      "Defensa de proa en EVA de célula cerrada con funda de lona removible. Sistema de fijación por ventosas de alta succión. Absorbe impactos en amarre.",
+    imagenes: ["works-12"],
+  },
+  {
+    id: "trab-extra-4",
+    categoria: "extra",
+    titulo: "Funda de timón para embarcación a vela",
+    descripcion:
+      "Funda a medida en Sunbrella Natural con refuerzo en zona de pala. Cierre inferior con cordón elástico y tensor. Protege del sol y crecimiento marino.",
+    imagenes: ["works-13"],
+  },
+];
 
-const works = [
-  {
-    id: "srv1",
-    title: "Lonas a Medida",
-    description:
-      "Fabricación y colocación de lonas para cubrir superficies de cualquier tamaño y forma, con materiales técnicos de alta durabilidad.",
-  },
-  {
-    id: "srv2",
-    title: "Capotas para Embarcaciones",
-    description:
-      "Diseño y confección de capotas personalizadas para embarcaciones, garantizando ajuste perfecto y resistencia a la intemperie.",
-  },
-  {
-    id: "srv3",
-    title: "Cubreautos y Fundas",
-    description:
-      "Fundas protectoras para autos, motos de agua y equipamiento náutico, con materiales que cuidan la superficie y soportan el sol.",
-  },
-] satisfies Work[];
+// ─── Canonical data ──────────────────────────────────────────────────────
 
 const reviews = [
   {
@@ -347,7 +495,6 @@ export const data = {
       cta: { text: "Trabajos Realizados", href: "/servicios" },
     } satisfies AboutUsContent,
 
-    works,
     reviews,
     faqs,
     aboutUsSection,
@@ -491,71 +638,11 @@ export const data = {
 
   // ─── Works page ──────────────────────────────────────────────────────
   worksPage: {
-    tabs: [
-      { id: "capotas", name: "Capotas" },
-      { id: "cerramientos", name: "Cerramientos" },
-      { id: "tonos", name: "Tonos" },
-    ],
-    content: {
-      capotas: {
-        title: "Capotas para embarcaciones",
-        // TODO: replace with real content
-        description:
-          "Diseño y confección de capotas personalizadas para embarcaciones, garantizando ajuste perfecto y resistencia a la intemperie.",
-        items: [
-          { id: "capotas-rigida", title: "Capota rígida", description: "TODO: descripción capota rígida" },
-          { id: "capotas-semirrigida", title: "Capota semirrígida", description: "TODO: descripción capota semirrígida" },
-          { id: "capotas-lona", title: "Capota de lona", description: "TODO: descripción capota de lona" },
-        ],
-      },
-      cerramientos: {
-        title: "Cerramientos",
-        // TODO: replace with real content
-        description:
-          "Cerramientos a medida para protección y confort en tu embarcación, con materiales técnicos de alta durabilidad.",
-        items: [
-          { id: "cerramientos-lateral", title: "Cerramiento lateral", description: "TODO: descripción cerramiento lateral" },
-          { id: "cerramientos-frontal", title: "Cerramiento frontal", description: "TODO: descripción cerramiento frontal" },
-        ],
-      },
-      tonos: {
-        title: "Tonos",
-        // TODO: replace with real content
-        description:
-          "Tonos y cubiertas para embarcaciones, fabricados con materiales de primera calidad.",
-        items: [
-          { id: "tonos-bimini", title: "Toldo Bimini", description: "TODO: descripción toldo bimini" },
-          { id: "tonos-cubre", title: "Cubre equipos", description: "TODO: descripción cubre equipos" },
-        ],
-      },
-    },
+    trabajos,
     album: {
-      // Photo album rendered by the Masonry on /trabajos.
-      // `src` is an imageKey resolved by Works.tsx via a
-      // Record<imageKey, string> map. When new works land, just
-      // add the WebP to src/assets/img/ and a matching entry here.
-      images: [
-        { id: "svc-03", src: "services-03", alt: "Trabajo de lona" },
-        { id: "svc-04", src: "services-04", alt: "Cubreauto" },
-        { id: "svc-05", src: "services-05", alt: "Funda para moto de agua" },
-        { id: "svc-06", src: "services-06", alt: "Carpa" },
-        { id: "svc-07", src: "services-07", alt: "Toneau" },
-        { id: "svc-08", src: "services-08", alt: "Capota" },
-        { id: "wrk-01", src: "works-01", alt: "Trabajo de taller 1" },
-        { id: "wrk-02", src: "works-02", alt: "Trabajo de taller 2" },
-        { id: "wrk-03", src: "works-03", alt: "Trabajo de taller 3" },
-        { id: "wrk-04", src: "works-04", alt: "Trabajo de taller 4" },
-        { id: "wrk-05", src: "works-05", alt: "Trabajo de taller 5" },
-        { id: "wrk-06", src: "works-06", alt: "Trabajo de taller 6" },
-        { id: "wrk-07", src: "works-07", alt: "Trabajo de taller 7" },
-        { id: "wrk-08", src: "works-08", alt: "Trabajo de taller 8" },
-        { id: "wrk-09", src: "works-09", alt: "Trabajo de taller 9" },
-        { id: "wrk-10", src: "works-10", alt: "Trabajo de taller 10" },
-        { id: "wrk-11", src: "works-11", alt: "Trabajo de taller 11" },
-        { id: "wrk-12", src: "works-12", alt: "Trabajo de taller 12" },
-        { id: "wrk-13", src: "works-13", alt: "Trabajo de taller 13" },
-        { id: "wrk-14", src: "works-14", alt: "Trabajo de taller 14" },
-      ],
+      // Derived from trabajos — each photo tagged with trabajoId and categoria
+      // for click→showcase navigation. Resolved URLs injected by Works.tsx.
+      images: [] as AlbumImage[],
     },
   } satisfies WorksPageData,
 
@@ -573,7 +660,7 @@ export const data = {
   /** @deprecated import from `data.home.reviews` instead. Kept for backward compatibility. */
   Home: {
     Sections: [reviewsSection, aboutUsSection] satisfies Section[],
-    Works: works,
+    Works: [],
     Reviews: reviews,
     FAQs: faqs,
   },

@@ -8,6 +8,10 @@ export type { Highlight, AboutCta } from "../types/about";
 export type { Work } from "../types/work";
 export type { Review } from "../types/review";
 export type { AccordionItem } from "../components/ui/Accordion/Accordion";
+export type { Categoria, Trabajo } from "../types/trabajo";
+
+// For local use in this file
+import type { Categoria, Trabajo } from "../types/trabajo";
 
 // ─── Unions ──────────────────────────────────────────────────────────────
 export type SocialPlatform = "Facebook" | "Instagram" | "WhatsApp";
@@ -129,33 +133,12 @@ export interface ProductCategoryData {
 }
 
 // ─── Works page ─────────────────────────────────────────────────────────
-export interface WorkTab {
-  id: string;
-  name: string;
-}
-
-export interface WorkItem {
-  id: string;
-  title: string;
-  description: string;
-  color?: string;
-}
-
-export interface WorkSection {
-  title: string;
-  description: string;
-  /** Items rendered inside the StackedCarousel for this tab. */
-  items: WorkItem[];
-}
-
 export interface WorksPageData {
-  tabs: WorkTab[];
-  content: Record<string, WorkSection>;
+  trabajos: Trabajo[];
   /**
    * Photo album rendered as a masonry on the works page.
-   * `src` is an imageKey resolved by the consuming page via a
-   * `Record<imageKey, string>` map (kept in Works.tsx so the
-   * Vite import + URL plumbing lives next to the component).
+   * Derived from `trabajos` — each image tagged with `trabajoId` and `categoria`
+   * for click→showcase navigation.
    */
   album: {
     images: AlbumImage[];
@@ -164,8 +147,15 @@ export interface WorksPageData {
 
 export interface AlbumImage {
   id: string;
-  src: string;
-  alt: string;
+  img: string; // resolved URL (not imageKey)
+  url: string;
+  alt?: string;
+  title?: string;
+  /** ID of the trabajo this image belongs to — enables click→showcase navigation */
+  trabajoId?: string;
+  /** Category slug — enables filtering and hash sync */
+  categoria?: Categoria;
+  redirectUrl?: string;
 }
 
 // ─── UI copy ─────────────────────────────────────────────────────────────
