@@ -3,7 +3,7 @@ import type { Categoria } from "../../../types/trabajo";
 
 export function CategorySelect({ value, options, onChange }: CategorySelectProps) {
   return (
-    <label className="w-full max-w-xs" htmlFor="categoria-select">
+    <label className="w-full max-w-xs " htmlFor="categoria-select">
       <select
         id="categoria-select"
         name="categoria"
@@ -11,9 +11,11 @@ export function CategorySelect({ value, options, onChange }: CategorySelectProps
         onChange={(e) => onChange(e.target.value as Categoria)}
         className="
           w-full max-w-50 appearance-none
-          bg-sc-chalk
-          text-pr-hero-blue
+          bg-sc-sky-blue/10
+          text-sc-chalk
           font-poppins
+          ring-1
+          ring-sc-chalk/50
           text-base font-semibold
           px-4 py-3
           rounded-xl
@@ -29,7 +31,7 @@ export function CategorySelect({ value, options, onChange }: CategorySelectProps
         aria-label="Categoría de trabajo"
       >
         {options.map((categoria) => (
-          <option key={categoria} value={categoria} className="bg-pr-hero-blue/90 text-sc-chalk ring-1 ring-pr-aquamarine">
+          <option key={categoria} value={categoria} className="bg-sc-chalk  text-pr-hero-blue text-md font-semibold">
             {categoria.charAt(0).toUpperCase() + categoria.slice(1).replace(/-/g, " ")}
           </option>
         ))}

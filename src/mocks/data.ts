@@ -62,6 +62,12 @@ const trabajos: Trabajo[] = [
       "Toneau a medida en lona vinílica negra con estructura de aluminio anodizado. Sistema de apertura enrollable con tensores de acero inoxidable. Impermeable y resistente a rayos UV.",
     imagenes: ["services-07"],
     destacado: true,
+    cualidades: [
+      { icono: "IconDroplet", texto: "Impermeable" },
+      { icono: "IconSun", texto: "Resistente a rayos UV" },
+      { icono: "IconReplace", texto: "Apertura enrollable" },
+      { icono: "IconShieldCheck", texto: "Aluminio anodizado" },
+    ],
   },
   // Cubrevidrios
   {
@@ -72,6 +78,12 @@ const trabajos: Trabajo[] = [
       "Protección total de parabrisas y laterales en Sunbrella Pacific Blue. Sistema de fijación con broches de presión y elásticos reforzados. Incluye bolsillo de guardado.",
     imagenes: ["works-01"],
     destacado: true,
+    cualidades: [
+      { icono: "IconSun", texto: "Lona Sunbrella Pacific Blue" },
+      { icono: "IconShield", texto: "Protección total" },
+      { icono: "IconBolt", texto: "Fijación con broches" },
+      { icono: "IconPackage", texto: "Bolsillo de guardado" },
+    ],
   },
   // Cubre Fly
   {
@@ -110,6 +122,12 @@ const trabajos: Trabajo[] = [
       "Toldo bimini de 3 arcos en acero inoxidable 316L con lona Sunbrella Captain Navy. Montaje rápido sin herramientas. Incluye funda de guardado y tensores regulables.",
     imagenes: ["services-06", "services-05", "works-03"],
     destacado: true,
+    cualidades: [
+      { icono: "IconUmbrella", texto: "Lona Sunbrella Captain Navy" },
+      { icono: "IconAnchor", texto: "Acero inoxidable 316L" },
+      { icono: "IconBolt", texto: "Montaje rápido sin herramientas" },
+      { icono: "IconPackage", texto: "Funda de guardado incluida" },
+    ],
   },
   {
     id: "trab-carpas-2",
@@ -128,6 +146,12 @@ const trabajos: Trabajo[] = [
       "Estructura de aluminio anodizado con paneles de policarbonato ahumado. Puertas laterales corredizas con cerradura. Ventilación superior con compuertas ajustables.",
     imagenes: ["services-08"],
     destacado: true,
+    cualidades: [
+      { icono: "IconTool", texto: "Estructura de aluminio" },
+      { icono: "IconShield", texto: "Policarbonato ahumado" },
+      { icono: "IconLock", texto: "Cerradura de seguridad" },
+      { icono: "IconWind", texto: "Ventilación ajustable" },
+    ],
   },
   {
     id: "trab-capotas-2",
@@ -164,6 +188,12 @@ const trabajos: Trabajo[] = [
       "Cubierta en lona vinílica gris con refuerzos en tubos de flotación. Sistema de sujeción por cinchas con tensores inox. Acceso a consola y bañera mediante cremalleras.",
     imagenes: ["works-07"],
     destacado: true,
+    cualidades: [
+      { icono: "IconDroplet", texto: "Lona vinílica impermeable" },
+      { icono: "IconLifebuoy", texto: "Refuerzos de flotación" },
+      { icono: "IconAnchor", texto: "Tensores de acero inoxidable" },
+      { icono: "IconSailboat", texto: "Acceso a consola y bañera" },
+    ],
   },
   {
     id: "trab-gomones-2",

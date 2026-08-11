@@ -39,8 +39,8 @@ export function WorksCarousel({ images, onThumbSelect }: WorksCarouselProps) {
 
   return (
     <div className="mt-8" role="region" aria-label="Works carousel">
-      <div className="rounded-3xl bg-gradient-to-br from-sc-sky-blue to-pr-aquamarine p-1.5">
-        <div className="rounded-2xl bg-sc-chalk p-4">
+      <div>
+        <div className="rounded-2xl p-4">
           <div
             ref={scrollRef}
             onScroll={handleScroll}

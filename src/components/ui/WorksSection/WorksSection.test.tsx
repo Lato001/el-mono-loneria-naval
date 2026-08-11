@@ -65,7 +65,7 @@ describe("WorksSection", () => {
     expect(screen.getByRole("heading", { level: 1, name: "Nuestros Trabajos" })).toBeInTheDocument();
 
     // Album section
-    expect(screen.getByRole("heading", { level: 2, name: "Más del taller" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { level: 2, name: "Trabajos destacados" })).toBeInTheDocument();
     // No duplicate "Nuestros Trabajos" in album section
     const h1Count = screen.getAllByRole("heading", { level: 1, name: "Nuestros Trabajos" }).length;
     expect(h1Count).toBe(1);
@@ -124,7 +124,7 @@ describe("WorksSection", () => {
     // Find an album item (Masonry is mocked, so we need to test the integration differently)
     // This test will be more meaningful once we integrate with real Masonry
     // For now, verify the component renders without error
-    expect(screen.getByRole("heading", { level: 2, name: "Más del taller" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { level: 2, name: "Trabajos destacados" })).toBeInTheDocument();
   });
 
   it("renders ImgCard with current image (not slideshow) for selected trabajo", () => {
@@ -150,5 +150,22 @@ describe("WorksSection", () => {
 
     const thumbnails = screen.queryAllByRole("button", { name: /thumbnail/i });
     expect(thumbnails).toHaveLength(0);
+  });
+
+  it("renders cualidades badges for the default selected trabajo (trab-carpas-1)", () => {
+    renderWorksSection();
+
+    expect(screen.getByText("Lona Sunbrella Captain Navy")).toBeInTheDocument();
+    expect(screen.getByText("Acero inoxidable 316L")).toBeInTheDocument();
+    expect(screen.getByText("Montaje rápido sin herramientas")).toBeInTheDocument();
+    expect(screen.getByText("Funda de guardado incluida")).toBeInTheDocument();
+  });
+
+  it("renders no cualidades badge list when the selected trabajo has none", () => {
+    // trab-cubre-fly-1 has no cualidades field
+    renderWorksSection("#cubre-fly");
+
+    expect(screen.queryByRole("list")).not.toBeInTheDocument();
+    expect(screen.queryByText("Lona Sunbrella Captain Navy")).not.toBeInTheDocument();
   });
 });

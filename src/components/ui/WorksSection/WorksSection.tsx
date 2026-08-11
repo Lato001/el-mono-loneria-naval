@@ -7,7 +7,43 @@ import Masonry, { type Item } from "../Masonry/Masonry";
 import type { Categoria, Trabajo } from "../../../types/trabajo";
 import { data } from "../../../mocks/data";
 import type { AlbumImage } from "../../../mocks/types";
+import {
+  IconAnchor,
+  IconBolt,
+  IconDroplet,
+  IconLifebuoy,
+  IconLock,
+  IconPackage,
+  IconReplace,
+  IconSailboat,
+  IconShield,
+  IconShieldCheck,
+  IconSun,
+  IconTag,
+  IconTool,
+  IconUmbrella,
+  IconWind,
+} from '@tabler/icons-react';
+import type { Icon } from '@tabler/icons-react';
 
+// Icon key (from data.ts `cualidades[].icono`) → Tabler icon component.
+// Unknown keys fall back to IconTag.
+const cualidadIconos: Record<string, Icon> = {
+  IconAnchor,
+  IconBolt,
+  IconDroplet,
+  IconLifebuoy,
+  IconLock,
+  IconPackage,
+  IconReplace,
+  IconSailboat,
+  IconShield,
+  IconShieldCheck,
+  IconSun,
+  IconTool,
+  IconUmbrella,
+  IconWind,
+};
 interface WorksSectionProps {
   imageMap: Record<string, string>;
 }
@@ -132,17 +168,18 @@ export function WorksSection({ imageMap }: WorksSectionProps) {
         title="Nuestros Trabajos"
         theme="dark"
         headingLevel="h1"
-        className="bg-gradient-to-b from-sc-ocean-blue to-pr-hero-blue"
       >
         <CategorySelect
           value={selectedCategoria}
           options={availableCategorias}
           onChange={handleCategoriaChange}
         />
+        <div className="rounded-3xl bg-gradient-to-r from-sc-ocean-blue/30 to-pr-hero-blue">
 
+        
         <div className="mt-10 grid gap-8 lg:grid-cols-[40%_60%]">
           {/* ImgCard - Left column */}
-          <div className="flex justify-center lg:justify-start rounded-3xl bg-gradient-to-br from-sc-sky-blue to-pr-aquamarine p-1.5">
+          <div className="flex justify-center lg:justify-start rounded-3xl">
             <ImgCard
               src={mainImageSrc}
               alt={mainImageAlt}
@@ -151,35 +188,57 @@ export function WorksSection({ imageMap }: WorksSectionProps) {
           </div>
 
           {/* Description - Right column */}
-          <div className="flex flex-col justify-center rounded-3xl bg-gradient-to-br from-sc-sky-blue to-pr-aquamarine">
+          <div className="flex flex-col justify-start  ">
             <div className="px-8 py-8">
 
             {selectedTrabajo && (
               <>
-                <span className="inline-block self-start rounded-full bg-white px-4 py-1.5 font-poppins text-sm font-semibold text-pr-hero-blue">
+                <span className="inline-block self-start rounded-full py-4 font-poppins text-xl font-semibolditalic text-pr-aquamarine ">
+                  <div className="flex items-center justify-around">
+                  <IconTag stroke={2} className="mr-1.5" />
                   {selectedTrabajo.categoria.charAt(0).toUpperCase() + selectedTrabajo.categoria.slice(1).replace(/-/g, " ")}
+                  </div>
                 </span>
                 <h2 className="my-4 font-poppins font-bold text-2xl text-sc-chalk md:text-3xl">
                   {selectedTrabajo.titulo}
                 </h2>
-                <p className="mb-6 font-poppins text-base leading-relaxed text-sc-chalk md:text-lg">
+                <p className="mb-6 font-poppins text-base leading-relaxed text-justify text-sc-chalk md:text-lg">
                   {selectedTrabajo.descripcion}
                 </p>
+                {selectedTrabajo.cualidades && selectedTrabajo.cualidades.length > 0 && (
+                  <ul className="mt-4 flex flex-wrap gap-2">
+                    {selectedTrabajo.cualidades.map((c) => {
+                      const IconCualidad = cualidadIconos[c.icono] ?? IconTag;
+                      return (
+                        <li
+                          key={c.texto}
+                          className="inline-flex items-center gap-1.5 rounded-full bg-sc-sky-blue/10 px-3 py-1.5 font-poppins text-sm font-semibold text-pr-aquamarine"
+                        >
+                          <IconCualidad stroke={2} size={16} aria-hidden="true" />
+                          {c.texto}
+                        </li>
+                      );
+                    })}
+                  </ul>
+                )}
+                {/* WorksCarousel */}
+        {carouselImages.length >= 2 && (
+          <WorksCarousel images={carouselImages} onThumbSelect={handleThumbSelect} />
+        )}
               </>
             )}
             </div>
           </div>
         </div>
-
-        {/* WorksCarousel */}
-        {carouselImages.length >= 2 && (
-          <WorksCarousel images={carouselImages} onThumbSelect={handleThumbSelect} />
-        )}
+        </div>
+        
       </SectionWrapper>
 
       {/* Album Section */}
       <SectionWrapper
-        title="Más del taller"
+      eyebrow="Album de fotos"
+      titlesAlign="end"
+        title="Trabajos destacados"
         theme="dark"
         headingLevel="h2"
       >

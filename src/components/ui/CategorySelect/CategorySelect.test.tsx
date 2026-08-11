@@ -38,12 +38,12 @@ describe("CategorySelect", () => {
     expect(onChange).toHaveBeenCalledWith("capotas");
   });
 
-  it("applies design system styling: chalk background, pr-hero-blue text, font-poppins", () => {
+  it("applies design system styling: sky-blue tint background, chalk text, font-poppins", () => {
     render(<CategorySelect value="carpas" options={mockCategorias} onChange={vi.fn()} />);
 
     const select = screen.getByRole("combobox");
-    expect(select).toHaveClass("bg-sc-chalk");
-    expect(select).toHaveClass("text-pr-hero-blue");
+    expect(select).toHaveClass("bg-sc-sky-blue/10");
+    expect(select).toHaveClass("text-sc-chalk");
     expect(select).toHaveClass("font-poppins");
   });
 
