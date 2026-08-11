@@ -39,88 +39,92 @@ export function WorksCarousel({ images, onThumbSelect }: WorksCarouselProps) {
 
   return (
     <div className="mt-8" role="region" aria-label="Works carousel">
-      <div
-        ref={scrollRef}
-        onScroll={handleScroll}
-        className="flex gap-4 overflow-x-auto scroll-smooth snap-x snap-mandatory pb-4 scrollbar-hide"
-        style={{ scrollbarWidth: "none" }}
-      >
-        {images.map((image) => (
-          <button
-            key={image.originalIndex}
-            type="button"
-            onClick={() => onThumbSelect(image.originalIndex)}
-            className="
+      <div className="rounded-3xl bg-gradient-to-br from-sc-sky-blue to-pr-aquamarine p-1.5">
+        <div className="rounded-2xl bg-sc-chalk p-4">
+          <div
+            ref={scrollRef}
+            onScroll={handleScroll}
+            className="flex gap-4 overflow-x-auto scroll-smooth snap-x snap-mandatory pb-4 scrollbar-hide"
+            style={{ scrollbarWidth: "none" }}
+          >
+            {images.map((image) => (
+              <button
+                key={image.originalIndex}
+                type="button"
+                onClick={() => onThumbSelect(image.originalIndex)}
+                className="
               w-[calc(50%-8px)] shrink-0 snap-start lg:w-[calc(25%-12px)]
               rounded-xl overflow-hidden
               shadow-lg transition-all duration-200
               hover:shadow-xl hover:-translate-y-1
               focus-visible:outline-2 focus-visible:outline-pr-aquamarine focus-visible:outline-offset-2
             "
-            role="button"
-            aria-label={`thumbnail ${image.originalIndex + 1} de ${images.length}: ${image.alt}`}
-          >
-            <img
-              src={image.src}
-              alt={image.alt}
-              className="w-full h-32 object-cover"
-              loading="lazy"
-            />
-          </button>
-        ))}
-      </div>
+                role="button"
+                aria-label={`thumbnail ${image.originalIndex + 1} de ${images.length}: ${image.alt}`}
+              >
+                <img
+                  src={image.src}
+                  alt={image.alt}
+                  className="w-full h-32 object-cover"
+                  loading="lazy"
+                />
+              </button>
+            ))}
+          </div>
 
-      {/* Page indicator dots */}
-      {totalPages > 1 && (
-        <div data-testid="works-carousel-dots" className="flex justify-center gap-2 mt-4" role="tablist" aria-label="Páginas del carrusel">
-          {Array.from({ length: totalPages }, (_, i) => (
-            <button
-              key={i}
-              type="button"
-              onClick={() => goToPage(i)}
-              role="tab"
-              aria-selected={i === currentPage}
-              aria-label={`Página ${i + 1} de ${totalPages}`}
-              className={`
+          {/* Page indicator dots */}
+          {totalPages > 1 && (
+            <div data-testid="works-carousel-dots" className="flex justify-center gap-2 mt-4" role="tablist" aria-label="Páginas del carrusel">
+              {Array.from({ length: totalPages }, (_, i) => (
+                <button
+                  key={i}
+                  type="button"
+                  onClick={() => goToPage(i)}
+                  role="tab"
+                  aria-selected={i === currentPage}
+                  aria-label={`Página ${i + 1} de ${totalPages}`}
+                  className={`
                 w-2 h-2 rounded-full transition-colors
                 ${i === currentPage
                   ? "bg-pr-aquamarine"
                   : "bg-white/30 hover:bg-white/50"}
               `}
-            />
-          ))}
-        </div>
-      )}
+                />
+              ))}
+            </div>
+          )}
 
-      <div className="flex justify-center gap-3 mt-4">
-        <button
-          type="button"
-          onClick={prev}
-          disabled={!canPrev}
-          aria-label="Anterior"
-          className="
+          <div className="flex justify-center gap-3 mt-4">
+            <button
+              type="button"
+              onClick={prev}
+              disabled={!canPrev}
+              aria-label="Anterior"
+              className="
             rounded-full bg-sc-ocean-blue/80 p-2 text-pr-aquamarine
             backdrop-blur-sm transition-colors
             hover:bg-sc-ocean-blue focus-visible:outline-2 focus-visible:outline-pr-aquamarine
             disabled:opacity-30 disabled:cursor-not-allowed
           "
-        >
-          <IconChevronLeft className="h-5 w-5" stroke={2} />
-        </button>
-        <button
-          type="button"
-          onClick={next}
-          disabled={!canNext}
-          aria-label="Siguiente"
-          className="
+            >
+              <IconChevronLeft className="h-5 w-5" stroke={2} />
+            </button>
+            <button
+              type="button"
+              onClick={next}
+              disabled={!canNext}
+              aria-label="Siguiente"
+              className="
             rounded-full bg-sc-ocean-blue/80 p-2 text-pr-aquamarine
             backdrop-blur-sm transition-colors
             hover:bg-sc-ocean-blue focus-visible:outline-2 focus-visible:outline-pr-aquamarine
             disabled:opacity-30 disabled:cursor-not-allowed
           "
-        >
-          <IconChevronRight className="h-5 w-5" stroke={2} />
-        </button>
+            >
+              <IconChevronRight className="h-5 w-5" stroke={2} />
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   );

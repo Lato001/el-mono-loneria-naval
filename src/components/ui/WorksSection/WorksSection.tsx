@@ -132,6 +132,7 @@ export function WorksSection({ imageMap }: WorksSectionProps) {
         title="Nuestros Trabajos"
         theme="dark"
         headingLevel="h1"
+        className="bg-gradient-to-b from-sc-ocean-blue to-pr-hero-blue"
       >
         <CategorySelect
           value={selectedCategoria}
@@ -141,7 +142,7 @@ export function WorksSection({ imageMap }: WorksSectionProps) {
 
         <div className="mt-10 grid gap-8 lg:grid-cols-[40%_60%]">
           {/* ImgCard - Left column */}
-          <div className="flex justify-center lg:justify-start">
+          <div className="flex justify-center lg:justify-start rounded-3xl bg-gradient-to-br from-sc-sky-blue to-pr-aquamarine p-1.5">
             <ImgCard
               src={mainImageSrc}
               alt={mainImageAlt}
@@ -150,20 +151,23 @@ export function WorksSection({ imageMap }: WorksSectionProps) {
           </div>
 
           {/* Description - Right column */}
-          <div className="flex flex-col justify-center text-white">
+          <div className="flex flex-col justify-center rounded-3xl bg-gradient-to-br from-sc-sky-blue to-pr-aquamarine">
+            <div className="px-8 py-8">
+
             {selectedTrabajo && (
               <>
-                <h2 className="font-poppins font-bold text-2xl md:text-3xl mb-4">
-                  {selectedTrabajo.titulo}
-                </h2>
-                <p className="font-poppins text-base md:text-lg opacity-90 mb-6 leading-relaxed">
-                  {selectedTrabajo.descripcion}
-                </p>
-                <span className="inline-block px-3 py-1 rounded-full bg-pr-aquamarine/20 text-pr-aquamarine font-poppins text-sm">
+                <span className="inline-block self-start rounded-full bg-white px-4 py-1.5 font-poppins text-sm font-semibold text-pr-hero-blue">
                   {selectedTrabajo.categoria.charAt(0).toUpperCase() + selectedTrabajo.categoria.slice(1).replace(/-/g, " ")}
                 </span>
+                <h2 className="my-4 font-poppins font-bold text-2xl text-sc-chalk md:text-3xl">
+                  {selectedTrabajo.titulo}
+                </h2>
+                <p className="mb-6 font-poppins text-base leading-relaxed text-sc-chalk md:text-lg">
+                  {selectedTrabajo.descripcion}
+                </p>
               </>
             )}
+            </div>
           </div>
         </div>
 
