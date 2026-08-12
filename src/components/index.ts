@@ -35,4 +35,9 @@ export * from './ui/SelectionCounter/SelectionCounter';
 export * from './ui/SelectionCounter/SelectionCounter.types';
 export * from './ui/SplitCards/SplitCards';
 export * from './ui/SplitReviews/SplitReviews';
+export * from './ui/CategorySelect/CategorySelect';
+export * from './ui/CategorySelect/CategorySelect.types';
+export * from './ui/WorksCarousel/WorksCarousel';
+export * from './ui/WorksCarousel/WorksCarousel.types';
+export * from './ui/WorksSection/WorksSection';
 

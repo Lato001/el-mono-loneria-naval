@@ -7,7 +7,7 @@ describe("Card", () => {
     render(<Card title="Test" selected={true} />);
     const article = screen.getByRole("article");
     expect(article.className).toContain("ring-pr-aquamarine");
-    expect(article.className).toContain("ring-1");
+    expect(article.className).toContain("ring-2");
   });
 
   it("renders a checkbox when onSelectChange is provided", async () => {
@@ -117,7 +117,8 @@ describe("Card", () => {
     render(<Card title="Broche Test" selected={true} onSelectChange={() => {}} />);
     const article = screen.getByRole("article");
     expect(article.className).toContain("ring-pr-aquamarine");
-    expect(article.className).toContain("border-pr-aquamarine");
+    expect(article.className).toContain("ring-2");
+    expect(article.className).toContain("bg-white/80");
   });
 
   it("fills its container height via h-full for equal-height rows", () => {

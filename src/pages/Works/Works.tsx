@@ -1,5 +1,4 @@
-import Masonry from "../../components/ui/Masonry/Masonry";
-import { data } from "../../mocks/data";
+import { WorksSection } from "../../components/ui";
 import services03 from "../../assets/img/services/services-03.webp";
 import services04 from "../../assets/img/services/services-04.webp";
 import services05 from "../../assets/img/services/services-05.webp";
@@ -21,10 +20,8 @@ import works12 from "../../assets/img/works/works-12.webp";
 import works13 from "../../assets/img/works/works-13.webp";
 import works14 from "../../assets/img/works/works-14.webp";
 
-import { SectionWrapper } from "../../components";
-
 /**
- * Image-key → URL map. The `src` field in `data.worksPage.album.images`
+ * Image-key → URL map. The `src` field in `data.worksPage.trabajos.imagenes`
  * is an imageKey (a stable identifier, e.g. "services-03"). The page
  * resolves it to the actual Vite-imported URL here so that `mocks/data.ts`
  * stays free of Vite-specific import paths.
@@ -53,33 +50,5 @@ const imageMap: Record<string, string> = {
 };
 
 export function Works() {
-  const images = data.worksPage.album.images.map((item) => ({
-    id: item.id,
-    img: imageMap[item.src] ?? "",
-    url: "",
-    alt: item.alt,
-  }));
-
-  return (
-    <>
-      <SectionWrapper
-        id="album"
-        className="mx-auto"
-        eyebrow="Album de fotos"
-        title="Nuestros Trabajos"
-      >
-        <Masonry
-          items={images}
-          variant="uniform"
-          ease="power3.out"
-          duration={0.6}
-          stagger={0.05}
-          animateFrom="bottom"
-          scaleOnHover
-          hoverScale={0.95}
-          colorShiftOnHover={true}
-        />
-      </SectionWrapper>
-    </>
-  );
+  return <WorksSection imageMap={imageMap} />;
 }

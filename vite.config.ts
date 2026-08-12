@@ -15,6 +15,11 @@ export default defineConfig({
     environment: 'jsdom',
     setupFiles: ['./src/test/setup.ts'],
     css: false,
+    // Deterministic env for tests — .env is gitignored/local-only, so the
+    // WhatsApp deep link must come from here in CI instead.
+    env: {
+      VITE_WHATSAPP_URL: 'https://wa.me/5491100000000?text=Hola%20El%20Mono',
+    },
     coverage: {
       provider: 'v8',
       reporter: ['text', 'html', 'lcov'],
