@@ -77,3 +77,33 @@ body {
   --animate-fadeIn: fadeIn 200ms ease-out;
   --animate-modalSheetIn: modalSheetIn 250ms ease-out;
 }
+
+/* Home sections — continuous navy gradient + soft cyan glow (top-right).
+   Applied via SectionWrapper className="section-navy-gradient".
+   Uses the @theme tokens (--color-sc-ocean-blue, --color-pr-hero-blue,
+   --color-pr-aquamarine) so darkening/lightening them cascades here. */
+.section-navy-gradient {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(
+    to bottom,
+    var(--color-sc-ocean-blue),
+    var(--color-pr-hero-blue)
+  );
+}
+.section-navy-gradient > * {
+  position: relative;
+  z-index: 1;
+}
+.section-navy-gradient::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse 60% 50% at 85% 0%,
+    color-mix(in srgb, var(--color-pr-aquamarine) 22%, transparent),
+    transparent 70%
+  );
+}

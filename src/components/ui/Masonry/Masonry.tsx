@@ -99,6 +99,10 @@ export interface Item {
   trabajoId?: string;
   /** Category slug — enables filtering and hash sync */
   categoria?: string;
+  /** Optional card eyebrow shown above the title (Home mosaic presentation). */
+  eyebrow?: string;
+  /** Optional chips shown under the title (Home mosaic presentation). */
+  chips?: string[];
 }
 
 interface GridItem extends Item {
@@ -148,6 +152,11 @@ const Masonry: React.FC<MasonryProps> = ({
   );
 
   const isMobile = useMedia(["(max-width: 767px)"], [1], 0) === 1;
+
+  // Home mosaic: always 2x2 on desktop, 4-in-a-row only on very large screens
+  // (xl2 = 95rem / 1520px, the same breakpoint defined in @theme).
+  const isXl2Mosaic = useMedia(["(min-width: 95rem)"], [1], 0) === 1;
+  const itemsPerRow = variant === "mosaic" ? (isXl2Mosaic ? 4 : 2) : 1;
 
   const [containerRef, { width }, containerNode] = useMeasure<HTMLDivElement>();
   const [imagesReady, setImagesReady] = useState(false);
@@ -206,18 +215,19 @@ const Masonry: React.FC<MasonryProps> = ({
     const gridItems: GridItem[] = [];
 
     if (variant === "mosaic") {
-      const itemsPerRow = 2;
-
       for (let rowIdx = 0; rowIdx < items.length; rowIdx += itemsPerRow) {
         const rowItems = items.slice(rowIdx, rowIdx + itemsPerRow);
-        const flexes = rowItems.map((_, i) => (rowIdx + i) % 2 === 0 ? 2 : 1);
+        // 2x2 cards are equal width. 4-in-a-row are also equal width.
+        const flexes = rowItems.map(() => 1);
         const totalFlex = flexes.reduce((s, v) => s + v, 0);
         const usableWidth = width - (rowItems.length - 1) * gap;
 
         const rowY = gridItems.length === 0
           ? 0
           : Math.max(...gridItems.map((g) => g.y + g.h)) + gap;
-        const rowHeight = usableWidth / 5;
+        // Keep a ~4/3-ish card aspect regardless of how many items share the row:
+        // 2 cols → row height = usableWidth / 2.5; 4 cols → usableWidth / 5.
+        const rowHeight = usableWidth / (itemsPerRow === 4 ? 5 : 2.5);
         let rowX = 0;
 
         rowItems.forEach((child, i) => {
@@ -250,7 +260,7 @@ const Masonry: React.FC<MasonryProps> = ({
     const totalHeight =
       gridItems.length > 0 ? Math.max(...colHeights) - gap : 0;
     return { grid: gridItems, totalHeight };
-  }, [columns, dimensionsMap, items, variant, width]);
+  }, [columns, dimensionsMap, items, itemsPerRow, variant, width]);
 
   const hasMounted = useRef(false);
 
@@ -350,18 +360,37 @@ const Masonry: React.FC<MasonryProps> = ({
               key={item.id}
               data-key={item.id}
               href={item.redirectUrl}
-              className="absolute box-content group block rounded-lg transition-all duration-400 ease-out border-2 border-sc-ocean-blue/15 hover:-translate-y-1.5 hover:shadow-xl hover:border-pr-aquamarine hover:ring-2 hover:ring-pr-aquamarine"
+              className="absolute box-content group block rounded-3xl border border-sc-ocean-blue/15 transition-all duration-300 ease-out motion-safe:hover:-translate-y-1 hover:ring-1 hover:ring-pr-aquamarine/50"
               style={{ willChange: "transform, width, height, opacity" }}
             >
-              <div className="relative w-full h-full overflow-hidden rounded-lg shadow-[0px_10px_50px_-10px_rgba(0,0,0,0.2)]">
+              <div className="relative w-full h-full overflow-hidden rounded-3xl">
                 <div
-                  className="absolute inset-0 bg-cover bg-center transition-all duration-600 ease-out brightness-50 grayscale-50 group-hover:brightness-100 group-hover:grayscale-0 group-hover:scale-105"
+                  className="absolute inset-0 bg-cover bg-center transition-all duration-500 ease-out brightness-50 grayscale-50 motion-safe:group-hover:scale-105 group-hover:brightness-100 group-hover:grayscale-0"
                   style={{ backgroundImage: `url(${item.img})` }}
                 />
                 {item.title && (
-                  <h3 className="absolute inset-0 z-10 flex items-center justify-center font-brown uppercase tracking-wider text-white text-3xl drop-shadow-[0_2px_8px_rgba(0,0,0,0.65)] pointer-events-none">
-                    {item.title}
-                  </h3>
+                  <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 flex flex-col justify-end p-5">
+                    {item.eyebrow && (
+                      <p className="font-poppins text-xs uppercase tracking-[0.2em] text-pr-aquamarine">
+                        {item.eyebrow}
+                      </p>
+                    )}
+                    <h3 className="mt-1 font-brown uppercase tracking-wider text-white text-2xl drop-shadow-[0_2px_8px_rgba(0,0,0,0.65)]">
+                      {item.title}
+                    </h3>
+                    {item.chips && item.chips.length > 0 && (
+                      <div className="mt-2 flex flex-wrap gap-1.5">
+                        {item.chips.map((chip) => (
+                          <span
+                            key={chip}
+                            className="rounded-full border border-pr-aquamarine/30 bg-pr-aquamarine/10 px-3 py-1 font-poppins text-xs font-medium text-pr-aquamarine backdrop-blur"
+                          >
+                            {chip}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                  </div>
                 )}
               </div>
             </a>
@@ -431,17 +460,36 @@ function MobileMosaicCarousel({ items }: { items: Item[] }) {
           <div key={item.id} className="w-[80%] shrink-0 snap-start">
             <a
               href={item.redirectUrl ?? "/trabajos#album"}
-              className="group block rounded-lg transition-all duration-400 ease-out border-2 border-white/15 hover:border-pr-aquamarine hover:ring-2 hover:ring-pr-aquamarine"
+              className="group block rounded-3xl border border-white/15 transition-all duration-300 ease-out motion-safe:hover:-translate-y-1 hover:ring-1 hover:ring-pr-aquamarine/50"
             >
-              <div className="relative w-full aspect-[4/3] overflow-hidden rounded-lg shadow-[0px_10px_50px_-10px_rgba(0,0,0,0.2)]">
+              <div className="relative w-full aspect-[4/3] overflow-hidden rounded-3xl">
                 <div
-                  className="absolute inset-0 bg-cover bg-center transition-all duration-600 ease-out brightness-50 grayscale-50 group-hover:brightness-100 group-hover:grayscale-0 group-hover:scale-105"
+                  className="absolute inset-0 bg-cover bg-center transition-all duration-500 ease-out brightness-50 grayscale-50 motion-safe:group-hover:scale-105 group-hover:brightness-100 group-hover:grayscale-0"
                   style={{ backgroundImage: `url(${item.img})` }}
                 />
                 {item.title && (
-                  <h3 className="absolute inset-0 z-10 flex items-center justify-center font-brown uppercase tracking-wider text-white text-3xl drop-shadow-[0_2px_8px_rgba(0,0,0,0.65)] pointer-events-none">
-                    {item.title}
-                  </h3>
+                  <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 flex flex-col justify-end p-5">
+                    {item.eyebrow && (
+                      <p className="font-poppins text-xs uppercase tracking-[0.2em] text-pr-aquamarine">
+                        {item.eyebrow}
+                      </p>
+                    )}
+                    <h3 className="mt-1 font-brown uppercase tracking-wider text-white text-2xl drop-shadow-[0_2px_8px_rgba(0,0,0,0.65)]">
+                      {item.title}
+                    </h3>
+                    {item.chips && item.chips.length > 0 && (
+                      <div className="mt-2 flex flex-wrap gap-1.5">
+                        {item.chips.map((chip) => (
+                          <span
+                            key={chip}
+                            className="rounded-full border border-pr-aquamarine/30 bg-pr-aquamarine/10 px-3 py-1 font-poppins text-xs font-medium text-pr-aquamarine backdrop-blur"
+                          >
+                            {chip}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                  </div>
                 )}
               </div>
             </a>

@@ -101,6 +101,10 @@ export interface MasonryItem {
   alt?: string;
   title?: string;
   redirectUrl?: string;
+  /** Optional card eyebrow shown above the title (Home mosaic presentation). */
+  eyebrow?: string;
+  /** Optional chips shown under the title (Home mosaic presentation). */
+  chips?: string[];
 }
 
 // ─── Brands ──────────────────────────────────────────────────────────────

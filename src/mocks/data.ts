@@ -494,8 +494,8 @@ export const data = {
       aboutUs: {
         eyebrow: "Sobre Nosotros",
         title: "Trabajos a Medida",
-        theme: "light",
-        titlesAlign: "end",
+        theme: "dark",
+        titlesAlign: "start",
       },
       testimonials: {
         eyebrow: "Testimonios",

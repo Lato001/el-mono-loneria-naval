@@ -32,6 +32,9 @@ const splitCardsImageMap: Record<string, string> = heroImageMap;
 const homeMasonryItems: MasonryItem[] = data.home.masonryItems.map((item) => ({
   ...item,
   img: heroImageMap[item.img] ?? "",
+  // PLACEHOLDER presentation copy — the user will supply real texts per card.
+  eyebrow: item.title ?? "Trabajos a medida",
+  chips: ["A medida", "Lona reforzada"],
 }));
 
 export function Home() {
@@ -46,44 +49,52 @@ export function Home() {
         secondaryCta={data.home.hero.secondaryCta}
         videos={data.home.hero.videos}
       />
-      <SectionWrapper
-        theme="light"
-        titlesAlign={data.home.sections.whatWeOffer.titlesAlign}
-        eyebrow={data.home.sections.whatWeOffer.eyebrow}
-        title={data.home.sections.whatWeOffer.title}
-      >
-        <SplitCards
-          items={data.home.splitCards}
-          imageMap={splitCardsImageMap}
-        />
-      </SectionWrapper>
-      <SectionWrapper
-        theme="dark"
-        titlesAlign={data.home.sections.aboutUs.titlesAlign}
-        eyebrow={data.home.sections.aboutUs.eyebrow}
-        title={data.home.sections.aboutUs.title}
-      >
-        <div className="pb-10">
-          <Masonry
-            items={homeMasonryItems}
-            variant="mosaic"
-            ease="power3.out"
-            duration={0.6}
-            stagger={0.05}
-            animateFrom="bottom"
-            scaleOnHover
-            hoverScale={0.95}
+      <div className="section-navy-gradient">
+        <SectionWrapper
+          theme="dark"
+          className="!bg-transparent"
+          titlesAlign={data.home.sections.whatWeOffer.titlesAlign}
+          eyebrow={data.home.sections.whatWeOffer.eyebrow}
+          eyebrowDash
+          title={data.home.sections.whatWeOffer.title}
+          subtitle="PLACEHOLDER — subtítulo opcional. Productos y trabajos a medida para tu embarcación."
+        >
+          <SplitCards
+            items={data.home.splitCards}
+            imageMap={splitCardsImageMap}
           />
-        </div>
-        <div className="flex justify-center">
-          <LinkButton
-            type="Redirect"
-            text="Ver Galeria de Fotos"
-            theme="light"
-            path={PATHS.WORKS}
-          />
-        </div>
-      </SectionWrapper>
+        </SectionWrapper>
+        <SectionWrapper
+          theme="dark"
+          className="!bg-transparent"
+          titlesAlign={data.home.sections.aboutUs.titlesAlign}
+          eyebrow={data.home.sections.aboutUs.eyebrow}
+          eyebrowDash
+          title={data.home.sections.aboutUs.title}
+          subtitle="PLACEHOLDER — subtítulo opcional. Hecho a mano en nuestro taller de Tigre."
+        >
+          <div className="pb-10">
+            <Masonry
+              items={homeMasonryItems}
+              variant="mosaic"
+              ease="power3.out"
+              duration={0.6}
+              stagger={0.05}
+              animateFrom="bottom"
+              scaleOnHover
+              hoverScale={0.95}
+            />
+          </div>
+          <div className="flex justify-center">
+            <LinkButton
+              type="Redirect"
+              text="Ver Galeria de Fotos"
+              theme="light"
+              path={PATHS.WORKS}
+            />
+          </div>
+        </SectionWrapper>
+      </div>
 
       <SectionWrapper
         theme="light"

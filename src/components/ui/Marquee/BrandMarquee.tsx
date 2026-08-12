@@ -33,7 +33,7 @@ interface BrandMarqueeProps {
 export function BrandMarquee({ className }: BrandMarqueeProps) {
   return (
     <Marquee
-      className={`  rounded-r-3xl shadow-lg shadow-black/5 bg-sc-ocean-blue ${className}`}
+      className={` shadow-lg shadow-black/5 bg-sc-ocean-blue/50 ${className}`}
       items={brandItems}
       speed={10}
       pauseOnHover={false}
