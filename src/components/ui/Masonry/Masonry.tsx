@@ -15,19 +15,25 @@ const useMedia = (
   values: number[],
   defaultValue: number,
 ): number => {
-  const get = () =>
-    values[queries.findIndex((q) => matchMedia(q).matches)] ?? defaultValue;
+  const get = useCallback(
+    () =>
+      values[queries.findIndex((q) => matchMedia(q).matches)] ?? defaultValue,
+    [queries, values, defaultValue],
+  );
 
   const [value, setValue] = useState<number>(get);
 
   useEffect(() => {
     const handler = () => setValue(get);
+    // Evaluate immediately: if the queries change (e.g. Fast Refresh with new
+    // breakpoints), the stored state must follow, not wait for a viewport change.
+    handler();
     queries.forEach((q) => matchMedia(q).addEventListener("change", handler));
     return () =>
       queries.forEach((q) =>
         matchMedia(q).removeEventListener("change", handler),
       );
-  }, [queries]);
+  }, [queries, get]);
 
   return value;
 };
@@ -132,13 +138,13 @@ const Masonry: React.FC<MasonryProps> = ({
 }) => {
   const columns = useMedia(
     [
-      "(min-width:1500px)",
-      "(min-width:1000px)",
-      "(min-width:600px)",
-      "(min-width:400px)",
+      "(min-width:2000px)",
+      "(min-width:1400px)",
+      "(min-width:800px)",
     ],
-    [5, 4, 3, 2],
-    1,
+    [6, 5, 3],
+    // Mobile-first floor: never fewer than 2 columns.
+    2,
   );
 
   const isMobile = useMedia(["(max-width: 767px)"], [1], 0) === 1;
@@ -149,36 +155,39 @@ const Masonry: React.FC<MasonryProps> = ({
     Map<string, ImageDimensions>
   >(new Map());
 
-  const getInitialPosition = (item: GridItem) => {
-    const containerRect = containerNode?.getBoundingClientRect();
-    if (!containerRect) return { x: item.x, y: item.y };
+  const getInitialPosition = useCallback(
+    (item: GridItem) => {
+      const containerRect = containerNode?.getBoundingClientRect();
+      if (!containerRect) return { x: item.x, y: item.y };
 
-    let direction = animateFrom;
-    if (animateFrom === "random") {
-      const dirs = ["top", "bottom", "left", "right"];
-      direction = dirs[
-        Math.floor(Math.random() * dirs.length)
-      ] as typeof animateFrom;
-    }
+      let direction = animateFrom;
+      if (animateFrom === "random") {
+        const dirs = ["top", "bottom", "left", "right"];
+        direction = dirs[
+          Math.floor(Math.random() * dirs.length)
+        ] as typeof animateFrom;
+      }
 
-    switch (direction) {
-      case "top":
-        return { x: item.x, y: -200 };
-      case "bottom":
-        return { x: item.x, y: window.innerHeight + 200 };
-      case "left":
-        return { x: -200, y: item.y };
-      case "right":
-        return { x: window.innerWidth + 200, y: item.y };
-      case "center":
-        return {
-          x: containerRect.width / 2 - item.w / 2,
-          y: containerRect.height / 2 - item.h / 2,
-        };
-      default:
-        return { x: item.x, y: item.y + 100 };
-    }
-  };
+      switch (direction) {
+        case "top":
+          return { x: item.x, y: -200 };
+        case "bottom":
+          return { x: item.x, y: window.innerHeight + 200 };
+        case "left":
+          return { x: -200, y: item.y };
+        case "right":
+          return { x: window.innerWidth + 200, y: item.y };
+        case "center":
+          return {
+            x: containerRect.width / 2 - item.w / 2,
+            y: containerRect.height / 2 - item.h / 2,
+          };
+        default:
+          return { x: item.x, y: item.y + 100 };
+      }
+    },
+    [containerNode, animateFrom],
+  );
 
   useEffect(() => {
     preloadImages(items.map((i) => i.img)).then((dims) => {
@@ -284,7 +293,7 @@ const Masonry: React.FC<MasonryProps> = ({
     });
 
     hasMounted.current = true;
-  }, [grid, imagesReady, stagger, animateFrom, blurToFocus, duration, ease]);
+  }, [grid, imagesReady, stagger, animateFrom, blurToFocus, duration, ease, getInitialPosition]);
 
   const handleMouseEnter = (id: string, element: HTMLElement) => {
     if (scaleOnHover) {
