@@ -33,26 +33,27 @@ const imageMap: Record<string, string> = {
   "works-14": "/img/works-14.webp",
 };
 
-function renderWorksSection(hash = "") {
-  // Set up window.location.hash for the test
+function renderWorksSection(search = "", hash = "") {
+  // Set up window.location.search (and optional hash) for the test
+  const originalSearch = window.location.search;
   const originalHash = window.location.hash;
   Object.defineProperty(window, "location", {
-    value: { ...window.location, hash },
+    value: { ...window.location, search, hash },
     writable: true,
   });
-  
+
   const result = render(
-    <MemoryRouter initialEntries={[`/trabajos${hash}`]}>
+    <MemoryRouter initialEntries={[`/trabajos${search}${hash}`]}>
       <WorksSection imageMap={imageMap} />
     </MemoryRouter>,
   );
-  
+
   // Restore
   Object.defineProperty(window, "location", {
-    value: { ...window.location, hash: originalHash },
+    value: { ...window.location, search: originalSearch, hash: originalHash },
     writable: true,
   });
-  
+
   return result;
 }
 
@@ -76,21 +77,155 @@ describe("WorksSection", () => {
 
     // Should show the destacado trabajo for carpas in the description heading
     expect(screen.getByRole("heading", { level: 2, name: "Carpa toldo para embarcación neumática" })).toBeInTheDocument();
-    expect(screen.getByText(/Toldo bimini de 3 arcos en acero inoxidable 316L con lona Sunbrella Captain Navy/)).toBeInTheDocument();
+    expect(screen.getByText(/Carpeta de bitácora en cuero náutico tratado con costuras a contraste/)).toBeInTheDocument();
   });
 
-  it("reads hash on mount and selects corresponding category", () => {
-    renderWorksSection("#toneau");
+  it("reads categoria query param on mount and selects corresponding category", () => {
+    renderWorksSection("?categoria=toneau");
 
     // Should show the toneau trabajo in the description heading
     expect(screen.getByRole("heading", { level: 2, name: "Toneau para pick-up Ford Ranger" })).toBeInTheDocument();
   });
 
-  it("falls back to 'carpas' for unknown hash (e.g., #album)", () => {
-    renderWorksSection("#album");
+  it("falls back to 'carpas' for unknown categoria (e.g., ?categoria=album)", () => {
+    renderWorksSection("?categoria=album");
 
     // Should fall back to carpas
     expect(screen.getByRole("heading", { level: 2, name: "Carpa toldo para embarcación neumática" })).toBeInTheDocument();
+  });
+
+  it("migrates legacy hash (#categoria) to categoria query params", () => {
+    renderWorksSection("", "#toneau");
+
+    // Legacy hash should select the toneau category
+    expect(screen.getByRole("heading", { level: 2, name: "Toneau para pick-up Ford Ranger" })).toBeInTheDocument();
+  });
+
+  it("trabajoId wins over categoria on mount", () => {
+    renderWorksSection("?categoria=carpas&trabajoId=trab-bitacora-1");
+
+    // Even though categoria=carpas, the trabajoId selects the bitacora trabajo
+    expect(screen.getByRole("heading", { level: 2, name: "Bitácora de navegación personalizada" })).toBeInTheDocument();
+  });
+
+  it("falls back to a valid categoria when trabajoId does not exist", () => {
+    // trab-no-existe is not a real id; capotas is valid → show capotas destacado, not carpas
+    renderWorksSection("?categoria=capotas&trabajoId=trab-no-existe");
+
+    expect(screen.getByRole("heading", { level: 2, name: "Capota rígida para consola central 24 pies" })).toBeInTheDocument();
+  });
+
+  it("defaults to carpas when both trabajoId and categoria are invalid", () => {
+    // Neither the id nor the category exist → default carpas
+    renderWorksSection("?categoria=no-existe&trabajoId=trab-no-existe");
+
+    expect(screen.getByRole("heading", { level: 2, name: "Carpa toldo para embarcación neumática" })).toBeInTheDocument();
+  });
+
+  it("defaults to carpas when only an invalid trabajoId is present (no categoria)", () => {
+    renderWorksSection("?trabajoId=trab-no-existe");
+
+    expect(screen.getByRole("heading", { level: 2, name: "Carpa toldo para embarcación neumática" })).toBeInTheDocument();
+  });
+
+  it("restores the exact clicked trabajo from trabajoId at imageIndex 0", () => {
+    renderWorksSection("?categoria=toneau&trabajoId=trab-toneau-1");
+
+    // Heading shows the clicked trabajo, not a categoria destacado
+    expect(screen.getByRole("heading", { level: 2, name: "Toneau para pick-up Ford Ranger" })).toBeInTheDocument();
+    // imageIndex is 0 → main image uses imagenes[0]
+    expect(screen.getByAltText("Toneau para pick-up Ford Ranger - imagen principal")).toBeInTheDocument();
+  });
+
+  it("restores the exact photo from the imagen query param on reload", () => {
+    // trab-toneau-1 has 3 images: ["services-07", "works-01", "works-02"]
+    renderWorksSection("?categoria=toneau&trabajoId=trab-toneau-1&imagen=2");
+
+    // imageIndex 2 → big image is the 3rd image (works-02)
+    const mainImage = screen.getByAltText("Toneau para pick-up Ford Ranger - imagen principal");
+    expect(mainImage).toHaveAttribute("src", "/img/works-02.webp");
+    // The current big image is excluded from the carousel thumbnails
+    expect(screen.queryByAltText("Toneau para pick-up Ford Ranger - imagen 3")).not.toBeInTheDocument();
+    expect(screen.getByAltText("Toneau para pick-up Ford Ranger - imagen 2")).toBeInTheDocument();
+  });
+
+  it("applies the imagen query param together with a categoria (first trabajo of the category)", () => {
+    // toneau's first (destacado) trabajo is trab-toneau-1 with imagenes[1] = "works-01"
+    renderWorksSection("?categoria=toneau&imagen=1");
+
+    const mainImage = screen.getByAltText("Toneau para pick-up Ford Ranger - imagen principal");
+    expect(mainImage).toHaveAttribute("src", "/img/works-01.webp");
+  });
+
+  it("clamps an out-of-range imagen param to 0", () => {
+    // 99 is outside carpas' 5 images → falls back to the first image
+    renderWorksSection("?categoria=carpas&imagen=99");
+
+    const mainImage = screen.getByAltText("Carpa toldo para embarcación neumática - imagen principal");
+    expect(mainImage).toHaveAttribute("src", "/img/services-06.webp");
+  });
+
+  it("thumb select updates the big image to the clicked photo", async () => {
+    renderWorksSection();
+
+    const user = userEvent.setup();
+    // Default carpas at imageIndex 0 → carousel shows the remaining 4 images.
+    // Thumb "thumbnail 2 de 4" = originalIndex 1 (imagenes[1] = "services-05").
+    await user.click(screen.getByRole("button", { name: /thumbnail 2 de 4/i }));
+
+    const mainImage = screen.getByAltText("Carpa toldo para embarcación neumática - imagen principal");
+    expect(mainImage).toHaveAttribute("src", "/img/services-05.webp");
+    // After clicking, the previously current image (services-06) is back in the carousel
+    expect(screen.getByAltText("Carpa toldo para embarcación neumática - imagen 1")).toBeInTheDocument();
+  });
+
+  it("thumb select scrolls back up to the showcase content on mobile", async () => {
+    // matchMedia polyfill returns matches:false → behaves as a mobile viewport
+    renderWorksSection();
+
+    const scrollIntoView = vi.mocked(Element.prototype.scrollIntoView);
+    scrollIntoView.mockClear();
+
+    const user = userEvent.setup();
+    await user.click(screen.getByRole("button", { name: /thumbnail 2 de 4/i }));
+
+    // On mobile the ImgCard is above the carousel: selecting a thumb must scroll
+    // to the showcase content so the updated big image is visible.
+    expect(scrollIntoView).toHaveBeenCalledTimes(1);
+    expect(scrollIntoView).toHaveBeenCalledWith({ behavior: "smooth" });
+  });
+
+  it("thumb select does not scroll on desktop (side-by-side layout)", async () => {
+    // Simulate a desktop viewport: matchMedia matches min-width 1024px.
+    // Keep the full polyfill shape so Masonry (addEventListener) keeps working.
+    const originalMatchMedia = window.matchMedia;
+    Object.defineProperty(window, "matchMedia", {
+      writable: true,
+      value: (query: string) => ({
+        matches: true,
+        media: query,
+        onchange: null,
+        addListener: () => {},
+        removeListener: () => {},
+        addEventListener: () => {},
+        removeEventListener: () => {},
+        dispatchEvent: () => false,
+      }),
+    });
+
+    try {
+      renderWorksSection();
+
+      const scrollIntoView = vi.mocked(Element.prototype.scrollIntoView);
+      scrollIntoView.mockClear();
+
+      const user = userEvent.setup();
+      await user.click(screen.getByRole("button", { name: /thumbnail 2 de 4/i }));
+
+      expect(scrollIntoView).not.toHaveBeenCalled();
+    } finally {
+      Object.defineProperty(window, "matchMedia", { writable: true, value: originalMatchMedia });
+    }
   });
 
   it("CategorySelect shows only populated categories", () => {
@@ -102,10 +237,11 @@ describe("WorksSection", () => {
     // All options should correspond to categories in trabajos
     const categoriaValues = data.worksPage.trabajos.map((t) => t.categoria);
     const uniqueCategorias = [...new Set(categoriaValues)];
-    expect(options).toHaveLength(uniqueCategorias.length);
+    // Placeholder ("Filtrar Categoria") + one option per populated category
+    expect(options).toHaveLength(uniqueCategorias.length + 1);
   });
 
-  it("category change updates showcase and writes hash via history.replaceState", async () => {
+  it("category change updates showcase and writes query params via history.replaceState", async () => {
     renderWorksSection();
 
     const user = userEvent.setup();
@@ -145,8 +281,8 @@ describe("WorksSection", () => {
   });
 
   it("does not render WorksCarousel when selected trabajo has single image", () => {
-    // toneau has only 1 image
-    renderWorksSection("#toneau");
+    // bitacora has only 1 image
+    renderWorksSection("?categoria=bitacora");
 
     const thumbnails = screen.queryAllByRole("button", { name: /thumbnail/i });
     expect(thumbnails).toHaveLength(0);
@@ -163,9 +299,63 @@ describe("WorksSection", () => {
 
   it("renders no cualidades badge list when the selected trabajo has none", () => {
     // trab-cubre-fly-1 has no cualidades field
-    renderWorksSection("#cubre-fly");
+    renderWorksSection("?categoria=cubre-fly");
 
     expect(screen.queryByRole("list")).not.toBeInTheDocument();
     expect(screen.queryByText("Lona Sunbrella Captain Navy")).not.toBeInTheDocument();
+  });
+
+  describe("mobile description toggle", () => {
+    it("shows a 60-word summary with a Leer Más button on mobile when the text is long", () => {
+      // matchMedia polyfill returns matches:false → mobile viewport
+      renderWorksSection();
+
+      // Long description (>60 words): the full tail ("portada") must NOT be visible
+      expect(screen.queryByText(/grabado personalizado en la portada/)).not.toBeInTheDocument();
+      // Summary keeps the opening text
+      expect(screen.getByText(/Carpeta de bitácora en cuero náutico tratado con costuras a contraste/)).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: /leer más/i })).toBeInTheDocument();
+      // Badges and carousel still visible from the start
+      expect(screen.getByText("Lona Sunbrella Captain Navy")).toBeInTheDocument();
+      expect(screen.getAllByRole("button", { name: /thumbnail/i }).length).toBeGreaterThan(0);
+    });
+
+    it("expands to the full text when Leer Más is clicked", async () => {
+      renderWorksSection();
+
+      const user = userEvent.setup();
+      await user.click(screen.getByRole("button", { name: /leer más/i }));
+
+      // Full text tail now visible, button gone
+      expect(screen.getByText(/grabado personalizado en la portada/)).toBeInTheDocument();
+      expect(screen.queryByRole("button", { name: /leer más/i })).not.toBeInTheDocument();
+    });
+
+    it("shows the full description on desktop without a toggle", () => {
+      // Simulate a desktop viewport (matchMedia matches min-width 1024px)
+      const originalMatchMedia = window.matchMedia;
+      Object.defineProperty(window, "matchMedia", {
+        writable: true,
+        value: (query: string) => ({
+          matches: true,
+          media: query,
+          onchange: null,
+          addListener: () => {},
+          removeListener: () => {},
+          addEventListener: () => {},
+          removeEventListener: () => {},
+          dispatchEvent: () => false,
+        }),
+      });
+
+      try {
+        renderWorksSection();
+
+        expect(screen.queryByRole("button", { name: /leer más/i })).not.toBeInTheDocument();
+        expect(screen.getByText(/grabado personalizado en la portada/)).toBeInTheDocument();
+      } finally {
+        Object.defineProperty(window, "matchMedia", { writable: true, value: originalMatchMedia });
+      }
+    });
   });
 });

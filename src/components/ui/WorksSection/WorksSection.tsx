@@ -3,10 +3,11 @@ import { CategorySelect } from "../CategorySelect";
 import { WorksCarousel } from "../WorksCarousel";
 import { ImgCard } from "../Card";
 import { SectionWrapper } from "../SectionWrapper";
-import Masonry, { type Item } from "../Masonry/Masonry";
-import type { Categoria, Trabajo } from "../../../types/trabajo";
+import Masonry from "../Masonry/Masonry";
+import type { Trabajo } from "../../../types/trabajo";
 import { data } from "../../../mocks/data";
 import type { AlbumImage } from "../../../mocks/types";
+import { useWorksUrlState } from "./useWorksUrlState";
 import {
   IconAnchor,
   IconBolt,
@@ -48,44 +49,96 @@ interface WorksSectionProps {
   imageMap: Record<string, string>;
 }
 
+/** Summary length (words) for the mobile "Leer Más" toggle. */
+const MOBILE_DESCRIPTION_SUMMARY_WORDS = 30;
+
+/** Live viewport check for mobile (<1024px) using matchMedia. */
+function useIsMobile(): boolean {
+  const [isMobile, setIsMobile] = useState(() => !window.matchMedia("(min-width: 1024px)").matches);
+
+  useEffect(() => {
+    const mql = window.matchMedia("(min-width: 1024px)");
+    const update = () => setIsMobile(!mql.matches);
+    update();
+    mql.addEventListener("change", update);
+    return () => mql.removeEventListener("change", update);
+  }, []);
+
+  return isMobile;
+}
+
+/** Truncates a text to the first `maxWords` words. */
+function truncateToWords(text: string, maxWords: number): string {
+  const words = text.trim().split(/\s+/);
+  if (words.length <= maxWords) return text.trim();
+  return `${words.slice(0, maxWords).join(" ")}...`;
+}
+
+interface DescriptionTextProps {
+  text: string;
+  trabajoId: string;
+}
+
+/**
+ * Mobile: shows a 60-word summary with a "Leer Más" button when the text is
+ * longer. Desktop always shows the full text (side-by-side layout).
+ */
+function DescriptionText({ text, trabajoId }: DescriptionTextProps) {
+  const isMobile = useIsMobile();
+  const [expandedTrabajoId, setExpandedTrabajoId] = useState<string | null>(null);
+  const isExpanded = expandedTrabajoId === trabajoId;
+  const needsToggle = isMobile && text.trim().split(/\s+/).length > MOBILE_DESCRIPTION_SUMMARY_WORDS;
+
+  if (!needsToggle || isExpanded) {
+    return (
+      <p className="mb-6 max-w-[95%] wrap-anywhere font-poppins text-base leading-relaxed text-justify text-sc-chalk md:text-lg">
+        {text}
+      </p>
+    );
+  }
+
+  return (
+    <>
+      <p className="mb-6 max-w-[95%] wrap-anywhere font-poppins text-base leading-relaxed text-justify text-sc-chalk md:text-lg">
+        {truncateToWords(text, MOBILE_DESCRIPTION_SUMMARY_WORDS)}
+      </p>
+      <button
+        type="button"
+        onClick={() => setExpandedTrabajoId(trabajoId)}
+        className="mb-6 cursor-pointer font-poppins text-base font-semibold text-pr-aquamarine hover:underline focus-visible:outline-2 focus-visible:outline-pr-aquamarine"
+      >
+        Leer Más
+      </button>
+    </>
+  );
+}
+
 export function WorksSection({ imageMap }: WorksSectionProps) {
   const showcaseId = "works-showcase";
+  // Scroll target: the content grid (ImgCard + description), not the section top
+  // — avoids landing too high and forcing the user to scroll back down a bit.
+  const scrollTargetId = "works-showcase-content";
 
-  // State
-  const [selectedCategoria, setSelectedCategoria] = useState<Categoria>("carpas");
-  const [selectedTrabajoId, setSelectedTrabajoId] = useState<string | null>(null);
-  const [imageIndex, setImageIndex] = useState(0);
-
-  // Derived values
   const trabajos = data.worksPage.trabajos as Trabajo[];
   const availableCategorias = useMemo(
     () => [...new Set(trabajos.map((t) => t.categoria))].sort(),
     [trabajos],
   );
 
-  const selectedTrabajo = useMemo(
-    () =>
-      trabajos.find((t) => t.id === selectedTrabajoId) ??
-      trabajos.find((t) => t.categoria === selectedCategoria && t.destacado) ??
-      trabajos.find((t) => t.categoria === selectedCategoria) ??
-      trabajos[0],
-    [trabajos, selectedCategoria, selectedTrabajoId],
-  );
+  const {
+    selectedCategoria,
+    selectedTrabajo,
+    carouselImages,
+    mainImageSrc,
+    mainImageAlt,
+    handleCategoriaChange,
+    handleAlbumClick,
+    handleThumbSelect,
+  } = useWorksUrlState({ trabajos, availableCategorias, scrollTargetId, imageMap });
 
-  // Carousel images: all images of selected trabajo EXCEPT the current big image
-  const carouselImages = useMemo(() => {
-    if (!selectedTrabajo) return [];
-    return selectedTrabajo.imagenes
-      .map((img: string, i: number) => ({
-        src: imageMap[img],
-        alt: `${selectedTrabajo.titulo} - imagen ${i + 1}`,
-        originalIndex: i,
-      }))
-      .filter((_: unknown, i: number) => i !== imageIndex);
-  }, [selectedTrabajo, imageIndex, imageMap]);
-
-  // Album items derived from trabajos, shuffled once
-  const albumItems = useMemo(() => {
+  // Album items derived from trabajos, shuffled once at mount (lazy initializer —
+  // keeps Math.random() out of the render path for React Compiler purity).
+  const [albumItems] = useState<AlbumImage[]>(() => {
     const items: AlbumImage[] = trabajos.flatMap((t) =>
       t.imagenes.map((img: string, i: number) => ({
         id: `${t.id}-${i}`,
@@ -95,6 +148,7 @@ export function WorksSection({ imageMap }: WorksSectionProps) {
         title: t.titulo,
         trabajoId: t.id,
         categoria: t.categoria,
+        imageIndex: i,
       })),
     );
     // Fisher-Yates shuffle for stable random order
@@ -104,70 +158,18 @@ export function WorksSection({ imageMap }: WorksSectionProps) {
       [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
     }
     return shuffled;
-  }, [trabajos, imageMap]);
-
-  // Read hash on mount
-  useEffect(() => {
-    const hash = window.location.hash.slice(1);
-    if (hash && availableCategorias.includes(hash as Categoria)) {
-      const cat = hash as Categoria;
-      setSelectedCategoria(cat);
-      const firstTrabajo = trabajos.find((t) => t.categoria === cat && t.destacado) ??
-        trabajos.find((t) => t.categoria === cat);
-      if (firstTrabajo) {
-        setSelectedTrabajoId(firstTrabajo.id);
-      }
-      setImageIndex(0);
-    } else {
-      // Default to carpas
-      const firstCarpas = trabajos.find((t) => t.categoria === "carpas" && t.destacado) ??
-        trabajos.find((t) => t.categoria === "carpas");
-      if (firstCarpas) {
-        setSelectedTrabajoId(firstCarpas.id);
-      }
-      setImageIndex(0);
-    }
-  }, []);
-
-  // Write hash on category change + smooth scroll
-  const handleCategoriaChange = (categoria: Categoria) => {
-    setSelectedCategoria(categoria);
-    const firstTrabajo = trabajos.find((t) => t.categoria === categoria && t.destacado) ??
-      trabajos.find((t) => t.categoria === categoria);
-    if (firstTrabajo) {
-      setSelectedTrabajoId(firstTrabajo.id);
-    }
-    setImageIndex(0);
-    history.replaceState(null, "", `#${categoria}`);
-    document.getElementById(showcaseId)?.scrollIntoView({ behavior: "smooth" });
-  };
-
-  const handleAlbumClick = (item: Item, _index: number) => {
-    const albumItem = item as AlbumImage;
-    if (!albumItem.trabajoId || !albumItem.categoria) return;
-    setSelectedCategoria(albumItem.categoria as Categoria);
-    setSelectedTrabajoId(albumItem.trabajoId);
-    setImageIndex(0);
-    history.replaceState(null, "", `#${albumItem.categoria}`);
-    document.getElementById(showcaseId)?.scrollIntoView({ behavior: "smooth" });
-  };
-
-  const handleThumbSelect = (originalIndex: number) => {
-    setImageIndex(originalIndex);
-  };
-
-  const mainImageSrc = selectedTrabajo ? imageMap[selectedTrabajo.imagenes[imageIndex]] : "";
-  const mainImageAlt = selectedTrabajo ? `${selectedTrabajo.titulo} - imagen principal` : "";
+  });
 
   return (
     <>
       {/* Showcase Section */}
-      <SectionWrapper
+<SectionWrapper
         id={showcaseId}
         eyebrow="Trabajos"
         title="Nuestros Trabajos"
         theme="dark"
         headingLevel="h1"
+        containerClassName="mx-auto max-w-[1400px] px-6 lg:px-10"
       >
         <CategorySelect
           value={selectedCategoria}
@@ -177,19 +179,20 @@ export function WorksSection({ imageMap }: WorksSectionProps) {
         <div className="rounded-3xl bg-gradient-to-r from-sc-ocean-blue/30 to-pr-hero-blue">
 
         
-        <div className="mt-10 grid gap-8 lg:grid-cols-[40%_60%]">
+        <div className="mt-10 grid gap-8 scroll-mt-24 lg:grid-cols-[40%_60%]" id={scrollTargetId}>
           {/* ImgCard - Left column */}
-          <div className="flex justify-center lg:justify-start rounded-3xl">
+          <div className="flex min-w-0 items-start justify-center rounded-3xl pl-[5px] pt-[5px] pb-[5px] lg:justify-start">
             <ImgCard
               src={mainImageSrc}
               alt={mainImageAlt}
               imageClassName="w-full max-w-md aspect-[4/3]"
+              className="!aspect-[4/3] md:!aspect-[9/16] max-w-[450px] max-h-[350px] md:max-h-[700px]"
             />
           </div>
 
           {/* Description - Right column */}
-          <div className="flex flex-col justify-start  ">
-            <div className="px-8 py-8">
+          <div className="flex min-w-0 flex-col justify-start">
+            <div className="w-full min-w-0 px-8 py-8 lg:px-12">
 
             {selectedTrabajo && (
               <>
@@ -199,12 +202,10 @@ export function WorksSection({ imageMap }: WorksSectionProps) {
                   {selectedTrabajo.categoria.charAt(0).toUpperCase() + selectedTrabajo.categoria.slice(1).replace(/-/g, " ")}
                   </div>
                 </span>
-                <h2 className="my-4 font-poppins font-bold text-2xl text-sc-chalk md:text-3xl">
+                <h2 className="my-4 wrap-anywhere font-poppins font-bold text-2xl text-sc-chalk md:text-3xl">
                   {selectedTrabajo.titulo}
                 </h2>
-                <p className="mb-6 font-poppins text-base leading-relaxed text-justify text-sc-chalk md:text-lg">
-                  {selectedTrabajo.descripcion}
-                </p>
+                <DescriptionText text={selectedTrabajo.descripcion} trabajoId={selectedTrabajo.id} />
                 {selectedTrabajo.cualidades && selectedTrabajo.cualidades.length > 0 && (
                   <ul className="mt-4 flex flex-wrap gap-2">
                     {selectedTrabajo.cualidades.map((c) => {
@@ -234,14 +235,17 @@ export function WorksSection({ imageMap }: WorksSectionProps) {
         
       </SectionWrapper>
 
-      {/* Album Section */}
+{/* Album Section */}
       <SectionWrapper
       eyebrow="Album de fotos"
-      titlesAlign="end"
+      titlesAlign="center"
         title="Trabajos destacados"
         theme="dark"
         headingLevel="h2"
+        fullWidth
+        className="!pt-0"
       >
+        <div className="mx-auto w-full max-w-[1800px] px-2 lg:px-0 min-[2200px]:max-w-[2200px]">
         <Masonry
           items={albumItems}
           variant="uniform"
@@ -252,8 +256,9 @@ export function WorksSection({ imageMap }: WorksSectionProps) {
           scaleOnHover
           hoverScale={0.95}
           colorShiftOnHover={true}
-          onItemClick={handleAlbumClick}
+          onItemClick={(item) => handleAlbumClick(item as AlbumImage)}
         />
+        </div>
       </SectionWrapper>
     </>
   );
