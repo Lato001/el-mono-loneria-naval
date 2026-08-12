@@ -155,6 +155,8 @@ export interface AlbumImage {
   trabajoId?: string;
   /** Category slug — enables filtering and hash sync */
   categoria?: Categoria;
+  /** Index of this image within the trabajo's `imagenes` array — enables showing the exact clicked photo */
+  imageIndex?: number;
   redirectUrl?: string;
 }
 
