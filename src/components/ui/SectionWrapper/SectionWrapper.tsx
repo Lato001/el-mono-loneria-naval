@@ -22,12 +22,13 @@ export function SectionWrapper({
   titlesAlign = "start",
   headingLevel = "h1",
   fullWidth,
+  containerClassName,
 }: SectionWrapperProps) {
   const Heading = headingLevel;
   const headingClasses = `font-poppins mb-8 font-bold uppercase  text-3xl ${theme === "dark" ? "text-white" : "text-pr-hero-blue"} `;
   const containerClasses = fullWidth
     ? "w-full"
-    : "mx-auto max-w-295 px-6";
+    : containerClassName ?? "mx-auto max-w-295 px-6";
 
   return (
     <section

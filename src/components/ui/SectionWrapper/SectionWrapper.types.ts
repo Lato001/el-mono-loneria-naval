@@ -20,4 +20,10 @@ export interface SectionWrapperProps {
   headingLevel?: "h1" | "h2" | "h3";
   /** If true, removes max-w and px constraints for full-width children. */
   fullWidth?: boolean;
+  /**
+   * Overrides the inner container classes when NOT fullWidth.
+   * Default: "mx-auto max-w-295 px-6". Useful for widening a specific section
+   * (e.g. a showcase with long text) without touching other sections.
+   */
+  containerClassName?: string;
 }
