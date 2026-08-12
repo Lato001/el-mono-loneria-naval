@@ -16,3 +16,6 @@ export * from './FaqCategoryGrid';
 export * from './MapSection';
 export * from './Navbar';
 export * from './VideoCarousel';
+export * from './CategorySelect';
+export * from './WorksCarousel';
+export * from './WorksSection';
