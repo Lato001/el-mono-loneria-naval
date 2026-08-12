@@ -18,7 +18,10 @@ describe("CategorySelect", () => {
     render(<CategorySelect value="carpas" options={mockCategorias} onChange={vi.fn()} />);
 
     const options = screen.getAllByRole("option");
-    expect(options).toHaveLength(mockCategorias.length);
+    // Placeholder ("Filtrar Categoria") + the provided categories
+    expect(options).toHaveLength(mockCategorias.length + 1);
+    // Placeholder is the default (empty) value
+    expect(screen.getByRole("option", { name: "Filtrar Categoria" })).toHaveValue("");
     // Options display capitalized labels but have slug values
     expect(screen.getByRole("option", { name: "Carpas" })).toHaveValue("carpas");
     expect(screen.getByRole("option", { name: "Capotas" })).toHaveValue("capotas");
@@ -45,6 +48,22 @@ describe("CategorySelect", () => {
     expect(select).toHaveClass("bg-sc-sky-blue/10");
     expect(select).toHaveClass("text-sc-chalk");
     expect(select).toHaveClass("font-poppins");
+  });
+
+  it("uses chalk background with ocean-blue text on the placeholder (empty value) only", () => {
+    const { rerender } = render(
+      <CategorySelect value="" options={mockCategorias} onChange={vi.fn()} />,
+    );
+
+    // Placeholder / no filter → chalk background, readable dark text
+    expect(screen.getByRole("combobox")).toHaveClass("bg-sc-chalk");
+    expect(screen.getByRole("combobox")).toHaveClass("text-sc-ocean-blue");
+
+    // Filter selected → keeps the original style (sky-blue tint + chalk text)
+    rerender(<CategorySelect value="carpas" options={mockCategorias} onChange={vi.fn()} />);
+    expect(screen.getByRole("combobox")).toHaveClass("bg-sc-sky-blue/10");
+    expect(screen.getByRole("combobox")).toHaveClass("text-sc-chalk");
+    expect(screen.getByRole("combobox")).not.toHaveClass("bg-sc-chalk");
   });
 
   it("has correct accessibility attributes", () => {

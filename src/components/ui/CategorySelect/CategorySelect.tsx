@@ -3,16 +3,15 @@ import type { Categoria } from "../../../types/trabajo";
 
 export function CategorySelect({ value, options, onChange }: CategorySelectProps) {
   return (
-    <label className="w-full max-w-xs " htmlFor="categoria-select">
+    <label className="w-full max-w-sm " htmlFor="categoria-select">
       <select
         id="categoria-select"
         name="categoria"
         value={value}
         onChange={(e) => onChange(e.target.value as Categoria)}
-        className="
-          w-full max-w-50 appearance-none
-          bg-sc-sky-blue/10
-          text-sc-chalk
+        className={`
+          w-full max-w-72 appearance-none
+          ${value === "" ? "bg-sc-chalk text-sc-ocean-blue" : "bg-sc-sky-blue/10 text-sc-chalk"}
           font-poppins
           ring-1
           ring-sc-chalk/50
@@ -27,9 +26,12 @@ export function CategorySelect({ value, options, onChange }: CategorySelectProps
           hover:border-pr-aquamarine/80
           transition-colors duration-200
           cursor-pointer
-        "
+        `}
         aria-label="Categoría de trabajo"
       >
+        <option value="" disabled className="bg-sc-chalk  text-pr-hero-blue text-md font-semibold">
+          Filtrar Categoria
+        </option>
         {options.map((categoria) => (
           <option key={categoria} value={categoria} className="bg-sc-chalk  text-pr-hero-blue text-md font-semibold">
             {categoria.charAt(0).toUpperCase() + categoria.slice(1).replace(/-/g, " ")}
