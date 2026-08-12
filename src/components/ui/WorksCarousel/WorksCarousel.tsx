@@ -2,17 +2,13 @@ import { useCallback, useState } from "react";
 import { IconChevronLeft, IconChevronRight } from "@tabler/icons-react";
 import { useProductCarousel } from "../ProductCarousel/useProductCarousel";
 import type { WorksCarouselProps } from "./WorksCarousel.types";
+import { IconTagStarred } from '@tabler/icons-react';
+// Mobile-first: 2 items per page (matching w-[calc(50%-8px)])
+const ITEMS_PER_PAGE = 2;
 
 export function WorksCarousel({ images, onThumbSelect }: WorksCarouselProps) {
-  // Hidden when fewer than 2 extra images
-  if (images.length < 2) {
-    return null;
-  }
-
   const { scrollRef, prev, next, canPrev, canNext } = useProductCarousel();
 
-  // Mobile-first: 2 items per page (matching w-[calc(50%-8px)])
-  const ITEMS_PER_PAGE = 2;
   const totalPages = Math.ceil(images.length / ITEMS_PER_PAGE);
   const [currentPage, setCurrentPage] = useState(0);
 
@@ -37,9 +33,18 @@ export function WorksCarousel({ images, onThumbSelect }: WorksCarouselProps) {
     [scrollRef, totalPages],
   );
 
+  // Hidden when fewer than 2 extra images — after all hooks (rules-of-hooks)
+  if (images.length < 2) {
+    return null;
+  }
+
   return (
     <div className="mt-8" role="region" aria-label="Works carousel">
       <div>
+        <div className="font-poppins font-bold flex text-pr-aquamarine ">
+        <IconTagStarred className="mr-1.5" stroke={2} />
+        <h1 >Trabajos Similares</h1>
+        </div>
         <div className="rounded-2xl p-4">
           <div
             ref={scrollRef}
@@ -72,8 +77,8 @@ export function WorksCarousel({ images, onThumbSelect }: WorksCarouselProps) {
             ))}
           </div>
 
-          {/* Page indicator dots */}
-          {totalPages > 1 && (
+          {/* Page indicator dots — shown only when there are more than 5 images */}
+          {images.length > 5 && (
             <div data-testid="works-carousel-dots" className="flex justify-center gap-2 mt-4" role="tablist" aria-label="Páginas del carrusel">
               {Array.from({ length: totalPages }, (_, i) => (
                 <button

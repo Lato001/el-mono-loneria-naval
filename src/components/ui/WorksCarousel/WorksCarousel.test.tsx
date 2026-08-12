@@ -83,24 +83,32 @@ describe("WorksCarousel", () => {
       expect(dots).toHaveLength(0); // 2 images, 2 per page (mobile) = 1 page, no dots needed
     });
 
-    it("renders dots when 3 or more images provided (multiple pages)", () => {
-      // 3 images, 2 per page = 2 pages
-      render(<WorksCarousel images={mockImages.slice(0, 3)} onThumbSelect={vi.fn()} />);
+    it("renders no dots with 5 or fewer images (threshold is >5)", () => {
+      // 3 images, 2 per page = 2 pages, but dots only appear past 5 images
+      render(<WorksCarousel images={mockImages.slice(0, 5)} onThumbSelect={vi.fn()} />);
+
+      const dots = screen.queryAllByRole("tab", { name: /página \d+ de \d+/i });
+      expect(dots).toHaveLength(0);
+    });
+
+    it("renders dots when more than 5 images provided (multiple pages)", () => {
+      // 6 images, 2 per page = 3 pages
+      render(<WorksCarousel images={mockImages.slice(0, 6)} onThumbSelect={vi.fn()} />);
 
       const dots = screen.getAllByRole("tab", { name: /página \d+ de \d+/i });
-      expect(dots).toHaveLength(2);
+      expect(dots).toHaveLength(3);
     });
 
     it("renders correct number of dots for multiple pages (mobile: 2 per page)", () => {
-      // 5 images, 2 per page (mobile) = 3 pages
-      render(<WorksCarousel images={mockImages.slice(0, 5)} onThumbSelect={vi.fn()} />);
+      // 6 images, 2 per page (mobile) = 3 pages
+      render(<WorksCarousel images={mockImages.slice(0, 6)} onThumbSelect={vi.fn()} />);
 
       const dots = screen.getAllByRole("tab", { name: /página \d+ de \d+/i });
       expect(dots).toHaveLength(3);
     });
 
     it("highlights the active dot (first page active by default)", () => {
-      render(<WorksCarousel images={mockImages.slice(0, 5)} onThumbSelect={vi.fn()} />);
+      render(<WorksCarousel images={mockImages.slice(0, 6)} onThumbSelect={vi.fn()} />);
 
       const dots = screen.getAllByRole("tab", { name: /página \d+ de \d+/i });
       expect(dots[0]).toHaveClass("bg-pr-aquamarine"); // active dot
@@ -110,7 +118,7 @@ describe("WorksCarousel", () => {
 
     it("clicking a dot scrolls to that page", async () => {
       const onThumbSelect = vi.fn();
-      render(<WorksCarousel images={mockImages.slice(0, 5)} onThumbSelect={onThumbSelect} />);
+      render(<WorksCarousel images={mockImages.slice(0, 6)} onThumbSelect={onThumbSelect} />);
 
       const user = userEvent.setup();
       const dots = screen.getAllByRole("tab", { name: /página \d+ de \d+/i });
@@ -133,7 +141,7 @@ describe("WorksCarousel", () => {
     });
 
     it("dots render between thumbnails and prev/next buttons", () => {
-      render(<WorksCarousel images={mockImages.slice(0, 5)} onThumbSelect={vi.fn()} />);
+      render(<WorksCarousel images={mockImages.slice(0, 6)} onThumbSelect={vi.fn()} />);
 
       const dotsContainer = screen.getByTestId("works-carousel-dots");
       expect(dotsContainer).toBeInTheDocument();
