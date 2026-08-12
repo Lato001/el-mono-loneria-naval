@@ -3,7 +3,7 @@ import { MemoryRouter } from "react-router-dom";
 import { Works } from "./Works";
 
 vi.mock("../../components/ui/WorksSection/WorksSection", () => ({
-  WorksSection: function MockWorksSection({ imageMap: _imageMap }: { imageMap: Record<string, string> }) {
+  WorksSection: function MockWorksSection() {
     return (
       <div data-testid="works-section">
         <h1 data-testid="works-section-title">Nuestros Trabajos</h1>
