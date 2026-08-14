@@ -284,7 +284,7 @@ export function Products() {
                       <button
                         type="button"
                         onClick={() => setShowMobileInfo((prev) => !prev)}
-                        className="flex size-12 items-center justify-center rounded-full border border-pr-aquamarine/50 bg-pr-aquamarine text-sc-ocean-blue/70 brightness-90 shadow-lg ring-2 ring-pr-aquamarine/40 backdrop-blur-md transition-all duration-300 hover:scale-105 hover:border-pr-aquamarine/80  hover:ring-pr-aquamarine/70 active:scale-95 hover:cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pr-aquamarine"
+                        className="flex size-12 items-center justify-center rounded-full border border-pr-aquamarine/50 bg-pr-aquamarine text-white brightness-90 shadow-lg ring-2 ring-pr-aquamarine/40 backdrop-blur-md transition-all duration-300 hover:scale-105 hover:border-pr-aquamarine/80  hover:ring-pr-aquamarine/70 active:scale-95 hover:cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pr-aquamarine"
                         aria-label={
                           showMobileInfo
                             ? "Cerrar información"
@@ -292,7 +292,7 @@ export function Products() {
                         }
                       >
                         {showMobileInfo ? (
-                          <IconX className="text-white" size={30} stroke={2.5} />
+                          <IconX  size={30} stroke={2.5} />
                         ) : (
                           <IconBulb size={30} stroke={2} />
                         )}
