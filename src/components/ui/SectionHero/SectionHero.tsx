@@ -32,7 +32,7 @@ export function SectionHero({
         src={monoLogo}
         alt=""
         aria-hidden="true"
-        className="pointer-events-none absolute left-2/3 top-[50%] h-[85%] w-auto max-w-none -translate-x-1/2 object-cover object-top hidden md:block"
+        className="pointer-events-none absolute bottom-0 left-2/3  w-auto max-w-none -translate-x-1/2 translate-y-1/2 object-cover object-top md:block h-[60%] md:h-[80%] xl:h-[100%] opacity-95"
       />
       <div
         data-testid="hero-content"
