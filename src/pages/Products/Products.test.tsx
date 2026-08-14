@@ -245,6 +245,29 @@ describe("Products page", () => {
     ).toBeDisabled();
   });
 
+  it("does not reopen the quote modal when re-selecting after emptying the list", async () => {
+    const user = userEvent.setup();
+    renderProducts();
+
+    const checkboxes = screen.getAllByRole("checkbox");
+    await user.click(checkboxes[0]);
+    await user.click(
+      within(getActionBar()).getByRole("button", {
+        name: /presupuestar/i,
+      }),
+    );
+
+    // Remove the only item inside the modal → modal auto-closes
+    const dialog = screen.getByRole("dialog");
+    await user.click(within(dialog).getByLabelText(/quitar/i));
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+
+    // Select a new product: the modal must NOT reopen
+    const checkboxesAfter = screen.getAllByRole("checkbox");
+    await user.click(checkboxesAfter[0]);
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+  });
+
   it("WhatsApp URL contains selected products", async () => {
     const user = userEvent.setup();
     renderProducts();

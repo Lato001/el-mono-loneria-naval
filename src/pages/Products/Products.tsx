@@ -235,16 +235,22 @@ export function Products() {
   const handleOpenModal = () => setIsModalOpen(true);
   const handleCloseModal = () => setIsModalOpen(false);
 
+  // Auto-close: if the selection empties while the quote modal is open (the
+  // user removed the last item inside the modal), close it for real. Without
+  // this sync, `isModalOpen` would stay true and the modal would reopen as
+  // soon as a new product is selected afterwards.
+  useEffect(() => {
+    if (isModalOpen && selected.size === 0) {
+      setIsModalOpen(false);
+    }
+  }, [isModalOpen, selected.size]);
+
   const handleOpenClearModal = () => setIsClearModalOpen(true);
   const handleCloseClearModal = () => setIsClearModalOpen(false);
   const handleConfirmClear = () => {
     clear();
     setIsClearModalOpen(false);
   };
-
-  // Auto-close: derive modal visibility — if selection empties while modal is open,
-  // the derived `isModalVisible` becomes false without calling setState in an effect.
-  const isModalVisible = isModalOpen && selected.size > 0;
 
   return (
     <>
@@ -383,7 +389,7 @@ export function Products() {
       />
 
       <Modal
-        open={isModalVisible}
+        open={isModalOpen}
         onOpenChange={(open) => {
           if (!open) handleCloseModal();
         }}
