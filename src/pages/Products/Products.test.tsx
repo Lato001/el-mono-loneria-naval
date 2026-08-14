@@ -29,6 +29,9 @@ beforeAll(() => {
 
 beforeEach(() => {
   window.sessionStorage.clear();
+  // Products now reads/writes `?categoria=..&productoId=..` via replaceState.
+  // Reset the URL so each test mounts on the default category (broches).
+  window.history.replaceState(null, "", "/productos");
 });
 
 function renderProducts() {
@@ -118,14 +121,19 @@ describe("Products page", () => {
     const user = userEvent.setup();
     renderProducts();
 
-    // Default: Broches (no videoUrl) → placeholder instead of the player
+    // Default: Broches (no videoUrl) — placeholder instead of the player
     expect(screen.getByText("Video próximamente")).toBeInTheDocument();
-    expect(screen.queryByTestId("mock-player")).not.toBeInTheDocument();
+    expect(screen.queryByTitle("Video")).not.toBeInTheDocument();
 
-    // Switching category keeps the placeholder (no videos linked yet)
+    // A category WITH a video (Caballetes) renders the player
     await user.click(screen.getByRole("tab", { name: /Caballetes/i }));
+    expect(screen.queryByText("Video próximamente")).not.toBeInTheDocument();
+    expect(screen.getByTitle("Video")).toBeInTheDocument();
+
+    // A category WITHOUT video (Herrajes) keeps the placeholder
+    await user.click(screen.getByRole("tab", { name: /Herrajes/i }));
     expect(screen.getByText("Video próximamente")).toBeInTheDocument();
-    expect(screen.queryByTestId("mock-player")).not.toBeInTheDocument();
+    expect(screen.queryByTitle("Video")).not.toBeInTheDocument();
   });
 
   it("renders 1 carousel section (tabpanel) for the active category", () => {
@@ -237,6 +245,29 @@ describe("Products page", () => {
     ).toBeDisabled();
   });
 
+  it("does not reopen the quote modal when re-selecting after emptying the list", async () => {
+    const user = userEvent.setup();
+    renderProducts();
+
+    const checkboxes = screen.getAllByRole("checkbox");
+    await user.click(checkboxes[0]);
+    await user.click(
+      within(getActionBar()).getByRole("button", {
+        name: /presupuestar/i,
+      }),
+    );
+
+    // Remove the only item inside the modal → modal auto-closes
+    const dialog = screen.getByRole("dialog");
+    await user.click(within(dialog).getByLabelText(/quitar/i));
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+
+    // Select a new product: the modal must NOT reopen
+    const checkboxesAfter = screen.getAllByRole("checkbox");
+    await user.click(checkboxesAfter[0]);
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+  });
+
   it("WhatsApp URL contains selected products", async () => {
     const user = userEvent.setup();
     renderProducts();
@@ -250,7 +281,7 @@ describe("Products page", () => {
     );
 
     const whatsappLink = screen.getByRole("link", {
-      name: /cotizá tus productos/i,
+      name: /consultar por whatsapp/i,
     });
     expect(whatsappLink).toHaveAttribute(
       "href",
@@ -277,13 +308,13 @@ describe("Products page", () => {
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
   });
 
-  it("renders the 'Borrar lista' button (aquamarine, disabled when no selection)", () => {
+  it("renders the 'Borrar lista' button (sky blue, disabled when no selection)", () => {
     renderProducts();
     const clearButton = within(getActionBar()).getByRole("button", {
       name: /borrar lista/i,
     });
     expect(clearButton).toBeInTheDocument();
-    expect(clearButton.className).toContain("bg-pr-aquamarine");
+    expect(clearButton.className).toContain("bg-sc-sky-blue");
     expect(clearButton).toBeDisabled();
   });
 
@@ -469,15 +500,12 @@ describe("Products page", () => {
     expect(screen.getByLabelText(/cerrar información/i)).toBeInTheDocument();
   });
 
-  it("toggles the overlay with the isotipo and the MONO TIP bubble", async () => {
+  it("toggles the overlay with the MONO TIP bubble", async () => {
     const user = userEvent.setup();
     renderProducts();
     expect(screen.queryByText(/MONO TIP/i)).not.toBeInTheDocument();
     await user.click(screen.getByLabelText(/ver información/i));
     expect(screen.getByText(/MONO TIP/i)).toBeInTheDocument();
-    expect(
-      screen.getByRole("img", { name: /isotipo el mono/i }),
-    ).toBeInTheDocument();
     await user.click(screen.getByLabelText(/cerrar información/i));
     expect(screen.queryByText(/MONO TIP/i)).not.toBeInTheDocument();
   });

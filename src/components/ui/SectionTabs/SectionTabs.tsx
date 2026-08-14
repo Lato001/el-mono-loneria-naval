@@ -53,11 +53,11 @@ export function SectionTabs({
       ref={tablistRef}
       role="tablist"
       aria-label={ariaLabel}
-      className="sticky top-0 z-40 border-b border-white bg-sc-ocean-blue xl:static"
+      className="border-b border-white bg-sc-ocean-blue/90"
       onKeyDown={handleKeyDown}
     >
-      <div className="mx-auto flex max-w-295 items-center gap-3 overflow-x-auto scrollbar-hide">
-        <div className="flex shrink-0 gap-0 px-6">
+      <div className="mx-auto flex max-w-295 items-center gap-3 overflow-x-auto scrollbar-hide ">
+        <div className="flex w-full shrink-0 gap-0 px-6 justify-around ">
           {categories.map((tab) => {
             const isActive = tab.id === activeId;
             return (
@@ -69,7 +69,7 @@ export function SectionTabs({
                 aria-controls={tab.id}
                 tabIndex={isActive ? 0 : -1}
                 onClick={() => onSelect?.(tab.id)}
-                className={`font-poppins shrink-0 cursor-pointer border-b-2 px-4 py-3 text-sm font-medium transition-colors ${
+                className={`font-poppins shrink-0 cursor-pointer border-b-2 px-4 py-3.5 text-base font-medium transition-colors ${
                   isActive
                     ? "border-pr-aquamarine font-bold text-white"
                     : "border-transparent text-white hover:text-pr-aquamarine"
@@ -78,7 +78,7 @@ export function SectionTabs({
                 {tab.name}
                 {selectedCounts?.[tab.id] != null &&
                   selectedCounts[tab.id] > 0 && (
-                    <span className="ml-2 inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-pr-aquamarine px-1.5 text-xs font-bold text-pr-hero-blue">
+                    <span className="ml-2 inline-flex h-5 min-w-5 items-center justify-center rounded-full border border-pr-aquamarine/30 bg-pr-aquamarine/10 px-1.5 text-xs font-bold text-pr-aquamarine shadow-md backdrop-blur-md transition-all duration-300">
                       {selectedCounts[tab.id]}
                     </span>
                   )}

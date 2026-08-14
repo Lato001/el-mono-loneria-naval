@@ -17,22 +17,8 @@ import carpa01 from "../../assets/img/works/carpa/carpa-01.webp";
 import cerramiento01 from "../../assets/img/works/cerramiento/cerramiento-01.webp";
 import toneau01 from "../../assets/img/works/toneau/toneau-01.webp";
 
-
-// ─── Service images (auto-discovered via Vite glob) ────────────────────
-const serviceImages = import.meta.glob("../../assets/img/services/*", {
-  eager: true,
-  import: "default",
-}) as Record<string, string>;
-
-const heroImageMap: Record<string, string> = Object.fromEntries(
-  Object.entries(serviceImages).map(([path, url]) => [
-    path
-      .split("/")
-      .pop()!
-      .replace(/\.[^.]+$/, ""),
-    url,
-  ]),
-);
+// ─── SplitCards images (direct imports) ─────────────────────────────────
+import productosCard from "../../assets/img/products/tomas-de-aire/toma-boat-vent-3.webp";
 
 //MAPEO DE MASONRY
 const masonryImageMap: Record<string, string> = {
@@ -42,7 +28,10 @@ const masonryImageMap: Record<string, string> = {
   "toneau-01": toneau01,
 };
 
-const splitCardsImageMap: Record<string, string> = heroImageMap;
+const splitCardsImageMap: Record<string, string> = {
+  "productos-card": productosCard,
+  "trabajos-card": carpa01,
+};
 
 const homeMasonryItems: MasonryItem[] = data.home.masonryItems.map((item) => ({
   ...item,

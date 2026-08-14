@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   IconX,
   IconBulb,
@@ -8,6 +8,7 @@ import {
 import { useSessionSelection } from "../../hooks/useSessionSelection";
 import { useProductCarousel } from "../../components/ui/ProductCarousel/useProductCarousel";
 import { buildWhatsAppUrl } from "./whatsappUrl";
+import { IconBrandWhatsapp } from '@tabler/icons-react';
 import {
   SectionHero,
   SectionTabs,
@@ -15,7 +16,6 @@ import {
   Modal,
   Button,
   ProductCarousel,
-  FaqBubble,
 } from "../../components/ui";
 import type { Product } from "../../components/ui/ProductCarousel/ProductCarousel.types";
 import type { Tab } from "../../components/ui/SectionTabs/SectionTabs.types";
@@ -23,7 +23,6 @@ import type { ProductCategoryData } from "../../mocks/types";
 import { data } from "../../mocks/data";
 import { ImgCard } from "../../components";
 import MediaPlayer from "../../components/ui/MediaPlayer/MediaPLayer";
-import isotipoElMono from "../../assets/logos/elmono/isotipo-elmono.png";
 
 const STORAGE_KEY = "mono:quote-cart";
 
@@ -35,22 +34,6 @@ const productImages = import.meta.glob(
 
 const productsImageMap: Record<string, string> = Object.fromEntries(
   Object.entries(productImages).map(([path, url]) => {
-    const key = path
-      .split("/")
-      .pop()!
-      .replace(/\.[^.]+$/, "");
-    return [key, url];
-  }),
-);
-
-// ─── Category "applied" images ─────────────────────────────────────────────
-const catImages = import.meta.glob(
-  "../../assets/img/services/**/*.{webp,png,jpg}",
-  { eager: true, import: "default" },
-) as Record<string, string>;
-
-const categoryImagesMap: Record<string, string> = Object.fromEntries(
-  Object.entries(catImages).map(([path, url]) => {
     const key = path
       .split("/")
       .pop()!
@@ -91,6 +74,26 @@ const categories = categoryData.map((cat) => ({
 
 const tabs: Tab[] = categories.map((c) => ({ id: c.id, name: c.name }));
 
+/** Reads `?categoria=..` from the URL and validates it against the catalog. */
+function resolveUrlState(): {
+  activeCategoryId: string;
+  rewriteTo?: string;
+} {
+  const params = new URLSearchParams(window.location.search);
+  const catParam = params.get("categoria");
+  const validCat = categories.find((c) => c.id === catParam);
+
+  if (!validCat) {
+    return {
+      activeCategoryId: categories[0].id,
+      // Invalid params only: reset to the bare path. Empty URL stays untouched.
+      rewriteTo: params.toString() ? window.location.pathname : undefined,
+    };
+  }
+
+  return { activeCategoryId: validCat.id };
+}
+
 function CotizacionModalContent({
   products,
   onRemove,
@@ -105,9 +108,9 @@ function CotizacionModalContent({
   whatsappDisabledReason?: string;
 }) {
   return (
-    <div className="font-poppins mt-4 flex min-h-0 flex-1 flex-col gap-3">
+    <div className="font-poppins flex min-h-0 flex-1 flex-col gap-3">
       {products.length === 0 ? (
-        <p className="text-sm text-sc-ocean-blue/70">
+        <p className="text-base text-sc-ocean-blue/70">
           {data.ui.noProductsSelected}
         </p>
       ) : (
@@ -115,7 +118,7 @@ function CotizacionModalContent({
           {products.map((p) => (
             <li
               key={p.id}
-              className="flex items-center justify-between gap-3 rounded-md border-2 border-pr-aquamarine px-3 py-2"
+              className="flex items-center justify-between gap-3 rounded-md border-1 border-dashed border-pr-hero-blue px-3 py-2"
             >
               <span className="flex min-w-0 items-center gap-3">
                 <img
@@ -123,7 +126,7 @@ function CotizacionModalContent({
                   alt={p.title}
                   className="size-14 shrink-0 rounded object-cover"
                 />
-                <span className="truncate text-base font-poppins font-semibold text-sc-ocean-blue">
+                <span className="truncate text-base font-poppins font-bold text-sc-ocean-blue">
                   {p.title}
                 </span>
               </span>
@@ -131,7 +134,7 @@ function CotizacionModalContent({
                 type="button"
                 onClick={() => onRemove(p.id)}
                 aria-label={`Quitar ${p.title}`}
-                className="rounded-full p-1 text-sc-chalk bg-sc-ocean-blue transition-colors hover:bg-sc-chalk hover:text-sc-ocean-blue  hover:ring-2 hover:cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pr-aquamarine"
+                className="rounded-full p-1 text-sc-chalk bg-sc-ocean-blue ring-2 ring-pr-aquamarine/30 transition-colors hover:bg-pr-aquamarine hover:text-sc-ocean-blue  hover:ring-2 hover:cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pr-aquamarine"
               >
                 <IconX className="h-5 w-5" stroke={3} />
               </button>
@@ -152,8 +155,9 @@ function CotizacionModalContent({
           href={whatsappHref}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center justify-center gap-2 rounded-md bg-sc-ocean-blue px-5 py-2.5 text-base font-medium text-white transition-colors hover:bg-pr-hero-blue/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pr-aquamarine"
+          className="inline-flex items-center justify-center gap-2 rounded-md bg-sc-sky-blue px-5 py-2.5 text-base font-bold text-white transition-colors hover:bg-pr-hero-blue/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pr-aquamarine"
         >
+          <IconBrandWhatsapp stroke={2} />
           {data.ui.consultWhatsApp}
         </a>
       )}
@@ -168,29 +172,11 @@ export function Products() {
     useProductCarousel();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isClearModalOpen, setIsClearModalOpen] = useState(false);
+  const [initialUrl] = useState(resolveUrlState);
   const [activeCategoryId, setActiveCategoryId] = useState<string>(
-    categories[0].id,
+    initialUrl.activeCategoryId,
   );
   const [showMobileInfo, setShowMobileInfo] = useState(false);
-  const [tipFits, setTipFits] = useState(true);
-  const overlayBoxRef = useRef<HTMLDivElement>(null);
-  const overlayContentRef = useRef<HTMLDivElement>(null);
-
-  // Fit-or-hide: the full category description renders at its natural size.
-  // If it would overflow the ImgCard (very narrow viewports), the overlay
-  // content is hidden instead of scrolling or clipping a bubble.
-  useLayoutEffect(() => {
-    if (!showMobileInfo) return;
-    const box = overlayBoxRef.current;
-    const content = overlayContentRef.current;
-    if (!box || !content) return;
-    const check = () => setTipFits(content.scrollHeight <= box.clientHeight);
-    check();
-    const ro = new ResizeObserver(check);
-    ro.observe(box);
-    ro.observe(content);
-    return () => ro.disconnect();
-  }, [showMobileInfo, activeCategoryId]);
 
   const activeCategory = categories.find((c) => c.id === activeCategoryId);
 
@@ -232,13 +218,32 @@ export function Products() {
     recompute();
   }, [activeCategoryId, scrollRef, recompute]);
 
+  // URL normalization on mount: invalid-param cleanup, once.
+  useEffect(() => {
+    if (initialUrl.rewriteTo) {
+      history.replaceState(null, "", initialUrl.rewriteTo);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- intentional mount-only rewrite
+  }, []);
+
   const handleTabSelect = (id: string) => {
     setActiveCategoryId(id);
     setShowMobileInfo(false);
+    history.replaceState(null, "", `?${new URLSearchParams({ categoria: id })}`);
   };
 
   const handleOpenModal = () => setIsModalOpen(true);
   const handleCloseModal = () => setIsModalOpen(false);
+
+  // Auto-close: if the selection empties while the quote modal is open (the
+  // user removed the last item inside the modal), close it for real. Without
+  // this sync, `isModalOpen` would stay true and the modal would reopen as
+  // soon as a new product is selected afterwards.
+  useEffect(() => {
+    if (isModalOpen && selected.size === 0) {
+      setIsModalOpen(false);
+    }
+  }, [isModalOpen, selected.size]);
 
   const handleOpenClearModal = () => setIsClearModalOpen(true);
   const handleCloseClearModal = () => setIsClearModalOpen(false);
@@ -246,10 +251,6 @@ export function Products() {
     clear();
     setIsClearModalOpen(false);
   };
-
-  // Auto-close: derive modal visibility — if selection empties while modal is open,
-  // the derived `isModalVisible` becomes false without calling setState in an effect.
-  const isModalVisible = isModalOpen && selected.size > 0;
 
   return (
     <>
@@ -276,14 +277,14 @@ export function Products() {
                 {/* COLUMNA IZQUIERDA (Tarjeta de Imagen) */}
                 <div className="flex shrink-0 justify-center xl:col-span-5 xl:h-full xl:items-center">
                   <ImgCard
-                    src={categoryImagesMap[activeCategory.imageKey]}
+                    src={activeCategory.products[0]?.imageSrc}
                     alt={activeCategory.name}
                     className="xl:max-w-120 xl:max-h-200"
                     actionButton={
                       <button
                         type="button"
                         onClick={() => setShowMobileInfo((prev) => !prev)}
-                        className="flex size-12 items-center justify-center rounded-full bg-sc-sky-blue text-sc-chalk shadow-lg transition-transform hover:scale-105 active:scale-95 hover:cursor-pointer"
+                        className="flex size-12 items-center justify-center rounded-full border border-pr-aquamarine/50 bg-pr-aquamarine text-white brightness-90 shadow-lg ring-2 ring-pr-aquamarine/40 backdrop-blur-md transition-all duration-300 hover:scale-105 hover:border-pr-aquamarine/80  hover:ring-pr-aquamarine/70 active:scale-95 hover:cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pr-aquamarine"
                         aria-label={
                           showMobileInfo
                             ? "Cerrar información"
@@ -291,7 +292,7 @@ export function Products() {
                         }
                       >
                         {showMobileInfo ? (
-                          <IconX size={30} stroke={2.5} />
+                          <IconX  size={30} stroke={2.5} />
                         ) : (
                           <IconBulb size={30} stroke={2} />
                         )}
@@ -299,29 +300,17 @@ export function Products() {
                     }
                     overlay={
                       showMobileInfo ? (
-                        <div
-                          ref={overlayBoxRef}
-                          className="h-full overflow-hidden bg-black/5 p-6 backdrop-brightness-70 backdrop-blur-sm card:flex-row card:items-center card:justify-center card:p-10"
-                        >
-                          <div
-                            ref={overlayContentRef}
-                            className="flex w-full flex-col items-center gap-6 card:flex-row card:items-center card:justify-center card:gap-8 card:pl-0"
-                          ></div>
-                          <div className="absolute right-6 top-1 flex justify-center items-center gap-4 card:right-10 card:top-0">
-                            <div className="flex justify-center items-center">
-                              <img
-                                src={isotipoElMono}
-                                alt="Isotipo El Mono"
-                                className="size-16 card:size-24"
-                              />
-                              <FaqBubble
-                                question="MONO TIP"
-                                answer={activeCategory.description}
-                                align="end"
-                                showChatTail={false}
-                                questionClassName="shadow-2xl mt-26 text-center"
-                                answerClassName={`shadow-2xl text-center ${tipFits ? "" : "invisible"}`}
-                              />
+                        <div className="flex h-full w-full items-center justify-center overflow-hidden bg-black/5 p-6 backdrop-brightness-70 backdrop-blur-sm card:p-10">
+                          <div className="flex w-full flex-col items-center justify-center gap-3">
+                            <div className="w-full max-w-[85%] rounded-full border-2 border-sc-ocean-blue bg-sc-ocean-blue px-5 py-2.5 shadow-md">
+                              <h3 className="text-center font-poppins font-extrabold text-lg uppercase tracking-wide text-white">
+                                MONO TIP
+                              </h3>
+                            </div>
+                            <div className="w-full max-w-[85%] rounded-2xl border-2 border-sc-ocean-blue/10 bg-sc-sky-blue px-4 py-4 shadow-md">
+                              <p className="text-center font-poppins font-semibold text-sm leading-relaxed text-white">
+                                {activeCategory.description}
+                              </p>
                             </div>
                           </div>
                         </div>
@@ -334,15 +323,15 @@ export function Products() {
                 <div className="flex w-full min-w-0 flex-col-reverse gap-6 xl:h-full xl:flex-col xl:col-span-7 xl:gap-8">
                   {/* Video: 16:9 centrado en la mitad superior */}
                   <div className="w-full min-w-0 xl:flex xl:flex-1 xl:min-h-0 xl:items-center xl:justify-center">
-                    <div className="flex w-full overflow-hidden rounded-2xl aspect-video xl:h-full xl:w-auto xl:max-w-full xl:mt-16">
+                    <div className="flex w-full aspect-video xl:h-full xl:w-auto xl:max-w-full xl:mt-16">
                       {activeCategory.videoUrl ? (
                         <MediaPlayer
                           key={activeCategory.id}
                           src={activeCategory.videoUrl}
-                          className="w-full h-full object-cover"
+                          className="w-full h-full"
                         />
                       ) : (
-                        <div className="flex h-full w-full items-center justify-center bg-sc-ocean-blue/5 font-poppins text-sm text-sc-ocean-blue/50">
+                        <div className="flex h-full w-full items-center justify-center rounded-2xl bg-sc-ocean-blue/5 font-poppins text-sm text-sc-ocean-blue/50">
                           Video próximamente
                         </div>
                       )}
@@ -400,7 +389,7 @@ export function Products() {
       />
 
       <Modal
-        open={isModalVisible}
+        open={isModalOpen}
         onOpenChange={(open) => {
           if (!open) handleCloseModal();
         }}
@@ -426,14 +415,15 @@ export function Products() {
         variant="centered"
         size="sm"
       >
-        <div className="font-poppins mt-4 flex flex-col gap-4">
-          <p className="text-sm text-sc-ocean-blue">
+        <div className="font-poppins flex flex-col gap-4">
+          <p className="text-base font-medium text-sc-ocean-blue">
             {data.ui.clearConfirmation}
           </p>
           <div className="flex justify-end gap-2">
             <Button
               variant="primary"
               size="sm"
+              className="!text-base"
               onClick={handleCloseClearModal}
               ariaLabel={data.ui.cancel}
             >
@@ -442,6 +432,7 @@ export function Products() {
             <Button
               variant="danger"
               size="sm"
+              className="!text-base"
               onClick={handleConfirmClear}
               ariaLabel={data.ui.clearListAriaLabel}
             >

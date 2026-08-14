@@ -12,7 +12,7 @@ const variantClasses: Record<NonNullable<ButtonProps["variant"]>, string> = {
     "text-white hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50",
   hero: "bg-pr-hero-blue text-white hover:bg-pr-hero-blue/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pr-aquamarine",
   danger:
-    "bg-pr-aquamarine text-sc-ocean-blue focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-300",
+    "bg-sc-sky-blue text-white hover:bg-sc-sky-blue/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-300",
 };
 
 const sizeClasses: Record<NonNullable<ButtonProps["size"]>, string> = {
@@ -62,7 +62,7 @@ export function Button({
   const badgeElement = hasBadge ? (
     <span
       aria-hidden="true"
-      className="pointer-events-none absolute -top-1.5 -right-1.5 inline-flex min-w-5 items-center justify-center rounded-full bg-pr-aquamarine px-1.5 text-xs font-bold text-sc-ocean-blue h-5"
+      className="pointer-events-none absolute -top-1.5 -right-1.5 inline-flex min-w-5 items-center justify-center rounded-full border border-pr-aquamarine/30 bg-pr-aquamarine/10 px-1.5 text-xs font-bold text-pr-aquamarine shadow-md backdrop-blur-md h-5"
     >
       {badge}
     </span>

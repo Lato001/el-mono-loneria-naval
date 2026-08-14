@@ -1,4 +1,4 @@
-import * as Dialog from "@radix-ui/react-dialog";
+import {Root,Portal,Overlay,Content,Title,Description,Close} from "@radix-ui/react-dialog";
 import { IconX } from "@tabler/icons-react";
 import { data } from "../../../mocks/data";
 import type { ModalProps } from "./Modal.types";
@@ -26,36 +26,36 @@ export function Modal({
       : `left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-2xl data-[state=open]:animate-fadeIn ${sizeClasses[size]}`;
 
   return (
-    <Dialog.Root open={open} onOpenChange={onOpenChange}>
-      <Dialog.Portal>
-        <Dialog.Overlay className="fixed inset-0 bg-black/50 data-[state=open]:animate-fadeIn" />
-        <Dialog.Content
+    <Root open={open} onOpenChange={onOpenChange}>
+      <Portal>
+        <Overlay className="fixed inset-0 z-[45] bg-black/50 data-[state=open]:animate-fadeIn" />
+        <Content
           className={`fixed z-50 w-full bg-sc-chalk p-4 focus:outline-none flex flex-col ${positionClasses} ${className ?? ""}`}
         >
           {title && (
-            <Dialog.Title className="font-poppins mb-2 text-xl font-bold text-sc-ocean-blue">
+            <Title className="font-poppins mb-2 text-xl font-bold text-sc-ocean-blue">
               {title}
-            </Dialog.Title>
+            </Title>
           )}
           {description && (
-            <Dialog.Description className="font-poppins mb-4 text-sm text-sc-ocean-blue/70">
+            <Description className="font-poppins mb-4 text-base font-medium text-sc-ocean-blue/70">
               {description}
-            </Dialog.Description>
+            </Description>
           )}
 
           {children}
 
-          <Dialog.Close asChild>
+          <Close asChild>
             <button
               type="button"
               aria-label={data.ui.closeLabel}
-              className="absolute right-4 top-4 rounded-full p-1 bg-sc-ocean-blue text-sc-chalk transition-colors cursor-pointer hover:text-pr-aquamarine focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pr-aquamarine"
+              className="absolute right-4 top-4 rounded-full p-1 bg-sc-ocean-blue ring-2 ring-pr-aquamarine/30 text-sc-chalk transition-colors cursor-pointer hover:text-pr-aquamarine focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pr-aquamarine"
             >
               <IconX className="size-5" stroke={3} />
             </button>
-          </Dialog.Close>
-        </Dialog.Content>
-      </Dialog.Portal>
-    </Dialog.Root>
+          </Close>
+        </Content>
+      </Portal>
+    </Root>
   );
 }

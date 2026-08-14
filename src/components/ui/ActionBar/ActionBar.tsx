@@ -30,7 +30,7 @@ export function ActionBar({
           <Button
             variant="danger"
             size="md"
-            className="min-h-11"
+            className="min-h-11 !font-bold"
             onClick={onClear}
             disabled={presupuestarDisabled}
             ariaLabel={data.ui.clearListLabel}
@@ -40,7 +40,7 @@ export function ActionBar({
           <Button
             variant="primary"
             size="md"
-            className="ml-auto min-h-11 "
+            className="ml-auto min-h-11 !font-bold"
             onClick={onPresupuestar}
             disabled={presupuestarDisabled}
             ariaLabel={data.ui.quoteCartLabel}

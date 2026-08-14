@@ -4,9 +4,9 @@ import { FaqCategoryGrid } from "../../components/ui/FaqCategoryGrid";
 import { data } from "../../mocks/data";
 import type { FaqCategory, FaqItem } from "../../mocks/types";
 
-import faqimg01 from "../../assets/img/services/services-01.webp";
-import faqimg02 from "../../assets/img/services/services-02.webp";
-import faqimg03 from "../../assets/img/services/services-05.webp";
+import faqimg01 from "../../assets/img/products/hilos/hilo-negro.webp";
+import faqimg02 from "../../assets/img/products/correas/correa-negra.webp";
+import faqimg03 from "../../assets/img/products/carros/perro-n5-negro.webp";
 import faqimg04 from "../../assets/img/works/capota/capota-01.webp";
 
 import insumosLogo from "../../assets/logos/icons/insumos/insumos-rounded.svg";
