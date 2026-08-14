@@ -8,7 +8,7 @@ interface MediaPlayerProps {
 function MediaPlayer({ src, className }: MediaPlayerProps) {
   return (
     <div className={`w-full h-full aspect-video ${className ?? ""}`}>
-      <ReactPlayer loop muted autoPlay width="100%" height="100%" src={src} />
+      <ReactPlayer loop width="100%" height="100%" src={src} />
     </div>
   );
 }

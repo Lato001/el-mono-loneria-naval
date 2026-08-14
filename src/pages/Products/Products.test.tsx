@@ -29,6 +29,9 @@ beforeAll(() => {
 
 beforeEach(() => {
   window.sessionStorage.clear();
+  // Products now reads/writes `?categoria=..&productoId=..` via replaceState.
+  // Reset the URL so each test mounts on the default category (broches).
+  window.history.replaceState(null, "", "/productos");
 });
 
 function renderProducts() {
@@ -118,12 +121,17 @@ describe("Products page", () => {
     const user = userEvent.setup();
     renderProducts();
 
-    // Default: Broches (no videoUrl) → placeholder instead of the player
+    // Default: Broches (no videoUrl) — placeholder instead of the player
     expect(screen.getByText("Video próximamente")).toBeInTheDocument();
     expect(screen.queryByTestId("mock-player")).not.toBeInTheDocument();
 
-    // Switching category keeps the placeholder (no videos linked yet)
+    // A category WITH a video (Caballetes) renders the player
     await user.click(screen.getByRole("tab", { name: /Caballetes/i }));
+    expect(screen.queryByText("Video próximamente")).not.toBeInTheDocument();
+    expect(screen.getByTestId("mock-player")).toBeInTheDocument();
+
+    // A category WITHOUT video (Herrajes) keeps the placeholder
+    await user.click(screen.getByRole("tab", { name: /Herrajes/i }));
     expect(screen.getByText("Video próximamente")).toBeInTheDocument();
     expect(screen.queryByTestId("mock-player")).not.toBeInTheDocument();
   });
@@ -250,7 +258,7 @@ describe("Products page", () => {
     );
 
     const whatsappLink = screen.getByRole("link", {
-      name: /cotizá tus productos/i,
+      name: /consultar por whatsapp/i,
     });
     expect(whatsappLink).toHaveAttribute(
       "href",
@@ -277,13 +285,13 @@ describe("Products page", () => {
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
   });
 
-  it("renders the 'Borrar lista' button (aquamarine, disabled when no selection)", () => {
+  it("renders the 'Borrar lista' button (sky blue, disabled when no selection)", () => {
     renderProducts();
     const clearButton = within(getActionBar()).getByRole("button", {
       name: /borrar lista/i,
     });
     expect(clearButton).toBeInTheDocument();
-    expect(clearButton.className).toContain("bg-pr-aquamarine");
+    expect(clearButton.className).toContain("bg-sc-sky-blue");
     expect(clearButton).toBeDisabled();
   });
 

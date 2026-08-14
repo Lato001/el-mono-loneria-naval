@@ -104,12 +104,10 @@ describe("SectionTabs", () => {
     expect(tabs[1]).toHaveAttribute("tabindex", "0");
   });
 
-  it("tablist is sticky at top with z-40", () => {
+  it("tablist is static (not sticky) so it scrolls with the page", () => {
     render(<SectionTabs categories={categories} />);
     const tablist = screen.getByRole("tablist");
-    expect(tablist.className).toContain("sticky");
-    expect(tablist.className).toContain("top-0");
-    expect(tablist.className).toContain("z-40");
-    expect(tablist.style.top).toBe("");
+    expect(tablist.className).not.toContain("sticky");
+    expect(tablist.className).not.toContain("z-40");
   });
 });

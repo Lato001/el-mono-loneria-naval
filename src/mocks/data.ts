@@ -299,7 +299,7 @@ export const data = {
     worksHeroDescription:
       "TODO: replace with real content — descripción general de los servicios que ofrece El Mono (lonas, capotas, cerramientos, etc.).",
     worksCategoriesLabel: "Categorías de servicios",
-    consultWhatsApp: "Cotizá tus productos",
+    consultWhatsApp: "Consultar por WhatsApp",
     clearList: "Vaciar lista",
     keepBrowsing: "Seguir viendo",
     cancel: "Cancelar",
@@ -456,8 +456,8 @@ export const data = {
     } satisfies SectionsGroup,
 
     splitCards: [
-      { title: "Productos", imageKey: "services-02" },
-      { title: "Trabajos", imageKey: "services-04" },
+      { title: "Productos", imageKey: "productos-card" },
+      { title: "Trabajos", imageKey: "trabajos-card" },
     ] satisfies SplitCardData[],
 
     masonryItems: [
@@ -536,6 +536,7 @@ export const data = {
         products: [
           { id: "c1", title: "Caballete Tubo Acero Inoxidable", description: "Caballete de caño de acero inoxidable, resistente a la corrosión y apto para intemperie.", imageKey: "tubo-inox" },
         ],
+        videoUrl: "https://www.youtube.com/watch?v=M7f2f4AeISg",
       },
       {
         id: "capota",
@@ -572,6 +573,7 @@ export const data = {
           { id: "cr4", title: "Carros Perro Plástico N10 Blanco", description: "Perro de plástico en color blanco, medida N10.", imageKey: "perro-n10-plastico-blanco" },
           { id: "cr5", title: "Carros Perro Plástico N10 Negro", description: "Perro de plástico en color negro, medida N10.", imageKey: "perro-n10-plastico-negro" },
         ],
+        videoUrl: "https://www.youtube.com/shorts/eLq0bl-34F8",
       },
       {
         id: "correas",
