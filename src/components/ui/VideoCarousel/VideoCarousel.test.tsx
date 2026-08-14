@@ -4,9 +4,9 @@ import { VideoCarousel } from "./VideoCarousel";
 import type { VideoItem } from "./VideoCarousel.types";
 
 const mockVideos: VideoItem[] = [
-  { src: "/videos/one.mp4", alt: "Video uno" },
-  { src: "/videos/two.mp4", alt: "Video dos" },
-  { src: "/videos/three.mp4", alt: "Video tres" },
+  { src: "/videos/one.webm", srcFallback: "/videos/one.mp4", poster: "/videos/one-poster.webp", alt: "Video uno" },
+  { src: "/videos/two.webm", srcFallback: "/videos/two.mp4", poster: "/videos/two-poster.webp", alt: "Video dos" },
+  { src: "/videos/three.webm", srcFallback: "/videos/three.mp4", poster: "/videos/three-poster.webp", alt: "Video tres" },
 ];
 
 let playedElements: HTMLVideoElement[];
@@ -23,6 +23,9 @@ beforeEach(() => {
   pauseSpy = vi
     .spyOn(HTMLMediaElement.prototype, "pause")
     .mockImplementation(() => {});
+  vi.spyOn(HTMLMediaElement.prototype, "load").mockImplementation(() => {});
+  // Force WebM support so the src resolution is deterministic in jsdom.
+  vi.spyOn(HTMLMediaElement.prototype, "canPlayType").mockReturnValue("maybe");
 });
 
 afterEach(() => {
@@ -52,8 +55,11 @@ describe("VideoCarousel", () => {
     const { container } = render(<VideoCarousel videos={mockVideos} />);
     const videos = container.querySelectorAll("video");
     expect(videos[0]).toHaveAttribute("preload", "auto");
+    expect(videos[0]).toHaveAttribute("src", mockVideos[0].src);
     expect(videos[1]).toHaveAttribute("preload", "metadata");
+    expect(videos[1]).toHaveAttribute("src", mockVideos[1].src);
     expect(videos[2]).toHaveAttribute("preload", "none");
+    expect(videos[2]).not.toHaveAttribute("src");
   });
 
   it("autoplays only the active video", () => {
@@ -62,6 +68,40 @@ describe("VideoCarousel", () => {
     expect(videos[0]).toHaveAttribute("autoplay");
     expect(videos[1]).not.toHaveAttribute("autoplay");
     expect(videos[2]).not.toHaveAttribute("autoplay");
+  });
+
+  it("uses the WebM source when supported", () => {
+    const { container } = render(<VideoCarousel videos={mockVideos} />);
+    const videos = container.querySelectorAll("video");
+    expect(videos[0]).toHaveAttribute("src", "/videos/one.webm");
+  });
+
+  it("falls back to the MP4 source when WebM is unsupported", () => {
+    const canPlayTypeSpy = vi
+      .spyOn(HTMLMediaElement.prototype, "canPlayType")
+      .mockReturnValue("");
+    const { container } = render(<VideoCarousel videos={mockVideos} />);
+    const videos = container.querySelectorAll("video");
+    expect(videos[0]).toHaveAttribute("src", "/videos/one.mp4");
+    canPlayTypeSpy.mockRestore();
+  });
+
+  it("renders an individual poster per video", () => {
+    const { container } = render(<VideoCarousel videos={mockVideos} />);
+    const videos = container.querySelectorAll("video");
+    videos.forEach((video, i) => {
+      expect(video).toHaveAttribute("poster", mockVideos[i].poster);
+    });
+  });
+
+  it("releases the src of videos that leave the active/next window", () => {
+    const { container } = render(<VideoCarousel videos={mockVideos} />);
+    const videos = container.querySelectorAll("video");
+    fireEvent(videos[0], new Event("ended"));
+    expect(videos[0]).not.toHaveAttribute("src");
+    expect(videos[1]).toHaveAttribute("src");
+    expect(videos[1]).toHaveAttribute("autoplay");
+    expect(videos[2]).toHaveAttribute("src");
   });
 
   it("advances to the next video when the active one ends", () => {
@@ -166,15 +206,14 @@ describe("VideoCarousel", () => {
     expect(playedElements).toEqual([videos[2]]);
   });
 
-  it("pauses every video except the active one on navigation", async () => {
+  it("pauses the video that leaves the active/next window on navigation", async () => {
     const user = userEvent.setup();
     const { container } = render(<VideoCarousel videos={mockVideos} />);
     const videos = container.querySelectorAll("video");
     pauseSpy.mockClear();
     await user.click(screen.getByLabelText("Siguiente"));
-    expect(pauseSpy).toHaveBeenCalledTimes(2);
+    expect(pauseSpy).toHaveBeenCalledTimes(1);
     expect(pauseSpy.mock.instances).toContain(videos[0]);
-    expect(pauseSpy.mock.instances).toContain(videos[2]);
   });
 
   it("restarts the newly active video from the beginning on navigation", async () => {

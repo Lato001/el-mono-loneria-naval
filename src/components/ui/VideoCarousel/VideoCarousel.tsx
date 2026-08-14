@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { IconChevronLeft, IconChevronRight } from "@tabler/icons-react";
 import { data } from "../../../mocks/data";
 import { useVideoCarousel } from "./useVideoCarousel";
@@ -9,23 +9,40 @@ export function VideoCarousel({ videos, className = "" }: VideoCarouselProps) {
     useVideoCarousel(videos.length);
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
 
+  const supportsWebM = useMemo(() => {
+    if (typeof document === "undefined") return true;
+    const v = document.createElement("video");
+    return v.canPlayType('video/webm; codecs="vp9"') !== "";
+  }, []);
+
   // autoplay as an attribute is only honored when a <video> mounts; toggling
-  // it on an already-mounted element does nothing. Play the active video
-  // imperatively so advancing (ended/next/prev/dots) starts playback.
+  // it on an already-mounted element does nothing. Attach a src to the active
+  // and next videos imperatively and play the active one so advancing
+  // (ended/next/prev/dots) starts playback. Every other video is released:
+  // pause + remove src + load() frees the browser's decode buffer.
   useEffect(() => {
     try {
       videoRefs.current.forEach((video, i) => {
-        if (video && i !== activeIndex) video.pause();
+        if (!video) return;
+        const isActive = i === activeIndex;
+        const isNext = i === (activeIndex + 1) % videos.length;
+        const source = supportsWebM ? videos[i].src : videos[i].srcFallback;
+        if (isActive || isNext) {
+          if (video.getAttribute("src") !== source) video.src = source;
+          if (isActive) {
+            video.currentTime = 0;
+            video.play().catch(() => {});
+          }
+        } else {
+          video.pause();
+          video.removeAttribute("src");
+          video.load();
+        }
       });
-      const activeVideo = videoRefs.current[activeIndex];
-      if (activeVideo) {
-        activeVideo.currentTime = 0;
-        activeVideo.play().catch(() => {});
-      }
     } catch {
       // Playback API unavailable (e.g. jsdom) or autoplay blocked.
     }
-  }, [activeIndex]);
+  }, [activeIndex, supportsWebM, videos]);
 
   if (videos.length === 0) return null;
 
@@ -41,7 +58,7 @@ export function VideoCarousel({ videos, className = "" }: VideoCarouselProps) {
               ref={(el) => {
                 videoRefs.current[index] = el;
               }}
-              src={video.src}
+              poster={video.poster}
               muted
               playsInline
               autoPlay={isActive}
@@ -63,7 +80,7 @@ export function VideoCarousel({ videos, className = "" }: VideoCarouselProps) {
           type="button"
           aria-label={data.ui.prevLabel}
           onClick={goToPrev}
-          className="cursor-pointer rounded-full bg-sc-ocean-blue p-3 text-sc-chalk shadow-md backdrop-blur-sm transition-colors hover:bg-sc-ocean-blue/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pr-aquamarine"
+          className="cursor-pointer rounded-full border border-pr-aquamarine/30 bg-pr-aquamarine/10 p-3 text-pr-aquamarine shadow-md backdrop-blur-md transition-all duration-300 hover:border-pr-aquamarine/60 hover:bg-pr-aquamarine/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pr-aquamarine"
         >
           <IconChevronLeft className="size-6" stroke={3} />
         </button>
@@ -85,7 +102,7 @@ export function VideoCarousel({ videos, className = "" }: VideoCarouselProps) {
             type="button"
             aria-label={data.ui.nextLabel}
             onClick={goToNext}
-            className="cursor-pointer rounded-full bg-sc-ocean-blue p-3 text-sc-chalk shadow-md backdrop-blur-sm transition-colors hover:bg-sc-ocean-blue/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pr-aquamarine"
+            className="cursor-pointer rounded-full border border-pr-aquamarine/30 bg-pr-aquamarine/10 p-3 text-pr-aquamarine shadow-md backdrop-blur-md transition-all duration-300 hover:border-pr-aquamarine/60 hover:bg-pr-aquamarine/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pr-aquamarine"
           >
             <IconChevronRight className="size-6" stroke={3} />
           </button>

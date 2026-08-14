@@ -11,6 +11,13 @@ import type { MasonryItem } from "../../mocks/types";
 import { data } from "../../mocks/data";
 import { PATHS } from "../../routes/routes";
 
+// ── Nuevos imports para el masonry de la home ──────────────────────────────
+import capota01 from "../../assets/img/works/capota/capota-01.webp";
+import carpa01 from "../../assets/img/works/carpa/carpa-01.webp";
+import cerramiento01 from "../../assets/img/works/cerramiento/cerramiento-01.webp";
+import toneau01 from "../../assets/img/works/toneau/toneau-01.webp";
+
+
 // ─── Service images (auto-discovered via Vite glob) ────────────────────
 const serviceImages = import.meta.glob("../../assets/img/services/*", {
   eager: true,
@@ -27,12 +34,22 @@ const heroImageMap: Record<string, string> = Object.fromEntries(
   ]),
 );
 
+//MAPEO DE MASONRY
+const masonryImageMap: Record<string, string> = {
+  "capota-01": capota01,
+  "carpa-01": carpa01,
+  "cerramiento-01": cerramiento01,
+  "toneau-01": toneau01,
+};
+
 const splitCardsImageMap: Record<string, string> = heroImageMap;
 
 const homeMasonryItems: MasonryItem[] = data.home.masonryItems.map((item) => ({
   ...item,
-  img: heroImageMap[item.img] ?? "",
-  // PLACEHOLDER presentation copy — the user will supply real texts per card.
+  img: masonryImageMap[item.img] ?? (() => {
+    if (import.meta.env.DEV) console.warn(`[masonry] imagen no encontrada para key: "${item.img}"`);
+    return "";
+  })(),
   eyebrow: item.title ?? "Trabajos a medida",
   chips: ["A medida", "Lona reforzada"],
 }));
@@ -51,7 +68,7 @@ export function Home() {
       />
       <div className="section-navy-gradient">
         <SectionWrapper
-          theme="dark"
+        gradientVariant="hero-to-navy"
           className="!bg-transparent"
           titlesAlign={data.home.sections.whatWeOffer.titlesAlign}
           eyebrow={data.home.sections.whatWeOffer.eyebrow}
@@ -65,7 +82,7 @@ export function Home() {
           />
         </SectionWrapper>
         <SectionWrapper
-          theme="dark"
+          gradientVariant="navy-to-hero"
           className="!bg-transparent"
           titlesAlign={data.home.sections.aboutUs.titlesAlign}
           eyebrow={data.home.sections.aboutUs.eyebrow}
@@ -88,16 +105,17 @@ export function Home() {
           <div className="flex justify-center">
             <LinkButton
               type="Redirect"
-              text="Ver Galeria de Fotos"
+              text="Ver mas trabajos..."
               theme="light"
               path={PATHS.WORKS}
+              className="mt-10 !px-8 !py-3 text-xl !rounded-full "
             />
           </div>
         </SectionWrapper>
       </div>
-
+      
       <SectionWrapper
-        theme="light"
+        gradientVariant="hero-to-navy"
         titlesAlign={data.home.sections.testimonials.titlesAlign}
         eyebrow={data.home.sections.testimonials.eyebrow}
         title={data.home.sections.testimonials.title}
@@ -107,13 +125,13 @@ export function Home() {
           <LinkButton
             type="Google"
             text="Ver Reseñas"
-            theme="dark"
+            theme="light"
             url="https://maps.app.goo.gl/5yJprtv3uSdtv13M7"
           />
         </div>
       </SectionWrapper>
-
       <SectionWrapper
+      gradientVariant="navy-to-hero"
         theme={data.home.sections.faq.theme}
         titlesAlign={data.home.sections.faq.titlesAlign}
         eyebrow={data.home.sections.faq.eyebrow}
@@ -121,6 +139,7 @@ export function Home() {
       >
         <Accordion items={data.home.faqs} />
       </SectionWrapper>
+
     </>
   );
 }

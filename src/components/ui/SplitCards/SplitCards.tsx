@@ -31,10 +31,10 @@ export function SplitCards({ items, imageMap }: SplitCardsProps) {
           <a
             href={`${c.title}`}
             key={c.title}
-            className="group block w-3/4 md:w-full mx-auto"
+            className="group block w-full"
           >
             <ImgCard
-              className="w-full max-w-md aspect-4/3 rounded-3xl border border-transparent transition-all duration-300 ease-out motion-safe:hover:-translate-y-1 hover:ring-1 hover:ring-pr-aquamarine/50"
+              className="w-full max-w-md md:max-w-none aspect-[7/4] rounded-3xl border border-transparent transition-all duration-300 ease-out motion-safe:hover:-translate-y-1 hover:ring-1 hover:ring-pr-aquamarine/50"
               imageClassName="brightness-50 grayscale-50 transition-all duration-500 ease-out motion-safe:group-hover:scale-105 group-hover:brightness-100 group-hover:grayscale-0"
               src={imageMap[c.imageKey]}
               alt={c.title}

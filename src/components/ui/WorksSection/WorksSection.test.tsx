@@ -9,29 +9,12 @@ beforeAll(() => {
   Element.prototype.scrollIntoView = vi.fn();
 });
 
-// Mock imageMap with all 20 image keys
-const imageMap: Record<string, string> = {
-  "services-03": "/img/services-03.webp",
-  "services-04": "/img/services-04.webp",
-  "services-05": "/img/services-05.webp",
-  "services-06": "/img/services-06.webp",
-  "services-07": "/img/services-07.webp",
-  "services-08": "/img/services-08.webp",
-  "works-01": "/img/works-01.webp",
-  "works-02": "/img/works-02.webp",
-  "works-03": "/img/works-03.webp",
-  "works-04": "/img/works-04.webp",
-  "works-05": "/img/works-05.webp",
-  "works-06": "/img/works-06.webp",
-  "works-07": "/img/works-07.webp",
-  "works-08": "/img/works-08.webp",
-  "works-09": "/img/works-09.webp",
-  "works-10": "/img/works-10.webp",
-  "works-11": "/img/works-11.webp",
-  "works-12": "/img/works-12.webp",
-  "works-13": "/img/works-13.webp",
-  "works-14": "/img/works-14.webp",
-};
+// Mock imageMap derived from the real mock data keys — one entry per key the
+// trabajos actually reference, resolved to a fictitious URL. Keeps the test in
+// sync with data.ts without maintaining a hand-written key list.
+const imageMap: Record<string, string> = Object.fromEntries(
+  [...new Set(data.worksPage.trabajos.flatMap((t) => t.imagenes))].map((key) => [key, `/img/${key}.webp`]),
+);
 
 function renderWorksSection(search = "", hash = "") {
   // Set up window.location.search (and optional hash) for the test
@@ -102,10 +85,10 @@ describe("WorksSection", () => {
   });
 
   it("trabajoId wins over categoria on mount", () => {
-    renderWorksSection("?categoria=carpas&trabajoId=trab-bitacora-1");
+    renderWorksSection("?categoria=carpas&trabajoId=trab-toneau-1");
 
-    // Even though categoria=carpas, the trabajoId selects the bitacora trabajo
-    expect(screen.getByRole("heading", { level: 2, name: "Bitácora de navegación personalizada" })).toBeInTheDocument();
+    // Even though categoria=carpas, the trabajoId selects the toneau trabajo
+    expect(screen.getByRole("heading", { level: 2, name: "Toneau para pick-up Ford Ranger" })).toBeInTheDocument();
   });
 
   it("falls back to a valid categoria when trabajoId does not exist", () => {
@@ -138,44 +121,44 @@ describe("WorksSection", () => {
   });
 
   it("restores the exact photo from the imagen query param on reload", () => {
-    // trab-toneau-1 has 3 images: ["services-07", "works-01", "works-02"]
+    // trab-toneau-1 has 17 images: ["toneau-01", ..., "toneau-17"]
     renderWorksSection("?categoria=toneau&trabajoId=trab-toneau-1&imagen=2");
 
-    // imageIndex 2 → big image is the 3rd image (works-02)
+    // imageIndex 2 → big image is the 3rd image (toneau-03)
     const mainImage = screen.getByAltText("Toneau para pick-up Ford Ranger - imagen principal");
-    expect(mainImage).toHaveAttribute("src", "/img/works-02.webp");
+    expect(mainImage).toHaveAttribute("src", "/img/toneau-03.webp");
     // The current big image is excluded from the carousel thumbnails
     expect(screen.queryByAltText("Toneau para pick-up Ford Ranger - imagen 3")).not.toBeInTheDocument();
     expect(screen.getByAltText("Toneau para pick-up Ford Ranger - imagen 2")).toBeInTheDocument();
   });
 
   it("applies the imagen query param together with a categoria (first trabajo of the category)", () => {
-    // toneau's first (destacado) trabajo is trab-toneau-1 with imagenes[1] = "works-01"
+    // toneau's first (destacado) trabajo is trab-toneau-1 with imagenes[1] = "toneau-02"
     renderWorksSection("?categoria=toneau&imagen=1");
 
     const mainImage = screen.getByAltText("Toneau para pick-up Ford Ranger - imagen principal");
-    expect(mainImage).toHaveAttribute("src", "/img/works-01.webp");
+    expect(mainImage).toHaveAttribute("src", "/img/toneau-02.webp");
   });
 
   it("clamps an out-of-range imagen param to 0", () => {
-    // 99 is outside carpas' 5 images → falls back to the first image
+    // 99 is outside carpas' 7 images → falls back to the first image
     renderWorksSection("?categoria=carpas&imagen=99");
 
     const mainImage = screen.getByAltText("Carpa toldo para embarcación neumática - imagen principal");
-    expect(mainImage).toHaveAttribute("src", "/img/services-06.webp");
+    expect(mainImage).toHaveAttribute("src", "/img/carpa-01.webp");
   });
 
   it("thumb select updates the big image to the clicked photo", async () => {
     renderWorksSection();
 
     const user = userEvent.setup();
-    // Default carpas at imageIndex 0 → carousel shows the remaining 4 images.
-    // Thumb "thumbnail 2 de 4" = originalIndex 1 (imagenes[1] = "services-05").
-    await user.click(screen.getByRole("button", { name: /thumbnail 2 de 4/i }));
+    // Default carpas at imageIndex 0 → carousel shows the remaining 6 images.
+    // Thumb "thumbnail 2 de 6" = originalIndex 1 (imagenes[1] = "carpa-02").
+    await user.click(screen.getByRole("button", { name: /thumbnail 2 de 6/i }));
 
     const mainImage = screen.getByAltText("Carpa toldo para embarcación neumática - imagen principal");
-    expect(mainImage).toHaveAttribute("src", "/img/services-05.webp");
-    // After clicking, the previously current image (services-06) is back in the carousel
+    expect(mainImage).toHaveAttribute("src", "/img/carpa-02.webp");
+    // After clicking, the previously current image (carpa-01) is back in the carousel
     expect(screen.getByAltText("Carpa toldo para embarcación neumática - imagen 1")).toBeInTheDocument();
   });
 
@@ -187,7 +170,7 @@ describe("WorksSection", () => {
     scrollIntoView.mockClear();
 
     const user = userEvent.setup();
-    await user.click(screen.getByRole("button", { name: /thumbnail 2 de 4/i }));
+    await user.click(screen.getByRole("button", { name: /thumbnail 2 de 6/i }));
 
     // On mobile the ImgCard is above the carousel: selecting a thumb must scroll
     // to the showcase content so the updated big image is visible.
@@ -220,7 +203,7 @@ describe("WorksSection", () => {
       scrollIntoView.mockClear();
 
       const user = userEvent.setup();
-      await user.click(screen.getByRole("button", { name: /thumbnail 2 de 4/i }));
+      await user.click(screen.getByRole("button", { name: /thumbnail 2 de 6/i }));
 
       expect(scrollIntoView).not.toHaveBeenCalled();
     } finally {
@@ -281,8 +264,9 @@ describe("WorksSection", () => {
   });
 
   it("does not render WorksCarousel when selected trabajo has single image", () => {
-    // bitacora has only 1 image
-    renderWorksSection("?categoria=bitacora");
+    // trab-extra-1 has only 2 images: at imageIndex 0 only 1 remains in the
+    // carousel, so the carousel (which requires >= 2) is not rendered.
+    renderWorksSection("?categoria=extra&trabajoId=trab-extra-1");
 
     const thumbnails = screen.queryAllByRole("button", { name: /thumbnail/i });
     expect(thumbnails).toHaveLength(0);

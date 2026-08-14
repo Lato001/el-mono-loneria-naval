@@ -10,7 +10,7 @@ interface HeroProps {
   description?: string;
   primaryCta: string;
   secondaryCta: string;
-  videos?: { src: string; alt: string }[];
+  videos?: { src: string; srcFallback: string; poster: string; alt: string }[];
 }
 
 export function Hero({

@@ -6,7 +6,7 @@ export function ReviewCard({ avatar, title, author, description }: Review) {
   const initial = author.charAt(0).toUpperCase();
 
   return (
-    <article className="mx-auto flex h-full max-w-4xl flex-col overflow-hidden rounded-xl border border-sc-ocean-blue/15 bg-white transition-all duration-200 ease-out hover:-translate-y-1.5 hover:shadow-xl md:mx-0 md:max-w-none">
+    <article className="mx-auto flex h-full max-w-4xl flex-col overflow-hidden rounded-2xl border border-sc-ocean-blue/15 bg-white transition-all duration-200 ease-out hover:-translate-y-1.5 hover:shadow-xl md:mx-0 md:max-w-none">
       <div className="flex items-center gap-4 border-b border-sc-ocean-blue/10 px-6 py-5 md:gap-5 md:px-8 md:py-6">
         {avatar ? (
           <img

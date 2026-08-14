@@ -53,6 +53,10 @@ export interface FooterNav {
 export interface HeroVideo {
   /** Public video URL (static assets under `public/`). */
   src: string;
+  /** Fallback source (MP4) when WebM is unsupported. */
+  srcFallback: string;
+  /** Optimized poster (WebP) shown until the video loads. */
+  poster: string;
   alt: string;
 }
 
@@ -97,7 +101,7 @@ export interface SplitCardData {
 export interface MasonryItem {
   id: string;
   img: string;
-  url: string;
+  url?: string;
   alt?: string;
   title?: string;
   redirectUrl?: string;

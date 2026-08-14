@@ -61,7 +61,7 @@ const trabajos: Trabajo[] = [
     titulo: "Toneau para pick-up Ford Ranger",
     descripcion:
       "Carpeta de bitácora en cuero náutico tratado con costuras a contraste. Interior con fundas para cartas, libretas e instrumentos. Cierre magnético oculto. Cuenta con bolsillo frontal para documentos de la embarcación, anillas para lápiz y una banda elástica que sujeta la página abierta durante la navegación. La tapa queda rígida para apoyar al escribir en cubierta, con esquinas reforzadas y canto en lona resistente a la abrasión. Disponible en varios tamaños y colores de interior, con grabado personalizado en la portada.",
-    imagenes: ["services-07", "works-01", "works-02"],
+    imagenes: ["toneau-01", "toneau-02", "toneau-03", "toneau-04", "toneau-05", "toneau-06", "toneau-07", "toneau-08", "toneau-09", "toneau-10", "toneau-11", "toneau-12", "toneau-13", "toneau-14", "toneau-15", "toneau-16", "toneau-17"],
     destacado: true,
     cualidades: [
       { icono: "IconDroplet", texto: "Impermeable" },
@@ -77,7 +77,7 @@ const trabajos: Trabajo[] = [
     titulo: "Cubrevidrios para lancha cabinada 22 pies",
     descripcion:
       "Carpeta de bitácora en cuero náutico tratado con costuras a contraste. Interior con fundas para cartas, libretas e instrumentos. Cierre magnético oculto. Cuenta con bolsillo frontal para documentos de la embarcación, anillas para lápiz y una banda elástica que sujeta la página abierta durante la navegación. La tapa queda rígida para apoyar al escribir en cubierta, con esquinas reforzadas y canto en lona resistente a la abrasión. Disponible en varios tamaños y colores de interior, con grabado personalizado en la portada.",
-    imagenes: ["works-01", "services-03", "works-04"],
+    imagenes: ["cubrevidrio-01", "cubrevidrio-02", "cubrevidrio-03", "cubrevidrio-04", "cubrevidrio-05", "cubrevidrio-06", "cubrevidrio-07", "cubrevidrio-08", "cubrevidrio-09", "cubrevidrio-10", "cubrevidrio-11"],
     destacado: true,
     cualidades: [
       { icono: "IconSun", texto: "Lona Sunbrella Pacific Blue" },
@@ -93,7 +93,7 @@ const trabajos: Trabajo[] = [
     titulo: "Cubre Flybridge para yate 38 pies",
     descripcion:
       "Carpeta de bitácora en cuero náutico tratado con costuras a contraste. Interior con fundas para cartas, libretas e instrumentos. Cierre magnético oculto. Cuenta con bolsillo frontal para documentos de la embarcación, anillas para lápiz y una banda elástica que sujeta la página abierta durante la navegación. La tapa queda rígida para apoyar al escribir en cubierta, con esquinas reforzadas y canto en lona resistente a la abrasión. Disponible en varios tamaños y colores de interior, con grabado personalizado en la portada.",
-    imagenes: ["works-02", "services-05", "works-06"],
+    imagenes: ["cubre-fly-01", "cubre-fly-02", "cubre-fly-03", "cubre-fly-04", "cubre-fly-05", "cubre-fly-06", "cubre-fly-07"],
     destacado: true,
   },
   // Cerramientos
@@ -103,7 +103,7 @@ const trabajos: Trabajo[] = [
     titulo: "Cerramiento lateral para embarcación deportiva",
     descripcion:
       "Carpeta de bitácora en cuero náutico tratado con costuras a contraste. Interior con fundas para cartas, libretas e instrumentos. Cierre magnético oculto. Cuenta con bolsillo frontal para documentos de la embarcación, anillas para lápiz y una banda elástica que sujeta la página abierta durante la navegación. La tapa queda rígida para apoyar al escribir en cubierta, con esquinas reforzadas y canto en lona resistente a la abrasión. Disponible en varios tamaños y colores de interior, con grabado personalizado en la portada.",
-    imagenes: ["services-03", "works-07", "works-08"],
+    imagenes: ["cerramiento-01", "cerramiento-02", "cerramiento-03"],
     destacado: true,
   },
   {
@@ -112,7 +112,7 @@ const trabajos: Trabajo[] = [
     titulo: "Cerramiento frontal con puerta enrollable",
     descripcion:
       "Carpeta de bitácora en cuero náutico tratado con costuras a contraste. Interior con fundas para cartas, libretas e instrumentos. Cierre magnético oculto. Cuenta con bolsillo frontal para documentos de la embarcación, anillas para lápiz y una banda elástica que sujeta la página abierta durante la navegación. La tapa queda rígida para apoyar al escribir en cubierta, con esquinas reforzadas y canto en lona resistente a la abrasión. Disponible en varios tamaños y colores de interior, con grabado personalizado en la portada.",
-    imagenes: ["services-04", "works-09", "works-10"],
+    imagenes: ["cerramiento-04", "cerramiento-05"],
   },
   // Carpas (default category - must have at least one)
   {
@@ -121,7 +121,7 @@ const trabajos: Trabajo[] = [
     titulo: "Carpa toldo para embarcación neumática",
     descripcion:
       "Carpeta de bitácora en cuero náutico tratado con costuras a contraste. Interior con fundas para cartas, libretas e instrumentos. Cierre magnético oculto. Cuenta con bolsillo frontal para documentos de la embarcación, anillas para lápiz y una banda elástica que sujeta la página abierta durante la navegación. La tapa queda rígida para apoyar al escribir en cubierta, con esquinas reforzadas y canto en lona resistente a la abrasión. Disponible en varios tamaños y colores de interior, con grabado personalizado en la portada.",
-    imagenes: ["services-06", "services-05", "works-03", "works-14", "works-02"],
+    imagenes: ["carpa-01", "carpa-02", "carpa-03", "carpa-04", "carpa-05", "carpa-06", "carpa-07"],
     destacado: true,
     cualidades: [
       { icono: "IconUmbrella", texto: "Lona Sunbrella Captain Navy" },
@@ -136,7 +136,7 @@ const trabajos: Trabajo[] = [
     titulo: "Carpa de proa para lancha abierta",
     descripcion:
       "Carpeta de bitácora en cuero náutico tratado con costuras a contraste. Interior con fundas para cartas, libretas e instrumentos. Cierre magnético oculto. Cuenta con bolsillo frontal para documentos de la embarcación, anillas para lápiz y una banda elástica que sujeta la página abierta durante la navegación. La tapa queda rígida para apoyar al escribir en cubierta, con esquinas reforzadas y canto en lona resistente a la abrasión. Disponible en varios tamaños y colores de interior, con grabado personalizado en la portada.",
-    imagenes: ["works-14", "services-06", "works-03"],
+    imagenes: ["carpa-08", "carpa-10", "carpa-11", "carpa-12", "carpa-13", "carpa-14", "carpa-15"],
   },
   // Capotas
   {
@@ -145,7 +145,7 @@ const trabajos: Trabajo[] = [
     titulo: "Capota rígida para consola central 24 pies",
     descripcion:
       "Carpeta de bitácora en cuero náutico tratado con costuras a contraste. Interior con fundas para cartas, libretas e instrumentos. Cierre magnético oculto. Cuenta con bolsillo frontal para documentos de la embarcación, anillas para lápiz y una banda elástica que sujeta la página abierta durante la navegación. La tapa queda rígida para apoyar al escribir en cubierta, con esquinas reforzadas y canto en lona resistente a la abrasión. Disponible en varios tamaños y colores de interior, con grabado personalizado en la portada.",
-    imagenes: ["services-08", "works-04", "works-05"],
+    imagenes: ["capota-01", "capota-02", "capota-03", "capota-04", "capota-05", "capota-06", "capota-07"],
     destacado: true,
     cualidades: [
       { icono: "IconTool", texto: "Estructura de aluminio" },
@@ -160,67 +160,9 @@ const trabajos: Trabajo[] = [
     titulo: "Capota de lona para embarcación clásica",
     descripcion:
       "Carpeta de bitácora en cuero náutico tratado con costuras a contraste. Interior con fundas para cartas, libretas e instrumentos. Cierre magnético oculto. Cuenta con bolsillo frontal para documentos de la embarcación, anillas para lápiz y una banda elástica que sujeta la página abierta durante la navegación. La tapa queda rígida para apoyar al escribir en cubierta, con esquinas reforzadas y canto en lona resistente a la abrasión. Disponible en varios tamaños y colores de interior, con grabado personalizado en la portada.",
-    imagenes: ["works-04", "services-08", "works-03"],
+    imagenes: ["capota-08", "capota-09", "capota-10", "capota-11", "capota-12", "capota-13", "capota-14"],
   },
-  // Motos de agua
-  {
-    id: "trab-motos-de-agua-1",
-    categoria: "motos-de-agua",
-    titulo: "Funda integral para moto de agua Yamaha FX",
-    descripcion:
-      "Carpeta de bitácora en cuero náutico tratado con costuras a contraste. Interior con fundas para cartas, libretas e instrumentos. Cierre magnético oculto. Cuenta con bolsillo frontal para documentos de la embarcación, anillas para lápiz y una banda elástica que sujeta la página abierta durante la navegación. La tapa queda rígida para apoyar al escribir en cubierta, con esquinas reforzadas y canto en lona resistente a la abrasión. Disponible en varios tamaños y colores de interior, con grabado personalizado en la portada.",
-    imagenes: ["works-05", "works-06", "works-07"],
-    destacado: true,
-  },
-  {
-    id: "trab-motos-de-agua-2",
-    categoria: "motos-de-agua",
-    titulo: "Cubre asiento y manillar para Sea-Doo GTX",
-    descripcion:
-      "Carpeta de bitácora en cuero náutico tratado con costuras a contraste. Interior con fundas para cartas, libretas e instrumentos. Cierre magnético oculto. Cuenta con bolsillo frontal para documentos de la embarcación, anillas para lápiz y una banda elástica que sujeta la página abierta durante la navegación. La tapa queda rígida para apoyar al escribir en cubierta, con esquinas reforzadas y canto en lona resistente a la abrasión. Disponible en varios tamaños y colores de interior, con grabado personalizado en la portada.",
-    imagenes: ["works-06", "works-05", "works-08"],
-  },
-  // Gomones
-  {
-    id: "trab-gomones-1",
-    categoria: "gomones",
-    titulo: "Cubierta total para gomón semirrígido 5.5m",
-    descripcion:
-      "Carpeta de bitácora en cuero náutico tratado con costuras a contraste. Interior con fundas para cartas, libretas e instrumentos. Cierre magnético oculto. Cuenta con bolsillo frontal para documentos de la embarcación, anillas para lápiz y una banda elástica que sujeta la página abierta durante la navegación. La tapa queda rígida para apoyar al escribir en cubierta, con esquinas reforzadas y canto en lona resistente a la abrasión. Disponible en varios tamaños y colores de interior, con grabado personalizado en la portada.",
-    imagenes: ["works-07", "works-08", "services-03"],
-    destacado: true,
-    cualidades: [
-      { icono: "IconDroplet", texto: "Lona vinílica impermeable" },
-      { icono: "IconLifebuoy", texto: "Refuerzos de flotación" },
-      { icono: "IconAnchor", texto: "Tensores de acero inoxidable" },
-      { icono: "IconSailboat", texto: "Acceso a consola y bañera" },
-    ],
-  },
-  {
-    id: "trab-gomones-2",
-    categoria: "gomones",
-    titulo: "Funda de consola para gomón Zodiac",
-    descripcion:
-      "Carpeta de bitácora en cuero náutico tratado con costuras a contraste. Interior con fundas para cartas, libretas e instrumentos. Cierre magnético oculto. Cuenta con bolsillo frontal para documentos de la embarcación, anillas para lápiz y una banda elástica que sujeta la página abierta durante la navegación. La tapa queda rígida para apoyar al escribir en cubierta, con esquinas reforzadas y canto en lona resistente a la abrasión. Disponible en varios tamaños y colores de interior, con grabado personalizado en la portada.",
-    imagenes: ["works-08", "works-07", "works-09"],
-  },
-  // Bitácora
-  {
-    id: "trab-bitacora-1",
-    categoria: "bitacora",
-    titulo: "Bitácora de navegación personalizada",
-    descripcion:
-      "Carpeta de bitácora en cuero náutico tratado con costuras a contraste. Interior con fundas para cartas, libretas e instrumentos. Cierre magnético oculto. Cuenta con bolsillo frontal para documentos de la embarcación, anillas para lápiz y una banda elástica que sujeta la página abierta durante la navegación. La tapa queda rígida para apoyar al escribir en cubierta, con esquinas reforzadas y canto en lona resistente a la abrasión. Disponible en varios tamaños y colores de interior, con grabado personalizado en la portada.",
-    imagenes: ["works-09"],
-    destacado: true,
-    cualidades: [
-      { icono: "IconLock", texto: "Cierre magnético oculto" },
-      { icono: "IconSailboat", texto: "Tapa rígida para cubierta" },
-      { icono: "IconTool", texto: "Costuras a contraste artesanales" },
-      { icono: "IconPackage", texto: "Fundas para cartas e instrumentos" },
-      { icono: "IconAnchor", texto: "Cuero náutico tratado" },
-    ],
-  },
+  
   // Extra
   {
     id: "trab-extra-1",
@@ -228,7 +170,7 @@ const trabajos: Trabajo[] = [
     titulo: "Cubre motor fuera de borda 150HP",
     descripcion:
       "Carpeta de bitácora en cuero náutico tratado con costuras a contraste. Interior con fundas para cartas, libretas e instrumentos. Cierre magnético oculto. Cuenta con bolsillo frontal para documentos de la embarcación, anillas para lápiz y una banda elástica que sujeta la página abierta durante la navegación. La tapa queda rígida para apoyar al escribir en cubierta, con esquinas reforzadas y canto en lona resistente a la abrasión. Disponible en varios tamaños y colores de interior, con grabado personalizado en la portada.",
-    imagenes: ["works-10", "works-11", "works-12"],
+    imagenes: ["extra-01", "extra-02"],
     destacado: true,
   },
   {
@@ -237,7 +179,7 @@ const trabajos: Trabajo[] = [
     titulo: "Bolsa estanca para equipamiento de cubierta",
     descripcion:
       "Carpeta de bitácora en cuero náutico tratado con costuras a contraste. Interior con fundas para cartas, libretas e instrumentos. Cierre magnético oculto. Cuenta con bolsillo frontal para documentos de la embarcación, anillas para lápiz y una banda elástica que sujeta la página abierta durante la navegación. La tapa queda rígida para apoyar al escribir en cubierta, con esquinas reforzadas y canto en lona resistente a la abrasión. Disponible en varios tamaños y colores de interior, con grabado personalizado en la portada.",
-    imagenes: ["works-11", "works-10", "works-13"],
+    imagenes: ["extra-03", "extra-04"],
   },
   {
     id: "trab-extra-3",
@@ -245,7 +187,7 @@ const trabajos: Trabajo[] = [
     titulo: "Protector de proa para amarre",
     descripcion:
       "Carpeta de bitácora en cuero náutico tratado con costuras a contraste. Interior con fundas para cartas, libretas e instrumentos. Cierre magnético oculto. Cuenta con bolsillo frontal para documentos de la embarcación, anillas para lápiz y una banda elástica que sujeta la página abierta durante la navegación. La tapa queda rígida para apoyar al escribir en cubierta, con esquinas reforzadas y canto en lona resistente a la abrasión. Disponible en varios tamaños y colores de interior, con grabado personalizado en la portada.",
-    imagenes: ["works-12", "works-13", "works-14"],
+    imagenes: ["extra-05", "extra-06"],
   },
   {
     id: "trab-extra-4",
@@ -253,7 +195,7 @@ const trabajos: Trabajo[] = [
     titulo: "Funda de timón para embarcación a vela",
     descripcion:
       "Carpeta de bitácora en cuero náutico tratado con costuras a contraste. Interior con fundas para cartas, libretas e instrumentos. Cierre magnético oculto. Cuenta con bolsillo frontal para documentos de la embarcación, anillas para lápiz y una banda elástica que sujeta la página abierta durante la navegación. La tapa queda rígida para apoyar al escribir en cubierta, con esquinas reforzadas y canto en lona resistente a la abrasión. Disponible en varios tamaños y colores de interior, con grabado personalizado en la portada.",
-    imagenes: ["works-13", "works-12", "works-01"],
+    imagenes: ["extra-07", "extra-08"],
   },
 ];
 
@@ -478,9 +420,11 @@ export const data = {
       primaryCta: "Ver Productos",
       secondaryCta: "Ver Trabajos",
       videos: [
-        { src: "/videos/work-video-01.mp4", alt: "Trabajo de taller — confección de lona" },
-        { src: "/videos/work-video-02.mp4", alt: "Trabajo de taller — lonería naval" },
-        { src: "/videos/work-video-03.mp4", alt: "Trabajo de taller — confección de lona" },
+        { src: "/videos/hero-video-01.webm", srcFallback: "/videos/hero-video-01.mp4", poster: "/videos/hero-video-01-poster.webp", alt: "Trabajo de taller — confección de lona" },
+        { src: "/videos/hero-video-02.webm", srcFallback: "/videos/hero-video-02.mp4", poster: "/videos/hero-video-02-poster.webp", alt: "Trabajo de taller — lonería naval" },
+        { src: "/videos/hero-video-03.webm", srcFallback: "/videos/hero-video-03.mp4", poster: "/videos/hero-video-03-poster.webp", alt: "Trabajo de taller — confección de lona" },
+        { src: "/videos/hero-video-04.webm", srcFallback: "/videos/hero-video-04.mp4", poster: "/videos/hero-video-04-poster.webp", alt: "Trabajo de taller — lonería naval" },
+        { src: "/videos/hero-video-05.webm", srcFallback: "/videos/hero-video-05.mp4", poster: "/videos/hero-video-05-poster.webp", alt: "Trabajo de taller — confección de lona" },
       ],
     } satisfies HeroData,
 
@@ -517,10 +461,34 @@ export const data = {
     ] satisfies SplitCardData[],
 
     masonryItems: [
-      { id: "hm-gallery-1", img: "services-03", url: "", alt: "Cerramientos marinos", title: "Capotas", redirectUrl: "/trabajos#album" },
-      { id: "hm-gallery-2", img: "services-04", url: "", alt: "Cubreautos a medida", title: "Cubreautos", redirectUrl: "/trabajos#album" },
-      { id: "hm-gallery-3", img: "services-06", url: "", alt: "Carpa para embarcaciones", title: "Toldos", redirectUrl: "/trabajos#album" },
-      { id: "hm-gallery-4", img: "services-08", url: "", alt: "Capota de lona", title: "Tonos", redirectUrl: "/trabajos#album" },
+      {
+        id: "hm-gallery-1",
+        img: "capota-01",
+        alt: "Capota rígida para embarcación",
+        title: "Capotas",
+        redirectUrl: "/trabajos#album",
+      },
+      {
+        id: "hm-gallery-2",
+        img: "carpa-01",
+        alt: "Carpa toldo para embarcación",
+        title: "Carpas",
+        redirectUrl: "/trabajos#album",
+      },
+      {
+        id: "hm-gallery-3",
+        img: "cerramiento-01",
+        alt: "Cerramiento lateral para embarcación",
+        title: "Cerramientos",
+        redirectUrl: "/trabajos#album",
+      },
+      {
+        id: "hm-gallery-4",
+        img: "toneau-01",
+        alt: "Toneau para pick-up",
+        title: "Toneau",
+        redirectUrl: "/trabajos#album",
+      },
     ] satisfies MasonryItem[],
 
     aboutSection: {

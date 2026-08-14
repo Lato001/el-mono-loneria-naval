@@ -23,7 +23,7 @@ export function Accordion({ items, className = "" }: AccordionProps) {
         <AccordionPrimitive.Item
           key={item.id}
           value={item.id}
-          className="rounded-xl border border-pr-aquamarine/40 bg-white/[0.07] transition-colors hover:border-pr-aquamarine hover:bg-white/10"
+          className="rounded-2xl border border-pr-aquamarine/40 bg-white/[0.07] transition-colors hover:border-pr-aquamarine hover:bg-white/10"
         >
           <AccordionPrimitive.Header>
             <AccordionPrimitive.Trigger className="group flex w-full cursor-pointer items-center justify-between gap-4 px-6 py-6 text-left sm:px-8">

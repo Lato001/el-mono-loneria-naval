@@ -6,7 +6,6 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { IconChevronLeft, IconChevronRight } from "@tabler/icons-react";
 import { gsap } from "gsap";
 import { Modal } from "../Modal";
 
@@ -91,7 +90,7 @@ const preloadImages = async (
 export interface Item {
   id: string;
   img: string;
-  url: string;
+  url?: string;
   alt?: string;
   title?: string;
   redirectUrl?: string;
@@ -153,10 +152,10 @@ const Masonry: React.FC<MasonryProps> = ({
 
   const isMobile = useMedia(["(max-width: 767px)"], [1], 0) === 1;
 
-  // Home mosaic: always 2x2 on desktop, 4-in-a-row only on very large screens
-  // (xl2 = 95rem / 1520px, the same breakpoint defined in @theme).
-  const isXl2Mosaic = useMedia(["(min-width: 95rem)"], [1], 0) === 1;
-  const itemsPerRow = variant === "mosaic" ? (isXl2Mosaic ? 4 : 2) : 1;
+  // Home mosaic: always 2x2 on desktop (mirrors the SplitCards grid above it,
+  // so both sections share the same card size). The old 4-in-a-row behavior
+  // on very large screens made the cards smaller than the SplitCards.
+  const itemsPerRow = variant === "mosaic" ? 2 : 1;
 
   const [containerRef, { width }, containerNode] = useMeasure<HTMLDivElement>();
   const [imagesReady, setImagesReady] = useState(false);
@@ -225,9 +224,9 @@ const Masonry: React.FC<MasonryProps> = ({
         const rowY = gridItems.length === 0
           ? 0
           : Math.max(...gridItems.map((g) => g.y + g.h)) + gap;
-        // Keep a ~4/3-ish card aspect regardless of how many items share the row:
-        // 2 cols → row height = usableWidth / 2.5; 4 cols → usableWidth / 5.
-        const rowHeight = usableWidth / (itemsPerRow === 4 ? 5 : 2.5);
+        // 2 cols → row height = usableWidth / 3.5 keeps a 1.75 card aspect (shorter
+        // than the 4/3 SplitCards above, per user preference).
+        const rowHeight = usableWidth / 3.5;
         let rowX = 0;
 
         rowItems.forEach((child, i) => {
@@ -440,24 +439,36 @@ const Masonry: React.FC<MasonryProps> = ({
 
 function MobileMosaicCarousel({ items }: { items: Item[] }) {
   const scrollRef = useRef<HTMLDivElement>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
 
-  const prev = useCallback(() => {
-    scrollRef.current?.scrollBy({ left: -scrollRef.current.clientWidth, behavior: "smooth" });
-  }, []);
+  /** Distance (px) between snap points: 92% slide width + gap-4 (16px). */
+  const snapStep = (container: HTMLElement) => container.clientWidth * 0.92 + 16;
 
-  const next = useCallback(() => {
-    scrollRef.current?.scrollBy({ left: scrollRef.current.clientWidth, behavior: "smooth" });
+  const handleScroll = useCallback(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const step = snapStep(el);
+    const index = step > 0 ? Math.round(el.scrollLeft / step) : 0;
+    setActiveIndex(Math.max(0, Math.min(index, items.length - 1)));
+  }, [items.length]);
+
+  const scrollToIndex = useCallback((index: number) => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const step = snapStep(el);
+    el.scrollTo({ left: index * step, behavior: "smooth" });
   }, []);
 
   return (
     <div className="relative w-full">
       <div
         ref={scrollRef}
+        onScroll={handleScroll}
         className="flex gap-4 overflow-x-auto scroll-smooth snap-x snap-mandatory pb-4 scrollbar-hide"
         style={{ scrollbarWidth: "none" }}
       >
         {items.map((item) => (
-          <div key={item.id} className="w-[80%] shrink-0 snap-start">
+          <div key={item.id} className="w-[92%] shrink-0 snap-start">
             <a
               href={item.redirectUrl ?? "/trabajos#album"}
               className="group block rounded-3xl border border-white/15 transition-all duration-300 ease-out motion-safe:hover:-translate-y-1 hover:ring-1 hover:ring-pr-aquamarine/50"
@@ -497,22 +508,26 @@ function MobileMosaicCarousel({ items }: { items: Item[] }) {
         ))}
       </div>
 
-      <button
-        type="button"
-        aria-label="Anterior"
-        onClick={prev}
-        className="absolute left-2 top-1/2 -translate-y-1/2 z-10 rounded-full bg-white/80 p-3 shadow-md backdrop-blur-sm transition-colors hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pr-aquamarine"
-      >
-        <IconChevronLeft className="h-5 w-5 text-sc-ocean-blue" />
-      </button>
-      <button
-        type="button"
-        aria-label="Siguiente"
-        onClick={next}
-        className="absolute right-2 top-1/2 -translate-y-1/2 z-10 rounded-full bg-white/80 p-3 shadow-md backdrop-blur-sm transition-colors hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pr-aquamarine"
-      >
-        <IconChevronRight className="h-5 w-5 text-sc-ocean-blue" />
-      </button>
+      {/* Dot indicator: replaces the prev/next buttons on mobile. Clicking a
+          dot scrolls the carousel to that slide. */}
+      {items.length > 1 && (
+        <div className="mt-4 flex justify-center gap-2">
+          {items.map((item, index) => (
+            <button
+              key={item.id}
+              type="button"
+              aria-label={`Ir a la foto ${index + 1} de ${items.length}`}
+              aria-current={index === activeIndex ? "true" : undefined}
+              onClick={() => scrollToIndex(index)}
+              className={`h-2.5 rounded-full transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pr-aquamarine ${
+                index === activeIndex
+                  ? "w-6 bg-pr-aquamarine"
+                  : "w-2.5 bg-white/40 hover:bg-white/70"
+              }`}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 }

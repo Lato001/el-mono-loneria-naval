@@ -21,13 +21,14 @@ export function SectionWrapper({
   subtitle,
   title,
   theme = "dark",
+  gradientVariant = "none",
   titlesAlign = "start",
   headingLevel = "h1",
   fullWidth,
   containerClassName,
 }: SectionWrapperProps) {
   const Heading = headingLevel;
-  const headingClasses = `font-poppins mb-8 font-bold uppercase  text-3xl ${theme === "dark" ? "text-white" : "text-pr-hero-blue"} `;
+  const headingClasses = `font-poppins mb-8 font-bold uppercase text-[clamp(1.875rem,3vw,2.5rem)] ${theme === "dark" ? "text-white" : "text-pr-hero-blue"} `;
   const containerClasses = fullWidth
     ? "w-full"
     : containerClassName ?? "mx-auto max-w-295 px-6";
@@ -36,7 +37,7 @@ export function SectionWrapper({
     <>
       {eyebrow && (
         <p
-          className={`${titlesTextClasses[titlesAlign]} font-poppins mb-2 flex items-center gap-2.5 text-base uppercase tracking-[0.2em] ${theme === "dark" ? "text-pr-aquamarine" : "text-pr-hero-blue"} `}
+          className={`${titlesTextClasses[titlesAlign]} font-poppins mb-2 flex items-center gap-2.5 text-xs uppercase tracking-[0.2em] ${theme === "dark" ? "text-pr-aquamarine" : "text-pr-hero-blue"} `}
         >
           {eyebrowDash && (
             <span
@@ -51,10 +52,25 @@ export function SectionWrapper({
     </>
   );
 
+
+  const gradientClass =
+  gradientVariant === "navy-to-hero"
+    ? "section-navy-to-hero"
+    : gradientVariant === "hero-to-navy"
+    ? "section-hero-to-navy"
+    : "";
+
+
   return (
     <section
       id={id}
-      className={`${theme === "dark" ? "bg-sc-ocean-blue " : "bg-sc-chalk"} py-20 text-white  ${className ?? ""}`}
+      className={`${
+        gradientVariant === "none"
+          ? theme === "dark"
+            ? "bg-sc-ocean-blue"
+            : "bg-sc-chalk"
+          : ""
+      } ${gradientClass} py-20 text-white ${className ?? ""}`}
       aria-label={title}
     >
       <div className={containerClasses}>

@@ -7,7 +7,7 @@ import type { FaqCategory, FaqItem } from "../../mocks/types";
 import faqimg01 from "../../assets/img/services/services-01.webp";
 import faqimg02 from "../../assets/img/services/services-02.webp";
 import faqimg03 from "../../assets/img/services/services-05.webp";
-import faqimg04 from "../../assets/img/works/works-05.webp";
+import faqimg04 from "../../assets/img/works/capota/capota-01.webp";
 
 import insumosLogo from "../../assets/logos/icons/insumos/insumos-rounded.svg";
 import serviciosLogo from "../../assets/logos/icons/servicios/servicios-rounded.svg";

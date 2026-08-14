@@ -45,7 +45,7 @@ export function LinkButton({
       {type === "Redirect" && (
         <Link
           to={path}
-          className={`inline-flex items-center gap-3 rounded-lg px-4 py-2.5 font-poppins font-semibold shadow-lg transition-all duration-300 hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pr-aquamarine cursor-pointer ${
+          className={`inline-flex items-center gap-3 rounded-full px-6 py-3 text-lg font-poppins font-semibold shadow-lg transition-all duration-300 hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pr-aquamarine cursor-pointer ${
             theme === "light"
               ? "bg-sc-chalk text-sc-ocean-blue "
               : "bg-sc-ocean-blue text-sc-chalk hover:bg-sc-ocean-blue/80"
