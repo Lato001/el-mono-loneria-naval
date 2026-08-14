@@ -350,15 +350,15 @@ export function Products() {
                 <div className="flex w-full min-w-0 flex-col-reverse gap-6 xl:h-full xl:flex-col xl:col-span-7 xl:gap-8">
                   {/* Video: 16:9 centrado en la mitad superior */}
                   <div className="w-full min-w-0 xl:flex xl:flex-1 xl:min-h-0 xl:items-center xl:justify-center">
-                    <div className="flex w-full overflow-hidden rounded-2xl aspect-video xl:h-full xl:w-auto xl:max-w-full xl:mt-16">
+                    <div className="flex w-full aspect-video xl:h-full xl:w-auto xl:max-w-full xl:mt-16">
                       {activeCategory.videoUrl ? (
                         <MediaPlayer
                           key={activeCategory.id}
                           src={activeCategory.videoUrl}
-                          className="w-full h-full object-cover"
+                          className="w-full h-full"
                         />
                       ) : (
-                        <div className="flex h-full w-full items-center justify-center bg-sc-ocean-blue/5 font-poppins text-sm text-sc-ocean-blue/50">
+                        <div className="flex h-full w-full items-center justify-center rounded-2xl bg-sc-ocean-blue/5 font-poppins text-sm text-sc-ocean-blue/50">
                           Video próximamente
                         </div>
                       )}

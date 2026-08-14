@@ -123,17 +123,17 @@ describe("Products page", () => {
 
     // Default: Broches (no videoUrl) — placeholder instead of the player
     expect(screen.getByText("Video próximamente")).toBeInTheDocument();
-    expect(screen.queryByTestId("mock-player")).not.toBeInTheDocument();
+    expect(screen.queryByTitle("Video")).not.toBeInTheDocument();
 
     // A category WITH a video (Caballetes) renders the player
     await user.click(screen.getByRole("tab", { name: /Caballetes/i }));
     expect(screen.queryByText("Video próximamente")).not.toBeInTheDocument();
-    expect(screen.getByTestId("mock-player")).toBeInTheDocument();
+    expect(screen.getByTitle("Video")).toBeInTheDocument();
 
     // A category WITHOUT video (Herrajes) keeps the placeholder
     await user.click(screen.getByRole("tab", { name: /Herrajes/i }));
     expect(screen.getByText("Video próximamente")).toBeInTheDocument();
-    expect(screen.queryByTestId("mock-player")).not.toBeInTheDocument();
+    expect(screen.queryByTitle("Video")).not.toBeInTheDocument();
   });
 
   it("renders 1 carousel section (tabpanel) for the active category", () => {
