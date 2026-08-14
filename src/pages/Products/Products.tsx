@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   IconX,
   IconBulb,
@@ -16,7 +16,6 @@ import {
   Modal,
   Button,
   ProductCarousel,
-  FaqBubble,
 } from "../../components/ui";
 import type { Product } from "../../components/ui/ProductCarousel/ProductCarousel.types";
 import type { Tab } from "../../components/ui/SectionTabs/SectionTabs.types";
@@ -178,25 +177,6 @@ export function Products() {
     initialUrl.activeCategoryId,
   );
   const [showMobileInfo, setShowMobileInfo] = useState(false);
-  const [tipFits, setTipFits] = useState(true);
-  const overlayBoxRef = useRef<HTMLDivElement>(null);
-  const overlayContentRef = useRef<HTMLDivElement>(null);
-
-  // Fit-or-hide: the full category description renders at its natural size.
-  // If it would overflow the ImgCard (very narrow viewports), the overlay
-  // content is hidden instead of scrolling or clipping a bubble.
-  useLayoutEffect(() => {
-    if (!showMobileInfo) return;
-    const box = overlayBoxRef.current;
-    const content = overlayContentRef.current;
-    if (!box || !content) return;
-    const check = () => setTipFits(content.scrollHeight <= box.clientHeight);
-    check();
-    const ro = new ResizeObserver(check);
-    ro.observe(box);
-    ro.observe(content);
-    return () => ro.disconnect();
-  }, [showMobileInfo, activeCategoryId]);
 
   const activeCategory = categories.find((c) => c.id === activeCategoryId);
 
@@ -314,24 +294,17 @@ export function Products() {
                     }
                     overlay={
                       showMobileInfo ? (
-                        <div
-                          ref={overlayBoxRef}
-                          className="h-full overflow-hidden bg-black/5 p-6 backdrop-brightness-70 backdrop-blur-sm card:flex-row card:items-center card:justify-center card:p-10"
-                        >
-                          <div
-                            ref={overlayContentRef}
-                            className="flex w-full flex-col items-center gap-6 card:flex-row card:items-center card:justify-center card:gap-8 card:pl-0"
-                          ></div>
-                          <div className="absolute right-6 top-1 flex justify-center items-center gap-4 card:right-10 card:top-0">
-                            <div className="flex justify-center items-center">
-                              <FaqBubble
-                                question="MONO TIP"
-                                answer={activeCategory.description}
-                                align="end"
-                                showChatTail={false}
-                                questionClassName="shadow-2xl mt-26 text-center"
-                                answerClassName={`shadow-2xl text-center ${tipFits ? "" : "invisible"}`}
-                              />
+                        <div className="flex h-full w-full items-center justify-center overflow-hidden bg-black/5 p-6 backdrop-brightness-70 backdrop-blur-sm card:p-10">
+                          <div className="flex w-full flex-col items-center justify-center gap-3">
+                            <div className="w-full max-w-[85%] rounded-full border-2 border-sc-ocean-blue bg-sc-ocean-blue px-5 py-2.5 shadow-md">
+                              <h3 className="text-center font-poppins font-extrabold text-lg uppercase tracking-wide text-white">
+                                MONO TIP
+                              </h3>
+                            </div>
+                            <div className="w-full max-w-[85%] rounded-2xl border-2 border-sc-ocean-blue/10 bg-sc-sky-blue px-4 py-4 shadow-md">
+                              <p className="text-center font-poppins font-semibold text-sm leading-relaxed text-white">
+                                {activeCategory.description}
+                              </p>
                             </div>
                           </div>
                         </div>
