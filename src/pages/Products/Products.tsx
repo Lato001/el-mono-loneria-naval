@@ -24,7 +24,6 @@ import type { ProductCategoryData } from "../../mocks/types";
 import { data } from "../../mocks/data";
 import { ImgCard } from "../../components";
 import MediaPlayer from "../../components/ui/MediaPlayer/MediaPLayer";
-import isotipoElMono from "../../assets/logos/elmono/isotipo-elmono.png";
 
 const STORAGE_KEY = "mono:quote-cart";
 
@@ -325,11 +324,6 @@ export function Products() {
                           ></div>
                           <div className="absolute right-6 top-1 flex justify-center items-center gap-4 card:right-10 card:top-0">
                             <div className="flex justify-center items-center">
-                              <img
-                                src={isotipoElMono}
-                                alt="Isotipo El Mono"
-                                className="size-16 card:size-24"
-                              />
                               <FaqBubble
                                 question="MONO TIP"
                                 answer={activeCategory.description}

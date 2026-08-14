@@ -477,15 +477,12 @@ describe("Products page", () => {
     expect(screen.getByLabelText(/cerrar información/i)).toBeInTheDocument();
   });
 
-  it("toggles the overlay with the isotipo and the MONO TIP bubble", async () => {
+  it("toggles the overlay with the MONO TIP bubble", async () => {
     const user = userEvent.setup();
     renderProducts();
     expect(screen.queryByText(/MONO TIP/i)).not.toBeInTheDocument();
     await user.click(screen.getByLabelText(/ver información/i));
     expect(screen.getByText(/MONO TIP/i)).toBeInTheDocument();
-    expect(
-      screen.getByRole("img", { name: /isotipo el mono/i }),
-    ).toBeInTheDocument();
     await user.click(screen.getByLabelText(/cerrar información/i));
     expect(screen.queryByText(/MONO TIP/i)).not.toBeInTheDocument();
   });
