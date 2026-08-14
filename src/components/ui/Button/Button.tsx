@@ -27,7 +27,7 @@ const baseClasses =
 // Applied when disabled regardless of render mode (button, span, or Link).
 // Note: <a>/<Link> elements do not support the `disabled` HTML attribute,
 // so visual + aria disabling is handled manually for those branches.
-const disabledClasses = "pointer-events-none cursor-not-allowed";
+const disabledClasses = "opacity-50 pointer-events-none cursor-not-allowed";
 
 /**
  * Button component with three render modes:
