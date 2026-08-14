@@ -108,7 +108,7 @@ export function Home() {
               text="Ver mas trabajos..."
               theme="light"
               path={PATHS.WORKS}
-              className="mt-10 !px-8 !py-3 text-xl !rounded-full "
+              className="mt-10 !px-8 !py-3 !rounded-full "
             />
           </div>
         </SectionWrapper>
@@ -131,6 +131,7 @@ export function Home() {
         </div>
       </SectionWrapper>
       <SectionWrapper
+      className="pb-40"
       gradientVariant="navy-to-hero"
         theme={data.home.sections.faq.theme}
         titlesAlign={data.home.sections.faq.titlesAlign}

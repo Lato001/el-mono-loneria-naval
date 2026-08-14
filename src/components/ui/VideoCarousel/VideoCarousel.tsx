@@ -90,9 +90,12 @@ export function VideoCarousel({ videos, className = "" }: VideoCarouselProps) {
               key={video.src}
               type="button"
               aria-label={`${data.ui.goToVideoLabel} ${index + 1}`}
+              aria-current={index === activeIndex ? "true" : undefined}
               onClick={() => goTo(index)}
-              className={`h-2 w-2 cursor-pointer rounded-full transition-colors ${
-                index === activeIndex ? "bg-pr-aquamarine" : "bg-white/40"
+              className={`h-2 cursor-pointer rounded-full transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pr-aquamarine ${
+                index === activeIndex
+                  ? "w-4 bg-pr-aquamarine"
+                  : "w-2 bg-white/40 hover:bg-white/70"
               }`}
             />
           ))}

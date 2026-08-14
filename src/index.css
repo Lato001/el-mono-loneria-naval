@@ -26,7 +26,9 @@ body {
 
 /* KEEP IN SYNC with Navbar actual rendered height (pill --nav-h + fixed top-4) */
 :root {
-  --nav-h: clamp(2.75rem, 2vw + 2rem, 3.75rem);
+  /* Min raised so the floating pill stays comfortably large on mobile
+     (esquina); desktop keeps the same max. */
+  --nav-h: clamp(3.25rem, 2vw + 2rem, 3.75rem);
   --header-h: calc(var(--nav-h) + 1rem);
 }
 

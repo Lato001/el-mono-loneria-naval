@@ -26,7 +26,7 @@ export function Hero({
     <>
       <section
         id="home"
-        className="relative overflow-hidden pt-27.5 text-white bg-linear-to-br from-sc-ocean-blue to-pr-hero-blue"
+        className="relative overflow-hidden pt-40 text-white bg-linear-to-br from-sc-ocean-blue to-pr-hero-blue"
       >
         <div
           className="absolute inset-0 pointer-events-none select-none"
@@ -69,7 +69,7 @@ export function Hero({
           </div>
           <VideoCarousel videos={videos ?? []} className="max-lg:hidden" />
         </div>
-        <div className="relative z-10 mt-11.5">
+        <div className="relative z-10 mt-28">
           <BrandMarquee />
         </div>
       </section>

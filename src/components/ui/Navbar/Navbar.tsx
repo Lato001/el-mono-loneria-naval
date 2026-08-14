@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { IconMenu2Filled, IconXFilled } from "@tabler/icons-react";
+import { IconMenu2, IconXFilled } from "@tabler/icons-react";
 import isotipo from "../../../assets/logos/elmono/isotipo-elmono.png";
 import isotipoName from "../../../assets/logos/elmono/isotipo-elmono-name.png";
 import { PATHS } from "../../../routes/routes";
@@ -11,13 +11,49 @@ import { LinkButton } from "../Button/LinkButton";
 export function Navbar() {
   const [hovered, setHovered] = useState<number | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const lastScrollY = useRef(0);
   const location = useLocation();
+
+  // Scrolled state is driven by scroll DIRECTION, not position: scrolling
+  // down frosted-glasses the pill (more blur, slightly narrower), scrolling
+  // up a few pixels anywhere on the page returns it to the natural solid
+  // state. Initialized from the restored scroll position so a refresh in the
+  // middle of the page starts frosted, not solid.
+  useEffect(() => {
+    const initialY = window.scrollY;
+    lastScrollY.current = initialY;
+    setScrolled(initialY > 24);
+    const handleScroll = () => {
+      const currentY = window.scrollY;
+      if (currentY > lastScrollY.current) {
+        setScrolled(true);
+      } else if (currentY < lastScrollY.current) {
+        setScrolled(false);
+      }
+      lastScrollY.current = currentY;
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const isActive = (path: string) => location.pathname === path;
 
   return (
-    <header className="fixed top-4 right-4 z-50 flex h-(--nav-h) items-center rounded-full bg-sc-ocean-blue shadow-lg xl2:right-auto xl2:left-1/2 xl2:-translate-x-1/2">
-      <div className="flex items-center gap-[clamp(0.5rem,1.5vw,0.75rem)] px-[clamp(0.75rem,2vw,1.25rem)]">
+    <header
+      className={`fixed right-4 z-50 flex h-(--nav-h) items-center rounded-full shadow-lg transition-all duration-300 xl2:right-auto xl2:left-1/2 xl2:-translate-x-1/2 ${
+        scrolled
+          ? "top-4 border border-white/10 bg-sc-ocean-blue/40 backdrop-blur-xl xl2:top-0"
+          : "top-4 border border-transparent bg-sc-ocean-blue"
+      }`}
+    >
+      <div
+        className={`flex items-center transition-all duration-300 ${
+          scrolled
+            ? "gap-[clamp(0.35rem,1vw,0.5rem)] px-[clamp(0.5rem,1.25vw,0.875rem)]"
+            : "gap-[clamp(0.5rem,1.5vw,0.75rem)] px-[clamp(0.75rem,2vw,1.25rem)]"
+        }`}
+      >
         <Link
           to={PATHS.HOME}
           className="flex shrink-0 items-center gap-[clamp(0.25rem,0.6vw,0.5rem)]"
@@ -43,7 +79,7 @@ export function Navbar() {
               key={link.href}
               to={link.href}
               onMouseEnter={() => setHovered(i)}
-              className={`relative z-10 rounded-full px-[calc(var(--nav-h)*0.28)] py-2 text-[calc(var(--nav-h)*0.24)] font-bold uppercase transition-colors ${
+              className={`relative z-10 rounded-full px-[calc(var(--nav-h)*0.28)] py-2 text-sm font-bold uppercase transition-colors ${
                 isActive(link.href)
                   ? "text-pr-aquamarine"
                   : "text-white hover:text-pr-aquamarine"
@@ -63,9 +99,12 @@ export function Navbar() {
         <button
           aria-label={mobileOpen ? "Cerrar menú" : "Abrir menú"}
           onClick={() => setMobileOpen((v) => !v)}
-          className="xl2:hidden"
+          className="cursor-pointer transition-colors xl2:hidden hover:text-pr-aquamarine"
         >
-          <IconMenu2Filled className="h-[calc(var(--nav-h)*0.42)] w-[calc(var(--nav-h)*0.42)] text-white" />
+          <IconMenu2
+            className="h-[calc(var(--nav-h)*0.5)] w-[calc(var(--nav-h)*0.5)] text-white"
+            stroke={2}
+          />
         </button>
       </div>
 
