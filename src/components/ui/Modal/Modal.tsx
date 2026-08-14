@@ -28,7 +28,7 @@ export function Modal({
   return (
     <Root open={open} onOpenChange={onOpenChange}>
       <Portal>
-        <Overlay className="fixed inset-0 bg-black/50 data-[state=open]:animate-fadeIn" />
+        <Overlay className="fixed inset-0 z-[45] bg-black/50 data-[state=open]:animate-fadeIn" />
         <Content
           className={`fixed z-50 w-full bg-sc-chalk p-4 focus:outline-none flex flex-col ${positionClasses} ${className ?? ""}`}
         >
