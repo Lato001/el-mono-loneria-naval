@@ -59,12 +59,12 @@ export function Footer() {
         </div>
 
         {/* Links */}
-        <nav className="flex flex-wrap items-center justify-center gap-6">
+        <nav className="flex flex-wrap items-center justify-center gap-6 ml-6">
           {nav.header.map((link) => (
             <Link
               key={link.href}
               to={link.href}
-              className="font-poppins text-sm text-white/70 transition-colors hover:text-pr-aquamarine"
+              className="font-poppins text-base font-semibold text-white/80 transition-colors hover:text-pr-aquamarine"
             >
               {link.label}
             </Link>
@@ -81,7 +81,7 @@ export function Footer() {
               rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
               className="text-white/70 transition-colors hover:text-pr-aquamarine"
             >
-              <Icon className="size-6" />
+              <Icon className="size-7.5" />
             </a>
           ))}
         </div>

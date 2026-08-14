@@ -79,7 +79,7 @@ export function Navbar() {
               key={link.href}
               to={link.href}
               onMouseEnter={() => setHovered(i)}
-              className={`relative z-10 rounded-full px-[calc(var(--nav-h)*0.28)] py-2 text-sm font-bold uppercase transition-colors ${
+              className={`relative z-10 rounded-full px-[calc(var(--nav-h)*0.28)] py-2 font-poppins text-sm font-bold uppercase transition-colors ${
                 isActive(link.href)
                   ? "text-pr-aquamarine"
                   : "text-white hover:text-pr-aquamarine"
