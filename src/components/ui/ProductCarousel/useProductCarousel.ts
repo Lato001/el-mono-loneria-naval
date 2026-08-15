@@ -10,18 +10,26 @@ export function useProductCarousel() {
 
   // Re-derive navigation availability from the container's real scroll state.
   // A container with no scrollable overflow naturally yields both `false`.
+  // Bailout form: during a smooth scroll the browser fires dozens of scroll
+  // events per second, but the booleans rarely flip — skipping redundant
+  // setState avoids a full re-render of the carousel on every frame.
   const recompute = useCallback(() => {
     const container = scrollRef.current;
     if (!container) {
-      setCanPrev(false);
-      setCanNext(false);
+      setCanPrev((prev) => (prev === false ? prev : false));
+      setCanNext((prev) => (prev === false ? prev : false));
       return;
     }
-    setCanPrev(container.scrollLeft > EPSILON);
-    setCanNext(
-      container.scrollWidth - container.clientWidth - container.scrollLeft >
-        EPSILON,
-    );
+    setCanPrev((prev) => {
+      const next = container.scrollLeft > EPSILON;
+      return next === prev ? prev : next;
+    });
+    setCanNext((prev) => {
+      const next =
+        container.scrollWidth - container.clientWidth - container.scrollLeft >
+        EPSILON;
+      return next === prev ? prev : next;
+    });
   }, []);
 
   const prev = useCallback(() => {

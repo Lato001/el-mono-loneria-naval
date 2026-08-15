@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { IconChevronLeft, IconChevronRight } from "@tabler/icons-react";
 import { useProductCarousel } from "../ProductCarousel/useProductCarousel";
 import type { WorksCarouselProps } from "./WorksCarousel.types";
@@ -14,14 +14,34 @@ export function WorksCarousel({ images, onThumbSelect }: WorksCarouselProps) {
   const totalPages = Math.ceil(images.length / ITEMS_PER_PAGE);
   const [currentPage, setCurrentPage] = useState(0);
 
+  // Throttles scroll→page updates to one per animation frame. `scrollBy({behavior:"smooth"})`
+  // fires dozens of scroll events per second; without this, each event re-renders the
+  // carousel and drops the FPS of prev/next. The pending frame is cancelled on unmount.
+  const rafRef = useRef<number | null>(null);
   const handleScroll = useCallback(() => {
-    const container = scrollRef.current;
-    if (!container) return;
-    // Each item takes ~50% of container width (mobile), so page = round(scrollLeft / (clientWidth / 2))
-    const pageWidth = container.clientWidth / ITEMS_PER_PAGE;
-    const page = Math.round(container.scrollLeft / pageWidth);
-    setCurrentPage(Math.max(0, Math.min(page, totalPages - 1)));
+    if (rafRef.current !== null) return;
+    rafRef.current = requestAnimationFrame(() => {
+      rafRef.current = null;
+      const container = scrollRef.current;
+      if (!container) return;
+      // Each item takes ~50% of container width (mobile), so page = round(scrollLeft / (clientWidth / 2))
+      const pageWidth = container.clientWidth / ITEMS_PER_PAGE;
+      const page = Math.round(container.scrollLeft / pageWidth);
+      setCurrentPage((prev) => {
+        const next = Math.max(0, Math.min(page, totalPages - 1));
+        return next === prev ? prev : next;
+      });
+    });
   }, [scrollRef, totalPages]);
+
+  useEffect(() => {
+    return () => {
+      if (rafRef.current !== null) {
+        cancelAnimationFrame(rafRef.current);
+        rafRef.current = null;
+      }
+    };
+  }, []);
 
   const goToPage = useCallback(
     (page: number) => {
