@@ -213,6 +213,7 @@ export function WorksSection({ imageMap, imageDims }: WorksSectionProps) {
               alt={mainImageAlt}
               imageClassName="w-full max-w-md aspect-[4/3]"
               className="!aspect-[4/3] md:!aspect-[9/16] max-w-[450px] max-h-[350px] md:max-h-[700px]"
+              loading="eager"
             />
           </div>
 
