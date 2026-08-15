@@ -1,6 +1,7 @@
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { WorksCarousel } from "./WorksCarousel";
+import { IMAGE_FALLBACK_SRC } from "../ImageFallback";
 import type { WorksCarouselImage } from "./WorksCarousel.types";
 
 const mockImages: WorksCarouselImage[] = [
@@ -72,6 +73,16 @@ describe("WorksCarousel", () => {
       expect(thumb).toHaveClass("w-[calc(50%-8px)]");
       expect(thumb).toHaveClass("lg:w-[calc(25%-12px)]");
     });
+  });
+
+  it("swaps a failed thumbnail src for the inline fallback", () => {
+    render(<WorksCarousel images={mockImages} onThumbSelect={vi.fn()} />);
+
+    const img = screen.getByAltText("Image 1") as HTMLImageElement;
+    expect(img.src).not.toBe(IMAGE_FALLBACK_SRC);
+    fireEvent.error(img);
+
+    expect(img.src).toBe(IMAGE_FALLBACK_SRC);
   });
 
   // --- Page indicator dots (new feature) ---

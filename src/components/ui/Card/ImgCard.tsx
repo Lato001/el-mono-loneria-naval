@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import type { ReactNode } from "react";
 import { IconChevronLeft, IconChevronRight } from "@tabler/icons-react";
+import { IMAGE_FALLBACK_SRC, useImageFallback } from "../ImageFallback";
 
 interface ImgCardProps {
   src?: string;
@@ -37,6 +38,7 @@ export function ImgCard({
   const hasSlideshow = images && images.length > 1;
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
+  const { failed, markFailed } = useImageFallback();
 
   useEffect(() => {
     if (!hasSlideshow || isHovered) return;
@@ -79,9 +81,10 @@ export function ImgCard({
         {images.map((img, i) => (
           <img
             key={img.src}
-            src={img.src}
+            src={failed.has(img.src) ? IMAGE_FALLBACK_SRC : img.src}
             alt={img.alt}
             decoding="async"
+            onError={() => markFailed(img.src)}
             className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${
               i === currentIndex ? "opacity-100" : "opacity-0 "
             } ${imageClassName}`}
@@ -129,11 +132,12 @@ export function ImgCard({
       `}
     >
       <img
-        src={src}
+        src={failed.has(src!) ? IMAGE_FALLBACK_SRC : src}
         alt={alt}
         className={`h-full w-full object-cover ${imageClassName}`}
         loading={loading}
         decoding="async"
+        onError={() => markFailed(src!)}
         // Above-the-fold renders (Works showcase) are eager + high priority.
         fetchPriority={loading === "eager" ? "high" : undefined}
         // Single-size assets today. `sizes` stays fixed to the component's real

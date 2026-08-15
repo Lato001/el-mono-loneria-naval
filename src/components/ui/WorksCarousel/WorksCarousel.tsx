@@ -3,11 +3,13 @@ import { IconChevronLeft, IconChevronRight } from "@tabler/icons-react";
 import { useProductCarousel } from "../ProductCarousel/useProductCarousel";
 import type { WorksCarouselProps } from "./WorksCarousel.types";
 import { IconTagStarred } from '@tabler/icons-react';
+import { IMAGE_FALLBACK_SRC, useImageFallback } from "../ImageFallback";
 // Mobile-first: 2 items per page (matching w-[calc(50%-8px)])
 const ITEMS_PER_PAGE = 2;
 
 export function WorksCarousel({ images, onThumbSelect }: WorksCarouselProps) {
   const { scrollRef, prev, next, canPrev, canNext } = useProductCarousel();
+  const { failed, markFailed } = useImageFallback();
 
   const totalPages = Math.ceil(images.length / ITEMS_PER_PAGE);
   const [currentPage, setCurrentPage] = useState(0);
@@ -68,10 +70,11 @@ export function WorksCarousel({ images, onThumbSelect }: WorksCarouselProps) {
                 aria-label={`thumbnail ${image.originalIndex + 1} de ${images.length}: ${image.alt}`}
               >
                 <img
-                  src={image.src}
+                  src={failed.has(image.src) ? IMAGE_FALLBACK_SRC : image.src}
                   alt={image.alt}
                   className="w-full h-32 object-cover"
                   loading="lazy"
+                  onError={() => markFailed(image.src)}
                 />
               </button>
             ))}

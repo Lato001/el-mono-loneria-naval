@@ -8,6 +8,7 @@ import React, {
 } from "react";
 import { gsap } from "gsap";
 import { Modal } from "../Modal";
+import { IMAGE_FALLBACK_SRC, useImageFallback } from "../ImageFallback";
 
 const useMedia = (
   queries: string[],
@@ -300,6 +301,7 @@ const Masonry: React.FC<MasonryProps> = ({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedImg, setSelectedImg] = useState<string | null>(null);
   const [selectedAlt, setSelectedAlt] = useState<string>("");
+  const { failed, markFailed } = useImageFallback();
 
   function handleOpenModal(img: string, alt?: string) {
     setSelectedImg(img);
@@ -329,10 +331,11 @@ const Masonry: React.FC<MasonryProps> = ({
             >
               <div className="relative w-full h-full overflow-hidden rounded-3xl">
                 <img
-                  src={item.img}
+                  src={failed.has(item.img) ? IMAGE_FALLBACK_SRC : item.img}
                   alt={item.alt ?? ""}
                   loading="lazy"
                   decoding="async"
+                  onError={() => markFailed(item.img)}
                   className="absolute inset-0 h-full w-full object-cover transition-all duration-500 ease-out brightness-50 grayscale-50 motion-safe:group-hover:scale-105 group-hover:brightness-100 group-hover:grayscale-0"
                 />
                 {item.title && (
@@ -375,10 +378,11 @@ const Masonry: React.FC<MasonryProps> = ({
                 className="relative w-full h-full rounded-[10px] overflow-hidden shadow-[0px_10px_50px_-10px_rgba(0,0,0,0.2)] uppercase text-[10px] leading-2.5 cursor-pointer"
               >
                 <img
-                  src={item.img}
+                  src={failed.has(item.img) ? IMAGE_FALLBACK_SRC : item.img}
                   alt={item.alt ?? ""}
                   loading="lazy"
                   decoding="async"
+                  onError={() => markFailed(item.img)}
                   className="absolute inset-0 h-full w-full object-cover"
                 />
                 {colorShiftOnHover && (
@@ -402,8 +406,9 @@ const Masonry: React.FC<MasonryProps> = ({
         <div className="flex items-center justify-center">
           <img
             className="max-h-[90vh] max-w-[90vw] rounded-xl object-contain shadow-2xl"
-            src={selectedImg!}
+            src={failed.has(selectedImg!) ? IMAGE_FALLBACK_SRC : selectedImg!}
             alt={selectedAlt}
+            onError={() => markFailed(selectedImg!)}
           />
         </div>
       </Modal>
