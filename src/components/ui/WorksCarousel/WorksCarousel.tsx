@@ -20,8 +20,19 @@ export function WorksCarousel({ images, onThumbSelect }: WorksCarouselProps) {
 
   const totalPages = Math.max(1, Math.ceil(images.length / itemsPerPage));
 
-  // Measure how many thumbs actually fit, on mount and on resize. The page
-  // count therefore always matches the visible layout.
+  // New work selected → restart from the first page so the dot index never
+  // points past the new (possibly shorter) image set.
+  useEffect(() => {
+    setCurrentPage(0);
+    const container = scrollRef.current;
+    if (container && container.scrollLeft !== 0) container.scrollLeft = 0;
+  }, [images]);
+
+  // Measure how many thumbs actually fit, on mount and on resize. When the
+  // visible count changes (breakpoint crossed, e.g. mobile → desktop), the
+  // page count and its indexes change meaning — restart from the first page
+  // instead of carrying a stale dot position into the new layout.
+  const measuredRef = useRef(itemsPerPage);
   useEffect(() => {
     const container = scrollRef.current;
     if (!container) return;
@@ -34,27 +45,17 @@ export function WorksCarousel({ images, onThumbSelect }: WorksCarouselProps) {
         1,
         Math.round((container.clientWidth + THUMB_GAP) / (thumbWidth + THUMB_GAP)),
       );
-      setItemsPerPage((prev) => (visible === prev ? prev : visible));
+      if (visible === measuredRef.current) return;
+      measuredRef.current = visible;
+      setItemsPerPage(visible);
+      setCurrentPage(0);
+      container.scrollLeft = 0;
     };
     measure();
     const ro = new ResizeObserver(measure);
     ro.observe(container);
     return () => ro.disconnect();
   }, [scrollRef, images]);
-
-  // When the responsive items-per-page changes (breakpoint resize), clamp the
-  // active page and scroll position back into the new bounds so stale dots
-  // never linger past the last reachable page.
-  const lastTotalPagesRef = useRef(totalPages);
-  useEffect(() => {
-    if (totalPages === lastTotalPagesRef.current) return;
-    lastTotalPagesRef.current = totalPages;
-    setCurrentPage((prev) => Math.min(prev, totalPages - 1));
-    const container = scrollRef.current;
-    if (!container) return;
-    const maxLeft = container.scrollWidth - container.clientWidth;
-    if (container.scrollLeft > maxLeft) container.scrollLeft = maxLeft;
-  }, [totalPages]);
 
   // Throttles scroll→page updates to one per animation frame. `scrollBy({behavior:"smooth"})`
   // fires dozens of scroll events per second; without this, each event re-renders the
