@@ -58,35 +58,6 @@ const useMeasure = <T extends HTMLElement>() => {
   return [ref, size, node] as const;
 };
 
-interface ImageDimensions {
-  url: string;
-  naturalWidth: number;
-  naturalHeight: number;
-}
-
-const preloadImages = async (
-  urls: string[],
-): Promise<ImageDimensions[]> => {
-  const results = await Promise.all(
-    urls.map(
-      (src) =>
-        new Promise<ImageDimensions>((resolve) => {
-          const img = new Image();
-          img.onload = () =>
-            resolve({
-              url: src,
-              naturalWidth: img.naturalWidth,
-              naturalHeight: img.naturalHeight,
-            });
-          img.onerror = () =>
-            resolve({ url: src, naturalWidth: 4, naturalHeight: 3 });
-          img.src = src;
-        }),
-    ),
-  );
-  return results;
-};
-
 export interface Item {
   id: string;
   img: string;
@@ -113,6 +84,13 @@ interface GridItem extends Item {
 
 interface MasonryProps {
   items: Item[];
+  /**
+   * Build-time image dimensions (resolved URL → { w, h }). When provided, the
+   * uniform packing uses real aspect ratios without downloading the images;
+   * missing URLs fall back to a 4/3 ratio. Optional — Home's mosaic variant
+   * ignores aspect ratios (fixed row height).
+   */
+  imageDims?: Record<string, { w: number; h: number }>;
   variant?: "uniform" | "mosaic";
   ease?: string;
   duration?: number;
@@ -128,6 +106,7 @@ interface MasonryProps {
 
 const Masonry: React.FC<MasonryProps> = ({
   items,
+  imageDims,
   variant = "uniform",
   ease = "power3.out",
   duration = 0.6,
@@ -158,13 +137,6 @@ const Masonry: React.FC<MasonryProps> = ({
   const itemsPerRow = variant === "mosaic" ? 2 : 1;
 
   const [containerRef, { width }, containerNode] = useMeasure<HTMLDivElement>();
-  const [imagesReady, setImagesReady] = useState(false);
-  const [dimensionsMap, setDimensionsMap] = useState<
-    Map<string, ImageDimensions>
-  >(new Map());
-  // URLs already measured (avoids re-downloading/re-measuring when the items
-  // array grows — e.g. the Works album "Cargar más" pagination).
-  const preloadedRef = useRef<Set<string>>(new Set());
 
   const getInitialPosition = useCallback(
     (item: GridItem) => {
@@ -199,28 +171,6 @@ const Masonry: React.FC<MasonryProps> = ({
     },
     [containerNode, animateFrom],
   );
-
-  // TEMPORARY — runtime measurement until build-time dims replace it (Commit 3).
-  // `preloadImages` still downloads the items' images to learn their aspect
-  // ratio for the column packing. The requests are the SAME URLs the visual
-  // <img loading="lazy"> below uses, so the browser cache is hit and there is no
-  // double download. Only unmeasured URLs are fetched, once per URL.
-  useEffect(() => {
-    const unmeasured = items.filter((i) => !preloadedRef.current.has(i.img));
-    if (unmeasured.length === 0) {
-      setImagesReady(true);
-      return;
-    }
-    preloadImages(unmeasured.map((i) => i.img)).then((dims) => {
-      dims.forEach((d) => preloadedRef.current.add(d.url));
-      setDimensionsMap((prev) => {
-        const map = new Map(prev);
-        dims.forEach((d) => map.set(d.url, d));
-        return map;
-      });
-      setImagesReady(true);
-    });
-  }, [items]);
 
   const { grid, totalHeight } = useMemo(() => {
     if (!width) return { grid: [] as GridItem[], totalHeight: 0 };
@@ -262,10 +212,8 @@ const Masonry: React.FC<MasonryProps> = ({
       items.forEach((child) => {
         const col = colHeights.indexOf(Math.min(...colHeights));
         const x = col * (columnWidth + gap);
-        const dims = dimensionsMap.get(child.img);
-        const aspectRatio = dims
-          ? dims.naturalWidth / dims.naturalHeight
-          : 4 / 3;
+        const dims = imageDims?.[child.img];
+        const aspectRatio = dims ? dims.w / dims.h : 4 / 3;
         const height = columnWidth / aspectRatio;
         const y = colHeights[col];
         colHeights[col] += height + gap;
@@ -276,23 +224,19 @@ const Masonry: React.FC<MasonryProps> = ({
     const totalHeight =
       gridItems.length > 0 ? Math.max(...colHeights) - gap : 0;
     return { grid: gridItems, totalHeight };
-  }, [columns, dimensionsMap, items, itemsPerRow, variant, width]);
+  }, [columns, imageDims, items, itemsPerRow, variant, width]);
 
-  const hasMounted = useRef(false);
   // Item ids that already played their entrance animation. When the items array
   // grows (e.g. the Works album "Cargar más" batch), only the NEW items get the
   // entrance animation; already-visible items are just repositioned by gsap.to.
   const animatedIdsRef = useRef<Set<string>>(new Set());
 
   useLayoutEffect(() => {
-    if (!imagesReady) return;
-
     grid.forEach((item, index) => {
       const selector = `[data-key="${item.id}"]`;
       const animProps = { x: item.x, y: item.y, width: item.w, height: item.h };
-      const isNew = !animatedIdsRef.current.has(item.id);
 
-      if (!hasMounted.current || isNew) {
+      if (!animatedIdsRef.current.has(item.id)) {
         const start = getInitialPosition(item);
         gsap.fromTo(
           selector,
@@ -323,9 +267,7 @@ const Masonry: React.FC<MasonryProps> = ({
         });
       }
     });
-
-    hasMounted.current = true;
-  }, [grid, imagesReady, stagger, animateFrom, blurToFocus, duration, ease, getInitialPosition]);
+  }, [grid, stagger, animateFrom, blurToFocus, duration, ease, getInitialPosition]);
 
   const handleMouseEnter = (id: string, element: HTMLElement) => {
     if (scaleOnHover) {

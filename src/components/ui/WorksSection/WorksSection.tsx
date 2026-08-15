@@ -48,6 +48,8 @@ const cualidadIconos: Record<string, Icon> = {
 };
 interface WorksSectionProps {
   imageMap: Record<string, string>;
+  /** imageKey → { w, h } build-time dimensions (see Works/imageManifest.json). */
+  imageDims: Record<string, { w: number; h: number }>;
 }
 
 /** Summary length (words) for the mobile "Leer Más" toggle. */
@@ -117,7 +119,7 @@ function DescriptionText({ text, trabajoId }: DescriptionTextProps) {
   );
 }
 
-export function WorksSection({ imageMap }: WorksSectionProps) {
+export function WorksSection({ imageMap, imageDims }: WorksSectionProps) {
   const showcaseId = "works-showcase";
   // Scroll target: the content grid (ImgCard + description), not the section top
   // — avoids landing too high and forcing the user to scroll back down a bit.
@@ -163,6 +165,17 @@ export function WorksSection({ imageMap }: WorksSectionProps) {
     }
     return shuffled;
   });
+
+  // Masonry items carry the resolved URL (`img`), so key the build-time
+  // dimensions by URL (derived once from the imageKey maps).
+  const imageDimsByUrl = useMemo(() => {
+    const byUrl: Record<string, { w: number; h: number }> = {};
+    for (const [key, dims] of Object.entries(imageDims)) {
+      const url = imageMap[key];
+      if (url) byUrl[url] = dims;
+    }
+    return byUrl;
+  }, [imageMap, imageDims]);
 
   // Album pagination: only `visibleCount` items are passed to the Masonry.
   // The shuffle above runs ONCE on the full array; pagination only slices it.
@@ -261,6 +274,7 @@ export function WorksSection({ imageMap }: WorksSectionProps) {
         <div className="mx-auto w-full max-w-[1800px] px-2 lg:px-0 min-[2200px]:max-w-[2200px]">
         <Masonry
           items={visibleAlbumItems}
+          imageDims={imageDimsByUrl}
           variant="uniform"
           ease="power3.out"
           duration={0.6}

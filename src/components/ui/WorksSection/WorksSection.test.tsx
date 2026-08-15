@@ -16,6 +16,14 @@ const imageMap: Record<string, string> = Object.fromEntries(
   [...new Set(data.worksPage.trabajos.flatMap((t) => t.imagenes))].map((key) => [key, `/img/${key}.webp`]),
 );
 
+// Mock build-time dimensions keyed by the same resolved URLs.
+const imageDims: Record<string, { w: number; h: number }> = Object.fromEntries(
+  [...new Set(data.worksPage.trabajos.flatMap((t) => t.imagenes))].map((key) => [
+    `/img/${key}.webp`,
+    { w: 4, h: 3 },
+  ]),
+);
+
 function renderWorksSection(search = "", hash = "") {
   // Set up window.location.search (and optional hash) for the test
   const originalSearch = window.location.search;
@@ -27,7 +35,7 @@ function renderWorksSection(search = "", hash = "") {
 
   const result = render(
     <MemoryRouter initialEntries={[`/trabajos${search}${hash}`]}>
-      <WorksSection imageMap={imageMap} />
+      <WorksSection imageMap={imageMap} imageDims={imageDims} />
     </MemoryRouter>,
   );
 
