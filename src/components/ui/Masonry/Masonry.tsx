@@ -279,6 +279,10 @@ const Masonry: React.FC<MasonryProps> = ({
   }, [columns, dimensionsMap, items, itemsPerRow, variant, width]);
 
   const hasMounted = useRef(false);
+  // Item ids that already played their entrance animation. When the items array
+  // grows (e.g. the Works album "Cargar más" batch), only the NEW items get the
+  // entrance animation; already-visible items are just repositioned by gsap.to.
+  const animatedIdsRef = useRef<Set<string>>(new Set());
 
   useLayoutEffect(() => {
     if (!imagesReady) return;
@@ -286,8 +290,9 @@ const Masonry: React.FC<MasonryProps> = ({
     grid.forEach((item, index) => {
       const selector = `[data-key="${item.id}"]`;
       const animProps = { x: item.x, y: item.y, width: item.w, height: item.h };
+      const isNew = !animatedIdsRef.current.has(item.id);
 
-      if (!hasMounted.current) {
+      if (!hasMounted.current || isNew) {
         const start = getInitialPosition(item);
         gsap.fromTo(
           selector,
@@ -308,6 +313,7 @@ const Masonry: React.FC<MasonryProps> = ({
             delay: index * stagger,
           },
         );
+        animatedIdsRef.current.add(item.id);
       } else {
         gsap.to(selector, {
           ...animProps,

@@ -3,6 +3,7 @@ import { CategorySelect } from "../CategorySelect";
 import { WorksCarousel } from "../WorksCarousel";
 import { ImgCard } from "../Card";
 import { SectionWrapper } from "../SectionWrapper";
+import { Button } from "../Button";
 import Masonry from "../Masonry/Masonry";
 import type { Trabajo } from "../../../types/trabajo";
 import { data } from "../../../mocks/data";
@@ -51,6 +52,9 @@ interface WorksSectionProps {
 
 /** Summary length (words) for the mobile "Leer Más" toggle. */
 const MOBILE_DESCRIPTION_SUMMARY_WORDS = 30;
+
+/** Album images rendered per "Cargar más" batch. Tuneable. */
+export const ALBUM_PAGE_SIZE = 24;
 
 /** Live viewport check for mobile (<1024px) using matchMedia. */
 function useIsMobile(): boolean {
@@ -160,6 +164,15 @@ export function WorksSection({ imageMap }: WorksSectionProps) {
     return shuffled;
   });
 
+  // Album pagination: only `visibleCount` items are passed to the Masonry.
+  // The shuffle above runs ONCE on the full array; pagination only slices it.
+  const [visibleCount, setVisibleCount] = useState(ALBUM_PAGE_SIZE);
+  const visibleAlbumItems = useMemo(
+    () => albumItems.slice(0, visibleCount),
+    [albumItems, visibleCount],
+  );
+  const hasMoreAlbumItems = visibleCount < albumItems.length;
+
   return (
     <>
       {/* Showcase Section */}
@@ -247,7 +260,7 @@ export function WorksSection({ imageMap }: WorksSectionProps) {
       >
         <div className="mx-auto w-full max-w-[1800px] px-2 lg:px-0 min-[2200px]:max-w-[2200px]">
         <Masonry
-          items={albumItems}
+          items={visibleAlbumItems}
           variant="uniform"
           ease="power3.out"
           duration={0.6}
@@ -258,6 +271,22 @@ export function WorksSection({ imageMap }: WorksSectionProps) {
           colorShiftOnHover={true}
           onItemClick={(item) => handleAlbumClick(item as AlbumImage)}
         />
+        {hasMoreAlbumItems && (
+          <div className="mt-12 flex flex-col items-center gap-4">
+            <p className="font-poppins text-sm text-sc-chalk/70">
+              Mostrando {Math.min(visibleCount, albumItems.length)} de {albumItems.length}
+            </p>
+            <Button
+              variant="secondary"
+              size="lg"
+              onClick={() =>
+                setVisibleCount((prev) => Math.min(prev + ALBUM_PAGE_SIZE, albumItems.length))
+              }
+            >
+              Cargar más
+            </Button>
+          </div>
+        )}
         </div>
       </SectionWrapper>
     </>

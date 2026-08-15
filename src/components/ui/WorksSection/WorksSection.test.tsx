@@ -342,4 +342,40 @@ describe("WorksSection", () => {
       }
     });
   });
+
+  describe("album pagination (Cargar más)", () => {
+    const totalAlbumItems = data.worksPage.trabajos.reduce(
+      (sum, t) => sum + t.imagenes.length,
+      0,
+    );
+
+    it("shows the Cargar más button when there are more items than the page size", () => {
+      renderWorksSection();
+
+      expect(screen.getByRole("button", { name: /cargar más/i })).toBeInTheDocument();
+      expect(screen.getByText(`Mostrando 24 de ${totalAlbumItems}`)).toBeInTheDocument();
+    });
+
+    it("increases the visible item count when Cargar más is clicked", async () => {
+      renderWorksSection();
+
+      const user = userEvent.setup();
+      await user.click(screen.getByRole("button", { name: /cargar más/i }));
+
+      expect(screen.getByText(`Mostrando 48 de ${totalAlbumItems}`)).toBeInTheDocument();
+    });
+
+    it("hides Cargar más once all album items are visible", async () => {
+      renderWorksSection();
+
+      const user = userEvent.setup();
+      // 76 items with page size 24 → 24 → 48 → 72 → 76 (3 clicks reveal all)
+      for (let i = 0; i < 3; i++) {
+        await user.click(screen.getByRole("button", { name: /cargar más/i }));
+      }
+
+      expect(screen.queryByRole("button", { name: /cargar más/i })).not.toBeInTheDocument();
+      expect(screen.queryByText(`Mostrando ${totalAlbumItems} de ${totalAlbumItems}`)).not.toBeInTheDocument();
+    });
+  });
 });
