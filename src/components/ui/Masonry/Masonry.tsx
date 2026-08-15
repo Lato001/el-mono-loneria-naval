@@ -162,6 +162,9 @@ const Masonry: React.FC<MasonryProps> = ({
   const [dimensionsMap, setDimensionsMap] = useState<
     Map<string, ImageDimensions>
   >(new Map());
+  // URLs already measured (avoids re-downloading/re-measuring when the items
+  // array grows — e.g. the Works album "Cargar más" pagination).
+  const preloadedRef = useRef<Set<string>>(new Set());
 
   const getInitialPosition = useCallback(
     (item: GridItem) => {
@@ -197,10 +200,24 @@ const Masonry: React.FC<MasonryProps> = ({
     [containerNode, animateFrom],
   );
 
+  // TEMPORARY — runtime measurement until build-time dims replace it (Commit 3).
+  // `preloadImages` still downloads the items' images to learn their aspect
+  // ratio for the column packing. The requests are the SAME URLs the visual
+  // <img loading="lazy"> below uses, so the browser cache is hit and there is no
+  // double download. Only unmeasured URLs are fetched, once per URL.
   useEffect(() => {
-    preloadImages(items.map((i) => i.img)).then((dims) => {
-      const map = new Map(dims.map((d) => [d.url, d]));
-      setDimensionsMap(map);
+    const unmeasured = items.filter((i) => !preloadedRef.current.has(i.img));
+    if (unmeasured.length === 0) {
+      setImagesReady(true);
+      return;
+    }
+    preloadImages(unmeasured.map((i) => i.img)).then((dims) => {
+      dims.forEach((d) => preloadedRef.current.add(d.url));
+      setDimensionsMap((prev) => {
+        const map = new Map(prev);
+        dims.forEach((d) => map.set(d.url, d));
+        return map;
+      });
       setImagesReady(true);
     });
   }, [items]);
@@ -363,9 +380,12 @@ const Masonry: React.FC<MasonryProps> = ({
               style={{ willChange: "transform, width, height, opacity" }}
             >
               <div className="relative w-full h-full overflow-hidden rounded-3xl">
-                <div
-                  className="absolute inset-0 bg-cover bg-center transition-all duration-500 ease-out brightness-50 grayscale-50 motion-safe:group-hover:scale-105 group-hover:brightness-100 group-hover:grayscale-0"
-                  style={{ backgroundImage: `url(${item.img})` }}
+                <img
+                  src={item.img}
+                  alt={item.alt ?? ""}
+                  loading="lazy"
+                  decoding="async"
+                  className="absolute inset-0 h-full w-full object-cover transition-all duration-500 ease-out brightness-50 grayscale-50 motion-safe:group-hover:scale-105 group-hover:brightness-100 group-hover:grayscale-0"
                 />
                 {item.title && (
                   <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 flex flex-col justify-end p-5">
@@ -404,9 +424,15 @@ const Masonry: React.FC<MasonryProps> = ({
               onMouseLeave={(e) => handleMouseLeave(item.id, e.currentTarget)}
             >
               <div
-                className="relative w-full h-full bg-cover bg-center rounded-[10px] shadow-[0px_10px_50px_-10px_rgba(0,0,0,0.2)] uppercase text-[10px] leading-2.5 cursor-pointer"
-                style={{ backgroundImage: `url(${item.img})` }}
+                className="relative w-full h-full rounded-[10px] overflow-hidden shadow-[0px_10px_50px_-10px_rgba(0,0,0,0.2)] uppercase text-[10px] leading-2.5 cursor-pointer"
               >
+                <img
+                  src={item.img}
+                  alt={item.alt ?? ""}
+                  loading="lazy"
+                  decoding="async"
+                  className="absolute inset-0 h-full w-full object-cover"
+                />
                 {colorShiftOnHover && (
                   <div className="color-overlay absolute inset-0 rounded-xl bg-linear-to-tr from-pr-aquamarine to-pr-hero-blue opacity-0 pointer-events-none" />
                 )}
