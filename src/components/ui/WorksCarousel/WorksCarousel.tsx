@@ -94,6 +94,7 @@ export function WorksCarousel({ images, onThumbSelect }: WorksCarouselProps) {
                   alt={image.alt}
                   className="w-full h-32 object-cover"
                   loading="lazy"
+                  decoding="async"
                   onError={() => markFailed(image.src)}
                 />
               </button>

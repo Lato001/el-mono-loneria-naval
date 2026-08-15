@@ -16,7 +16,13 @@ const imageMap: Record<string, string> = Object.fromEntries(
   [...new Set(data.worksPage.trabajos.flatMap((t) => t.imagenes))].map((key) => [key, `/img/${key}.webp`]),
 );
 
-// Mock build-time dimensions keyed by the same resolved URLs.
+// Mock thumbMap (carousel/gallery) derived from the same keys, using a
+// /thumbs/ prefix — the big image (ImgCard) stays on the full-res imageMap URL.
+const thumbMap: Record<string, string> = Object.fromEntries(
+  [...new Set(data.worksPage.trabajos.flatMap((t) => t.imagenes))].map((key) => [key, `/thumbs/${key}.webp`]),
+);
+
+// Mock build-time dimensions keyed by the resolved full-res URLs.
 const imageDims: Record<string, { w: number; h: number }> = Object.fromEntries(
   [...new Set(data.worksPage.trabajos.flatMap((t) => t.imagenes))].map((key) => [
     `/img/${key}.webp`,
@@ -35,7 +41,7 @@ function renderWorksSection(search = "", hash = "") {
 
   const result = render(
     <MemoryRouter initialEntries={[`/trabajos${search}${hash}`]}>
-      <WorksSection imageMap={imageMap} imageDims={imageDims} />
+      <WorksSection imageMap={imageMap} thumbMap={thumbMap} imageDims={imageDims} />
     </MemoryRouter>,
   );
 
