@@ -198,6 +198,17 @@ const Masonry: React.FC<MasonryProps> = ({
   const animatedIdsRef = useRef<Set<string>>(new Set());
 
   useLayoutEffect(() => {
+    // Delay is relative to the NEW batch, not the whole grid: when "Cargar más"
+    // appends items 24..47, the first new one must animate immediately instead of
+    // waiting 24 * stagger. Items already animated are skipped below.
+    let firstNewIndex = 0;
+    while (
+      firstNewIndex < grid.length &&
+      animatedIdsRef.current.has(grid[firstNewIndex].id)
+    ) {
+      firstNewIndex++;
+    }
+
     grid.forEach((item, index) => {
       if (animatedIdsRef.current.has(item.id)) return;
 
@@ -217,7 +228,7 @@ const Masonry: React.FC<MasonryProps> = ({
           ...(blurToFocus && { filter: "blur(0px)" }),
           duration: 0.8,
           ease,
-          delay: index * stagger,
+          delay: (index - firstNewIndex) * stagger,
         },
       );
       animatedIdsRef.current.add(item.id);
