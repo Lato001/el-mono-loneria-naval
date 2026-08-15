@@ -96,7 +96,6 @@ interface MasonryProps {
   ease?: string;
   duration?: number;
   stagger?: number;
-  animateFrom?: "bottom" | "top" | "left" | "right" | "center" | "random";
   scaleOnHover?: boolean;
   hoverScale?: number;
   blurToFocus?: boolean;
@@ -110,9 +109,7 @@ const Masonry: React.FC<MasonryProps> = ({
   imageDims,
   variant = "uniform",
   ease = "power3.out",
-  duration = 0.6,
   stagger = 0.05,
-  animateFrom = "bottom",
   scaleOnHover = true,
   hoverScale = 0.95,
   blurToFocus = true,
@@ -137,41 +134,7 @@ const Masonry: React.FC<MasonryProps> = ({
   // on very large screens made the cards smaller than the SplitCards.
   const itemsPerRow = variant === "mosaic" ? 2 : 1;
 
-  const [containerRef, { width }, containerNode] = useMeasure<HTMLDivElement>();
-
-  const getInitialPosition = useCallback(
-    (item: GridItem) => {
-      const containerRect = containerNode?.getBoundingClientRect();
-      if (!containerRect) return { x: item.x, y: item.y };
-
-      let direction = animateFrom;
-      if (animateFrom === "random") {
-        const dirs = ["top", "bottom", "left", "right"];
-        direction = dirs[
-          Math.floor(Math.random() * dirs.length)
-        ] as typeof animateFrom;
-      }
-
-      switch (direction) {
-        case "top":
-          return { x: item.x, y: -200 };
-        case "bottom":
-          return { x: item.x, y: window.innerHeight + 200 };
-        case "left":
-          return { x: -200, y: item.y };
-        case "right":
-          return { x: window.innerWidth + 200, y: item.y };
-        case "center":
-          return {
-            x: containerRect.width / 2 - item.w / 2,
-            y: containerRect.height / 2 - item.h / 2,
-          };
-        default:
-          return { x: item.x, y: item.y + 100 };
-      }
-    },
-    [containerNode, animateFrom],
-  );
+  const [containerRef, { width }] = useMeasure<HTMLDivElement>();
 
   const { grid, totalHeight } = useMemo(() => {
     if (!width) return { grid: [] as GridItem[], totalHeight: 0 };
@@ -229,46 +192,37 @@ const Masonry: React.FC<MasonryProps> = ({
 
   // Item ids that already played their entrance animation. When the items array
   // grows (e.g. the Works album "Cargar más" batch), only the NEW items get the
-  // entrance animation; already-visible items are just repositioned by gsap.to.
+  // entrance animation; already-visible items are left untouched (their position
+  // lives in inline top/left/width/height styles, so React keeps them in place
+  // across re-renders — no GSAP repositioning needed on resize).
   const animatedIdsRef = useRef<Set<string>>(new Set());
 
   useLayoutEffect(() => {
     grid.forEach((item, index) => {
-      const selector = `[data-key="${item.id}"]`;
-      const animProps = { x: item.x, y: item.y, width: item.w, height: item.h };
+      if (animatedIdsRef.current.has(item.id)) return;
 
-      if (!animatedIdsRef.current.has(item.id)) {
-        const start = getInitialPosition(item);
-        gsap.fromTo(
-          selector,
-          {
-            opacity: 0,
-            x: start.x,
-            y: start.y,
-            width: item.w,
-            height: item.h,
-            ...(blurToFocus && { filter: "blur(10px)" }),
-          },
-          {
-            opacity: 1,
-            ...animProps,
-            ...(blurToFocus && { filter: "blur(0px)" }),
-            duration: 0.8,
-            ease: "power3.out",
-            delay: index * stagger,
-          },
-        );
-        animatedIdsRef.current.add(item.id);
-      } else {
-        gsap.to(selector, {
-          ...animProps,
-          duration,
+      const selector = `[data-key="${item.id}"]`;
+      // Cells are positioned by layout (inline top/left/width/height), so the
+      // entrance is a fade + blur in place — no spatial movement. Animating
+      // transforms on top of will-change + opacity:0 made Chrome defer the lazy
+      // image fetch until hover, breaking `loading="lazy"`.
+      gsap.fromTo(
+        selector,
+        {
+          opacity: 0,
+          ...(blurToFocus && { filter: "blur(10px)" }),
+        },
+        {
+          opacity: 1,
+          ...(blurToFocus && { filter: "blur(0px)" }),
+          duration: 0.8,
           ease,
-          overwrite: "auto",
-        });
-      }
+          delay: index * stagger,
+        },
+      );
+      animatedIdsRef.current.add(item.id);
     });
-  }, [grid, stagger, animateFrom, blurToFocus, duration, ease, getInitialPosition]);
+  }, [grid, stagger, ease, blurToFocus]);
 
   const handleMouseEnter = (id: string, element: HTMLElement) => {
     if (scaleOnHover) {
@@ -327,7 +281,7 @@ const Masonry: React.FC<MasonryProps> = ({
               data-key={item.id}
               href={item.redirectUrl}
               className="absolute box-content group block rounded-3xl border border-sc-ocean-blue/15 transition-all duration-300 ease-out motion-safe:hover:-translate-y-1 hover:ring-1 hover:ring-pr-aquamarine/50"
-              style={{ willChange: "transform, width, height, opacity" }}
+              style={{ top: item.y, left: item.x, width: item.w, height: item.h }}
             >
               <div className="relative w-full h-full overflow-hidden rounded-3xl">
                 <img
@@ -369,7 +323,7 @@ const Masonry: React.FC<MasonryProps> = ({
               key={item.id}
               data-key={item.id}
               className="absolute box-content"
-              style={{ willChange: "transform, width, height, opacity" }}
+              style={{ top: item.y, left: item.x, width: item.w, height: item.h }}
               onClick={() => onItemClick ? onItemClick(item, index) : handleOpenModal(item.img, item.alt)}
               onMouseEnter={(e) => handleMouseEnter(item.id, e.currentTarget)}
               onMouseLeave={(e) => handleMouseLeave(item.id, e.currentTarget)}

@@ -280,7 +280,6 @@ export function WorksSection({ imageMap, imageDims }: WorksSectionProps) {
           ease="power3.out"
           duration={0.6}
           stagger={0.05}
-          animateFrom="bottom"
           scaleOnHover
           hoverScale={0.95}
           colorShiftOnHover={true}
