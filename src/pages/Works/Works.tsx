@@ -73,9 +73,9 @@ import extra06 from "../../assets/img/works/extras/extra-06.webp";
 import extra07 from "../../assets/img/works/extras/extra-07.webp";
 import extra08 from "../../assets/img/works/extras/extra-08.webp";
 
-// ===== TONEAU (17) — toneau-02 es .jpg =====
+// ===== TONEAU (17) — toneau-02 es .webp (convertido desde .jpg, q=80) =====
 import toneau01 from "../../assets/img/works/toneau/toneau-01.webp";
-import toneau02 from "../../assets/img/works/toneau/toneau-02.jpg";
+import toneau02 from "../../assets/img/works/toneau/toneau-02.webp";
 import toneau03 from "../../assets/img/works/toneau/toneau-03.webp";
 import toneau04 from "../../assets/img/works/toneau/toneau-04.webp";
 import toneau05 from "../../assets/img/works/toneau/toneau-05.webp";
