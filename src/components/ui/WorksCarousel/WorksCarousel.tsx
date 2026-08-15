@@ -4,15 +4,57 @@ import { useProductCarousel } from "../ProductCarousel/useProductCarousel";
 import type { WorksCarouselProps } from "./WorksCarousel.types";
 import { IconTagStarred } from '@tabler/icons-react';
 import { IMAGE_FALLBACK_SRC, useImageFallback } from "../ImageFallback";
-// Mobile-first: 2 items per page (matching w-[calc(50%-8px)])
-const ITEMS_PER_PAGE = 2;
+
+/** Horizontal gap between thumbs (matches `gap-4`). */
+const THUMB_GAP = 16;
 
 export function WorksCarousel({ images, onThumbSelect }: WorksCarouselProps) {
   const { scrollRef, prev, next, canPrev, canNext } = useProductCarousel();
   const { failed, markFailed } = useImageFallback();
 
-  const totalPages = Math.ceil(images.length / ITEMS_PER_PAGE);
+  // Responsive page size: 2 thumbs per page on mobile (w-[calc(50%-8px)]),
+  // 4 on lg (lg:w-[calc(25%-12px)]). Deriving pages from a fixed constant
+  // would render dead dots on desktop — pages the scroll can never reach.
+  const [itemsPerPage, setItemsPerPage] = useState(2);
   const [currentPage, setCurrentPage] = useState(0);
+
+  const totalPages = Math.max(1, Math.ceil(images.length / itemsPerPage));
+
+  // Measure how many thumbs actually fit, on mount and on resize. The page
+  // count therefore always matches the visible layout.
+  useEffect(() => {
+    const container = scrollRef.current;
+    if (!container) return;
+    const measure = () => {
+      const firstThumb = container.querySelector<HTMLElement>("button");
+      if (!firstThumb) return;
+      const thumbWidth = firstThumb.offsetWidth;
+      if (thumbWidth <= 0) return;
+      const visible = Math.max(
+        1,
+        Math.round((container.clientWidth + THUMB_GAP) / (thumbWidth + THUMB_GAP)),
+      );
+      setItemsPerPage((prev) => (visible === prev ? prev : visible));
+    };
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(container);
+    return () => ro.disconnect();
+  }, [scrollRef, images]);
+
+  // When the responsive items-per-page changes (breakpoint resize), clamp the
+  // active page and scroll position back into the new bounds so stale dots
+  // never linger past the last reachable page.
+  const lastTotalPagesRef = useRef(totalPages);
+  useEffect(() => {
+    if (totalPages === lastTotalPagesRef.current) return;
+    lastTotalPagesRef.current = totalPages;
+    setCurrentPage((prev) => Math.min(prev, totalPages - 1));
+    const container = scrollRef.current;
+    if (!container) return;
+    const maxLeft = container.scrollWidth - container.clientWidth;
+    if (container.scrollLeft > maxLeft) container.scrollLeft = maxLeft;
+  }, [totalPages]);
 
   // Throttles scroll→page updates to one per animation frame. `scrollBy({behavior:"smooth"})`
   // fires dozens of scroll events per second; without this, each event re-renders the
@@ -24,8 +66,9 @@ export function WorksCarousel({ images, onThumbSelect }: WorksCarouselProps) {
       rafRef.current = null;
       const container = scrollRef.current;
       if (!container) return;
-      // Each item takes ~50% of container width (mobile), so page = round(scrollLeft / (clientWidth / 2))
-      const pageWidth = container.clientWidth / ITEMS_PER_PAGE;
+      // One full page = clientWidth + one gap (each page carries `itemsPerPage`
+      // thumbs plus their inter-gaps; see the ResizeObserver measurement above).
+      const pageWidth = container.clientWidth + THUMB_GAP;
       const page = Math.round(container.scrollLeft / pageWidth);
       setCurrentPage((prev) => {
         const next = Math.max(0, Math.min(page, totalPages - 1));
@@ -48,7 +91,7 @@ export function WorksCarousel({ images, onThumbSelect }: WorksCarouselProps) {
       const container = scrollRef.current;
       if (!container) return;
       const clampedPage = Math.max(0, Math.min(page, totalPages - 1));
-      const pageWidth = container.clientWidth / ITEMS_PER_PAGE;
+      const pageWidth = container.clientWidth + THUMB_GAP;
       container.scrollLeft = clampedPage * pageWidth;
       setCurrentPage(clampedPage);
     },

@@ -94,6 +94,51 @@ describe("WorksCarousel", () => {
       expect(dots).toHaveLength(0); // 2 images, 2 per page (mobile) = 1 page, no dots needed
     });
 
+    it("derives pages from the real visible thumbs (desktop: 4 per page → no dead dots)", () => {
+      // Simulate a desktop layout: 4 thumbs fit per page (clientWidth = 4*thumb + 3*gap).
+      // 6 images → ceil(6/4) = 2 pages, NOT the 3 pages a fixed mobile constant would show.
+      const thumbWidth = 100;
+      const gap = 16;
+      const clientWidth = 4 * thumbWidth + 3 * gap; // 448
+
+      // Mock the layout getters on HTMLElement.prototype; restore afterwards.
+      const originalOffset = Object.getOwnPropertyDescriptor(HTMLElement.prototype, "offsetWidth");
+      const originalClient = Object.getOwnPropertyDescriptor(HTMLElement.prototype, "clientWidth");
+
+      Object.defineProperty(HTMLElement.prototype, "offsetWidth", {
+        configurable: true,
+        get() {
+          return thumbWidth;
+        },
+      });
+      Object.defineProperty(HTMLElement.prototype, "clientWidth", {
+        configurable: true,
+        get() {
+          return clientWidth;
+        },
+      });
+
+      try {
+        render(<WorksCarousel images={mockImages.slice(0, 6)} onThumbSelect={vi.fn()} />);
+
+        const dots = screen.getAllByRole("tab", { name: /página \d+ de \d+/i });
+        expect(dots).toHaveLength(2); // 2 real pages — no unreachable "dead" dots
+      } finally {
+        if (originalOffset) {
+          Object.defineProperty(HTMLElement.prototype, "offsetWidth", originalOffset);
+        } else {
+          // @ts-expect-error -- removing our mock when the original lacked a descriptor
+          delete HTMLElement.prototype.offsetWidth;
+        }
+        if (originalClient) {
+          Object.defineProperty(HTMLElement.prototype, "clientWidth", originalClient);
+        } else {
+          // @ts-expect-error -- removing our mock when the original lacked a descriptor
+          delete HTMLElement.prototype.clientWidth;
+        }
+      }
+    });
+
     it("renders no dots with 5 or fewer images (threshold is >5)", () => {
       // 3 images, 2 per page = 2 pages, but dots only appear past 5 images
       render(<WorksCarousel images={mockImages.slice(0, 5)} onThumbSelect={vi.fn()} />);
