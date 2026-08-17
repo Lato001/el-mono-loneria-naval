@@ -235,6 +235,8 @@ export interface AboutUsSection {
   content: string;
   image?: string;
   imageAlt?: string;
+  /** Gallery image keys — resolved by the consuming page via a Record<imageKey, string> map. */
+  gallery?: { imageKey: string; alt: string }[];
   highlights?: { label: string; value: number }[];
   cta?: { text: string; href: string };
 }

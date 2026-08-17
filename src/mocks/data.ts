@@ -269,12 +269,18 @@ const aboutUsSection: AboutUsSection = {
     "En nuestro taller combinamos tradición y técnica para crear lonas que resisten el mar. Cada pieza es confeccionada a mano con materiales de primera calidad, garantizando durabilidad y protección en las condiciones más exigentes.",
   image: taller02,
   imageAlt: "Taller de El Mono",
+  gallery: [
+    { imageKey: "taller-01", alt: "Primer plano de herramientas de medición" },
+    { imageKey: "taller-02", alt: "Proceso de corte de tela" },
+    { imageKey: "taller-03", alt: "Máquina de coser industrial" },
+    { imageKey: "taller-04", alt: "Resultado final instalado" },
+  ],
   highlights: [
     { label: "Años de oficio", value: 20 },
     { label: "Proyectos entregados", value: 500 },
     { label: "Clientes satisfechos", value: 300 },
   ],
-  cta: { text: "Conocé más sobre nuestro trabajo!", href: "/trabajos" },
+  cta: { text: "Nuestros Trabajos", href: "/trabajos" },
 };
 
 // ─── Exported data object ────────────────────────────────────────────────
