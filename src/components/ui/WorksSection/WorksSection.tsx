@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import formasLineasOnduladas from "../../../assets/backgrounds/formas-lineas-onduladas.svg";
 import { CategorySelect } from "../CategorySelect";
 import { WorksCarousel } from "../WorksCarousel";
 import { ImgCard } from "../Card";
@@ -199,9 +200,10 @@ export function WorksSection({ imageMap, thumbMap, imageDims }: WorksSectionProp
         id={showcaseId}
         eyebrow="Trabajos"
         title="Nuestros Trabajos"
-        theme="dark"
+        gradientVariant="hero-to-navy"
         headingLevel="h1"
-        containerClassName="mx-auto max-w-[1400px] px-6 lg:px-10"
+        containerClassName="mx-auto max-w-[1400px] px-6 lg:px-10 "
+        className="!pb-10"
       >
         <CategorySelect
           value={selectedCategoria}
@@ -273,12 +275,12 @@ export function WorksSection({ imageMap, thumbMap, imageDims }: WorksSectionProp
       eyebrow="Album de fotos"
       titlesAlign="center"
         title="Trabajos destacados"
-        theme="dark"
         headingLevel="h2"
         fullWidth
-        className="!pt-0"
+        className="!pt-10"
+        backgroundImage={formasLineasOnduladas}
       >
-        <div className="mx-auto w-full max-w-[1800px] px-2 lg:px-0 min-[2200px]:max-w-[2200px]">
+        <div className="mx-auto w-full max-w-[1800px] px-2 rounded-3xl lg:px-0 min-[2200px]:max-w-[2200px]">
         <Masonry
           items={visibleAlbumItems}
           imageDims={imageDimsByUrl}
@@ -289,24 +291,27 @@ export function WorksSection({ imageMap, thumbMap, imageDims }: WorksSectionProp
           scaleOnHover
           hoverScale={0.95}
           colorShiftOnHover={true}
+          footer={
+            hasMoreAlbumItems ? (
+              <div className="flex flex-col items-center gap-4 pb-20 pt-12">
+                <p className="font-poppins text-lg text-sc-chalk/70">
+                  Mostrando {Math.min(visibleCount, albumItems.length)} de {albumItems.length}
+                </p>
+                <Button
+                className="text-lg font-semibold"
+                  variant="danger"
+                  size="lg"
+                  onClick={() =>
+                    setVisibleCount((prev) => Math.min(prev + ALBUM_PAGE_SIZE, albumItems.length))
+                  }
+                >
+                  Cargar más
+                </Button>
+              </div>
+            ) : undefined
+          }
           onItemClick={(item) => handleAlbumClick(item as AlbumImage)}
         />
-        {hasMoreAlbumItems && (
-          <div className="mt-12 flex flex-col items-center gap-4">
-            <p className="font-poppins text-sm text-sc-chalk/70">
-              Mostrando {Math.min(visibleCount, albumItems.length)} de {albumItems.length}
-            </p>
-            <Button
-              variant="secondary"
-              size="lg"
-              onClick={() =>
-                setVisibleCount((prev) => Math.min(prev + ALBUM_PAGE_SIZE, albumItems.length))
-              }
-            >
-              Cargar más
-            </Button>
-          </div>
-        )}
         </div>
       </SectionWrapper>
     </>

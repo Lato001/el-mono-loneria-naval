@@ -102,6 +102,11 @@ interface MasonryProps {
   colorShiftOnHover?: boolean;
   /** Optional click handler — when provided, clicking an item calls this instead of opening the internal Modal */
   onItemClick?: (item: Item, index: number) => void;
+  /**
+   * Optional footer rendered inside the grid container, after the cells (e.g.
+   * a "Cargar más" button). Flows below the grid.
+   */
+  footer?: React.ReactNode;
 }
 
 const Masonry: React.FC<MasonryProps> = ({
@@ -115,6 +120,7 @@ const Masonry: React.FC<MasonryProps> = ({
   blurToFocus = true,
   colorShiftOnHover = false,
   onItemClick,
+  footer,
 }) => {
   const columns = useMedia(
     [
@@ -278,13 +284,14 @@ const Masonry: React.FC<MasonryProps> = ({
     return <MobileMosaicCarousel items={items} />;
   }
 
-  return (
+return (
     <>
-      <div
-        ref={containerRef}
-        className="relative w-full"
-        style={{ height: totalHeight || undefined }}
-      >
+      <div className="relative w-full">
+        <div
+          ref={containerRef}
+          className="relative w-full"
+          style={{ height: totalHeight || undefined }}
+        >
         {grid.map((item, index) =>
           item.redirectUrl ? (
             <a
@@ -357,6 +364,9 @@ const Masonry: React.FC<MasonryProps> = ({
             </div>
           ),
         )}
+        </div>
+
+        {footer && <div className="relative">{footer}</div>}
       </div>
 
       <Modal

@@ -34,6 +34,38 @@ describe('SectionWrapper', () => {
     expect(eyebrowElements).toHaveLength(0);
   });
 
+  it('aligns eyebrow with justify-center when titlesAlign is center', () => {
+    render(
+      <SectionWrapper title="Title" eyebrow="Eyebrow" titlesAlign="center">
+        <p>Child content</p>
+      </SectionWrapper>,
+    );
+    const eyebrow = screen.getByText('Eyebrow');
+    expect(eyebrow).toHaveClass('justify-center');
+    expect(eyebrow).toHaveClass('text-center');
+  });
+
+  it('aligns eyebrow with justify-end when titlesAlign is end', () => {
+    render(
+      <SectionWrapper title="Title" eyebrow="Eyebrow" titlesAlign="end">
+        <p>Child content</p>
+      </SectionWrapper>,
+    );
+    const eyebrow = screen.getByText('Eyebrow');
+    expect(eyebrow).toHaveClass('justify-end');
+    expect(eyebrow).toHaveClass('text-end');
+  });
+
+  it('applies text alignment class to the heading', () => {
+    render(
+      <SectionWrapper title="Title" titlesAlign="center">
+        <p>Child content</p>
+      </SectionWrapper>,
+    );
+    const heading = screen.getByRole('heading', { name: 'Title' });
+    expect(heading).toHaveClass('text-center');
+  });
+
   it('renders children inside the content area', () => {
     render(
       <SectionWrapper title="Title">
