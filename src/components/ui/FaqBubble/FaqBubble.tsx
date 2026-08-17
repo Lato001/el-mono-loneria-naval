@@ -120,8 +120,8 @@ export function FaqBubble({
   //   aria-hidden so it never intercepts pointer or assistive
   //   interactions.
   const peekMobileSide = isStart
-    ? "right-0 top-1/2 -translate-y-1/2 translate-x-1/2"
-    : "left-0 top-1/2 -translate-y-1/2 -translate-x-1/2";
+    ? "right-0 top-1/2  translate-x-1/2"
+    : "left-0 top-1/2  -translate-x-1/2";
   const peekDesktop = isStart
     ? "md:right-auto md:bottom-auto md:top-1/2 md:-translate-x-0 md:-translate-y-1/2 md:left-[-50%]"
     : "md:left-auto md:bottom-auto md:top-1/2 md:-translate-x-0 md:-translate-y-1/2 md:right-[-50%]";
@@ -195,7 +195,7 @@ export function FaqBubble({
                 )
               }
               className={`
-                absolute z-0 flex min-h-11 min-w-11 cursor-pointer
+                absolute z-10 flex min-h-11 min-w-11 cursor-pointer
                 items-center justify-center p-2
                 ${peekMobileSide}
                 ${peekDesktop}

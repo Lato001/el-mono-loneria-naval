@@ -213,21 +213,23 @@ describe("FaqBubble", () => {
     it("peek button peeks from RIGHT edge when align=start (mobile)", () => {
       renderWithPeek("start");
       const peekButton = screen.getByRole("button", { name: /ver respuesta:/i });
-      // Mobile start: right-0 top-1/2 -translate-y-1/2 translate-x-1/2
+      // Mobile start: right-0 top-1/2 translate-x-1/2 (peeks from the right
+      // edge; no vertical translate — the icon sits toward the card's top
+      // half so it reads clearly as a clickable badge).
       expect(peekButton).toHaveClass("right-0");
       expect(peekButton).toHaveClass("top-1/2");
-      expect(peekButton).toHaveClass("-translate-y-1/2");
       expect(peekButton).toHaveClass("translate-x-1/2");
+      expect(peekButton).not.toHaveClass("-translate-y-1/2");
     });
 
     it("peek button peeks from LEFT edge when align=end (mobile)", () => {
       renderWithPeek("end");
       const peekButton = screen.getByRole("button", { name: /ver respuesta:/i });
-      // Mobile end: left-0 top-1/2 -translate-y-1/2 -translate-x-1/2
+      // Mobile end: left-0 top-1/2 -translate-x-1/2 (peeks from the left edge).
       expect(peekButton).toHaveClass("left-0");
       expect(peekButton).toHaveClass("top-1/2");
-      expect(peekButton).toHaveClass("-translate-y-1/2");
       expect(peekButton).toHaveClass("-translate-x-1/2");
+      expect(peekButton).not.toHaveClass("-translate-y-1/2");
     });
 
     it("peek button is keyboard focusable and operable via Enter", async () => {
