@@ -41,16 +41,16 @@ describe("CategorySelect", () => {
     expect(onChange).toHaveBeenCalledWith("capotas");
   });
 
-  it("applies design system styling: sky-blue tint background, chalk text, font-poppins", () => {
+  it("applies design system styling: chalk background, ocean-blue text, font-poppins", () => {
     render(<CategorySelect value="carpas" options={mockCategorias} onChange={vi.fn()} />);
 
     const select = screen.getByRole("combobox");
-    expect(select).toHaveClass("bg-sc-sky-blue/10");
-    expect(select).toHaveClass("text-sc-chalk");
+    expect(select).toHaveClass("bg-sc-chalk");
+    expect(select).toHaveClass("text-sc-ocean-blue");
     expect(select).toHaveClass("font-poppins");
   });
 
-  it("uses chalk background with ocean-blue text on the placeholder (empty value) only", () => {
+  it("keeps the same chalk style on the placeholder (empty value) and when filtered", () => {
     const { rerender } = render(
       <CategorySelect value="" options={mockCategorias} onChange={vi.fn()} />,
     );
@@ -59,11 +59,11 @@ describe("CategorySelect", () => {
     expect(screen.getByRole("combobox")).toHaveClass("bg-sc-chalk");
     expect(screen.getByRole("combobox")).toHaveClass("text-sc-ocean-blue");
 
-    // Filter selected → keeps the original style (sky-blue tint + chalk text)
+    // Filter selected → keeps the same chalk style (no dynamic variant)
     rerender(<CategorySelect value="carpas" options={mockCategorias} onChange={vi.fn()} />);
-    expect(screen.getByRole("combobox")).toHaveClass("bg-sc-sky-blue/10");
-    expect(screen.getByRole("combobox")).toHaveClass("text-sc-chalk");
-    expect(screen.getByRole("combobox")).not.toHaveClass("bg-sc-chalk");
+    expect(screen.getByRole("combobox")).toHaveClass("bg-sc-chalk");
+    expect(screen.getByRole("combobox")).toHaveClass("text-sc-ocean-blue");
+    expect(screen.getByRole("combobox")).not.toHaveClass("bg-sc-sky-blue/10");
   });
 
   it("has correct accessibility attributes", () => {
