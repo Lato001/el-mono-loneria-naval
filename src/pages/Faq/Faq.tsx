@@ -1,8 +1,12 @@
+import { useEffect, useRef, useState } from "react";
+import type { MouseEvent as ReactMouseEvent } from "react";
 import { SectionWrapper } from "../../components/ui/SectionWrapper";
 import { FaqBubble } from "../../components/ui/FaqBubble";
 import { FaqCategoryGrid } from "../../components/ui/FaqCategoryGrid";
+import { Modal } from "../../components/ui/Modal";
 import { data } from "../../mocks/data";
 import type { FaqCategory, FaqItem } from "../../mocks/types";
+import type { FaqBubbleDialogData } from "../../components/ui/FaqBubble";
 
 import faqimg01 from "../../assets/img/products/hilos/hilo-negro.webp";
 import faqimg02 from "../../assets/img/products/correas/correa-negra.webp";
@@ -90,10 +94,34 @@ function groupByCategory(faqs: FaqItem[]): Array<{
  *   2. One SectionWrapper per category, each holding 1+ chat-style
  *      FaqBubble entries. Categories are alternated start/end so the
  *      conversation rhythm reads naturally.
+ *   3. On mobile, each bubble's peek icon opens a sheet dialog with the
+ *      question, answer and image.
  */
 export function Faq() {
   const faqSection = data.home.sections.faq;
   const grouped = groupByCategory(data.home.faqs);
+
+  // Bubble whose question+answer are shown in the mobile sheet dialog.
+  // null = dialog closed. Set when a mobile peek button is tapped.
+  const [openFaq, setOpenFaq] = useState<FaqBubbleDialogData | null>(null);
+
+  // The peek button that opened the dialog. This dialog opens
+  // programmatically (no Radix DialogTrigger), so Radix cannot restore
+  // focus to a trigger on close — we keep the button ourselves and
+  // restore focus when the dialog closes.
+  const peekTriggerRef = useRef<HTMLButtonElement | null>(null);
+
+  const handlePeekTap = (
+    data: FaqBubbleDialogData,
+    event: ReactMouseEvent<HTMLButtonElement>,
+  ) => {
+    peekTriggerRef.current = event.currentTarget;
+    setOpenFaq(data);
+  };
+
+  useEffect(() => {
+    if (!openFaq) peekTriggerRef.current?.focus();
+  }, [openFaq]);
 
   const handleCategoryClick = (id: FaqCategory) => {
     // In jsdom (tests) document is available but scrolling is a no-op.
@@ -135,12 +163,51 @@ export function Faq() {
                     alt: CATEGORY_LABELS[category],
                   }}
                   peekIcon={CATEGORY_WATERMARKS[category]}
+                  onPeekTap={handlePeekTap}
                 />
               ))}
             </div>
           </SectionWrapper>
         ))}
       </div>
+
+      {/* Mobile sheet dialog: shows the tapped bubble's question, answer and image */}
+      <Modal
+        open={Boolean(openFaq)}
+        onOpenChange={(open) => {
+          if (!open) setOpenFaq(null);
+        }}
+        variant="sheet"
+        size="lg"
+        title={openFaq?.question}
+      >
+        {openFaq && (
+          <div className="flex flex-col gap-4 pt-2">
+            <div
+              className={`
+                w-full
+                bg-sc-sky-blue
+                text-white
+                border-5 border-sc-chalk
+                rounded-[0_48px_48px_48px]
+                px-6 py-5
+              `}
+            >
+              <p className="text-lg font-semibold font-poppins">
+                {openFaq.answer}
+              </p>
+            </div>
+
+            {openFaq.image?.src && (
+              <img
+                src={openFaq.image.src}
+                alt={openFaq.image.alt}
+                className="max-h-60 w-full rounded-xl object-cover"
+              />
+            )}
+          </div>
+        )}
+      </Modal>
     </SectionWrapper>
   );
 }
