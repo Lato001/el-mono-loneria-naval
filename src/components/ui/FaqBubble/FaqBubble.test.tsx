@@ -1,5 +1,7 @@
 import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { FaqBubble } from "./FaqBubble";
+import type { FaqBubbleDialogData } from "./FaqBubble.types";
 
 describe("FaqBubble", () => {
   it("renders the question as a heading and the answer as a paragraph", () => {
@@ -103,45 +105,6 @@ describe("FaqBubble", () => {
       expect(peek).toHaveAttribute("alt", "");
     });
 
-    it("uses -bottom-1/2 (mobile) + -left-1/2 (desktop) when align=start", () => {
-      render(
-        <FaqBubble
-          question="q"
-          answer="a"
-          image={{ src: "https://example.com/x.jpg", alt: "Lona" }}
-          peekIcon="https://example.com/peek.png"
-        />,
-      );
-      // align=start → image on the right. On mobile the peek overflows
-      // downward; on desktop it overflows to the left toward the chat
-      // pair.
-      const peek = document.querySelector(
-        'img[src="https://example.com/peek.png"]',
-      ) as HTMLElement;
-      expect(peek.className).toContain("-bottom-1/2");
-      expect(peek.className).toContain("md:left-[-50%]");
-    });
-
-    it("uses -bottom-1/2 (mobile) + -right-1/2 (desktop) when align=end", () => {
-      render(
-        <FaqBubble
-          question="q"
-          answer="a"
-          align="end"
-          image={{ src: "https://example.com/x.jpg", alt: "Lona" }}
-          peekIcon="https://example.com/peek.png"
-        />,
-      );
-      // align=end → image on the left. On mobile the peek overflows
-      // downward; on desktop it overflows to the right toward the chat
-      // pair.
-      const peek = document.querySelector(
-        'img[src="https://example.com/peek.png"]',
-      ) as HTMLElement;
-      expect(peek.className).toContain("-bottom-1/2");
-      expect(peek.className).toContain("md:right-[-50%]");
-    });
-
     it("does NOT render any peek icon <img> when peekIcon is omitted", () => {
       const { container } = render(
         <FaqBubble
@@ -153,6 +116,170 @@ describe("FaqBubble", () => {
       const imgs = container.querySelectorAll("img");
       expect(imgs).toHaveLength(1);
       expect(imgs[0]).toHaveAttribute("alt", "Lona");
+    });
+  });
+
+  describe("mobile behavior", () => {
+    const mockOnPeekTap = vi.fn();
+
+    const renderWithPeek = (align: "start" | "end" = "start") =>
+      render(
+        <FaqBubble
+          question="¿Cuánto tarda el servicio?"
+          answer="Aprox. 15 días hábiles."
+          align={align}
+          image={{ src: "https://example.com/x.jpg", alt: "Lona de ejemplo" }}
+          peekIcon="https://example.com/peek.png"
+          onPeekTap={mockOnPeekTap}
+        />,
+      );
+
+    beforeEach(() => {
+      mockOnPeekTap.mockClear();
+    });
+
+    it("renders ImgCard on mobile (no hidden md:block on image wrapper)", () => {
+      renderWithPeek();
+      // The image wrapper should NOT have "hidden md:block" - the ImgCard should always render
+      const img = screen.getByRole("img", { name: "Lona de ejemplo" });
+      expect(img).toBeInTheDocument();
+      // The peek icon should also be present (not hidden)
+      const peekImg = document.querySelector('img[src="https://example.com/peek.png"]');
+      expect(peekImg).toBeInTheDocument();
+    });
+
+    it("peek icon is a button on mobile with min 44x44px and aria-label", () => {
+      renderWithPeek();
+      const peekButton = screen.getByRole("button", { name: /ver respuesta:/i });
+      expect(peekButton).toBeInTheDocument();
+      // Check min-h-11 min-w-11 (44px at default 16px root) via class
+      expect(peekButton).toHaveClass("min-h-11");
+      expect(peekButton).toHaveClass("min-w-11");
+    });
+
+    it("onPeekTap fires with correct FaqBubbleDialogData when peek button is clicked", async () => {
+      renderWithPeek();
+      const user = userEvent.setup();
+      const peekButton = screen.getByRole("button", { name: /ver respuesta:/i });
+      await user.click(peekButton);
+
+      expect(mockOnPeekTap).toHaveBeenCalledTimes(1);
+      const callArg = mockOnPeekTap.mock.calls[0][0] as FaqBubbleDialogData;
+      expect(callArg.question).toBe("¿Cuánto tarda el servicio?");
+      expect(callArg.answer).toBe("Aprox. 15 días hábiles.");
+      expect(callArg.image).toEqual({
+        src: "https://example.com/x.jpg",
+        alt: "Lona de ejemplo",
+      });
+      expect(callArg.highlight).toBeUndefined();
+    });
+
+    it("onPeekTap includes highlight when provided", async () => {
+      render(
+        <FaqBubble
+          question="¿Cuánto tarda tu lona?"
+          highlight="tu lona"
+          answer="15 días."
+          image={{ src: "https://example.com/x.jpg", alt: "Lona" }}
+          peekIcon="https://example.com/peek.png"
+          onPeekTap={mockOnPeekTap}
+        />,
+      );
+      const user = userEvent.setup();
+      const peekButton = screen.getByRole("button", { name: /ver respuesta:/i });
+      await user.click(peekButton);
+
+      const callArg = mockOnPeekTap.mock.calls[0][0] as FaqBubbleDialogData;
+      expect(callArg.highlight).toBe("tu lona");
+    });
+
+    it("peek button peeks from RIGHT edge when align=start (mobile)", () => {
+      renderWithPeek("start");
+      const peekButton = screen.getByRole("button", { name: /ver respuesta:/i });
+      // Mobile start: right-0 top-1/2 -translate-y-1/2 translate-x-1/2
+      expect(peekButton).toHaveClass("right-0");
+      expect(peekButton).toHaveClass("top-1/2");
+      expect(peekButton).toHaveClass("-translate-y-1/2");
+      expect(peekButton).toHaveClass("translate-x-1/2");
+    });
+
+    it("peek button peeks from LEFT edge when align=end (mobile)", () => {
+      renderWithPeek("end");
+      const peekButton = screen.getByRole("button", { name: /ver respuesta:/i });
+      // Mobile end: left-0 top-1/2 -translate-y-1/2 -translate-x-1/2
+      expect(peekButton).toHaveClass("left-0");
+      expect(peekButton).toHaveClass("top-1/2");
+      expect(peekButton).toHaveClass("-translate-y-1/2");
+      expect(peekButton).toHaveClass("-translate-x-1/2");
+    });
+
+    it("peek button is keyboard focusable and operable via Enter", async () => {
+      renderWithPeek();
+      const user = userEvent.setup();
+      const peekButton = screen.getByRole("button", { name: /ver respuesta:/i });
+      peekButton.focus();
+      expect(peekButton).toHaveFocus();
+      await user.keyboard("{Enter}");
+      expect(mockOnPeekTap).toHaveBeenCalledTimes(1);
+    });
+
+    it("does NOT render peek button when align=center (no image slot)", () => {
+      render(
+        <FaqBubble
+          question="q"
+          answer="a"
+          align="center"
+          image={{ src: "https://example.com/x.jpg", alt: "Lona" }}
+          peekIcon="https://example.com/peek.png"
+          onPeekTap={mockOnPeekTap}
+        />,
+      );
+      expect(screen.queryByRole("button", { name: /ver respuesta:/i })).not.toBeInTheDocument();
+    });
+  });
+
+  describe("desktop peek remains decorative", () => {
+    it("peek icon has pointer-events-none and aria-hidden on desktop (md: classes present)", () => {
+      render(
+        <FaqBubble
+          question="q"
+          answer="a"
+          image={{ src: "https://example.com/x.jpg", alt: "Lona" }}
+          peekIcon="https://example.com/peek.png"
+        />,
+      );
+      const peekButton = screen.getByRole("button", { name: /ver respuesta:/i });
+      // Desktop classes should be present: md:pointer-events-none md:aria-hidden
+      // The button itself should have these md: prefixed classes
+      expect(peekButton).toHaveClass("md:pointer-events-none");
+      expect(peekButton).toHaveClass("md:aria-hidden");
+    });
+
+    it("desktop peek positioning uses md:left-[-50%] for align=start", () => {
+      render(
+        <FaqBubble
+          question="q"
+          answer="a"
+          image={{ src: "https://example.com/x.jpg", alt: "Lona" }}
+          peekIcon="https://example.com/peek.png"
+        />,
+      );
+      const peekButton = screen.getByRole("button", { name: /ver respuesta:/i });
+      expect(peekButton).toHaveClass("md:left-[-50%]");
+    });
+
+    it("desktop peek positioning uses md:right-[-50%] for align=end", () => {
+      render(
+        <FaqBubble
+          question="q"
+          answer="a"
+          align="end"
+          image={{ src: "https://example.com/x.jpg", alt: "Lona" }}
+          peekIcon="https://example.com/peek.png"
+        />,
+      );
+      const peekButton = screen.getByRole("button", { name: /ver respuesta:/i });
+      expect(peekButton).toHaveClass("md:right-[-50%]");
     });
   });
 });
