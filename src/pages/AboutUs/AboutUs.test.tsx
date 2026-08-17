@@ -41,7 +41,8 @@ describe("AboutUs page", () => {
 
   it("renders content text from data", () => {
     renderAboutUs();
-    expect(screen.getByText(aboutUsData.content)).toBeInTheDocument();
+    const paragraphs = screen.getAllByText(aboutUsData.content);
+    expect(paragraphs.length).toBeGreaterThan(0);
   });
 
   it("renders highlights from data", () => {
@@ -49,6 +50,19 @@ describe("AboutUs page", () => {
     for (const highlight of aboutUsData.highlights!) {
       expect(screen.getByText(highlight.label)).toBeInTheDocument();
     }
+  });
+
+  it("renders one gallery image per gallery entry with its alt", () => {
+    renderAboutUs();
+    for (const { alt } of aboutUsData.gallery!) {
+      expect(screen.getByAltText(alt)).toBeInTheDocument();
+    }
+  });
+
+  it("renders exactly 4 gallery images (2 columns mobile / 4 desktop)", () => {
+    renderAboutUs();
+    const images = screen.getAllByRole("img", { hidden: false });
+    expect(images).toHaveLength(aboutUsData.gallery!.length);
   });
 
   it("renders CTA with the correct href", () => {

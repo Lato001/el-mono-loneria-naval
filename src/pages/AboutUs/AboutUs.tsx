@@ -2,55 +2,67 @@ import { ImgCard, SectionWrapper } from "../../components/ui";
 import { Button } from "../../components/ui/Button";
 import { data } from "../../mocks/data";
 import CountUp from "../../components/ui/CountUp/CountUp";
+import taller01 from "../../assets/img/about/taller-01.webp";
+import taller02 from "../../assets/img/about/taller-02.webp";
+import taller03 from "../../assets/img/about/taller-03.webp";
+import taller04 from "../../assets/img/about/taller-04.webp";
 
-const galleryImages = [
-  { src: "", alt: "Primer plano de herramientas de medición" },
-  { src: "", alt: "Proceso de corte de tela" },
-  { src: "", alt: "Máquina de coser industrial" },
-  { src: "", alt: "Resultado final instalado" },
-];
+// MAPEO DE GALERÍA — imageKey → URL resuelta (patrón decoupling del proyecto)
+const galleryImageMap: Record<string, string> = {
+  "taller-01": taller01,
+  "taller-02": taller02,
+  "taller-03": taller03,
+  "taller-04": taller04,
+};
 
 export function AboutUs() {
   const about = data.home.aboutUsSection;
 
   return (
+
     <SectionWrapper
       eyebrow={about.eyebrow}
       title={about.title}
-      theme="light"
-      titlesAlign="start"
+      containerClassName="w-full px-6 bg-gradient-to-b from-sc-ocean-blue/20 to-pr-aquamarine/20"
+      titlesAlign="center"
       headingLevel="h1"
-    >
-      <div className="mx-auto flex w-full max-w-2xl flex-col gap-6 text-center">
-        {/* Galería de ImgCards */}
-        <div className="mx-auto w-full max-w-5xl px-4">
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-4 md:gap-4">
-            {galleryImages.map(({ alt }) => (
-              <ImgCard
-                key={alt}
-                className="aspect-[3/4] w-full overflow-hidden rounded-lg"
-                imageClassName="h-full w-full object-cover"
-                src={about.image}
-                alt={alt}
-              />
-            ))}
-          </div>
-        </div>
+      className="pt-30"
+      
+      >
 
-        <div>
-          <p className="font-poppins font-semibold text-base leading-relaxed text-sc-ocean-blue/80">
+
+  <div className="relative left-1/2 right-1/2 -mx-[50vw] w-screen ">
+  <div className="mx-auto grid grid-cols-2 gap-2 px-4 sm:gap-3 sm:px-6 lg:max-w-6xl lg:grid-cols-4 lg:gap-4 lg:px-10">
+    {about.gallery?.map(({ imageKey, alt }) => (
+      <ImgCard
+      key={imageKey}
+      className="aspect-[3/4] max-w-none overflow-hidden rounded-2xl shadow-md shadow-sc-ocean-blue/10 transition-transform duration-300 ease-out hover:scale-[1.02] hover:shadow-lg hover:shadow-sc-ocean-blue/20"
+      imageClassName="h-full w-full object-cover transition-transform duration-500 ease-out hover:scale-105"
+      src={galleryImageMap[imageKey] ?? ""}
+      alt={alt}
+      />
+    ))}
+  </div>
+</div>
+
+     <div className=" rounded-3xl  pb-10 ">
+      <div className="mt-10 mx-auto flex max-w-290 flex-col gap-6 text-center">
+        <div className="p-4">
+          <p className="font-poppins font-base text-lg  leading-relaxed text-sc-chalk pb-5">
+            {about.content}
+          </p>
+          <p className="font-poppins font-base text-lg  leading-relaxed text-sc-chalk pb-5">
             {about.content}
           </p>
         </div>
-
         {about.highlights && about.highlights.length > 0 && (
-          <div className="mt-2 grid grid-cols-3 gap-4 border-t border-sc-ocean-blue/10 pt-6">
+          <div className="mt-2 grid grid-cols-3">
             {about.highlights.map(({ label, value }) => (
               <div
-                key={label}
-                className="flex flex-col items-center text-center font-poppins font-semibold"
+              key={label}
+              className="flex flex-col items-center text-center font-poppins font-semibold"
               >
-                <span className="text-3xl text-sc-sky-blue">
+                <span className="text-3xl text-sc-sky-blue font-medium">
                   <span aria-hidden="true">+</span>
                   <CountUp
                     from={0}
@@ -59,9 +71,9 @@ export function AboutUs() {
                     direction="up"
                     separator=","
                     delay={0.2}
-                  />
+                    />
                 </span>
-                <span className="mt-1 text-sm uppercase tracking-wider text-sc-ocean-blue/60">
+                <span className="mt-1 text-sm uppercase tracking-wider text-sc-chalk">
                   {label}
                 </span>
               </div>
@@ -69,14 +81,20 @@ export function AboutUs() {
           </div>
         )}
 
+
+
         {about.cta && (
           <div className="mt-2 flex justify-center">
-            <Button variant="primary" href={about.cta.href}>
+            <Button variant="danger" href={about.cta.href}>
               {about.cta.text}
             </Button>
           </div>
         )}
+        </div>
+
       </div>
+   
     </SectionWrapper>
+
   );
 }
