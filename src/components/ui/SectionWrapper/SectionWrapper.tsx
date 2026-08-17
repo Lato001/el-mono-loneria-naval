@@ -26,6 +26,7 @@ export function SectionWrapper({
   headingLevel = "h1",
   fullWidth,
   containerClassName,
+  backgroundImage,
 }: SectionWrapperProps) {
   const Heading = headingLevel;
   const headingClasses = `font-poppins mb-8 font-bold uppercase text-[clamp(1.875rem,3vw,2.5rem)] ${theme === "dark" ? "text-white" : "text-pr-hero-blue"} `;
@@ -37,7 +38,7 @@ export function SectionWrapper({
     <>
       {eyebrow && (
         <p
-          className={`${titlesTextClasses[titlesAlign]} font-poppins mb-2 flex items-center gap-2.5 text-xs uppercase tracking-[0.2em] ${theme === "dark" ? "text-pr-aquamarine" : "text-pr-hero-blue"} `}
+          className={`${titlesAlignClasses[titlesAlign]} ${titlesTextClasses[titlesAlign]} font-poppins mb-2 flex items-center gap-2.5 text-xs uppercase tracking-[0.2em] ${theme === "dark" ? "text-pr-aquamarine" : "text-pr-hero-blue"} `}
         >
           {eyebrowDash && (
             <span
@@ -48,7 +49,7 @@ export function SectionWrapper({
           {eyebrow}
         </p>
       )}
-      <Heading className={headingClasses}>{title}</Heading>
+      <Heading className={`${headingClasses} ${titlesTextClasses[titlesAlign]}`}>{title}</Heading>
     </>
   );
 
@@ -70,10 +71,21 @@ export function SectionWrapper({
             ? "bg-sc-ocean-blue"
             : "bg-sc-chalk"
           : ""
-      } ${gradientClass} py-20 text-white ${className ?? ""}`}
+      } ${gradientClass} py-20 text-white ${
+        backgroundImage ? "relative overflow-hidden" : ""
+      } ${className ?? ""}`}
       aria-label={title}
     >
-      <div className={containerClasses}>
+      {backgroundImage && (
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-y-0 left-1/2 w-screen max-w-none -translate-x-1/2 opacity-50 bg-fade-mask"
+          style={{
+            backgroundImage: `url(${backgroundImage})`
+          }}
+        />
+      )}
+      <div className={`${containerClasses} ${backgroundImage ? "relative z-10" : ""}`}>
         <div
           className={`flex ${
             subtitle

@@ -8,6 +8,7 @@ import React, {
 } from "react";
 import { gsap } from "gsap";
 import { Modal } from "../Modal";
+import { IMAGE_FALLBACK_SRC, useImageFallback } from "../ImageFallback";
 
 const useMedia = (
   queries: string[],
@@ -58,35 +59,6 @@ const useMeasure = <T extends HTMLElement>() => {
   return [ref, size, node] as const;
 };
 
-interface ImageDimensions {
-  url: string;
-  naturalWidth: number;
-  naturalHeight: number;
-}
-
-const preloadImages = async (
-  urls: string[],
-): Promise<ImageDimensions[]> => {
-  const results = await Promise.all(
-    urls.map(
-      (src) =>
-        new Promise<ImageDimensions>((resolve) => {
-          const img = new Image();
-          img.onload = () =>
-            resolve({
-              url: src,
-              naturalWidth: img.naturalWidth,
-              naturalHeight: img.naturalHeight,
-            });
-          img.onerror = () =>
-            resolve({ url: src, naturalWidth: 4, naturalHeight: 3 });
-          img.src = src;
-        }),
-    ),
-  );
-  return results;
-};
-
 export interface Item {
   id: string;
   img: string;
@@ -113,31 +85,42 @@ interface GridItem extends Item {
 
 interface MasonryProps {
   items: Item[];
+  /**
+   * Build-time image dimensions (resolved URL → { w, h }). When provided, the
+   * uniform packing uses real aspect ratios without downloading the images;
+   * missing URLs fall back to a 4/3 ratio. Optional — Home's mosaic variant
+   * ignores aspect ratios (fixed row height).
+   */
+  imageDims?: Record<string, { w: number; h: number }>;
   variant?: "uniform" | "mosaic";
   ease?: string;
   duration?: number;
   stagger?: number;
-  animateFrom?: "bottom" | "top" | "left" | "right" | "center" | "random";
   scaleOnHover?: boolean;
   hoverScale?: number;
   blurToFocus?: boolean;
   colorShiftOnHover?: boolean;
   /** Optional click handler — when provided, clicking an item calls this instead of opening the internal Modal */
   onItemClick?: (item: Item, index: number) => void;
+  /**
+   * Optional footer rendered inside the grid container, after the cells (e.g.
+   * a "Cargar más" button). Flows below the grid.
+   */
+  footer?: React.ReactNode;
 }
 
 const Masonry: React.FC<MasonryProps> = ({
   items,
+  imageDims,
   variant = "uniform",
   ease = "power3.out",
-  duration = 0.6,
   stagger = 0.05,
-  animateFrom = "bottom",
   scaleOnHover = true,
   hoverScale = 0.95,
   blurToFocus = true,
   colorShiftOnHover = false,
   onItemClick,
+  footer,
 }) => {
   const columns = useMedia(
     [
@@ -157,53 +140,7 @@ const Masonry: React.FC<MasonryProps> = ({
   // on very large screens made the cards smaller than the SplitCards.
   const itemsPerRow = variant === "mosaic" ? 2 : 1;
 
-  const [containerRef, { width }, containerNode] = useMeasure<HTMLDivElement>();
-  const [imagesReady, setImagesReady] = useState(false);
-  const [dimensionsMap, setDimensionsMap] = useState<
-    Map<string, ImageDimensions>
-  >(new Map());
-
-  const getInitialPosition = useCallback(
-    (item: GridItem) => {
-      const containerRect = containerNode?.getBoundingClientRect();
-      if (!containerRect) return { x: item.x, y: item.y };
-
-      let direction = animateFrom;
-      if (animateFrom === "random") {
-        const dirs = ["top", "bottom", "left", "right"];
-        direction = dirs[
-          Math.floor(Math.random() * dirs.length)
-        ] as typeof animateFrom;
-      }
-
-      switch (direction) {
-        case "top":
-          return { x: item.x, y: -200 };
-        case "bottom":
-          return { x: item.x, y: window.innerHeight + 200 };
-        case "left":
-          return { x: -200, y: item.y };
-        case "right":
-          return { x: window.innerWidth + 200, y: item.y };
-        case "center":
-          return {
-            x: containerRect.width / 2 - item.w / 2,
-            y: containerRect.height / 2 - item.h / 2,
-          };
-        default:
-          return { x: item.x, y: item.y + 100 };
-      }
-    },
-    [containerNode, animateFrom],
-  );
-
-  useEffect(() => {
-    preloadImages(items.map((i) => i.img)).then((dims) => {
-      const map = new Map(dims.map((d) => [d.url, d]));
-      setDimensionsMap(map);
-      setImagesReady(true);
-    });
-  }, [items]);
+  const [containerRef, { width }] = useMeasure<HTMLDivElement>();
 
   const { grid, totalHeight } = useMemo(() => {
     if (!width) return { grid: [] as GridItem[], totalHeight: 0 };
@@ -245,10 +182,8 @@ const Masonry: React.FC<MasonryProps> = ({
       items.forEach((child) => {
         const col = colHeights.indexOf(Math.min(...colHeights));
         const x = col * (columnWidth + gap);
-        const dims = dimensionsMap.get(child.img);
-        const aspectRatio = dims
-          ? dims.naturalWidth / dims.naturalHeight
-          : 4 / 3;
+        const dims = imageDims?.[child.img];
+        const aspectRatio = dims ? dims.w / dims.h : 4 / 3;
         const height = columnWidth / aspectRatio;
         const y = colHeights[col];
         colHeights[col] += height + gap;
@@ -259,50 +194,52 @@ const Masonry: React.FC<MasonryProps> = ({
     const totalHeight =
       gridItems.length > 0 ? Math.max(...colHeights) - gap : 0;
     return { grid: gridItems, totalHeight };
-  }, [columns, dimensionsMap, items, itemsPerRow, variant, width]);
+  }, [columns, imageDims, items, itemsPerRow, variant, width]);
 
-  const hasMounted = useRef(false);
+  // Item ids that already played their entrance animation. When the items array
+  // grows (e.g. the Works album "Cargar más" batch), only the NEW items get the
+  // entrance animation; already-visible items are left untouched (their position
+  // lives in inline top/left/width/height styles, so React keeps them in place
+  // across re-renders — no GSAP repositioning needed on resize).
+  const animatedIdsRef = useRef<Set<string>>(new Set());
 
   useLayoutEffect(() => {
-    if (!imagesReady) return;
+    // Delay is relative to the NEW batch, not the whole grid: when "Cargar más"
+    // appends items 24..47, the first new one must animate immediately instead of
+    // waiting 24 * stagger. Items already animated are skipped below.
+    let firstNewIndex = 0;
+    while (
+      firstNewIndex < grid.length &&
+      animatedIdsRef.current.has(grid[firstNewIndex].id)
+    ) {
+      firstNewIndex++;
+    }
 
     grid.forEach((item, index) => {
+      if (animatedIdsRef.current.has(item.id)) return;
+
       const selector = `[data-key="${item.id}"]`;
-      const animProps = { x: item.x, y: item.y, width: item.w, height: item.h };
-
-      if (!hasMounted.current) {
-        const start = getInitialPosition(item);
-        gsap.fromTo(
-          selector,
-          {
-            opacity: 0,
-            x: start.x,
-            y: start.y,
-            width: item.w,
-            height: item.h,
-            ...(blurToFocus && { filter: "blur(10px)" }),
-          },
-          {
-            opacity: 1,
-            ...animProps,
-            ...(blurToFocus && { filter: "blur(0px)" }),
-            duration: 0.8,
-            ease: "power3.out",
-            delay: index * stagger,
-          },
-        );
-      } else {
-        gsap.to(selector, {
-          ...animProps,
-          duration,
+      // Cells are positioned by layout (inline top/left/width/height), so the
+      // entrance is a fade + blur in place — no spatial movement. Animating
+      // transforms on top of will-change + opacity:0 made Chrome defer the lazy
+      // image fetch until hover, breaking `loading="lazy"`.
+      gsap.fromTo(
+        selector,
+        {
+          opacity: 0,
+          ...(blurToFocus && { filter: "blur(10px)" }),
+        },
+        {
+          opacity: 1,
+          ...(blurToFocus && { filter: "blur(0px)" }),
+          duration: 0.8,
           ease,
-          overwrite: "auto",
-        });
-      }
+          delay: (index - firstNewIndex) * stagger,
+        },
+      );
+      animatedIdsRef.current.add(item.id);
     });
-
-    hasMounted.current = true;
-  }, [grid, imagesReady, stagger, animateFrom, blurToFocus, duration, ease, getInitialPosition]);
+  }, [grid, stagger, ease, blurToFocus]);
 
   const handleMouseEnter = (id: string, element: HTMLElement) => {
     if (scaleOnHover) {
@@ -335,6 +272,7 @@ const Masonry: React.FC<MasonryProps> = ({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedImg, setSelectedImg] = useState<string | null>(null);
   const [selectedAlt, setSelectedAlt] = useState<string>("");
+  const { failed, markFailed } = useImageFallback();
 
   function handleOpenModal(img: string, alt?: string) {
     setSelectedImg(img);
@@ -346,13 +284,14 @@ const Masonry: React.FC<MasonryProps> = ({
     return <MobileMosaicCarousel items={items} />;
   }
 
-  return (
+return (
     <>
-      <div
-        ref={containerRef}
-        className="relative w-full"
-        style={{ height: totalHeight || undefined }}
-      >
+      <div className="relative w-full">
+        <div
+          ref={containerRef}
+          className="relative w-full"
+          style={{ height: totalHeight || undefined }}
+        >
         {grid.map((item, index) =>
           item.redirectUrl ? (
             <a
@@ -360,12 +299,16 @@ const Masonry: React.FC<MasonryProps> = ({
               data-key={item.id}
               href={item.redirectUrl}
               className="absolute box-content group block rounded-3xl border border-sc-ocean-blue/15 transition-all duration-300 ease-out motion-safe:hover:-translate-y-1 hover:ring-1 hover:ring-pr-aquamarine/50"
-              style={{ willChange: "transform, width, height, opacity" }}
+              style={{ top: item.y, left: item.x, width: item.w, height: item.h }}
             >
               <div className="relative w-full h-full overflow-hidden rounded-3xl">
-                <div
-                  className="absolute inset-0 bg-cover bg-center transition-all duration-500 ease-out brightness-50 grayscale-50 motion-safe:group-hover:scale-105 group-hover:brightness-100 group-hover:grayscale-0"
-                  style={{ backgroundImage: `url(${item.img})` }}
+                <img
+                  src={failed.has(item.img) ? IMAGE_FALLBACK_SRC : item.img}
+                  alt={item.alt ?? ""}
+                  loading="lazy"
+                  decoding="async"
+                  onError={() => markFailed(item.img)}
+                  className="absolute inset-0 h-full w-full object-cover transition-all duration-500 ease-out brightness-50 grayscale-50 motion-safe:group-hover:scale-105 group-hover:brightness-100 group-hover:grayscale-0"
                 />
                 {item.title && (
                   <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 flex flex-col justify-end p-5">
@@ -398,15 +341,22 @@ const Masonry: React.FC<MasonryProps> = ({
               key={item.id}
               data-key={item.id}
               className="absolute box-content"
-              style={{ willChange: "transform, width, height, opacity" }}
+              style={{ top: item.y, left: item.x, width: item.w, height: item.h }}
               onClick={() => onItemClick ? onItemClick(item, index) : handleOpenModal(item.img, item.alt)}
               onMouseEnter={(e) => handleMouseEnter(item.id, e.currentTarget)}
               onMouseLeave={(e) => handleMouseLeave(item.id, e.currentTarget)}
             >
               <div
-                className="relative w-full h-full bg-cover bg-center rounded-[10px] shadow-[0px_10px_50px_-10px_rgba(0,0,0,0.2)] uppercase text-[10px] leading-2.5 cursor-pointer"
-                style={{ backgroundImage: `url(${item.img})` }}
+                className="relative w-full h-full rounded-[10px] overflow-hidden shadow-[0px_10px_50px_-10px_rgba(0,0,0,0.2)] uppercase text-[10px] leading-2.5 cursor-pointer"
               >
+                <img
+                  src={failed.has(item.img) ? IMAGE_FALLBACK_SRC : item.img}
+                  alt={item.alt ?? ""}
+                  loading="lazy"
+                  decoding="async"
+                  onError={() => markFailed(item.img)}
+                  className="absolute inset-0 h-full w-full object-cover"
+                />
                 {colorShiftOnHover && (
                   <div className="color-overlay absolute inset-0 rounded-xl bg-linear-to-tr from-pr-aquamarine to-pr-hero-blue opacity-0 pointer-events-none" />
                 )}
@@ -414,6 +364,9 @@ const Masonry: React.FC<MasonryProps> = ({
             </div>
           ),
         )}
+        </div>
+
+        {footer && <div className="relative">{footer}</div>}
       </div>
 
       <Modal
@@ -428,8 +381,9 @@ const Masonry: React.FC<MasonryProps> = ({
         <div className="flex items-center justify-center">
           <img
             className="max-h-[90vh] max-w-[90vw] rounded-xl object-contain shadow-2xl"
-            src={selectedImg!}
+            src={failed.has(selectedImg!) ? IMAGE_FALLBACK_SRC : selectedImg!}
             alt={selectedAlt}
+            onError={() => markFailed(selectedImg!)}
           />
         </div>
       </Modal>

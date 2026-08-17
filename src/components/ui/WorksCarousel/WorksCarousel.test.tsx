@@ -1,6 +1,7 @@
-import { render, screen } from "@testing-library/react";
+import { act, fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { WorksCarousel } from "./WorksCarousel";
+import { IMAGE_FALLBACK_SRC } from "../ImageFallback";
 import type { WorksCarouselImage } from "./WorksCarousel.types";
 
 const mockImages: WorksCarouselImage[] = [
@@ -74,6 +75,16 @@ describe("WorksCarousel", () => {
     });
   });
 
+  it("swaps a failed thumbnail src for the inline fallback", () => {
+    render(<WorksCarousel images={mockImages} onThumbSelect={vi.fn()} />);
+
+    const img = screen.getByAltText("Image 1") as HTMLImageElement;
+    expect(img.src).not.toBe(IMAGE_FALLBACK_SRC);
+    fireEvent.error(img);
+
+    expect(img.src).toBe(IMAGE_FALLBACK_SRC);
+  });
+
   // --- Page indicator dots (new feature) ---
   describe("page indicator dots", () => {
     it("renders no dots when only 1 page (2 images, 2 per page)", () => {
@@ -81,6 +92,122 @@ describe("WorksCarousel", () => {
 
       const dots = screen.queryAllByRole("tab", { name: /página \d+ de \d+/i });
       expect(dots).toHaveLength(0); // 2 images, 2 per page (mobile) = 1 page, no dots needed
+    });
+
+    it("derives pages from the real visible thumbs (desktop: 4 per page → no dead dots)", () => {
+      // Simulate a desktop layout: 4 thumbs fit per page (clientWidth = 4*thumb + 3*gap).
+      // 6 images → ceil(6/4) = 2 pages, NOT the 3 pages a fixed mobile constant would show.
+      const thumbWidth = 100;
+      const gap = 16;
+      const clientWidth = 4 * thumbWidth + 3 * gap; // 448
+
+      // Mock the layout getters on HTMLElement.prototype; restore afterwards.
+      const originalOffset = Object.getOwnPropertyDescriptor(HTMLElement.prototype, "offsetWidth");
+      const originalClient = Object.getOwnPropertyDescriptor(HTMLElement.prototype, "clientWidth");
+
+      Object.defineProperty(HTMLElement.prototype, "offsetWidth", {
+        configurable: true,
+        get() {
+          return thumbWidth;
+        },
+      });
+      Object.defineProperty(HTMLElement.prototype, "clientWidth", {
+        configurable: true,
+        get() {
+          return clientWidth;
+        },
+      });
+
+      try {
+        render(<WorksCarousel images={mockImages.slice(0, 6)} onThumbSelect={vi.fn()} />);
+
+        const dots = screen.getAllByRole("tab", { name: /página \d+ de \d+/i });
+        expect(dots).toHaveLength(2); // 2 real pages — no unreachable "dead" dots
+      } finally {
+        if (originalOffset) {
+          Object.defineProperty(HTMLElement.prototype, "offsetWidth", originalOffset);
+        } else {
+          // @ts-expect-error -- removing our mock when the original lacked a descriptor
+          delete HTMLElement.prototype.offsetWidth;
+        }
+        if (originalClient) {
+          Object.defineProperty(HTMLElement.prototype, "clientWidth", originalClient);
+        } else {
+          // @ts-expect-error -- removing our mock when the original lacked a descriptor
+          delete HTMLElement.prototype.clientWidth;
+        }
+      }
+    });
+
+    it("resets to the first page when the layout changes (mobile → desktop)", async () => {
+      // Capture the ResizeObserver callback so we can simulate a viewport change.
+      let roCallback: ResizeObserverCallback | null = null;
+      class MockRO {
+        constructor(cb: ResizeObserverCallback) {
+          roCallback = cb;
+        }
+        observe() {}
+        unobserve() {}
+        disconnect() {}
+      }
+      const originalRO = globalThis.ResizeObserver;
+      globalThis.ResizeObserver = MockRO as unknown as typeof ResizeObserver;
+
+      const thumbWidth = 100;
+      const gap = 16;
+      let clientWidth = 2 * thumbWidth + gap; // mobile: 216
+
+      const originalOffset = Object.getOwnPropertyDescriptor(HTMLElement.prototype, "offsetWidth");
+      const originalClient = Object.getOwnPropertyDescriptor(HTMLElement.prototype, "clientWidth");
+
+      Object.defineProperty(HTMLElement.prototype, "offsetWidth", {
+        configurable: true,
+        get() {
+          return thumbWidth;
+        },
+      });
+      Object.defineProperty(HTMLElement.prototype, "clientWidth", {
+        configurable: true,
+        get() {
+          return clientWidth;
+        },
+      });
+
+      try {
+        const user = userEvent.setup();
+        render(<WorksCarousel images={mockImages.slice(0, 6)} onThumbSelect={vi.fn()} />);
+
+        // Mobile: 6 images / 2 per page = 3 dots. Jump to the third dot.
+        let dots = screen.getAllByRole("tab", { name: /página \d+ de \d+/i });
+        expect(dots).toHaveLength(3);
+        await user.click(dots[2]);
+        expect(dots[2]).toHaveClass("bg-pr-aquamarine");
+
+        // Resize to desktop: 4 per page → 2 pages, and index resets to the first.
+        clientWidth = 4 * thumbWidth + 3 * gap; // 448
+        act(() => {
+          roCallback?.([], {} as ResizeObserver);
+        });
+
+        dots = screen.getAllByRole("tab", { name: /página \d+ de \d+/i });
+        expect(dots).toHaveLength(2);
+        expect(dots[0]).toHaveClass("bg-pr-aquamarine");
+        expect(dots[1]).not.toHaveClass("bg-pr-aquamarine");
+      } finally {
+        globalThis.ResizeObserver = originalRO;
+        if (originalOffset) {
+          Object.defineProperty(HTMLElement.prototype, "offsetWidth", originalOffset);
+        } else {
+          // @ts-expect-error -- removing our mock when the original lacked a descriptor
+          delete HTMLElement.prototype.offsetWidth;
+        }
+        if (originalClient) {
+          Object.defineProperty(HTMLElement.prototype, "clientWidth", originalClient);
+        } else {
+          // @ts-expect-error -- removing our mock when the original lacked a descriptor
+          delete HTMLElement.prototype.clientWidth;
+        }
+      }
     });
 
     it("renders no dots with 5 or fewer images (threshold is >5)", () => {

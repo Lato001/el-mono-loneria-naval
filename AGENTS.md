@@ -258,6 +258,7 @@ src/
 - React Compiler active in production
 
 ## Quirks & gotchas
+- Thumbnails (480px, q70) de las imágenes del álbum, generados manualmente con ffmpeg y commiteados; el carousel y la galería los usan, el ImgCard usa la full-res: `ffmpeg -i <full.webp> -vf "scale=480:-1" -q:v 70 src/assets/img/works/<categoria>/thumbs/<nombre>.webp`
 - `sass` 1.101.0 + `patches/react-fast-marquee@1.6.5.patch` present but **unused** (custom Marquee replaces fast-marquee)
 - `src/hooks/` and `src/data/` directories exist but are empty
 - No `.vscode/extensions.json` or useful `.vscode/settings.json`

@@ -22,7 +22,7 @@ const sizeClasses: Record<NonNullable<ButtonProps["size"]>, string> = {
 };
 
 const baseClasses =
-  "inline-flex items-center justify-center gap-2 rounded-md font-poppins font-medium transition-colors hover:cursor-pointer";
+  "inline-flex items-center justify-center gap-2  rounded-3xl font-poppins font-medium transition-colors hover:cursor-pointer";
 
 // Applied when disabled regardless of render mode (button, span, or Link).
 // Note: <a>/<Link> elements do not support the `disabled` HTML attribute,

@@ -48,7 +48,6 @@ import type {
   SplitCardData,
   UICopy,
   MasonryItem,
-  AlbumImage,
   Trabajo,
 } from "./types";
 
@@ -643,11 +642,6 @@ export const data = {
   // ─── Works page ──────────────────────────────────────────────────────
   worksPage: {
     trabajos,
-    album: {
-      // Derived from trabajos — each photo tagged with trabajoId and categoria
-      // for click→showcase navigation. Resolved URLs injected by Works.tsx.
-      images: [] as AlbumImage[],
-    },
   } satisfies WorksPageData,
 
   // ─── Brands ──────────────────────────────────────────────────────────

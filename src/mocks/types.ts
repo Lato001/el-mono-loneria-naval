@@ -143,14 +143,6 @@ export interface ProductCategoryData {
 // ─── Works page ─────────────────────────────────────────────────────────
 export interface WorksPageData {
   trabajos: Trabajo[];
-  /**
-   * Photo album rendered as a masonry on the works page.
-   * Derived from `trabajos` — each image tagged with `trabajoId` and `categoria`
-   * for click→showcase navigation.
-   */
-  album: {
-    images: AlbumImage[];
-  };
 }
 
 export interface AlbumImage {

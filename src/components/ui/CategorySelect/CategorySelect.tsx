@@ -11,7 +11,8 @@ export function CategorySelect({ value, options, onChange }: CategorySelectProps
         onChange={(e) => onChange(e.target.value as Categoria)}
         className={`
           w-full max-w-72 appearance-none
-          ${value === "" ? "bg-sc-chalk text-sc-ocean-blue" : "bg-sc-sky-blue/10 text-sc-chalk"}
+          bg-sc-chalk 
+          text-sc-ocean-blue
           font-poppins
           ring-1
           ring-sc-chalk/50

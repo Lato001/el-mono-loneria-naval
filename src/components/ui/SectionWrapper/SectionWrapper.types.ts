@@ -19,6 +19,12 @@ export interface SectionWrapperProps {
   gradientVariant?: "none" | "navy" | "hero-to-navy" | "navy-to-hero";
   titlesAlign?: "start" | "center" | "end";
   /**
+   * Optional background image rendered behind the whole section (titles and
+   * children). The image is repeated vertically to cover the full section
+   * height at viewport width. Use for decorative SVG/texture layers.
+   */
+  backgroundImage?: string;
+  /**
    * Heading level for the section title.
    * - "h1": page-level heading. Use when the page has no other top-level heading (e.g. /faq, /nosotros, /contacto, /servicios).
    * - "h2": section heading. Use inside composite pages like Home that already have an h1 hero.

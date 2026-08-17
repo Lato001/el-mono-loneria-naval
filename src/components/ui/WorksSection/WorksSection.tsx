@@ -1,8 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
+import formasLineasOnduladas from "../../../assets/backgrounds/formas-lineas-onduladas.svg";
 import { CategorySelect } from "../CategorySelect";
 import { WorksCarousel } from "../WorksCarousel";
 import { ImgCard } from "../Card";
 import { SectionWrapper } from "../SectionWrapper";
+import { Button } from "../Button";
 import Masonry from "../Masonry/Masonry";
 import type { Trabajo } from "../../../types/trabajo";
 import { data } from "../../../mocks/data";
@@ -47,10 +49,17 @@ const cualidadIconos: Record<string, Icon> = {
 };
 interface WorksSectionProps {
   imageMap: Record<string, string>;
+  /** imageKey → 480px thumbnail URL (see Works.tsx thumbMap). */
+  thumbMap: Record<string, string>;
+  /** imageKey → { w, h } build-time dimensions (see Works/imageManifest.json). */
+  imageDims: Record<string, { w: number; h: number }>;
 }
 
 /** Summary length (words) for the mobile "Leer Más" toggle. */
 const MOBILE_DESCRIPTION_SUMMARY_WORDS = 30;
+
+/** Album images rendered per "Cargar más" batch. Tuneable. */
+export const ALBUM_PAGE_SIZE = 24;
 
 /** Live viewport check for mobile (<1024px) using matchMedia. */
 function useIsMobile(): boolean {
@@ -113,7 +122,7 @@ function DescriptionText({ text, trabajoId }: DescriptionTextProps) {
   );
 }
 
-export function WorksSection({ imageMap }: WorksSectionProps) {
+export function WorksSection({ imageMap, thumbMap, imageDims }: WorksSectionProps) {
   const showcaseId = "works-showcase";
   // Scroll target: the content grid (ImgCard + description), not the section top
   // — avoids landing too high and forcing the user to scroll back down a bit.
@@ -134,7 +143,7 @@ export function WorksSection({ imageMap }: WorksSectionProps) {
     handleCategoriaChange,
     handleAlbumClick,
     handleThumbSelect,
-  } = useWorksUrlState({ trabajos, availableCategorias, scrollTargetId, imageMap });
+  } = useWorksUrlState({ trabajos, availableCategorias, scrollTargetId, imageMap, thumbMap });
 
   // Album items derived from trabajos, shuffled once at mount (lazy initializer —
   // keeps Math.random() out of the render path for React Compiler purity).
@@ -142,7 +151,7 @@ export function WorksSection({ imageMap }: WorksSectionProps) {
     const items: AlbumImage[] = trabajos.flatMap((t) =>
       t.imagenes.map((img: string, i: number) => ({
         id: `${t.id}-${i}`,
-        img: imageMap[img],
+        img: thumbMap[img] ?? imageMap[img],
         url: "",
         alt: t.titulo,
         title: t.titulo,
@@ -160,6 +169,30 @@ export function WorksSection({ imageMap }: WorksSectionProps) {
     return shuffled;
   });
 
+  // Masonry items carry the resolved URL (`img`), so key the build-time
+  // dimensions by URL (derived once from the imageKey maps). Both the full-res
+  // and the thumbnail URL resolve to the same aspect ratio, so index by both —
+  // the gallery now renders thumbs but packs with the manifest dims.
+  const imageDimsByUrl = useMemo(() => {
+    const byUrl: Record<string, { w: number; h: number }> = {};
+    for (const [key, dims] of Object.entries(imageDims)) {
+      const url = imageMap[key];
+      if (url) byUrl[url] = dims;
+      const thumbUrl = thumbMap[key];
+      if (thumbUrl) byUrl[thumbUrl] = dims;
+    }
+    return byUrl;
+  }, [imageMap, thumbMap, imageDims]);
+
+  // Album pagination: only `visibleCount` items are passed to the Masonry.
+  // The shuffle above runs ONCE on the full array; pagination only slices it.
+  const [visibleCount, setVisibleCount] = useState(ALBUM_PAGE_SIZE);
+  const visibleAlbumItems = useMemo(
+    () => albumItems.slice(0, visibleCount),
+    [albumItems, visibleCount],
+  );
+  const hasMoreAlbumItems = visibleCount < albumItems.length;
+
   return (
     <>
       {/* Showcase Section */}
@@ -167,9 +200,10 @@ export function WorksSection({ imageMap }: WorksSectionProps) {
         id={showcaseId}
         eyebrow="Trabajos"
         title="Nuestros Trabajos"
-        theme="dark"
+        gradientVariant="hero-to-navy"
         headingLevel="h1"
-        containerClassName="mx-auto max-w-[1400px] px-6 lg:px-10"
+        containerClassName="mx-auto max-w-[1400px] px-6 lg:px-10 "
+        className="!pb-10"
       >
         <CategorySelect
           value={selectedCategoria}
@@ -187,6 +221,7 @@ export function WorksSection({ imageMap }: WorksSectionProps) {
               alt={mainImageAlt}
               imageClassName="w-full max-w-md aspect-[4/3]"
               className="!aspect-[4/3] md:!aspect-[9/16] max-w-[450px] max-h-[350px] md:max-h-[700px]"
+              loading="eager"
             />
           </div>
 
@@ -240,22 +275,41 @@ export function WorksSection({ imageMap }: WorksSectionProps) {
       eyebrow="Album de fotos"
       titlesAlign="center"
         title="Trabajos destacados"
-        theme="dark"
         headingLevel="h2"
         fullWidth
-        className="!pt-0"
+        className="!pt-10"
+        backgroundImage={formasLineasOnduladas}
       >
-        <div className="mx-auto w-full max-w-[1800px] px-2 lg:px-0 min-[2200px]:max-w-[2200px]">
+        <div className="mx-auto w-full max-w-[1800px] px-2 rounded-3xl lg:px-0 min-[2200px]:max-w-[2200px]">
         <Masonry
-          items={albumItems}
+          items={visibleAlbumItems}
+          imageDims={imageDimsByUrl}
           variant="uniform"
           ease="power3.out"
           duration={0.6}
           stagger={0.05}
-          animateFrom="bottom"
           scaleOnHover
           hoverScale={0.95}
           colorShiftOnHover={true}
+          footer={
+            hasMoreAlbumItems ? (
+              <div className="flex flex-col items-center gap-4 pb-20 pt-12">
+                <p className="font-poppins text-lg text-sc-chalk/70">
+                  Mostrando {Math.min(visibleCount, albumItems.length)} de {albumItems.length}
+                </p>
+                <Button
+                className="text-lg font-semibold"
+                  variant="danger"
+                  size="lg"
+                  onClick={() =>
+                    setVisibleCount((prev) => Math.min(prev + ALBUM_PAGE_SIZE, albumItems.length))
+                  }
+                >
+                  Cargar más
+                </Button>
+              </div>
+            ) : undefined
+          }
           onItemClick={(item) => handleAlbumClick(item as AlbumImage)}
         />
         </div>

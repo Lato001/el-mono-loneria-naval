@@ -10,6 +10,8 @@ export interface UseWorksUrlStateOptions {
   scrollTargetId: string;
   /** imageKey → resolved URL map (see Works.tsx imageMap). */
   imageMap: Record<string, string>;
+  /** imageKey → 480px thumbnail URL for the carousel (see Works.tsx thumbMap). */
+  thumbMap: Record<string, string>;
 }
 
 export interface UseWorksUrlStateResult {
@@ -118,6 +120,7 @@ export function useWorksUrlState({
   availableCategorias,
   scrollTargetId,
   imageMap,
+  thumbMap,
 }: UseWorksUrlStateOptions): UseWorksUrlStateResult {
   const [initial] = useState(() => resolveUrlState(trabajos, availableCategorias));
 
@@ -146,12 +149,12 @@ export function useWorksUrlState({
     if (!selectedTrabajo) return [];
     return selectedTrabajo.imagenes
       .map((imgKey: string, i: number) => ({
-        src: imageMap[imgKey],
+        src: thumbMap[imgKey] ?? imageMap[imgKey],
         alt: `${selectedTrabajo.titulo} - imagen ${i + 1}`,
         originalIndex: i,
       }))
       .filter((_: WorksCarouselImage, i: number) => i !== imageIndex);
-  }, [selectedTrabajo, imageIndex, imageMap]);
+  }, [selectedTrabajo, imageIndex, imageMap, thumbMap]);
 
   const mainImageSrc = selectedTrabajo ? imageMap[selectedTrabajo.imagenes[imageIndex]] : "";
   const mainImageAlt = selectedTrabajo ? `${selectedTrabajo.titulo} - imagen principal` : "";

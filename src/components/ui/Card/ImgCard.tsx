@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import type { ReactNode } from "react";
 import { IconChevronLeft, IconChevronRight } from "@tabler/icons-react";
+import { IMAGE_FALLBACK_SRC, useImageFallback } from "../ImageFallback";
 
 interface ImgCardProps {
   src?: string;
@@ -13,6 +14,12 @@ interface ImgCardProps {
   showControls?: boolean;
   actionButton?: ReactNode;
   overlay?: ReactNode;
+  /**
+   * Loading strategy for the single-image render. Defaults to "lazy" because
+   * most single-image usages (FAQ bubbles, split cards) sit below the fold.
+   * Above-the-fold consumers (the Works showcase) pass "eager".
+   */
+  loading?: "lazy" | "eager";
 }
 
 export function ImgCard({
@@ -26,10 +33,12 @@ export function ImgCard({
   showControls = false,
   actionButton,
   overlay,
+  loading = "lazy",
 }: ImgCardProps) {
   const hasSlideshow = images && images.length > 1;
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
+  const { failed, markFailed } = useImageFallback();
 
   useEffect(() => {
     if (!hasSlideshow || isHovered) return;
@@ -72,8 +81,10 @@ export function ImgCard({
         {images.map((img, i) => (
           <img
             key={img.src}
-            src={img.src}
+            src={failed.has(img.src) ? IMAGE_FALLBACK_SRC : img.src}
             alt={img.alt}
+            decoding="async"
+            onError={() => markFailed(img.src)}
             className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${
               i === currentIndex ? "opacity-100" : "opacity-0 "
             } ${imageClassName}`}
@@ -121,10 +132,19 @@ export function ImgCard({
       `}
     >
       <img
-        src={src}
+        src={failed.has(src!) ? IMAGE_FALLBACK_SRC : src}
         alt={alt}
         className={`h-full w-full object-cover ${imageClassName}`}
-        loading="lazy"
+        loading={loading}
+        decoding="async"
+        onError={() => markFailed(src!)}
+        // Above-the-fold renders (Works showcase) are eager + high priority.
+        fetchPriority={loading === "eager" ? "high" : undefined}
+        // Single-size assets today. `sizes` stays fixed to the component's real
+        // layout so a future build step that generates resized variants can add
+        // a proper `srcset` without another layout pass. Browsers ignore `sizes`
+        // until `srcset` is present.
+        sizes="(max-width: 767px) 100vw, 448px"
       />
       {title && (
         <h2 className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center font-brown uppercase tracking-wider text-white text-3xl drop-shadow-[0_2px_8px_rgba(0,0,0,0.65)]">
