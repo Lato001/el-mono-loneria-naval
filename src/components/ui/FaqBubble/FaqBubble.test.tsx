@@ -18,6 +18,23 @@ describe("FaqBubble", () => {
     expect(screen.getByText("Aprox. 15 días.")).toBeInTheDocument();
   });
 
+  it("hides the chat pair on mobile (hidden md:flex) so only the ImgCard shows", () => {
+    const { container } = render(
+      <FaqBubble
+        question="q"
+        answer="a"
+        image={{ src: "https://example.com/x.jpg", alt: "Lona" }}
+      />,
+    );
+    // The chat pair container is hidden below md; the ImgCard is not.
+    const pair = container.querySelector(
+      "div.hidden.md\\:flex.min-w-0",
+    );
+    expect(pair).not.toBeNull();
+    expect(pair!.className).toContain("hidden");
+    expect(pair!.className).toContain("md:flex");
+  });
+
   it("renders a highlight inside the question when provided", () => {
     render(
       <FaqBubble

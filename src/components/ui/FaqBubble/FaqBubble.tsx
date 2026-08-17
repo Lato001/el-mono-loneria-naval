@@ -17,11 +17,13 @@ export type { FaqBubbleImage, FaqBubbleProps, FaqBubbleDialogData };
  * internal placeholder behaviour.
  *
  * When `peekIcon` is provided, the icon is layered behind the ImgCard.
- * On desktop the peek stays decorative and overflows toward the chat
- * pair. On mobile the ImgCard renders below the chat pair and the peek
- * becomes a tappable button peeking from the card's side edge (right for
+ * On desktop the chat pair shows next to the ImgCard and the peek stays
+ * decorative, overflowing toward the chat pair. On mobile the chat pair
+ * is hidden — the ImgCard is the only content and the peek becomes a
+ * tappable button peeking from the card's side edge (right for
  * `align="start"`, left for `align="end"`), firing `onPeekTap` with the
- * bubble's dialog data.
+ * bubble's dialog data so the owner can open a sheet dialog with the
+ * question, answer and image.
  */
 
 /**
@@ -106,14 +108,17 @@ export function FaqBubble({
   const imageWrapperClass = "relative flex w-full md:w-64 lg:w-72";
 
   // Peek positioning.
-  // - Mobile: the ImgCard stacks BELOW the chat pair. The peek button
-  //   sits BEHIND the ImgCard, vertically centered, peeking from the
-  //   card's side edge: RIGHT for `align=start` (insumos, servicios),
-  //   LEFT for `align=end` (tiempos, trabajos).
-  // - Desktop: the peek stays decorative and overflows toward the chat
-  //   pair exactly as before (start → left, end → right), with
-  //   pointer-events disabled and aria-hidden so it never intercepts
-  //   pointer or assistive interactions.
+  // - Mobile: the ImgCard is the ONLY content on screen (the chat pair is
+  //   hidden). The peek button sits BEHIND the ImgCard, vertically
+  //   centered, peeking from the card's side edge: RIGHT for
+  //   `align=start` (insumos, servicios), LEFT for `align=end`
+  //   (tiempos, trabajos). Tapping it opens the page-level sheet dialog
+  //   with the question, answer and image.
+  // - Desktop: the chat pair shows next to the ImgCard and the peek stays
+  //   decorative, overflowing toward the chat pair exactly as before
+  //   (start → left, end → right), with pointer-events disabled and
+  //   aria-hidden so it never intercepts pointer or assistive
+  //   interactions.
   const peekMobileSide = isStart
     ? "right-0 top-1/2 -translate-y-1/2 translate-x-1/2"
     : "left-0 top-1/2 -translate-y-1/2 -translate-x-1/2";
@@ -125,8 +130,11 @@ export function FaqBubble({
     <div
       className={`relative flex w-full gap-6 md:gap-2 ${layoutDirection} ${layoutCross}`}
     >
-      {/* Chat pair: question + answer */}
-      <div className={`flex min-w-0 flex-1 flex-col gap-6 ${pairAlign}`}>
+      {/* Chat pair: question + answer. Mobile hides it — the question and
+          answer live inside the sheet dialog opened from the peek button. */}
+      <div
+        className={`hidden md:flex min-w-0 flex-1 flex-col gap-6 ${pairAlign}`}
+      >
         {/* Pregunta */}
         <div
           className={`
