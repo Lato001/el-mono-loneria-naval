@@ -105,7 +105,11 @@ export function FaqBubble({
 
   // Constrain the ImgCard so it doesn't fight the chat pair for attention.
   // No `hidden md:block` — the ImgCard must render on mobile too.
-  const imageWrapperClass = "relative flex w-full md:w-64 lg:w-72";
+  // On mobile the card is smaller and centered (max-w-60) so the peek
+  // icon and brand logo read clearly as the tappable element; on desktop
+  // it keeps its original size next to the chat pair.
+  const imageWrapperClass =
+    "relative flex w-full max-w-60 self-center md:max-w-none md:w-64 lg:w-72 md:self-auto";
 
   // Peek positioning.
   // - Mobile: the ImgCard is the ONLY content on screen (the chat pair is
@@ -195,8 +199,8 @@ export function FaqBubble({
                 )
               }
               className={`
-                absolute z-10 flex min-h-11 min-w-11 cursor-pointer
-                items-center justify-center p-2
+                absolute z-10 flex min-h-14 min-w-14 cursor-pointer
+                items-center justify-center p-1.5
                 ${peekMobileSide}
                 ${peekDesktop}
                 md:pointer-events-none md:aria-hidden

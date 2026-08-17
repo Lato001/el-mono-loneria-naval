@@ -165,13 +165,14 @@ describe("FaqBubble", () => {
       expect(peekImg).toBeInTheDocument();
     });
 
-    it("peek icon is a button on mobile with min 44x44px and aria-label", () => {
+    it("peek icon is a button on mobile with a large touch target and aria-label", () => {
       renderWithPeek();
       const peekButton = screen.getByRole("button", { name: /ver respuesta:/i });
       expect(peekButton).toBeInTheDocument();
-      // Check min-h-11 min-w-11 (44px at default 16px root) via class
-      expect(peekButton).toHaveClass("min-h-11");
-      expect(peekButton).toHaveClass("min-w-11");
+      // min-h-14 min-w-14 (56px at default 16px root) — exceeds the 44px
+      // WCAG minimum so the logo is easy to see and tap.
+      expect(peekButton).toHaveClass("min-h-14");
+      expect(peekButton).toHaveClass("min-w-14");
     });
 
     it("onPeekTap fires with correct FaqBubbleDialogData when peek button is clicked", async () => {
