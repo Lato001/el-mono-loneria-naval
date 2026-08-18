@@ -22,7 +22,7 @@ import type { Tab } from "../../components/ui/SectionTabs/SectionTabs.types";
 import type { ProductCategoryData } from "../../mocks/types";
 import { data } from "../../mocks/data";
 import { ImgCard } from "../../components";
-import MediaPlayer from "../../components/ui/MediaPlayer/MediaPLayer";
+import MediaPlayer from "../../components/ui/MediaPlayer/MediaPlayer";
 
 const STORAGE_KEY = "mono:quote-cart";
 

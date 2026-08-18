@@ -1,5 +1,5 @@
 import { render } from "@testing-library/react";
-import MediaPlayer from "./MediaPLayer";
+import MediaPlayer from "./MediaPlayer";
 
 vi.mock("react-player", () => ({
   default: ({ src, width, height }: { src: string; width: string; height: string }) => (

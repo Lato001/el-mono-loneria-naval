@@ -1,9 +1,5 @@
 import ReactPlayer from "react-player";
-
-interface MediaPlayerProps {
-  src: string;
-  className?: string;
-}
+import type { MediaPlayerProps } from "./MediaPlayer.types";
 
 const YOUTUBE_ID_PATTERN =
   /(?:youtube\.com\/(?:watch\?.*v=|shorts\/|embed\/)|youtu\.be\/)([\w-]{11})/;
