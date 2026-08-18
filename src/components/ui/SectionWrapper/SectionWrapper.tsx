@@ -48,10 +48,10 @@ export function SectionWrapper({
 
 
   const gradientClass =
-  gradientVariant === "navy-to-hero"
-    ? "section-navy-to-hero"
-    : gradientVariant === "hero-to-navy"
-    ? "section-hero-to-navy"
+  gradientVariant === "navy-to-aquamarine"
+    ? "section-navy-to-aquamarine"
+    : gradientVariant === "aquamarine-to-navy"
+    ? "section-aquamarine-to-navy"
     : "";
 
 

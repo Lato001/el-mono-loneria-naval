@@ -111,34 +111,34 @@ body {
 }
 
 
-/* Sección de transición hero → navy.
-   Usa los mismos tokens que .section-navy-gradient para que
-   el punto de partida calce exacto con la sección oscura anterior,
-   y el punto de llegada calce exacto con bg-sc-ocean-blue de la sección siguiente. */
-  .section-hero-to-navy {
+/* Sección de transición aquamarine → navy.
+   Punto de partida en aquamarine, llegada en navy. */
+  .section-aquamarine-to-navy {
     position: relative;
     overflow: hidden;
     background: linear-gradient(
       to bottom in oklch,
-      var(--color-pr-hero-blue) 20%,
-      var(--color-sc-ocean-blue) 80%
+      var(--color-pr-aquamarine) 30%,
+      var(--color-sc-ocean-blue) 90%
     );
   }
-  .section-hero-to-navy > * {
+  .section-aquamarine-to-navy > * {
     position: relative;
     z-index: 1;
   }
 
-  .section-navy-to-hero {
+  /* Sección de transición navy → aquamarine.
+   Punto de partida en navy, llegada en aquamarine. */
+  .section-navy-to-aquamarine {
     position: relative;
     overflow: hidden;
     background: linear-gradient(
       to bottom in oklch,
-      var(--color-sc-ocean-blue) 20%,
-      var(--color-pr-hero-blue) 80%
+      var(--color-sc-ocean-blue) 30%,
+      var(--color-pr-aquamarine) 90%
     );
   }
-  .section-navy-to-hero > * {
+  .section-navy-to-aquamarine > * {
     position: relative;
     z-index: 1;
   }
