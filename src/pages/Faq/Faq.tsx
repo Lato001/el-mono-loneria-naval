@@ -11,12 +11,12 @@ import type { FaqBubbleDialogData } from "../../components/ui/FaqBubble";
 import faqimg01 from "../../assets/img/products/hilos/thumbs/hilo-negro.webp";
 import faqimg02 from "../../assets/img/products/correas/thumbs/correa-negra.webp";
 import faqimg03 from "../../assets/img/products/carros/thumbs/perro-n5-negro.webp";
-import faqimg04 from "../../assets/img/works/capota/capota-01.webp";
+import faqimg04 from "../../assets/img/works/capota/thumbs/capota-01.webp";
 
-import insumosLogo from "../../assets/logos/icons/trabajos/trabajos-rounded.svg";
+import insumosLogo from "../../assets/logos/icons/insumos/insumos-rounded.svg";
 import serviciosLogo from "../../assets/logos/icons/servicios/servicios-rounded.svg";
 import tiemposLogo from "../../assets/logos/icons/tiempos/tiempos-rounded.svg";
-import trabajosLogo from "../../assets/logos/icons/insumos/insumos-rounded.svg";
+import trabajosLogo from "../../assets/logos/icons/trabajos/trabajos-rounded.svg";
 
 /**
  * Map of FAQ category id → placeholder label. The label doubles as the

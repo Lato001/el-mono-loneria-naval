@@ -48,7 +48,6 @@ const cualidadIconos: Record<string, Icon> = {
   IconWind,
 };
 interface WorksSectionProps {
-  imageMap: Record<string, string>;
   /** imageKey → 480px thumbnail URL (see Works.tsx thumbMap). */
   thumbMap: Record<string, string>;
   /** imageKey → { w, h } build-time dimensions (see Works/imageManifest.json). */
@@ -122,7 +121,7 @@ function DescriptionText({ text, trabajoId }: DescriptionTextProps) {
   );
 }
 
-export function WorksSection({ imageMap, thumbMap, imageDims }: WorksSectionProps) {
+export function WorksSection({ thumbMap, imageDims }: WorksSectionProps) {
   const showcaseId = "works-showcase";
   // Scroll target: the content grid (ImgCard + description), not the section top
   // — avoids landing too high and forcing the user to scroll back down a bit.
@@ -143,7 +142,7 @@ export function WorksSection({ imageMap, thumbMap, imageDims }: WorksSectionProp
     handleCategoriaChange,
     handleAlbumClick,
     handleThumbSelect,
-  } = useWorksUrlState({ trabajos, availableCategorias, scrollTargetId, imageMap, thumbMap });
+  } = useWorksUrlState({ trabajos, availableCategorias, scrollTargetId, thumbMap });
 
   // Album items derived from trabajos, shuffled once at mount (lazy initializer —
   // keeps Math.random() out of the render path for React Compiler purity).
@@ -151,7 +150,7 @@ export function WorksSection({ imageMap, thumbMap, imageDims }: WorksSectionProp
     const items: AlbumImage[] = trabajos.flatMap((t) =>
       t.imagenes.map((img: string, i: number) => ({
         id: `${t.id}-${i}`,
-        img: thumbMap[img] ?? imageMap[img],
+        img: thumbMap[img],
         url: "",
         alt: t.titulo,
         title: t.titulo,
@@ -170,19 +169,16 @@ export function WorksSection({ imageMap, thumbMap, imageDims }: WorksSectionProp
   });
 
   // Masonry items carry the resolved URL (`img`), so key the build-time
-  // dimensions by URL (derived once from the imageKey maps). Both the full-res
-  // and the thumbnail URL resolve to the same aspect ratio, so index by both —
-  // the gallery now renders thumbs but packs with the manifest dims.
+  // dimensions by URL (derived once from the thumbnail map). Thumbnails and
+  // full-res share the same aspect ratio, so the manifest dims apply.
   const imageDimsByUrl = useMemo(() => {
     const byUrl: Record<string, { w: number; h: number }> = {};
     for (const [key, dims] of Object.entries(imageDims)) {
-      const url = imageMap[key];
-      if (url) byUrl[url] = dims;
       const thumbUrl = thumbMap[key];
       if (thumbUrl) byUrl[thumbUrl] = dims;
     }
     return byUrl;
-  }, [imageMap, thumbMap, imageDims]);
+  }, [thumbMap, imageDims]);
 
   // Album pagination: only `visibleCount` items are passed to the Masonry.
   // The shuffle above runs ONCE on the full array; pagination only slices it.

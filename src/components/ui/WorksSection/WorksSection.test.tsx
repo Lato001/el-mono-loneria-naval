@@ -9,23 +9,18 @@ beforeAll(() => {
   Element.prototype.scrollIntoView = vi.fn();
 });
 
-// Mock imageMap derived from the real mock data keys — one entry per key the
+// Mock thumbMap derived from the real mock data keys — one entry per key the
 // trabajos actually reference, resolved to a fictitious URL. Keeps the test in
-// sync with data.ts without maintaining a hand-written key list.
-const imageMap: Record<string, string> = Object.fromEntries(
-  [...new Set(data.worksPage.trabajos.flatMap((t) => t.imagenes))].map((key) => [key, `/img/${key}.webp`]),
-);
-
-// Mock thumbMap (carousel/gallery) derived from the same keys, using a
-// /thumbs/ prefix — the big image (ImgCard) stays on the full-res imageMap URL.
+// sync with data.ts without maintaining a hand-written key list. The showcase
+// ImgCard, carousel and gallery all resolve through this single map.
 const thumbMap: Record<string, string> = Object.fromEntries(
   [...new Set(data.worksPage.trabajos.flatMap((t) => t.imagenes))].map((key) => [key, `/thumbs/${key}.webp`]),
 );
 
-// Mock build-time dimensions keyed by the resolved full-res URLs.
+// Mock build-time dimensions keyed by the resolved thumbnail URLs.
 const imageDims: Record<string, { w: number; h: number }> = Object.fromEntries(
   [...new Set(data.worksPage.trabajos.flatMap((t) => t.imagenes))].map((key) => [
-    `/img/${key}.webp`,
+    `/thumbs/${key}.webp`,
     { w: 4, h: 3 },
   ]),
 );
@@ -41,7 +36,7 @@ function renderWorksSection(search = "", hash = "") {
 
   const result = render(
     <MemoryRouter initialEntries={[`/trabajos${search}${hash}`]}>
-      <WorksSection imageMap={imageMap} thumbMap={thumbMap} imageDims={imageDims} />
+      <WorksSection thumbMap={thumbMap} imageDims={imageDims} />
     </MemoryRouter>,
   );
 
@@ -140,7 +135,7 @@ describe("WorksSection", () => {
 
     // imageIndex 2 → big image is the 3rd image (toneau-03)
     const mainImage = screen.getByAltText("Toneau para pick-up Ford Ranger - imagen principal");
-    expect(mainImage).toHaveAttribute("src", "/img/toneau-03.webp");
+    expect(mainImage).toHaveAttribute("src", "/thumbs/toneau-03.webp");
     // The current big image is excluded from the carousel thumbnails
     expect(screen.queryByAltText("Toneau para pick-up Ford Ranger - imagen 3")).not.toBeInTheDocument();
     expect(screen.getByAltText("Toneau para pick-up Ford Ranger - imagen 2")).toBeInTheDocument();
@@ -151,7 +146,7 @@ describe("WorksSection", () => {
     renderWorksSection("?categoria=toneau&imagen=1");
 
     const mainImage = screen.getByAltText("Toneau para pick-up Ford Ranger - imagen principal");
-    expect(mainImage).toHaveAttribute("src", "/img/toneau-02.webp");
+    expect(mainImage).toHaveAttribute("src", "/thumbs/toneau-02.webp");
   });
 
   it("clamps an out-of-range imagen param to 0", () => {
@@ -159,7 +154,7 @@ describe("WorksSection", () => {
     renderWorksSection("?categoria=carpas&imagen=99");
 
     const mainImage = screen.getByAltText("Carpa toldo para embarcación neumática - imagen principal");
-    expect(mainImage).toHaveAttribute("src", "/img/carpa-01.webp");
+    expect(mainImage).toHaveAttribute("src", "/thumbs/carpa-01.webp");
   });
 
   it("thumb select updates the big image to the clicked photo", async () => {
@@ -171,7 +166,7 @@ describe("WorksSection", () => {
     await user.click(screen.getByRole("button", { name: /thumbnail 2 de 6/i }));
 
     const mainImage = screen.getByAltText("Carpa toldo para embarcación neumática - imagen principal");
-    expect(mainImage).toHaveAttribute("src", "/img/carpa-02.webp");
+    expect(mainImage).toHaveAttribute("src", "/thumbs/carpa-02.webp");
     // After clicking, the previously current image (carpa-01) is back in the carousel
     expect(screen.getByAltText("Carpa toldo para embarcación neumática - imagen 1")).toBeInTheDocument();
   });

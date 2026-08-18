@@ -27,28 +27,9 @@ import MediaPlayer from "../../components/ui/MediaPlayer/MediaPlayer";
 const STORAGE_KEY = "mono:quote-cart";
 
 // ─── Product images (auto-discovered via Vite glob) ─────────────────────
-// Full-res only: the `thumbs/` subfolders are excluded so the carousel can
-// resolve the same key to the lighter 480px thumbnail (see thumbMap below).
-const productImages = import.meta.glob(
-  ["../../assets/img/products/**/*.{webp,png,jpg}", "!../../assets/img/products/**/thumbs/*.webp"],
-  { eager: true, import: "default" },
-) as Record<string, string>;
-
-const productsImageMap: Record<string, string> = Object.fromEntries(
-  Object.entries(productImages).map(([path, url]) => {
-    const key = path
-      .split("/")
-      .pop()!
-      .replace(/\.[^.]+$/, "");
-    return [key, url];
-  }),
-);
-
-/**
- * 480px-wide thumbnails (imageKey → URL) for the carousel. Derived from the
- * full-res `productsImageMap` keys so both maps stay in sync — the key comes
- * from the thumb filename (baseName without extension).
- */
+// 480px thumbnails only: the full-res originals are never loaded at runtime
+// (the carousel, quote list and big ImgCard all render at ≤480px). The key
+// comes from the thumb filename (baseName without extension).
 const thumbModules = import.meta.glob("../../assets/img/products/**/thumbs/*.webp", {
   eager: true,
   query: "?url",
@@ -74,7 +55,7 @@ function toProduct(p: {
     id: p.id,
     title: p.title,
     description: p.description,
-    imageSrc: productsThumbMap[p.imageKey] ?? productsImageMap[p.imageKey],
+    imageSrc: productsThumbMap[p.imageKey],
   };
 }
 
@@ -88,10 +69,10 @@ const categories = categoryData.map((cat) => ({
   description: cat.description,
   imageKey: cat.imageKey,
   videoUrl: cat.videoUrl,
-  // Full-res of the category's first product: the big ImgCard keeps the
-  // crisp source while the carousel below uses the lighter thumbnails.
+  // 480px thumb of the category's first product: the big ImgCard renders at
+  // max ~480px wide (xl:max-w-120), so the thumbnail is enough.
   mainImageSrc: cat.products[0]
-    ? productsImageMap[cat.products[0].imageKey]
+    ? productsThumbMap[cat.products[0].imageKey]
     : undefined,
   products: cat.products.map(toProduct),
 }));

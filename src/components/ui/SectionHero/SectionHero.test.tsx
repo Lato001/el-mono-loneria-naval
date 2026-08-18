@@ -73,7 +73,7 @@ describe("SectionHero", () => {
     const { container } = render(<SectionHero title="Test" />);
     const bgLayer = container.querySelector<HTMLElement>("[data-testid='hero-bg']");
     expect(bgLayer).not.toBeNull();
-    expect(bgLayer?.getAttribute("src")).toContain("formas-acuarela-01.jpg");
+    expect(bgLayer?.getAttribute("src")).toContain("formas-acuarela-01.webp");
     const contentWrapper = container.querySelector<HTMLElement>("[data-testid='hero-content']");
     expect(contentWrapper).not.toBeNull();
   });
