@@ -5,7 +5,7 @@ import { Home } from "./pages/Home";
 import { AboutUs } from "./pages/AboutUs";
 import { PATHS } from "./routes/routes";
 import { ScrollToTop } from "./components";
-import { Navbar, WhatsappButton } from "./components/ui";
+import { Navbar, WhatsappButton, NextPageCta } from "./components/ui";
 
 const Works = lazy(() =>
   import("./pages/Works").then((m) => ({ default: m.Works })),
@@ -48,6 +48,7 @@ export default function App() {
           <Route path={PATHS.NOT_FOUND} element={<h1>404 - Page Not Found</h1>} />
         </Routes>
       </Suspense>
+      <NextPageCta />
       <Footer />
     </>
   );
