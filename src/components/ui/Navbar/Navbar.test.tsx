@@ -85,8 +85,7 @@ describe("Navbar", () => {
   it("starts solid (not frosted) at the top of the page", () => {
     renderNavbar();
     const header = screen.getByRole("banner");
-    expect(header.className).toContain("from-sc-ocean-blue");
-    expect(header.className).toContain("to-pr-aquamarine");
+    expect(header.className).toContain("bg-sc-ocean-blue");
     expect(header.className).not.toContain("backdrop-blur-xl");
   });
 

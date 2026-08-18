@@ -41,8 +41,8 @@ export function Navbar() {
     <header
       className={`fixed right-4 z-50 flex h-(--nav-h) items-center rounded-full shadow-lg transition-all duration-300 xl2:right-auto xl2:left-1/2 xl2:-translate-x-1/2 ${
         scrolled
-          ? "top-4 border border-white/10 bg-gradient-to-b from-sc-ocean-blue/40 to-pr-aquamarine/40 backdrop-blur-xl xl2:top-0"
-          : "top-4 border border-transparent bg-gradient-to-b from-sc-ocean-blue to-pr-aquamarine"
+          ? "top-4 border border-white/10 bg-sc-ocean-blue/40 backdrop-blur-xl xl2:top-0"
+          : "top-4 border border-transparent bg-sc-ocean-blue"
       }`}
     >
       <div
