@@ -398,8 +398,8 @@ export const data = {
         },
         {
           label: "Email",
-          value: "lonerianavalelmono@hotmail.com",
-          href: "mailto:lonerianavalelmono@hotmail.com",
+          value: "Elmonolonerianaval@gmail.com",
+          href: "mailto:Elmonolonerianaval@gmail.com",
           iconKey: "mail",
         },
         {
