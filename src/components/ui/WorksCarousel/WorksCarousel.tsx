@@ -31,7 +31,7 @@ export function WorksCarousel({ images, onThumbSelect }: WorksCarouselProps) {
   useEffect(() => {
     const container = scrollRef.current;
     if (container && container.scrollLeft !== 0) container.scrollLeft = 0;
-  }, [images]);
+  }, [images, scrollRef]);
 
   // Measure how many thumbs actually fit, on mount and on resize. When the
   // visible count changes (breakpoint crossed, e.g. mobile → desktop), the
