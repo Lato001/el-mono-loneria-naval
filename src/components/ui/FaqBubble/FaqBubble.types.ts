@@ -56,9 +56,10 @@ export interface FaqBubbleProps {
   image?: FaqBubbleImage;
   /**
    * Optional PNG (or SVG) used as a "peek" icon behind the ImgCard.
-   * Half the icon sticks out from behind the ImgCard. On desktop it peeks
-   * toward the chat pair (decorative); on mobile it becomes a tappable
-   * button that peeks from the card's side edge.
+   * Half the icon sticks out from behind the ImgCard. Purely decorative
+   * on every viewport: on desktop it peeks toward the chat pair, on
+   * mobile it peeks from the card's side edge as a bounded badge that
+   * never overflows the viewport.
    */
   peekIcon?: string;
   /** Optional extra classes appended to the question bubble. */
@@ -73,12 +74,13 @@ export interface FaqBubbleProps {
    */
   showChatTail?: boolean;
   /**
-   * Callback fired when the mobile peek button is tapped.
-   * Receives the bubble's question, answer, and image data for the dialog,
-   * plus the originating click event so the owner can restore focus to the
-   * trigger when the dialog closes (this dialog opens programmatically, so
-   * Radix has no DialogTrigger to restore focus to).
-   * Only called on mobile (viewport < 768px); desktop peek remains decorative.
+   * Callback fired when the ImgCard is tapped on mobile (viewport < 768px).
+   * The whole card is the tap target — the chat pair is hidden on mobile,
+   * so the sheet dialog carries the question, answer and image. Receives
+   * the bubble's dialog data plus the originating click event so the owner
+   * can restore focus to the trigger when the dialog closes (this dialog
+   * opens programmatically, so Radix has no DialogTrigger to restore focus
+   * to). Desktop stays decorative.
    */
   onPeekTap?: (
     data: FaqBubbleDialogData,

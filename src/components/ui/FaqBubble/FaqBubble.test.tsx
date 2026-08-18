@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { FaqBubble } from "./FaqBubble";
 import type { FaqBubbleDialogData } from "./FaqBubble.types";
@@ -151,6 +151,9 @@ describe("FaqBubble", () => {
         />,
       );
 
+    const peekImg = () =>
+      document.querySelector('img[src="https://example.com/peek.png"]');
+
     beforeEach(() => {
       mockOnPeekTap.mockClear();
     });
@@ -161,25 +164,38 @@ describe("FaqBubble", () => {
       const img = screen.getByRole("img", { name: "Lona de ejemplo" });
       expect(img).toBeInTheDocument();
       // The peek icon should also be present (not hidden)
-      const peekImg = document.querySelector('img[src="https://example.com/peek.png"]');
-      expect(peekImg).toBeInTheDocument();
+      expect(peekImg()).toBeInTheDocument();
     });
 
-    it("peek icon is a button on mobile with a large touch target and aria-label", () => {
+    it("makes the whole ImgCard the tap target on mobile (button with aria-label)", () => {
       renderWithPeek();
-      const peekButton = screen.getByRole("button", { name: /ver respuesta:/i });
-      expect(peekButton).toBeInTheDocument();
-      // min-h-14 min-w-14 (56px at default 16px root) — exceeds the 44px
-      // WCAG minimum so the logo is easy to see and tap.
-      expect(peekButton).toHaveClass("min-h-14");
-      expect(peekButton).toHaveClass("min-w-14");
+      const cardButton = screen.getByRole("button", { name: /ver respuesta:/i });
+      expect(cardButton).toBeInTheDocument();
+      // The button wraps the ImgCard, so tapping anywhere on the card fires onPeekTap.
+      expect(
+        within(cardButton).getByRole("img", { name: "Lona de ejemplo" }),
+      ).toBeInTheDocument();
+      expect(cardButton).toHaveClass("cursor-pointer");
     });
 
-    it("onPeekTap fires with correct FaqBubbleDialogData when peek button is clicked", async () => {
+    it("peek icon is a decorative round badge (not a button)", () => {
+      renderWithPeek();
+      const badge = peekImg();
+      expect(badge).toBeInTheDocument();
+      expect(badge).toHaveAttribute("aria-hidden", "true");
+      expect(badge).toHaveClass("pointer-events-none");
+      // Large round watermark badge peeking from the card edge; the page
+      // level overflow-x-clip trims whatever exceeds the viewport.
+      expect(badge).toHaveClass("h-40");
+      expect(badge).toHaveClass("w-40");
+      expect(badge).toHaveClass("rounded-full");
+    });
+
+    it("onPeekTap fires with correct FaqBubbleDialogData when the card is clicked", async () => {
       renderWithPeek();
       const user = userEvent.setup();
-      const peekButton = screen.getByRole("button", { name: /ver respuesta:/i });
-      await user.click(peekButton);
+      const cardButton = screen.getByRole("button", { name: /ver respuesta:/i });
+      await user.click(cardButton);
 
       expect(mockOnPeekTap).toHaveBeenCalledTimes(1);
       const callArg = mockOnPeekTap.mock.calls[0][0] as FaqBubbleDialogData;
@@ -204,46 +220,87 @@ describe("FaqBubble", () => {
         />,
       );
       const user = userEvent.setup();
-      const peekButton = screen.getByRole("button", { name: /ver respuesta:/i });
-      await user.click(peekButton);
+      const cardButton = screen.getByRole("button", { name: /ver respuesta:/i });
+      await user.click(cardButton);
 
       const callArg = mockOnPeekTap.mock.calls[0][0] as FaqBubbleDialogData;
       expect(callArg.highlight).toBe("tu lona");
     });
 
-    it("peek button peeks from RIGHT edge when align=start (mobile)", () => {
-      renderWithPeek("start");
-      const peekButton = screen.getByRole("button", { name: /ver respuesta:/i });
-      // Mobile start: right-0 top-1/2 translate-x-1/2 (peeks from the right
-      // edge; no vertical translate — the icon sits toward the card's top
-      // half so it reads clearly as a clickable badge).
-      expect(peekButton).toHaveClass("right-0");
-      expect(peekButton).toHaveClass("top-1/2");
-      expect(peekButton).toHaveClass("translate-x-1/2");
-      expect(peekButton).not.toHaveClass("-translate-y-1/2");
+    it("shows a mobile hint chip on the card (Más info + maximize icon)", () => {
+      renderWithPeek();
+      const chip = screen.getByText("Más info...");
+      expect(chip).toBeInTheDocument();
+      // Mobile-only hint; hidden on desktop where the chat pair is visible.
+      expect(chip).toHaveClass("md:hidden");
+      // The chip sits opposite the peek badge: peek right (start) → chip left.
+      expect(chip).toHaveClass("left-3");
+      expect(chip.querySelector("svg")).not.toBeNull();
     });
 
-    it("peek button peeks from LEFT edge when align=end (mobile)", () => {
+    it("places the hint chip on the right when align=end (peek left)", () => {
       renderWithPeek("end");
-      const peekButton = screen.getByRole("button", { name: /ver respuesta:/i });
-      // Mobile end: left-0 top-1/2 -translate-x-1/2 (peeks from the left edge).
-      expect(peekButton).toHaveClass("left-0");
-      expect(peekButton).toHaveClass("top-1/2");
-      expect(peekButton).toHaveClass("-translate-x-1/2");
-      expect(peekButton).not.toHaveClass("-translate-y-1/2");
+      expect(screen.getByText("Más info...")).toHaveClass("right-3");
     });
 
-    it("peek button is keyboard focusable and operable via Enter", async () => {
+    it("peek badge peeks from RIGHT edge when align=start (mobile)", () => {
+      renderWithPeek("start");
+      // Mobile start: right-0 top-1/2 translate-x-1/2 (peeks from the right
+      // edge; no vertical translate — the badge sits toward the card's top
+      // half so it reads clearly as the brand watermark).
+      const badge = peekImg();
+      expect(badge).toHaveClass("right-0");
+      expect(badge).toHaveClass("top-1/2");
+      expect(badge).toHaveClass("translate-x-1/2");
+      expect(badge).not.toHaveClass("-translate-y-1/2");
+    });
+
+    it("peek badge peeks from LEFT edge when align=end (mobile)", () => {
+      renderWithPeek("end");
+      // Mobile end: left-0 top-1/2 -translate-x-1/2 (peeks from the left edge).
+      const badge = peekImg();
+      expect(badge).toHaveClass("left-0");
+      expect(badge).toHaveClass("top-1/2");
+      expect(badge).toHaveClass("-translate-x-1/2");
+      expect(badge).not.toHaveClass("-translate-y-1/2");
+    });
+
+    it("card button is keyboard focusable and operable via Enter", async () => {
       renderWithPeek();
       const user = userEvent.setup();
-      const peekButton = screen.getByRole("button", { name: /ver respuesta:/i });
-      peekButton.focus();
-      expect(peekButton).toHaveFocus();
+      const cardButton = screen.getByRole("button", { name: /ver respuesta:/i });
+      cardButton.focus();
+      expect(cardButton).toHaveFocus();
       await user.keyboard("{Enter}");
       expect(mockOnPeekTap).toHaveBeenCalledTimes(1);
     });
 
-    it("does NOT render peek button when align=center (no image slot)", () => {
+    it("ignores taps on desktop (≥768px) so the dialog never opens there", async () => {
+      const mm = vi.spyOn(window, "matchMedia").mockImplementation(
+        (query: string) =>
+          ({
+            matches: query === "(min-width: 768px)",
+            media: query,
+            onchange: null,
+            addListener: () => {},
+            removeListener: () => {},
+            addEventListener: () => {},
+            removeEventListener: () => {},
+            dispatchEvent: () => false,
+          }) as unknown as MediaQueryList,
+      );
+      try {
+        renderWithPeek();
+        const user = userEvent.setup();
+        const cardButton = screen.getByRole("button", { name: /ver respuesta:/i });
+        await user.click(cardButton);
+        expect(mockOnPeekTap).not.toHaveBeenCalled();
+      } finally {
+        mm.mockRestore();
+      }
+    });
+
+    it("does NOT render a tap target button when align=center", () => {
       render(
         <FaqBubble
           question="q"
@@ -259,7 +316,7 @@ describe("FaqBubble", () => {
   });
 
   describe("desktop peek remains decorative", () => {
-    it("peek icon has pointer-events-none and aria-hidden on desktop (md: classes present)", () => {
+    it("peek icon is aria-hidden and pointer-events-none (never interactive)", () => {
       render(
         <FaqBubble
           question="q"
@@ -268,11 +325,11 @@ describe("FaqBubble", () => {
           peekIcon="https://example.com/peek.png"
         />,
       );
-      const peekButton = screen.getByRole("button", { name: /ver respuesta:/i });
-      // Desktop classes should be present: md:pointer-events-none md:aria-hidden
-      // The button itself should have these md: prefixed classes
-      expect(peekButton).toHaveClass("md:pointer-events-none");
-      expect(peekButton).toHaveClass("md:aria-hidden");
+      const peek = document.querySelector(
+        'img[src="https://example.com/peek.png"]',
+      );
+      expect(peek).toHaveAttribute("aria-hidden", "true");
+      expect(peek).toHaveClass("pointer-events-none");
     });
 
     it("desktop peek positioning uses md:left-[-50%] for align=start", () => {
@@ -284,8 +341,10 @@ describe("FaqBubble", () => {
           peekIcon="https://example.com/peek.png"
         />,
       );
-      const peekButton = screen.getByRole("button", { name: /ver respuesta:/i });
-      expect(peekButton).toHaveClass("md:left-[-50%]");
+      const peek = document.querySelector(
+        'img[src="https://example.com/peek.png"]',
+      );
+      expect(peek).toHaveClass("md:left-[-50%]");
     });
 
     it("desktop peek positioning uses md:right-[-50%] for align=end", () => {
@@ -298,8 +357,10 @@ describe("FaqBubble", () => {
           peekIcon="https://example.com/peek.png"
         />,
       );
-      const peekButton = screen.getByRole("button", { name: /ver respuesta:/i });
-      expect(peekButton).toHaveClass("md:right-[-50%]");
+      const peek = document.querySelector(
+        'img[src="https://example.com/peek.png"]',
+      );
+      expect(peek).toHaveClass("md:right-[-50%]");
     });
   });
 });

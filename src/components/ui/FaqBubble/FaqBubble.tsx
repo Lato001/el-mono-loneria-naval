@@ -1,4 +1,5 @@
 import { ImgCard } from "../Card";
+import { IconMaximize } from "@tabler/icons-react";
 import type {
   FaqBubbleImage,
   FaqBubbleProps,
@@ -7,30 +8,6 @@ import type {
 
 export type { FaqBubbleImage, FaqBubbleProps, FaqBubbleDialogData };
 
-/**
- * FaqBubble — a single FAQ entry rendered as a chat-style pair of bubbles
- * (navy question on top, sky-blue answer below) with an ImgCard on the
- * opposite side. Mirrors the title-align values used by SectionWrapper.
- *
- * When `image` is omitted, no image slot is rendered. When `image` is
- * provided without `src` or `images`, the ImgCard falls back to its
- * internal placeholder behaviour.
- *
- * When `peekIcon` is provided, the icon is layered behind the ImgCard.
- * On desktop the chat pair shows next to the ImgCard and the peek stays
- * decorative, overflowing toward the chat pair. On mobile the chat pair
- * is hidden — the ImgCard is the only content and the peek becomes a
- * tappable button peeking from the card's side edge (right for
- * `align="start"`, left for `align="end"`), firing `onPeekTap` with the
- * bubble's dialog data so the owner can open a sheet dialog with the
- * question, answer and image.
- */
-
-/**
- * Build the image payload for the page-level dialog. Slideshows resolve
- * to their first slide; a single `src` resolves directly; placeholder-only
- * images resolve to undefined so the dialog renders no image slot.
- */
 function dialogImage(
   image?: FaqBubbleImage,
 ): { src: string; alt: string; title?: string } | undefined {
@@ -62,19 +39,14 @@ export function FaqBubble({
   const isEnd = align === "end";
   const isCenter = align === "center";
 
-  // Question corner rounding: tail is on the conversation side.
-  // start → tail bottom-right; end → tail bottom-left; center → uniform.
   const questionRounded = isEnd
     ? "rounded-[48px_48px_48px_0]"
     : "rounded-[48px_48px_0_48px]";
-  // Answer corner rounding: tail is on the opposite side of the question.
+
   const answerRounded = isEnd
     ? "rounded-[48px_0_48px_48px]"
     : "rounded-[0_48px_48px_48px]";
 
-  // Offset for the answer so it sits away from the question (chat-tail effect).
-  // Skipped when showChatTail is false (e.g. inside a constrained overlay
-  // container) to avoid overflowing and getting clipped.
   const answerOffset = showChatTail
     ? isStart
       ? "md:ml-20"
@@ -83,46 +55,25 @@ export function FaqBubble({
         : ""
     : "";
 
-  // Container alignment (vertical axis): where the pair sits inside its parent.
   const pairAlign = isEnd
     ? "items-end"
     : isCenter
       ? "items-center"
       : "items-start";
 
-  // Outer layout: row on md+ (image next to pair), column on mobile.
-  // When align=end we flip the row so the image lands on the left.
   const layoutDirection = isEnd
     ? "flex-col items-stretch md:flex-row-reverse"
     : "flex-col items-stretch md:flex-row";
 
-  // Cross-axis alignment so the image vertically centers against the pair.
   const layoutCross = isEnd
     ? "md:items-end"
     : isCenter
       ? "md:items-center"
       : "md:items-start";
 
-  // Constrain the ImgCard so it doesn't fight the chat pair for attention.
-  // No `hidden md:block` — the ImgCard must render on mobile too.
-  // On mobile the card is smaller and centered (max-w-60) so the peek
-  // icon and brand logo read clearly as the tappable element; on desktop
-  // it keeps its original size next to the chat pair.
   const imageWrapperClass =
     "relative flex w-full max-w-60 self-center md:max-w-none md:w-64 lg:w-72 md:self-auto";
 
-  // Peek positioning.
-  // - Mobile: the ImgCard is the ONLY content on screen (the chat pair is
-  //   hidden). The peek button sits BEHIND the ImgCard, vertically
-  //   centered, peeking from the card's side edge: RIGHT for
-  //   `align=start` (insumos, servicios), LEFT for `align=end`
-  //   (tiempos, trabajos). Tapping it opens the page-level sheet dialog
-  //   with the question, answer and image.
-  // - Desktop: the chat pair shows next to the ImgCard and the peek stays
-  //   decorative, overflowing toward the chat pair exactly as before
-  //   (start → left, end → right), with pointer-events disabled and
-  //   aria-hidden so it never intercepts pointer or assistive
-  //   interactions.
   const peekMobileSide = isStart
     ? "right-0 top-1/2  translate-x-1/2"
     : "left-0 top-1/2  -translate-x-1/2";
@@ -130,12 +81,24 @@ export function FaqBubble({
     ? "md:right-auto md:bottom-auto md:top-1/2 md:-translate-x-0 md:-translate-y-1/2 md:left-[-50%]"
     : "md:left-auto md:bottom-auto md:top-1/2 md:-translate-x-0 md:-translate-y-1/2 md:right-[-50%]";
 
+  // The ImgCard render, shared by the interactive (mobile tap target) and
+  // the decorative (desktop) branches.
+  const imageCard = image && (
+    <ImgCard
+      src={image.src}
+      alt={image.alt}
+      images={image.images}
+      title={image.title}
+      className="max-w-none"
+    />
+  );
+
   return (
     <div
       className={`relative flex w-full gap-6 md:gap-2 ${layoutDirection} ${layoutCross}`}
     >
       {/* Chat pair: question + answer. Mobile hides it — the question and
-          answer live inside the sheet dialog opened from the peek button. */}
+          answer live inside the sheet dialog opened from the ImgCard. */}
       <div
         className={`hidden md:flex min-w-0 flex-1 flex-col gap-6 ${pairAlign}`}
       >
@@ -145,7 +108,7 @@ export function FaqBubble({
             w-full max-w-md
             bg-sc-ocean-blue
             text-white
-            border-5 border-sc-chalk
+            border-2 border-pr-aquamarine
             px-[clamp(1.25rem,4.1667vw,2rem)] py-[clamp(1rem,4.1667vw,2rem)]
             ${questionRounded}
             ${questionClassName}
@@ -169,7 +132,7 @@ export function FaqBubble({
             w-full max-w-md
             bg-sc-sky-blue
             text-white
-            border-5 border-sc-chalk
+            border-2 border-sc-chalk
             px-[clamp(1.25rem,4.1667vw,2rem)] py-[clamp(1rem,4.1667vw,2rem)]
             ${answerRounded}
             ${answerOffset}
@@ -180,15 +143,34 @@ export function FaqBubble({
         </div>
       </div>
 
-      {/* Imagen representativa (ImgCard) + peek icon behind it */}
+      {/* ImgCard (tap target on mobile) + decorative peek badge behind it */}
       {image && (
         <div className={imageWrapperClass}>
           {peekIcon && !isCenter && (
+            <img
+              src={peekIcon}
+              alt=""
+              aria-hidden="true"
+              className={`
+                pointer-events-none absolute z-0 h-40 w-40 rounded-full  p-0 object-contain
+                ${peekMobileSide}
+                md:h-full md:w-full
+                ${peekDesktop}
+              `}
+            />
+          )}
+
+          {!isCenter && onPeekTap ? (
             <button
               type="button"
               aria-label={`Ver respuesta: ${question}`}
-              onClick={(event) =>
-                onPeekTap?.(
+              onClick={(event) => {
+                // Mobile-only interaction: below md the chat pair is hidden
+                // and the sheet dialog takes over. On desktop the pair is
+                // visible, so a stray click or keyboard activation must not
+                // open the dialog.
+                if (window.matchMedia("(min-width: 768px)").matches) return;
+                onPeekTap(
                   {
                     question,
                     highlight,
@@ -196,34 +178,37 @@ export function FaqBubble({
                     image: dialogImage(image),
                   },
                   event,
-                )
-              }
+                );
+              }}
               className={`
-                absolute z-10 flex min-h-14 min-w-14 cursor-pointer
-                items-center justify-center p-1.5
-                ${peekMobileSide}
-                ${peekDesktop}
-                md:pointer-events-none md:aria-hidden
-                md:h-full md:w-full md:min-h-0 md:min-w-0 md:p-0
+                relative z-10 block w-full cursor-pointer
+                border-0 bg-transparent p-0 text-left
+                md:cursor-default
+                focus-visible:outline-2 focus-visible:outline-offset-2
+                focus-visible:outline-pr-aquamarine
               `}
             >
-              <img
-                src={peekIcon}
-                alt=""
+              {imageCard}
+              {/* Mobile hint chip: tells first-time users the card opens the
+                  answer. Hidden on desktop (the chat pair is right there) and
+                  placed opposite the peek badge to balance the composition. */}
+              <span
                 aria-hidden="true"
-                className="pointer-events-none h-full w-full object-contain"
-              />
+                className={`
+                  absolute top-3 z-20 flex items-center gap-1.5
+                  rounded-full bg-pr-aquamarine px-3 py-1.5
+                  font-poppins text-xs font-semibold text-sc-ocean-blue
+                  shadow-lg md:hidden
+                  ${isStart ? "left-3" : "right-3"}
+                `}
+              >
+                <IconMaximize className="size-3.5" stroke={2.5} />
+                Más info...
+              </span>
             </button>
+          ) : (
+            <div className="relative z-10 w-full">{imageCard}</div>
           )}
-          <div className="relative z-10 w-full">
-            <ImgCard
-              src={image.src}
-              alt={image.alt}
-              images={image.images}
-              title={image.title}
-              className="max-w-none"
-            />
-          </div>
         </div>
       )}
     </div>
