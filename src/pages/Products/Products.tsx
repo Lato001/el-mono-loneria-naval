@@ -177,6 +177,7 @@ export function Products() {
     initialUrl.activeCategoryId,
   );
   const [showMobileInfo, setShowMobileInfo] = useState(false);
+  const [prevSelectedSize, setPrevSelectedSize] = useState(selected.size);
 
   const activeCategory = categories.find((c) => c.id === activeCategoryId);
 
@@ -239,11 +240,12 @@ export function Products() {
   // user removed the last item inside the modal), close it for real. Without
   // this sync, `isModalOpen` would stay true and the modal would reopen as
   // soon as a new product is selected afterwards.
-  useEffect(() => {
+  if (prevSelectedSize !== selected.size) {
+    setPrevSelectedSize(selected.size);
     if (isModalOpen && selected.size === 0) {
       setIsModalOpen(false);
     }
-  }, [isModalOpen, selected.size]);
+  }
 
   const handleOpenClearModal = () => setIsClearModalOpen(true);
   const handleCloseClearModal = () => setIsClearModalOpen(false);

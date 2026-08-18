@@ -17,13 +17,18 @@ export function WorksCarousel({ images, onThumbSelect }: WorksCarouselProps) {
   // would render dead dots on desktop — pages the scroll can never reach.
   const [itemsPerPage, setItemsPerPage] = useState(2);
   const [currentPage, setCurrentPage] = useState(0);
+  const [prevImages, setPrevImages] = useState(images);
 
   const totalPages = Math.max(1, Math.ceil(images.length / itemsPerPage));
 
   // New work selected → restart from the first page so the dot index never
   // points past the new (possibly shorter) image set.
-  useEffect(() => {
+  if (prevImages !== images) {
+    setPrevImages(images);
     setCurrentPage(0);
+  }
+
+  useEffect(() => {
     const container = scrollRef.current;
     if (container && container.scrollLeft !== 0) container.scrollLeft = 0;
   }, [images]);

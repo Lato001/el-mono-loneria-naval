@@ -11,7 +11,7 @@ import { LinkButton } from "../Button/LinkButton";
 export function Navbar() {
   const [hovered, setHovered] = useState<number | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
+  const [scrolled, setScrolled] = useState(() => window.scrollY > 24);
   const lastScrollY = useRef(0);
   const location = useLocation();
 
@@ -21,9 +21,7 @@ export function Navbar() {
   // state. Initialized from the restored scroll position so a refresh in the
   // middle of the page starts frosted, not solid.
   useEffect(() => {
-    const initialY = window.scrollY;
-    lastScrollY.current = initialY;
-    setScrolled(initialY > 24);
+    lastScrollY.current = window.scrollY;
     const handleScroll = () => {
       const currentY = window.scrollY;
       if (currentY > lastScrollY.current) {
