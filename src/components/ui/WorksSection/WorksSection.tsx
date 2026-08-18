@@ -196,7 +196,7 @@ export function WorksSection({ thumbMap, imageDims }: WorksSectionProps) {
         id={showcaseId}
         eyebrow="Trabajos"
         title="Nuestros Trabajos"
-        gradientVariant="aquamarine-to-navy"
+        gradientVariant="hero-to-navy"
         headingLevel="h1"
         containerClassName="mx-auto max-w-[1400px] px-6 lg:px-10 "
         className="!pb-10"

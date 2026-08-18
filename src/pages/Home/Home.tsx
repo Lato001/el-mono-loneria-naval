@@ -64,7 +64,7 @@ export function Home() {
       />
       <div className="section-navy-gradient">
         <SectionWrapper
-          gradientVariant="aquamarine-to-navy"
+        gradientVariant="hero-to-navy"
           className="!bg-transparent"
           titlesAlign={data.home.sections.whatWeOffer.titlesAlign}
           eyebrow={data.home.sections.whatWeOffer.eyebrow}
@@ -76,7 +76,7 @@ export function Home() {
           />
         </SectionWrapper>
         <SectionWrapper
-          gradientVariant="navy-to-aquamarine"
+          gradientVariant="navy-to-hero"
           backgroundImage={lineasonduladasImg}
           titlesAlign={data.home.sections.aboutUs.titlesAlign}
           eyebrow={data.home.sections.aboutUs.eyebrow}
@@ -106,7 +106,7 @@ export function Home() {
       </div>
       
       <SectionWrapper
-          gradientVariant="aquamarine-to-navy"
+        gradientVariant="hero-to-navy"
         titlesAlign={data.home.sections.testimonials.titlesAlign}
         eyebrow={data.home.sections.testimonials.eyebrow}
         title={data.home.sections.testimonials.title}
@@ -123,7 +123,7 @@ export function Home() {
       </SectionWrapper>
       <SectionWrapper
       className="pb-40"
-      gradientVariant="navy-to-aquamarine"
+      gradientVariant="navy-to-hero"
         theme={data.home.sections.faq.theme}
         titlesAlign={data.home.sections.faq.titlesAlign}
         eyebrow={data.home.sections.faq.eyebrow}

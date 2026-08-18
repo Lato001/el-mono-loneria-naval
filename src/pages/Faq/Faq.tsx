@@ -147,7 +147,7 @@ export function Faq() {
       titlesAlign={faqSection.titlesAlign}
       headingLevel="h1"
       className="overflow-x-clip"
-      gradientVariant="navy-to-aquamarine"
+      gradientVariant="navy-to-hero"
     >
       <div className="mb-16">
         <FaqCategoryGrid onSelect={handleCategoryClick} />
