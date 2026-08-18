@@ -27,8 +27,10 @@ import MediaPlayer from "../../components/ui/MediaPlayer/MediaPlayer";
 const STORAGE_KEY = "mono:quote-cart";
 
 // ─── Product images (auto-discovered via Vite glob) ─────────────────────
+// Full-res only: the `thumbs/` subfolders are excluded so the carousel can
+// resolve the same key to the lighter 480px thumbnail (see thumbMap below).
 const productImages = import.meta.glob(
-  "../../assets/img/products/**/*.{webp,png,jpg}",
+  ["../../assets/img/products/**/*.{webp,png,jpg}", "!../../assets/img/products/**/thumbs/*.webp"],
   { eager: true, import: "default" },
 ) as Record<string, string>;
 
@@ -41,6 +43,23 @@ const productsImageMap: Record<string, string> = Object.fromEntries(
     return [key, url];
   }),
 );
+
+/**
+ * 480px-wide thumbnails (imageKey → URL) for the carousel. Derived from the
+ * full-res `productsImageMap` keys so both maps stay in sync — the key comes
+ * from the thumb filename (baseName without extension).
+ */
+const thumbModules = import.meta.glob("../../assets/img/products/**/thumbs/*.webp", {
+  eager: true,
+  query: "?url",
+  import: "default",
+}) as Record<string, string>;
+
+const productsThumbMap: Record<string, string> = {};
+for (const [path, url] of Object.entries(thumbModules)) {
+  const key = path.slice(path.lastIndexOf("/") + 1, path.lastIndexOf("."));
+  productsThumbMap[key] = url;
+}
 
 // ─── Derived data ────────────────────────────────────────────────────────
 
@@ -55,7 +74,7 @@ function toProduct(p: {
     id: p.id,
     title: p.title,
     description: p.description,
-    imageSrc: productsImageMap[p.imageKey],
+    imageSrc: productsThumbMap[p.imageKey] ?? productsImageMap[p.imageKey],
   };
 }
 
@@ -69,6 +88,11 @@ const categories = categoryData.map((cat) => ({
   description: cat.description,
   imageKey: cat.imageKey,
   videoUrl: cat.videoUrl,
+  // Full-res of the category's first product: the big ImgCard keeps the
+  // crisp source while the carousel below uses the lighter thumbnails.
+  mainImageSrc: cat.products[0]
+    ? productsImageMap[cat.products[0].imageKey]
+    : undefined,
   products: cat.products.map(toProduct),
 }));
 
@@ -279,7 +303,10 @@ export function Products() {
                 {/* COLUMNA IZQUIERDA (Tarjeta de Imagen) */}
                 <div className="flex shrink-0 justify-center xl:col-span-5 xl:h-full xl:items-center">
                   <ImgCard
-                    src={activeCategory.products[0]?.imageSrc}
+                    src={
+                      activeCategory.mainImageSrc ??
+                      activeCategory.products[0]?.imageSrc
+                    }
                     alt={activeCategory.name}
                     className="xl:max-w-120 xl:max-h-200"
                     actionButton={
