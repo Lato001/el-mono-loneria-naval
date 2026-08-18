@@ -6,6 +6,7 @@ import {
   IconChevronRight,
 } from "@tabler/icons-react";
 import { useSessionSelection } from "../../hooks/useSessionSelection";
+import { useDocumentMeta } from "../../hooks/useDocumentMeta";
 import { useProductCarousel } from "../../components/ui/ProductCarousel/useProductCarousel";
 import { buildWhatsAppUrl } from "./whatsappUrl";
 import { IconBrandWhatsapp } from '@tabler/icons-react';
@@ -171,6 +172,13 @@ function CotizacionModalContent({
 }
 
 export function Products() {
+  useDocumentMeta({
+    title: "Productos para tu embarcación",
+    description:
+      "Broches, correas, omegas, hilos y herrajes para capotas. Repuestos y accesorios náuticos en Tigre.",
+    path: "/productos",
+  });
+
   const { selected, isSelected, toggle, remove, clear, count } =
     useSessionSelection(STORAGE_KEY);
   const { scrollRef, prev, next, canPrev, canNext, recompute } =

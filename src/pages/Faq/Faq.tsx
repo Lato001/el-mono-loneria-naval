@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import type { MouseEvent as ReactMouseEvent } from "react";
+import { useDocumentMeta } from "../../hooks/useDocumentMeta";
 import { SectionWrapper } from "../../components/ui/SectionWrapper";
 import { FaqBubble } from "../../components/ui/FaqBubble";
 import { FaqCategoryGrid } from "../../components/ui/FaqCategoryGrid";
@@ -98,6 +99,13 @@ function groupByCategory(faqs: FaqItem[]): Array<{
  *      the question, answer and image.
  */
 export function Faq() {
+  useDocumentMeta({
+    title: "Preguntas frecuentes",
+    description:
+      "Materiales, plazos de entrega, tipos de trabajo y servicios. Todo lo que necesitás saber antes de pedir tu presupuesto.",
+    path: "/faq",
+  });
+
   const faqSection = data.home.sections.faq;
   const grouped = groupByCategory(data.home.faqs);
 

@@ -1,4 +1,5 @@
 import { WorksSection } from "../../components/ui";
+import { useDocumentMeta } from "../../hooks/useDocumentMeta";
 import imageDimsJson from "./imageManifest.json";
 
 /**
@@ -25,5 +26,12 @@ for (const [path, url] of Object.entries(thumbModules)) {
 const imageDims: Record<string, { w: number; h: number }> = imageDimsJson;
 
 export function Works() {
+  useDocumentMeta({
+    title: "Nuestros Trabajos",
+    description:
+      "Capotas, cerramientos, carpas, cubre-fly y fundas para pickups y motos de agua. Cada pieza, hecha a mano en Tigre.",
+    path: "/trabajos",
+  });
+
   return <WorksSection thumbMap={thumbMap} imageDims={imageDims} />;
 }

@@ -7,6 +7,7 @@ import {
 } from "../../components/ui";
 import Masonry from "../../components/ui/Masonry/Masonry";
 import { SplitReviews } from "../../components/ui/SplitReviews/SplitReviews";
+import { useDocumentMeta } from "../../hooks/useDocumentMeta";
 import type { MasonryItem } from "../../mocks/types";
 import { data } from "../../mocks/data";
 import { PATHS } from "../../routes/routes";
@@ -45,6 +46,11 @@ const homeMasonryItems: MasonryItem[] = data.home.masonryItems.map((item) => ({
 }));
 
 export function Home() {
+  useDocumentMeta({
+    title: undefined,
+    path: "/",
+  });
+
   return (
     <>
       <Hero

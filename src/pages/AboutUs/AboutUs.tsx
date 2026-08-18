@@ -2,6 +2,7 @@ import { ImgCard, SectionWrapper } from "../../components/ui";
 import { Button } from "../../components/ui/Button";
 import { data } from "../../mocks/data";
 import CountUp from "../../components/ui/CountUp/CountUp";
+import { useDocumentMeta } from "../../hooks/useDocumentMeta";
 import taller01 from "../../assets/img/about/thumbs/taller-01.webp";
 import taller02 from "../../assets/img/about/thumbs/taller-02.webp";
 import taller03 from "../../assets/img/about/thumbs/taller-03.webp";
@@ -17,6 +18,13 @@ const galleryImageMap: Record<string, string> = {
 };
 
 export function AboutUs() {
+  useDocumentMeta({
+    title: "El Mono — Nuestro Taller",
+    description:
+      "Oficio de lonería naval y trabajo artesanal. 20 años de oficio, 500 proyectos entregados y 300 clientes satisfechos.",
+    path: "/nosotros",
+  });
+
   const about = data.home.aboutUsSection;
 
   return (
