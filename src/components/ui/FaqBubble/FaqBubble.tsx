@@ -108,7 +108,7 @@ export function FaqBubble({
             w-full max-w-md
             bg-sc-ocean-blue
             text-white
-            border-2 border-pr-aquamarine
+            border-2 border-sc-chalk
             px-[clamp(1.25rem,4.1667vw,2rem)] py-[clamp(1rem,4.1667vw,2rem)]
             ${questionRounded}
             ${questionClassName}
