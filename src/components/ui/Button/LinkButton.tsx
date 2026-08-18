@@ -18,8 +18,9 @@ export function LinkButton({
   return (
     <>
       {type === "Contact" && (
-        <Link
-          to={path}
+        <a
+          target="_blank"
+          href={path}
           className={`inline-flex items-center gap-3 whitespace-nowrap font-poppins font-semibold text-sc-ocean-blue shadow-lg transition-all duration-300 hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-300 cursor-pointer animate-pulse-glow bg-sc-chalk ${
             isSmall
               ? "rounded-full px-3 py-1.5 text-sm"
@@ -32,7 +33,7 @@ export function LinkButton({
             aria-hidden="true"
           />
           {text}
-        </Link>
+        </a>
       )}
       {type === "Redirect" && (
         <Link
