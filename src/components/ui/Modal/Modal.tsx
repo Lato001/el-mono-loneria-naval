@@ -12,6 +12,7 @@ export function Modal({
   size = "md",
   children,
   className,
+  textColor = "dark",
 }: ModalProps) {
   const sizeClasses: Record<string, string> = {
     sm: "max-w-sm",
@@ -20,9 +21,15 @@ export function Modal({
     full: "max-w-none w-auto",
   };
 
+  // Text color follows the `textColor` prop: "dark" → ocean blue text
+  // (for light/chalk content backgrounds), "light" → chalk text (for dark
+  // content backgrounds like the navy FAQ sheet).
+  const textColorClass =
+    textColor === "light" ? "text-sc-chalk" : "text-sc-ocean-blue";
+
   const positionClasses =
     variant === "sheet"
-      ? `inset-x-0 bottom-0 max-md:mx-auto max-h-[85vh] rounded-t-2xl data-[state=open]:animate-modalSheetIn md:left-1/2 md:top-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:rounded-2xl md-data-state-open:animate-fadeIn ${size === "full" ? "md:max-w-none" : sizeClasses[size]}`
+      ? `inset-x-0 bottom-0 max-md:mx-auto max-h-[85vh] max-md:min-h-[50vh] rounded-t-2xl data-[state=open]:animate-modalSheetIn md:left-1/2 md:top-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:rounded-2xl md-data-state-open:animate-fadeIn ${size === "full" ? "md:max-w-none" : sizeClasses[size]}`
       : `left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-2xl data-[state=open]:animate-fadeIn ${sizeClasses[size]}`;
 
   return (
@@ -33,12 +40,12 @@ export function Modal({
           className={`fixed z-50 w-full bg-sc-chalk p-4 focus:outline-none flex flex-col ${positionClasses} ${className ?? ""}`}
         >
           {title && (
-            <Title className="font-poppins mb-2 text-xl font-bold text-sc-ocean-blue">
+            <Title className={`font-poppins mb-2 max-w-[calc(100%_-_2.5rem)] text-xl font-bold ${textColorClass}`}>
               {title}
             </Title>
           )}
           {description && (
-            <Description className="font-poppins mb-4 text-base font-medium text-sc-ocean-blue/70">
+            <Description className={`font-poppins mb-4 text-base font-medium ${textColorClass}/70`}>
               {description}
             </Description>
           )}

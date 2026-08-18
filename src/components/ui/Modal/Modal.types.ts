@@ -13,4 +13,5 @@ export interface ModalProps {
   size?: ModalSize;
   children: ReactNode;
   className?: string;
+  textColor? : "dark" | "light";
 }
