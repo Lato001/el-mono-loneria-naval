@@ -13,7 +13,7 @@ vi.mock("react-map-gl/maplibre", () => ({
   ),
 }));
 
-const WHATSAPP_URL = "https://wa.me/123";
+const WHATSAPP_URL = "https://wa.me/5491169906255";
 
 describe("Contact page", () => {
   afterEach(() => {

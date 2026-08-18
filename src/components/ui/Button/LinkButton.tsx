@@ -1,6 +1,7 @@
 import { IconBrandWhatsapp } from "@tabler/icons-react";
 import { Link } from "react-router-dom";
 import googleLogo from "../../../assets/logos/icons/google/google-icon.svg";
+import { CONTACT_WHATSAPP_URL } from "../../../lib/contact";
 import "./WhatsappButton.css";
 import type { LinkButtonProps } from "./LinkButton.types";
 
@@ -9,7 +10,7 @@ export function LinkButton({
   size = "md",
   text,
   type = "Contact",
-  path = import.meta.env.VITE_WHATSAPP_URL,
+  path = CONTACT_WHATSAPP_URL,
   theme,
   url,
 }: LinkButtonProps) {

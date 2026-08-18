@@ -1,10 +1,11 @@
 import { IconBrandWhatsapp } from "@tabler/icons-react";
 import { data } from "../../../mocks/data";
+import { CONTACT_WHATSAPP_URL } from "../../../lib/contact";
 import "./WhatsappButton.css";
 export function WhatsappButton() {
   return (
     <a
-      href={import.meta.env.VITE_WHATSAPP_URL}
+      href={CONTACT_WHATSAPP_URL}
       target="_blank"
       rel="noopener noreferrer"
       aria-label={data.ui.contactWhatsAppLabel}

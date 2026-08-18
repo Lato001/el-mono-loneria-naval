@@ -1,9 +1,10 @@
 import { render, screen } from "@testing-library/react";
 import { WhatsappButton } from "./WhatsappButton";
+import { CONTACT_WHATSAPP_URL } from "../../../lib/contact";
 
-// Read the env value the component will see at render time (Vite bakes
-// import.meta.env at module-load, so we can't override it in beforeAll).
-const WHATSAPP_URL = import.meta.env.VITE_WHATSAPP_URL;
+// WhatsAppButton now points at the canonical contact link with no preset
+// message, so users land on an empty WhatsApp composer.
+const WHATSAPP_URL = CONTACT_WHATSAPP_URL;
 
 describe("WhatsappButton", () => {
   it("renders as an external link with the WhatsApp URL, target=_blank, and rel=noopener noreferrer", () => {
