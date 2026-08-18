@@ -4,6 +4,7 @@ import {
   LinkButton,
   SectionWrapper,
   SplitCards,
+  NextPageCta,
 } from "../../components/ui";
 import Masonry from "../../components/ui/Masonry/Masonry";
 import { SplitReviews } from "../../components/ui/SplitReviews/SplitReviews";
@@ -130,6 +131,7 @@ export function Home() {
         title={data.home.sections.faq.title}
       >
         <Accordion items={data.home.faqs} />
+        <NextPageCta />
       </SectionWrapper>
 
     </>

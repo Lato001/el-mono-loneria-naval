@@ -17,6 +17,7 @@ import {
   Modal,
   Button,
   ProductCarousel,
+  NextPageCta,
 } from "../../components/ui";
 import type { Product } from "../../components/ui/ProductCarousel/ProductCarousel.types";
 import type { Tab } from "../../components/ui/SectionTabs/SectionTabs.types";
@@ -397,6 +398,7 @@ export function Products() {
             </div>
           )}
         </div>
+        <NextPageCta />
       </div>
 
       <ActionBar

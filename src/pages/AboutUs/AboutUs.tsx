@@ -1,4 +1,4 @@
-import { ImgCard, SectionWrapper } from "../../components/ui";
+import { ImgCard, SectionWrapper, NextPageCta } from "../../components/ui";
 import { Button } from "../../components/ui/Button";
 import { data } from "../../mocks/data";
 import CountUp from "../../components/ui/CountUp/CountUp";
@@ -102,7 +102,9 @@ export function AboutUs() {
         </div>
 
       </div>
-   
+
+      <NextPageCta />
+
     </SectionWrapper>
 
   );

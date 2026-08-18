@@ -4,6 +4,7 @@ import { CategorySelect } from "../CategorySelect";
 import { WorksCarousel } from "../WorksCarousel";
 import { ImgCard } from "../Card";
 import { SectionWrapper } from "../SectionWrapper";
+import { NextPageCta } from "../NextPageCta";
 import { Button } from "../Button";
 import Masonry from "../Masonry/Masonry";
 import type { Trabajo } from "../../../types/trabajo";
@@ -308,6 +309,7 @@ export function WorksSection({ thumbMap, imageDims }: WorksSectionProps) {
           }
           onItemClick={(item) => handleAlbumClick(item as AlbumImage)}
         />
+        <NextPageCta />
         </div>
       </SectionWrapper>
     </>

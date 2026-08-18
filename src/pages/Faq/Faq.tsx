@@ -5,6 +5,7 @@ import { SectionWrapper } from "../../components/ui/SectionWrapper";
 import { FaqBubble } from "../../components/ui/FaqBubble";
 import { FaqCategoryGrid } from "../../components/ui/FaqCategoryGrid";
 import { Modal } from "../../components/ui/Modal";
+import { NextPageCta } from "../../components/ui/NextPageCta";
 import { data } from "../../mocks/data";
 import type { FaqCategory, FaqItem } from "../../mocks/types";
 import type { FaqBubbleDialogData } from "../../components/ui/FaqBubble";
@@ -220,6 +221,8 @@ export function Faq() {
           </div>
         )}
       </Modal>
+
+      <NextPageCta />
     </SectionWrapper>
   );
 }
