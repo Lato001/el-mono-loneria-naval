@@ -8,7 +8,6 @@ export interface SectionWrapperProps {
   /** Small uppercase label above the title. Optional. */
   eyebrow?: string;
   /** Adds a short 16px dash before the eyebrow text. Optional (default: false). */
-  eyebrowDash?: boolean;
   /** Optional right-aligned secondary text under the header. When present the
    *  header becomes a flex row (justify-between items-end) on desktop and
    *  collapses to a column on mobile. */

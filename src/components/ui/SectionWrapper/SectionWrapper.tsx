@@ -17,7 +17,6 @@ export function SectionWrapper({
   className,
   id,
   eyebrow,
-  eyebrowDash = false,
   subtitle,
   title,
   theme = "dark",
@@ -40,12 +39,6 @@ export function SectionWrapper({
         <p
           className={`${titlesAlignClasses[titlesAlign]} ${titlesTextClasses[titlesAlign]} font-poppins mb-2 flex items-center gap-2.5 text-xs uppercase tracking-[0.2em] ${theme === "dark" ? "text-pr-aquamarine" : "text-pr-hero-blue"} `}
         >
-          {eyebrowDash && (
-            <span
-              aria-hidden="true"
-              className="h-px w-4 shrink-0 bg-current"
-            />
-          )}
           {eyebrow}
         </p>
       )}
