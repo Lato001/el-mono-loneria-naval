@@ -417,7 +417,7 @@ export const data = {
   // ─── Home page ───────────────────────────────────────────────────────
   home: {
     hero: {
-      eyebrow: "Lonería naval — a medida, para cada superficie",
+      eyebrow: "Lonería naval — El MONO",
       titlePrefix: "Lonas, capotas y fundas que ",
       titleHighlight: "resisten cualquier intemperie",
       description:
