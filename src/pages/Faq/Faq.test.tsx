@@ -72,14 +72,18 @@ describe("Faq page", () => {
   it("lays out each bubble with the align assigned to its category", () => {
     const { container } = renderFaq();
     // Each FaqBubble's outer layout wrapper has md:flex-row or md:flex-row-reverse.
+    // Bubbles render grouped by category (canonical order), so match each
+    // layout back to its FAQ by question text instead of array index.
     const layouts = container.querySelectorAll(
       "div.flex.w-full.gap-6.flex-col.items-stretch",
     );
     expect(layouts).toHaveLength(data.home.faqs.length);
-    layouts.forEach((el, i) => {
-      const faq = data.home.faqs[i];
+    layouts.forEach((el) => {
+      const question = el.querySelector("h2")?.textContent;
+      const faq = data.home.faqs.find((f) => f.q === question);
+      expect(faq).toBeDefined();
       const expected =
-        faq.category === "insumos" || faq.category === "servicios"
+        faq!.category === "insumos" || faq!.category === "servicios"
           ? "md:flex-row"
           : "md:flex-row-reverse";
       expect(el.className).toContain(expected);
@@ -151,7 +155,9 @@ describe("Faq page", () => {
       await user.click(peekButtons[0]);
 
       const dialog = screen.getByRole("dialog");
-      const first = data.home.faqs[0];
+      // Bubbles render grouped by category, starting with "insumos" — not
+      // necessarily the first item in the flat faqs array.
+      const first = data.home.faqs.find((f) => f.category === "insumos")!;
       expect(within(dialog).getByText(first.q)).toBeInTheDocument();
       expect(within(dialog).getByText(first.a)).toBeInTheDocument();
     });

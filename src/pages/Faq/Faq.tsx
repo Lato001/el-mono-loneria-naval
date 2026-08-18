@@ -13,10 +13,10 @@ import faqimg02 from "../../assets/img/products/correas/correa-negra.webp";
 import faqimg03 from "../../assets/img/products/carros/perro-n5-negro.webp";
 import faqimg04 from "../../assets/img/works/capota/capota-01.webp";
 
-import insumosLogo from "../../assets/logos/icons/insumos/insumos-rounded.svg";
+import insumosLogo from "../../assets/logos/icons/trabajos/trabajos-rounded.svg";
 import serviciosLogo from "../../assets/logos/icons/servicios/servicios-rounded.svg";
 import tiemposLogo from "../../assets/logos/icons/tiempos/tiempos-rounded.svg";
-import trabajosLogo from "../../assets/logos/icons/trabajos/trabajos-rounded.svg";
+import trabajosLogo from "../../assets/logos/icons/insumos/insumos-rounded.svg";
 
 /**
  * Map of FAQ category id → placeholder label. The label doubles as the
@@ -94,8 +94,8 @@ function groupByCategory(faqs: FaqItem[]): Array<{
  *   2. One SectionWrapper per category, each holding 1+ chat-style
  *      FaqBubble entries. Categories are alternated start/end so the
  *      conversation rhythm reads naturally.
- *   3. On mobile, each bubble's peek icon opens a sheet dialog with the
- *      question, answer and image.
+ *   3. On mobile, tapping each bubble's ImgCard opens a sheet dialog with
+ *      the question, answer and image.
  */
 export function Faq() {
   const faqSection = data.home.sections.faq;
@@ -105,7 +105,7 @@ export function Faq() {
   // null = dialog closed. Set when a mobile peek button is tapped.
   const [openFaq, setOpenFaq] = useState<FaqBubbleDialogData | null>(null);
 
-  // The peek button that opened the dialog. This dialog opens
+  // The ImgCard button that opened the dialog. This dialog opens
   // programmatically (no Radix DialogTrigger), so Radix cannot restore
   // focus to a trigger on close — we keep the button ourselves and
   // restore focus when the dialog closes.
@@ -138,6 +138,8 @@ export function Faq() {
       theme={faqSection.theme}
       titlesAlign={faqSection.titlesAlign}
       headingLevel="h1"
+      className="overflow-x-clip"
+      gradientVariant="navy-to-hero"
     >
       <div className="mb-16">
         <FaqCategoryGrid onSelect={handleCategoryClick} />
@@ -150,6 +152,7 @@ export function Faq() {
             id={`${CATEGORY_ANCHOR_PREFIX}${category}`}
             title={category}
             titlesAlign={faqSection.titlesAlign}
+            className="!bg-transparent"
           >
             <div className="flex flex-col gap-12">
               {bubbles.map((bubble) => (
@@ -180,6 +183,8 @@ export function Faq() {
         variant="sheet"
         size="lg"
         title={openFaq?.question}
+        className="bg-sc-ocean-blue"
+        textColor="light"
       >
         {openFaq && (
           <div className="flex flex-col gap-4 pt-2">
@@ -188,7 +193,6 @@ export function Faq() {
                 w-full
                 bg-sc-sky-blue
                 text-white
-                border-5 border-sc-chalk
                 rounded-[0_48px_48px_48px]
                 px-6 py-5
               `}
