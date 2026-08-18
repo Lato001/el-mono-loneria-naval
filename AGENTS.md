@@ -2,7 +2,7 @@
 
 Landing page for "El Mono" lonería naval (marine canvas workshop).
 
-**Recent changes (rename-services-to-works):** Renamed Services → Works across the entire codebase: page directory, component (ServiceGrid → WorksGrid), types (Service → Work, ServiceTab → WorkTab, etc.), mock data keys (servicesPage → worksPage, servicesHeroTitle → worksHeroTitle), App.tsx imports/routes, barrel files, and vite.config.ts coverage exclusion. Fixed broken PATHS.SERVICES → PATHS.WORKS. 172 tests passing, 0 TS errors.
+**Recent changes (preproduction refactor):** SEO meta tags (commit 5d7268b), lint fixes, types extracted into per-component `.types.ts` + barrels, 15 co-located tests added, product images compressed to 480px thumbs (9x smaller load), eyebrowDash prop removed from SectionWrapper, route-level lazy loading for Works/Products/Contact/Faq, coverage thresholds raised to 75/65/75/80, Cloudflare Pages deploy workflow (pnpm + Node 22). **353 tests passing, 0 TS errors, 0 lint warnings.**
 
 ## Commands
 - `pnpm dev` — dev server
@@ -17,7 +17,7 @@ Landing page for "El Mono" lonería naval (marine canvas workshop).
 - Stack: Vitest 4 + @testing-library/react 16 + jsdom
 - Test file convention: co-located `.test.tsx` next to the component file
 - Setup file: `src/test/setup.ts` (jest-dom matchers, ResizeObserver/IntersectionObserver/matchMedia polyfills)
-- Coverage: v8 provider, thresholds at 40% stmts / 35% branches / 35% functions / 40% lines (v1 baseline, will raise)
+- Coverage: v8 provider, thresholds at 75% stmts / 65% branches / 75% functions / 80% lines (actual ~82.7/72.7/82.2/89.1)
 - Excluded from coverage: barrel files (`index.ts`), stub pages, Carousel, ScrollToTop, Header, App.tsx
 - Test wrapper: components using `<Link>` need `MemoryRouter` wrapper
 - Globals: `describe`/`it`/`expect`/`vi` available without imports (via `vitest/globals` in tsconfig)
@@ -253,14 +253,14 @@ src/
 - `.env` contains `VITE_WHATSAPP_URL` (WhatsApp deep link with preset message)
 
 ## Build status
-- `pnpm build`: 0 TypeScript errors, 6363 Vite modules
-- Output: ~258 KB JS + ~33 KB CSS (gzipped)
+- `pnpm build`: 0 TypeScript errors, 7576 Vite modules
+- Output: ~191 KB JS entry + ~23 KB CSS (gzipped) — heavy libs (maplibre-gl, dashjs/hls, GSAP) split into lazy route chunks
 - React Compiler active in production
 
 ## Quirks & gotchas
 - Thumbnails (480px, q70) de las imágenes del álbum, generados manualmente con ffmpeg y commiteados; el carousel y la galería los usan, el ImgCard usa la full-res: `ffmpeg -i <full.webp> -vf "scale=480:-1" -q:v 70 src/assets/img/works/<categoria>/thumbs/<nombre>.webp`
-- `sass` 1.101.0 + `patches/react-fast-marquee@1.6.5.patch` present but **unused** (custom Marquee replaces fast-marquee)
-- `src/hooks/` and `src/data/` directories exist but are empty
+- `sass` and `react-fast-marquee` are **not** in package.json anymore (custom Marquee replaced fast-marquee; the old note about them being unused was stale)
+- `src/hooks/` has `useFadeInOnView.ts` and `useSessionSelection.ts` (each with co-located tests); `src/data/` is empty and gitignored — local data stays off-disk
 - No `.vscode/extensions.json` or useful `.vscode/settings.json`
 - Avoid adding `style` inline props unless unavoidable
 - Fluid/clamp sizing over breakpoint jumps
