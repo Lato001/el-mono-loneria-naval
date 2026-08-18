@@ -393,7 +393,7 @@ export const data = {
         {
           label: "Teléfono",
           value: "+54 9 11 6990-6255",
-          href: "tel:+54 9 11 6990-6255",
+          href: "tel:+5491169906255",
           iconKey: "phone",
         },
         {

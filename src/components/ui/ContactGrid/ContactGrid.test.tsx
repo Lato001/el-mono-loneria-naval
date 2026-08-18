@@ -24,7 +24,7 @@ describe("ContactGrid", () => {
     const phone = screen.getByText("+54 9 11 6990-6255");
     expect(phone.closest("a")).toHaveAttribute(
       "href",
-      "tel:+54 9 11 6990-6255",
+      "tel:+5491169906255",
     );
     expect(screen.getByText("Email")).toBeInTheDocument();
   });
