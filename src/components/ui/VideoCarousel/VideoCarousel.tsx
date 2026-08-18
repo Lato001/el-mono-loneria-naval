@@ -67,7 +67,7 @@ export function VideoCarousel({ videos, className = "" }: VideoCarouselProps) {
               onEnded={isActive ? handleEnded : undefined}
               aria-hidden="true"
               disablePictureInPicture
-              className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${
+              className={`absolute inset-0 h-full w-full object-cover ${
                 isActive ? "opacity-100" : "opacity-0"
               }`}
             />
