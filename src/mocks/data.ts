@@ -30,7 +30,9 @@
  */
 
 import type { Review } from "../types/review";
-import taller02 from "../assets/img/about/taller-02.webp";
+// Unused today (AboutUs page reads the gallery keys, not `image`), but kept
+// light: 480px thumb instead of the 986 KB full-res.
+import taller02 from "../assets/img/about/thumbs/taller-02.webp";
 import type {
   AboutUsContent,
   AboutUsSection,
