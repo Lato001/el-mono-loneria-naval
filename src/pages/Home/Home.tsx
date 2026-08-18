@@ -10,6 +10,7 @@ import { SplitReviews } from "../../components/ui/SplitReviews/SplitReviews";
 import type { MasonryItem } from "../../mocks/types";
 import { data } from "../../mocks/data";
 import { PATHS } from "../../routes/routes";
+import lineasonduladasImg from '../../assets/backgrounds/formas-lineas-onduladas.svg'
 
 // ── Nuevos imports para el masonry de la home ──────────────────────────────
 import capota01 from "../../assets/img/works/capota/capota-01.webp";
@@ -72,7 +73,7 @@ export function Home() {
         </SectionWrapper>
         <SectionWrapper
           gradientVariant="navy-to-hero"
-          className="!bg-transparent"
+          backgroundImage={lineasonduladasImg}
           titlesAlign={data.home.sections.aboutUs.titlesAlign}
           eyebrow={data.home.sections.aboutUs.eyebrow}
           eyebrowDash

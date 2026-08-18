@@ -13,6 +13,10 @@ describe("Modal", () => {
     expect(screen.getByRole("dialog")).toBeInTheDocument();
     expect(screen.getByText("Test Modal")).toBeInTheDocument();
     expect(screen.getByText("Modal content")).toBeInTheDocument();
+    // The title is constrained so it never collides with the close button.
+    expect(screen.getByText("Test Modal")).toHaveClass(
+      "max-w-[calc(100%_-_2.5rem)]",
+    );
   });
 
   it("does not render dialog when open=false", () => {
@@ -82,6 +86,26 @@ describe("Modal", () => {
     expect(screen.getByLabelText("Cerrar")).toBeInTheDocument();
   });
 
+  it("uses ocean-blue title text by default (textColor=dark)", () => {
+    render(
+      <Modal open={true} onOpenChange={() => {}} title="Dark text">
+        <p>Content</p>
+      </Modal>,
+    );
+
+    expect(screen.getByText("Dark text")).toHaveClass("text-sc-ocean-blue");
+  });
+
+  it("uses chalk title text when textColor=\"light\"", () => {
+    render(
+      <Modal open={true} onOpenChange={() => {}} title="Light text" textColor="light">
+        <p>Content</p>
+      </Modal>,
+    );
+
+    expect(screen.getByText("Light text")).toHaveClass("text-sc-chalk");
+  });
+
   it("applies sheet position classes by default; centered classes when variant=\"centered\" is passed", () => {
     const { unmount } = render(
       <Modal open={true} onOpenChange={() => {}} title="Default (sheet)">
@@ -93,6 +117,8 @@ describe("Modal", () => {
     expect(dialog.className).toContain("bottom-0");
     expect(dialog.className).toContain("rounded-t-2xl");
     expect(dialog.className).toContain("max-h-[85vh]");
+    // On mobile the sheet reaches at least half the screen height.
+    expect(dialog.className).toContain("max-md:min-h-[50vh]");
     unmount();
 
     render(

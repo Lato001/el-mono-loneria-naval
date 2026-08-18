@@ -1,7 +1,7 @@
 import { Button } from "../Button";
 import type { SectionHeroProps } from "./SectionHero.types";
 import monoLogo from "../../../assets/logos/elmono/isotipo-elmono.png";
-import defaultImg from "../../../assets/backgrounds/formas-acuarela-01.jpg";
+import acuarelaImage from "../../../assets/backgrounds/formas-acuarela-01.jpg";
 export function SectionHero({
   title,
   description,
@@ -16,7 +16,7 @@ export function SectionHero({
       ?.scrollIntoView({ behavior: "smooth" });
   };
 
-  const bgImage = img ?? defaultImg;
+  const bgImage = img ?? acuarelaImage;
 
   return (
     <section className=" relative overflow-hidden  py-20 xl:pt-30  md:py-20 ">

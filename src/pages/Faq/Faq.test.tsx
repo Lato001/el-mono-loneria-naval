@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { MemoryRouter } from "react-router-dom";
 import { Faq } from "./Faq";
@@ -40,7 +40,9 @@ describe("Faq page", () => {
     ).toBeInTheDocument();
     for (const label of ["Servicios", "Tiempos", "Insumos", "Trabajos"]) {
       expect(
-        screen.getByRole("button", { name: new RegExp(label, "i") }),
+        screen.getByRole("button", {
+          name: new RegExp(`ir a preguntas de ${label}`, "i"),
+        }),
       ).toBeInTheDocument();
     }
   });
@@ -70,14 +72,18 @@ describe("Faq page", () => {
   it("lays out each bubble with the align assigned to its category", () => {
     const { container } = renderFaq();
     // Each FaqBubble's outer layout wrapper has md:flex-row or md:flex-row-reverse.
+    // Bubbles render grouped by category (canonical order), so match each
+    // layout back to its FAQ by question text instead of array index.
     const layouts = container.querySelectorAll(
       "div.flex.w-full.gap-6.flex-col.items-stretch",
     );
     expect(layouts).toHaveLength(data.home.faqs.length);
-    layouts.forEach((el, i) => {
-      const faq = data.home.faqs[i];
+    layouts.forEach((el) => {
+      const question = el.querySelector("h2")?.textContent;
+      const faq = data.home.faqs.find((f) => f.q === question);
+      expect(faq).toBeDefined();
       const expected =
-        faq.category === "insumos" || faq.category === "servicios"
+        faq!.category === "insumos" || faq!.category === "servicios"
           ? "md:flex-row"
           : "md:flex-row-reverse";
       expect(el.className).toContain(expected);
@@ -134,5 +140,76 @@ describe("Faq page", () => {
     // Each bubble has a peek icon (aria-hidden).
     const hidden = container.querySelectorAll('img[aria-hidden="true"]');
     expect(hidden).toHaveLength(data.home.faqs.length);
+  });
+
+  describe("mobile peek dialog", () => {
+    it("opens a sheet dialog with the tapped bubble's content when a peek button is clicked", async () => {
+      const user = userEvent.setup();
+      renderFaq();
+
+      const peekButtons = screen.getAllByRole("button", {
+        name: /ver respuesta/i,
+      });
+      expect(peekButtons).toHaveLength(data.home.faqs.length);
+
+      await user.click(peekButtons[0]);
+
+      const dialog = screen.getByRole("dialog");
+      // Bubbles render grouped by category, starting with "insumos" — not
+      // necessarily the first item in the flat faqs array.
+      const first = data.home.faqs.find((f) => f.category === "insumos")!;
+      expect(within(dialog).getByText(first.q)).toBeInTheDocument();
+      expect(within(dialog).getByText(first.a)).toBeInTheDocument();
+    });
+
+    it("opens that bubble's own dialog (not a shared one) for any tapped bubble", async () => {
+      const user = userEvent.setup();
+      renderFaq();
+
+      const peekButtons = screen.getAllByRole("button", {
+        name: /ver respuesta/i,
+      });
+
+      await user.click(peekButtons[2]);
+
+      const dialog = screen.getByRole("dialog");
+      const third = data.home.faqs[2];
+      expect(within(dialog).getByText(third.q)).toBeInTheDocument();
+      expect(within(dialog).getByText(third.a)).toBeInTheDocument();
+    });
+
+    it("closes the dialog on ESC and returns focus to the peek button", async () => {
+      const user = userEvent.setup();
+      renderFaq();
+
+      const peekButtons = screen.getAllByRole("button", {
+        name: /ver respuesta/i,
+      });
+      await user.click(peekButtons[0]);
+      expect(screen.getByRole("dialog")).toBeInTheDocument();
+
+      await user.keyboard("{Escape}");
+
+      expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+      expect(peekButtons[0]).toHaveFocus();
+    });
+
+    it("closes the dialog when the backdrop is clicked", async () => {
+      const user = userEvent.setup();
+      renderFaq();
+
+      const peekButtons = screen.getAllByRole("button", {
+        name: /ver respuesta/i,
+      });
+      await user.click(peekButtons[0]);
+      expect(screen.getByRole("dialog")).toBeInTheDocument();
+
+      // The Radix overlay backdrop carries the modal dimming classes.
+      const backdrop = document.querySelector('[class*="bg-black/50"]');
+      expect(backdrop).not.toBeNull();
+      await user.click(backdrop as Element);
+
+      expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+    });
   });
 });
