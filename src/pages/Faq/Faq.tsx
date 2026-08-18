@@ -8,9 +8,9 @@ import { data } from "../../mocks/data";
 import type { FaqCategory, FaqItem } from "../../mocks/types";
 import type { FaqBubbleDialogData } from "../../components/ui/FaqBubble";
 
-import faqimg01 from "../../assets/img/products/hilos/hilo-negro.webp";
-import faqimg02 from "../../assets/img/products/correas/correa-negra.webp";
-import faqimg03 from "../../assets/img/products/carros/perro-n5-negro.webp";
+import faqimg01 from "../../assets/img/products/hilos/thumbs/hilo-negro.webp";
+import faqimg02 from "../../assets/img/products/correas/thumbs/correa-negra.webp";
+import faqimg03 from "../../assets/img/products/carros/thumbs/perro-n5-negro.webp";
 import faqimg04 from "../../assets/img/works/capota/capota-01.webp";
 
 import insumosLogo from "../../assets/logos/icons/trabajos/trabajos-rounded.svg";

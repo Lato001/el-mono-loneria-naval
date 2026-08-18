@@ -19,7 +19,7 @@ import cerramiento01 from "../../assets/img/works/cerramiento/cerramiento-01.web
 import toneau01 from "../../assets/img/works/toneau/toneau-01.webp";
 
 // ─── SplitCards images (direct imports) ─────────────────────────────────
-import productosCard from "../../assets/img/products/tomas-de-aire/toma-boat-vent-3.webp";
+import productosCard from "../../assets/img/products/tomas-de-aire/thumbs/toma-boat-vent-3.webp";
 
 //MAPEO DE MASONRY
 const masonryImageMap: Record<string, string> = {
@@ -62,7 +62,6 @@ export function Home() {
           className="!bg-transparent"
           titlesAlign={data.home.sections.whatWeOffer.titlesAlign}
           eyebrow={data.home.sections.whatWeOffer.eyebrow}
-          eyebrowDash
           title={data.home.sections.whatWeOffer.title}
           subtitle="PLACEHOLDER — subtítulo opcional. Productos y trabajos a medida para tu embarcación."
         >
@@ -76,7 +75,6 @@ export function Home() {
           backgroundImage={lineasonduladasImg}
           titlesAlign={data.home.sections.aboutUs.titlesAlign}
           eyebrow={data.home.sections.aboutUs.eyebrow}
-          eyebrowDash
           title={data.home.sections.aboutUs.title}
           subtitle="PLACEHOLDER — subtítulo opcional. Hecho a mano en nuestro taller de Tigre."
         >
