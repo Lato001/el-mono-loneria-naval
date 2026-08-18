@@ -45,11 +45,12 @@ export default defineConfig({
         'src/App.tsx',
       ],
       thresholds: {
-        // v1 baseline — raise as more components get tested
-        statements: 40,
-        branches: 35,
-        functions: 35,
-        lines: 40,
+        // Current coverage 82.7/72.8/82.2/89.1 — keep a buffer above the
+        // floor so regressions fail the build but small edits don't.
+        statements: 75,
+        branches: 65,
+        functions: 75,
+        lines: 80,
       },
     },
   },

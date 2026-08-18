@@ -1,7 +1,7 @@
 import { Button } from "../Button";
 import type { SectionHeroProps } from "./SectionHero.types";
 import monoLogo from "../../../assets/logos/elmono/isotipo-elmono.png";
-import acuarelaImage from "../../../assets/backgrounds/formas-acuarela-01.jpg";
+import acuarelaImage from "../../../assets/backgrounds/formas-acuarela-01.webp";
 export function SectionHero({
   title,
   description,

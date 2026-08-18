@@ -7,7 +7,7 @@
 export type { Highlight, AboutCta } from "../types/about";
 export type { Work } from "../types/work";
 export type { Review } from "../types/review";
-export type { AccordionItem } from "../components/ui/Accordion/Accordion";
+export type { AccordionItem } from "../components/ui/Accordion/Accordion.types";
 export type { Categoria, Trabajo } from "../types/trabajo";
 
 // For local use in this file

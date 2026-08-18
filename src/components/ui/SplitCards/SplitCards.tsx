@@ -1,10 +1,5 @@
 import { ImgCard } from "../Card";
-import type { SplitCardData } from "../../../mocks/types";
-
-interface SplitCardsProps {
-  items: SplitCardData[];
-  imageMap: Record<string, string>;
-}
+import type { SplitCardsProps } from "./SplitCards.types";
 
 /**
  * Per-card visual copy (eyebrow + 1-2 chips).

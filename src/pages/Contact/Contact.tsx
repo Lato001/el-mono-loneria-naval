@@ -1,11 +1,19 @@
 import { LinkButton, MapSection, SectionWrapper } from "../../components/ui";
 import { ContactGrid } from "../../components/ui/ContactGrid/ContactGrid";
-import acuarelaImg from "../../assets/backgrounds/formas-acuarela-01.jpg";
+import { useDocumentMeta } from "../../hooks/useDocumentMeta";
+import acuarelaImg from "../../assets/backgrounds/formas-acuarela-01.webp";
 /**
  * Contact page — page-level SectionWrapper (h1) with the page description and
  * a 2-column grid: contact info card (phone, email, address) and WhatsApp CTA.
  */
 export function Contact() {
+  useDocumentMeta({
+    title: "Contacto y ubicación",
+    description:
+      "Escribinos por WhatsApp para tu presupuesto, visitá el taller en Tigre o mandanos un email. Te respondemos el mismo día.",
+    path: "/contacto",
+  });
+
   return (
     <>
       <SectionWrapper

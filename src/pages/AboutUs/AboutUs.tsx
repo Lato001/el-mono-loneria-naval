@@ -2,12 +2,14 @@ import { ImgCard, SectionWrapper } from "../../components/ui";
 import { Button } from "../../components/ui/Button";
 import { data } from "../../mocks/data";
 import CountUp from "../../components/ui/CountUp/CountUp";
-import taller01 from "../../assets/img/about/taller-01.webp";
-import taller02 from "../../assets/img/about/taller-02.webp";
-import taller03 from "../../assets/img/about/taller-03.webp";
-import taller04 from "../../assets/img/about/taller-04.webp";
+import { useDocumentMeta } from "../../hooks/useDocumentMeta";
+import taller01 from "../../assets/img/about/thumbs/taller-01.webp";
+import taller02 from "../../assets/img/about/thumbs/taller-02.webp";
+import taller03 from "../../assets/img/about/thumbs/taller-03.webp";
+import taller04 from "../../assets/img/about/thumbs/taller-04.webp";
 
-// MAPEO DE GALERÍA — imageKey → URL resuelta (patrón decoupling del proyecto)
+// MAPEO DE GALERÍA — imageKey → URL resuelta (patrón decoupling del proyecto).
+// Thumbs 480px: las cards del grid miden ~280px en desktop, sobran full-res.
 const galleryImageMap: Record<string, string> = {
   "taller-01": taller01,
   "taller-02": taller02,
@@ -16,6 +18,13 @@ const galleryImageMap: Record<string, string> = {
 };
 
 export function AboutUs() {
+  useDocumentMeta({
+    title: "El Mono — Nuestro Taller",
+    description:
+      "Oficio de lonería naval y trabajo artesanal. 20 años de oficio, 500 proyectos entregados y 300 clientes satisfechos.",
+    path: "/nosotros",
+  });
+
   const about = data.home.aboutUsSection;
 
   return (

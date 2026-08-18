@@ -7,19 +7,20 @@ import {
 } from "../../components/ui";
 import Masonry from "../../components/ui/Masonry/Masonry";
 import { SplitReviews } from "../../components/ui/SplitReviews/SplitReviews";
+import { useDocumentMeta } from "../../hooks/useDocumentMeta";
 import type { MasonryItem } from "../../mocks/types";
 import { data } from "../../mocks/data";
 import { PATHS } from "../../routes/routes";
 import lineasonduladasImg from '../../assets/backgrounds/formas-lineas-onduladas.svg'
 
 // ── Nuevos imports para el masonry de la home ──────────────────────────────
-import capota01 from "../../assets/img/works/capota/capota-01.webp";
-import carpa01 from "../../assets/img/works/carpa/carpa-01.webp";
-import cerramiento01 from "../../assets/img/works/cerramiento/cerramiento-01.webp";
-import toneau01 from "../../assets/img/works/toneau/toneau-01.webp";
+import capota01 from "../../assets/img/works/capota/thumbs/capota-01.webp";
+import carpa01 from "../../assets/img/works/carpa/thumbs/carpa-01.webp";
+import cerramiento01 from "../../assets/img/works/cerramiento/thumbs/cerramiento-01.webp";
+import toneau01 from "../../assets/img/works/toneau/thumbs/toneau-01.webp";
 
 // ─── SplitCards images (direct imports) ─────────────────────────────────
-import productosCard from "../../assets/img/products/tomas-de-aire/toma-boat-vent-3.webp";
+import productosCard from "../../assets/img/products/tomas-de-aire/thumbs/toma-boat-vent-3.webp";
 
 //MAPEO DE MASONRY
 const masonryImageMap: Record<string, string> = {
@@ -45,6 +46,11 @@ const homeMasonryItems: MasonryItem[] = data.home.masonryItems.map((item) => ({
 }));
 
 export function Home() {
+  useDocumentMeta({
+    title: undefined,
+    path: "/",
+  });
+
   return (
     <>
       <Hero
@@ -62,9 +68,7 @@ export function Home() {
           className="!bg-transparent"
           titlesAlign={data.home.sections.whatWeOffer.titlesAlign}
           eyebrow={data.home.sections.whatWeOffer.eyebrow}
-          eyebrowDash
           title={data.home.sections.whatWeOffer.title}
-          subtitle="PLACEHOLDER — subtítulo opcional. Productos y trabajos a medida para tu embarcación."
         >
           <SplitCards
             items={data.home.splitCards}
@@ -76,9 +80,7 @@ export function Home() {
           backgroundImage={lineasonduladasImg}
           titlesAlign={data.home.sections.aboutUs.titlesAlign}
           eyebrow={data.home.sections.aboutUs.eyebrow}
-          eyebrowDash
           title={data.home.sections.aboutUs.title}
-          subtitle="PLACEHOLDER — subtítulo opcional. Hecho a mano en nuestro taller de Tigre."
         >
           <div className="pb-10">
             <Masonry

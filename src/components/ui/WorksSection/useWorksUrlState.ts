@@ -8,8 +8,6 @@ export interface UseWorksUrlStateOptions {
   availableCategorias: Categoria[];
   /** Element id to smooth-scroll into view when navigating via category/album. */
   scrollTargetId: string;
-  /** imageKey → resolved URL map (see Works.tsx imageMap). */
-  imageMap: Record<string, string>;
   /** imageKey → 480px thumbnail URL for the carousel (see Works.tsx thumbMap). */
   thumbMap: Record<string, string>;
 }
@@ -119,7 +117,6 @@ export function useWorksUrlState({
   trabajos,
   availableCategorias,
   scrollTargetId,
-  imageMap,
   thumbMap,
 }: UseWorksUrlStateOptions): UseWorksUrlStateResult {
   const [initial] = useState(() => resolveUrlState(trabajos, availableCategorias));
@@ -149,14 +146,14 @@ export function useWorksUrlState({
     if (!selectedTrabajo) return [];
     return selectedTrabajo.imagenes
       .map((imgKey: string, i: number) => ({
-        src: thumbMap[imgKey] ?? imageMap[imgKey],
+        src: thumbMap[imgKey],
         alt: `${selectedTrabajo.titulo} - imagen ${i + 1}`,
         originalIndex: i,
       }))
       .filter((_: WorksCarouselImage, i: number) => i !== imageIndex);
-  }, [selectedTrabajo, imageIndex, imageMap, thumbMap]);
+  }, [selectedTrabajo, imageIndex, thumbMap]);
 
-  const mainImageSrc = selectedTrabajo ? imageMap[selectedTrabajo.imagenes[imageIndex]] : "";
+  const mainImageSrc = selectedTrabajo ? thumbMap[selectedTrabajo.imagenes[imageIndex]] : "";
   const mainImageAlt = selectedTrabajo ? `${selectedTrabajo.titulo} - imagen principal` : "";
 
   const handleCategoriaChange = (categoria: Categoria) => {

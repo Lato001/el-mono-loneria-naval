@@ -1,0 +1,6 @@
+# https://www.robotstxt.org/robotstxt.html
+User-agent: *
+Allow: /
+Disallow: /videos/
+
+Sitemap: https://elmonoloneria.com/sitemap.xml

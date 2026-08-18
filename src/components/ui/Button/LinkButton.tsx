@@ -2,15 +2,7 @@ import { IconBrandWhatsapp } from "@tabler/icons-react";
 import { Link } from "react-router-dom";
 import googleLogo from "../../../assets/logos/icons/google/google-icon.svg";
 import "./WhatsappButton.css";
-interface LinkButtonProps {
-  className?: string;
-  size?: "sm" | "md";
-  text: string;
-  type?: "Contact" | "Redirect" | "Google";
-  path?: string;
-  url?: string;
-  theme?: string;
-}
+import type { LinkButtonProps } from "./LinkButton.types";
 
 export function LinkButton({
   className,
@@ -26,8 +18,9 @@ export function LinkButton({
   return (
     <>
       {type === "Contact" && (
-        <Link
-          to={path}
+        <a
+          target="_blank"
+          href={path}
           className={`inline-flex items-center gap-3 whitespace-nowrap font-poppins font-semibold text-sc-ocean-blue shadow-lg transition-all duration-300 hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-300 cursor-pointer animate-pulse-glow bg-sc-chalk ${
             isSmall
               ? "rounded-full px-3 py-1.5 text-sm"
@@ -40,7 +33,7 @@ export function LinkButton({
             aria-hidden="true"
           />
           {text}
-        </Link>
+        </a>
       )}
       {type === "Redirect" && (
         <Link

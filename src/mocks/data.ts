@@ -30,7 +30,9 @@
  */
 
 import type { Review } from "../types/review";
-import taller02 from "../assets/img/about/taller-02.webp";
+// Unused today (AboutUs page reads the gallery keys, not `image`), but kept
+// light: 480px thumb instead of the 986 KB full-res.
+import taller02 from "../assets/img/about/thumbs/taller-02.webp";
 import type {
   AboutUsContent,
   AboutUsSection,
@@ -391,13 +393,13 @@ export const data = {
         {
           label: "Teléfono",
           value: "+54 9 11 6990-6255",
-          href: "tel:+54 9 11 6990-6255",
+          href: "tel:+5491169906255",
           iconKey: "phone",
         },
         {
           label: "Email",
-          value: "lonerianavalelmono@hotmail.com",
-          href: "mailto:lonerianavalelmono@hotmail.com",
+          value: "Elmonolonerianaval@gmail.com",
+          href: "mailto:Elmonolonerianaval@gmail.com",
           iconKey: "mail",
         },
         {
@@ -417,7 +419,7 @@ export const data = {
   // ─── Home page ───────────────────────────────────────────────────────
   home: {
     hero: {
-      eyebrow: "Lonería naval — a medida, para cada superficie",
+      eyebrow: "Lonería naval — El MONO",
       titlePrefix: "Lonas, capotas y fundas que ",
       titleHighlight: "resisten cualquier intemperie",
       description:

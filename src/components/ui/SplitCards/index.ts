@@ -1,1 +1,2 @@
-export * from './SplitCards';
+export { SplitCards } from './SplitCards';
+export type * from './SplitCards.types';

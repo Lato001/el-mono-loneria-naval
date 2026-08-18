@@ -6,6 +6,7 @@ import {
   IconChevronRight,
 } from "@tabler/icons-react";
 import { useSessionSelection } from "../../hooks/useSessionSelection";
+import { useDocumentMeta } from "../../hooks/useDocumentMeta";
 import { useProductCarousel } from "../../components/ui/ProductCarousel/useProductCarousel";
 import { buildWhatsAppUrl } from "./whatsappUrl";
 import { IconBrandWhatsapp } from '@tabler/icons-react';
@@ -22,25 +23,25 @@ import type { Tab } from "../../components/ui/SectionTabs/SectionTabs.types";
 import type { ProductCategoryData } from "../../mocks/types";
 import { data } from "../../mocks/data";
 import { ImgCard } from "../../components";
-import MediaPlayer from "../../components/ui/MediaPlayer/MediaPLayer";
+import MediaPlayer from "../../components/ui/MediaPlayer/MediaPlayer";
 
 const STORAGE_KEY = "mono:quote-cart";
 
 // ─── Product images (auto-discovered via Vite glob) ─────────────────────
-const productImages = import.meta.glob(
-  "../../assets/img/products/**/*.{webp,png,jpg}",
-  { eager: true, import: "default" },
-) as Record<string, string>;
+// 480px thumbnails only: the full-res originals are never loaded at runtime
+// (the carousel, quote list and big ImgCard all render at ≤480px). The key
+// comes from the thumb filename (baseName without extension).
+const thumbModules = import.meta.glob("../../assets/img/products/**/thumbs/*.webp", {
+  eager: true,
+  query: "?url",
+  import: "default",
+}) as Record<string, string>;
 
-const productsImageMap: Record<string, string> = Object.fromEntries(
-  Object.entries(productImages).map(([path, url]) => {
-    const key = path
-      .split("/")
-      .pop()!
-      .replace(/\.[^.]+$/, "");
-    return [key, url];
-  }),
-);
+const productsThumbMap: Record<string, string> = {};
+for (const [path, url] of Object.entries(thumbModules)) {
+  const key = path.slice(path.lastIndexOf("/") + 1, path.lastIndexOf("."));
+  productsThumbMap[key] = url;
+}
 
 // ─── Derived data ────────────────────────────────────────────────────────
 
@@ -55,7 +56,7 @@ function toProduct(p: {
     id: p.id,
     title: p.title,
     description: p.description,
-    imageSrc: productsImageMap[p.imageKey],
+    imageSrc: productsThumbMap[p.imageKey],
   };
 }
 
@@ -69,6 +70,11 @@ const categories = categoryData.map((cat) => ({
   description: cat.description,
   imageKey: cat.imageKey,
   videoUrl: cat.videoUrl,
+  // 480px thumb of the category's first product: the big ImgCard renders at
+  // max ~480px wide (xl:max-w-120), so the thumbnail is enough.
+  mainImageSrc: cat.products[0]
+    ? productsThumbMap[cat.products[0].imageKey]
+    : undefined,
   products: cat.products.map(toProduct),
 }));
 
@@ -166,6 +172,13 @@ function CotizacionModalContent({
 }
 
 export function Products() {
+  useDocumentMeta({
+    title: "Productos para tu embarcación",
+    description:
+      "Broches, correas, omegas, hilos y herrajes para capotas. Repuestos y accesorios náuticos en Tigre.",
+    path: "/productos",
+  });
+
   const { selected, isSelected, toggle, remove, clear, count } =
     useSessionSelection(STORAGE_KEY);
   const { scrollRef, prev, next, canPrev, canNext, recompute } =
@@ -177,6 +190,7 @@ export function Products() {
     initialUrl.activeCategoryId,
   );
   const [showMobileInfo, setShowMobileInfo] = useState(false);
+  const [prevSelectedSize, setPrevSelectedSize] = useState(selected.size);
 
   const activeCategory = categories.find((c) => c.id === activeCategoryId);
 
@@ -239,11 +253,12 @@ export function Products() {
   // user removed the last item inside the modal), close it for real. Without
   // this sync, `isModalOpen` would stay true and the modal would reopen as
   // soon as a new product is selected afterwards.
-  useEffect(() => {
+  if (prevSelectedSize !== selected.size) {
+    setPrevSelectedSize(selected.size);
     if (isModalOpen && selected.size === 0) {
       setIsModalOpen(false);
     }
-  }, [isModalOpen, selected.size]);
+  }
 
   const handleOpenClearModal = () => setIsClearModalOpen(true);
   const handleCloseClearModal = () => setIsClearModalOpen(false);
@@ -277,7 +292,10 @@ export function Products() {
                 {/* COLUMNA IZQUIERDA (Tarjeta de Imagen) */}
                 <div className="flex shrink-0 justify-center xl:col-span-5 xl:h-full xl:items-center">
                   <ImgCard
-                    src={activeCategory.products[0]?.imageSrc}
+                    src={
+                      activeCategory.mainImageSrc ??
+                      activeCategory.products[0]?.imageSrc
+                    }
                     alt={activeCategory.name}
                     className="xl:max-w-120 xl:max-h-200"
                     actionButton={

@@ -19,3 +19,8 @@ export * from './VideoCarousel';
 export * from './CategorySelect';
 export * from './WorksCarousel';
 export * from './WorksSection';
+export * from './ContactGrid';
+export * from './CountUp';
+export * from './Masonry';
+export * from './StackedCards';
+export * from './MediaPlayer';

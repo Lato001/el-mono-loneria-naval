@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import type { MouseEvent as ReactMouseEvent } from "react";
+import { useDocumentMeta } from "../../hooks/useDocumentMeta";
 import { SectionWrapper } from "../../components/ui/SectionWrapper";
 import { FaqBubble } from "../../components/ui/FaqBubble";
 import { FaqCategoryGrid } from "../../components/ui/FaqCategoryGrid";
@@ -8,15 +9,15 @@ import { data } from "../../mocks/data";
 import type { FaqCategory, FaqItem } from "../../mocks/types";
 import type { FaqBubbleDialogData } from "../../components/ui/FaqBubble";
 
-import faqimg01 from "../../assets/img/products/hilos/hilo-negro.webp";
-import faqimg02 from "../../assets/img/products/correas/correa-negra.webp";
-import faqimg03 from "../../assets/img/products/carros/perro-n5-negro.webp";
-import faqimg04 from "../../assets/img/works/capota/capota-01.webp";
+import faqimg01 from "../../assets/img/products/hilos/thumbs/hilo-negro.webp";
+import faqimg02 from "../../assets/img/products/correas/thumbs/correa-negra.webp";
+import faqimg03 from "../../assets/img/products/carros/thumbs/perro-n5-negro.webp";
+import faqimg04 from "../../assets/img/works/capota/thumbs/capota-01.webp";
 
-import insumosLogo from "../../assets/logos/icons/trabajos/trabajos-rounded.svg";
+import insumosLogo from "../../assets/logos/icons/insumos/insumos-rounded.svg";
 import serviciosLogo from "../../assets/logos/icons/servicios/servicios-rounded.svg";
 import tiemposLogo from "../../assets/logos/icons/tiempos/tiempos-rounded.svg";
-import trabajosLogo from "../../assets/logos/icons/insumos/insumos-rounded.svg";
+import trabajosLogo from "../../assets/logos/icons/trabajos/trabajos-rounded.svg";
 
 /**
  * Map of FAQ category id → placeholder label. The label doubles as the
@@ -98,6 +99,13 @@ function groupByCategory(faqs: FaqItem[]): Array<{
  *      the question, answer and image.
  */
 export function Faq() {
+  useDocumentMeta({
+    title: "Preguntas frecuentes",
+    description:
+      "Materiales, plazos de entrega, tipos de trabajo y servicios. Todo lo que necesitás saber antes de pedir tu presupuesto.",
+    path: "/faq",
+  });
+
   const faqSection = data.home.sections.faq;
   const grouped = groupByCategory(data.home.faqs);
 
