@@ -1,14 +1,4 @@
-interface WorkItem {
-  id: string;
-  title: string;
-  description: string;
-  color?: string;
-}
-
-export interface RotatingCardProps {
-  items: WorkItem[];
-  className?: string;
-}
+import type { RotatingCardProps } from "./RotatingCard.types";
 
 /**
  * RotatingCard — renders a responsive grid of service items as cards.

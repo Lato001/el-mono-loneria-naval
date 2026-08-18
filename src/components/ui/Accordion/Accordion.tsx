@@ -1,16 +1,6 @@
 import {Root,Item,Header,Trigger,Content }from "@radix-ui/react-accordion"; 
 import { IconChevronDown } from "@tabler/icons-react";
-
-export interface AccordionItem {
-  id: string;
-  q: string;
-  a: string;
-}
-
-interface AccordionProps {
-  items: AccordionItem[];
-  className?: string;
-}
+import type { AccordionProps } from "./Accordion.types";
 
 export function Accordion({ items, className = "" }: AccordionProps) {
   return (

@@ -1,18 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import type { PanInfo } from "framer-motion";
-
-export interface StackedCard {
-  id: string;
-  image: string;
-  alt: string;
-  title?: string;
-  description?: string;
-}
-
-interface StackedCardsProps {
-  cards: StackedCard[];
-}
+import type { StackedCard, StackedCardsProps } from "./StackedCards.types";
 
 export function StackedCards({ cards: initialCards }: StackedCardsProps) {
   const [cards, setCards] = useState<StackedCard[]>(initialCards);

@@ -1,5 +1,6 @@
 import { data } from "../../../mocks/data";
 import type { MarqueeItem } from "./Marquee.types";
+import type { BrandMarqueeProps } from "./BrandMarquee.types";
 
 import { Marquee } from "./";
 
@@ -25,10 +26,6 @@ const brandItems: MarqueeItem[] = data.brands.map((b) => ({
   alt: b.alt,
   link: b.link,
 }));
-
-interface BrandMarqueeProps {
-  className?: string;
-}
 
 export function BrandMarquee({ className }: BrandMarqueeProps) {
   return (

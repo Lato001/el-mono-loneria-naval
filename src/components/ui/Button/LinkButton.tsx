@@ -2,15 +2,7 @@ import { IconBrandWhatsapp } from "@tabler/icons-react";
 import { Link } from "react-router-dom";
 import googleLogo from "../../../assets/logos/icons/google/google-icon.svg";
 import "./WhatsappButton.css";
-interface LinkButtonProps {
-  className?: string;
-  size?: "sm" | "md";
-  text: string;
-  type?: "Contact" | "Redirect" | "Google";
-  path?: string;
-  url?: string;
-  theme?: string;
-}
+import type { LinkButtonProps } from "./LinkButton.types";
 
 export function LinkButton({
   className,

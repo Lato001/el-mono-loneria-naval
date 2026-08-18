@@ -2,16 +2,7 @@ import bgOlas from "../../assets/backgrounds/formas-olas-sec.svg";
 import { PATHS } from "../../routes/routes";
 import { BrandMarquee, VideoCarousel } from "../ui";
 import { LinkButton } from "../ui/Button/";
-
-interface HeroProps {
-  eyebrow?: string;
-  titlePrefix?: string;
-  titleHighlight?: string;
-  description?: string;
-  primaryCta: string;
-  secondaryCta: string;
-  videos?: { src: string; srcFallback: string; poster: string; alt: string }[];
-}
+import type { HeroProps } from "./Hero.types";
 
 export function Hero({
   eyebrow,

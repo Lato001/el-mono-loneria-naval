@@ -1,4 +1,5 @@
 ﻿export { Card } from "./Card";
 export { ReviewCard } from "./ReviewCard";
-export type { CardProps } from "./Card";
-export {ImgCard} from "./ImgCard.tsx";
+export { ImgCard } from "./ImgCard";
+export type { CardProps } from "./Card.types";
+export type { ImgCardProps } from "./ImgCard.types";
