@@ -46,10 +46,41 @@ describe('Footer', () => {
     expect(facebook).toHaveAttribute('rel', 'noopener noreferrer');
   });
 
-  it('renders the copyright text', () => {
-    renderFooter();
-    expect(
-      screen.getByText(/2026 El Mono Lonería Naval/),
-    ).toBeInTheDocument();
+  describe('DevBadge signature', () => {
+    it('renders the developer name, role and avatar photo in the signature line', () => {
+      renderFooter();
+      expect(screen.getByText('Desarrollado por')).toBeInTheDocument();
+      expect(screen.getByText('Lautaro Camejo')).toBeInTheDocument();
+      // The badge now uses a photo avatar instead of initials; the <img>
+      // alt matches the developer name.
+      expect(screen.getByAltText('Lautaro Camejo')).toBeInTheDocument();
+    });
+
+    it('links to the dev LinkedIn profile from the badge', () => {
+      renderFooter();
+      // The badge renders two anchors with this aria-label (avatar wrapper +
+      // icon-only button). Assert each one points at the right URL.
+      const linkedinLinks = screen.getAllByRole('link', {
+        name: /LinkedIn de Lautaro Camejo/i,
+      });
+      expect(linkedinLinks.length).toBeGreaterThanOrEqual(1);
+      for (const link of linkedinLinks) {
+        expect(link).toHaveAttribute(
+          'href',
+          'https://www.linkedin.com/in/lautaro-camejo-837339247/',
+        );
+      }
+    });
+
+    it('exposes a WhatsApp link with the dev number', () => {
+      renderFooter();
+      const whatsappLink = screen.getByRole('link', {
+        name: /Escribir a Lautaro Camejo por WhatsApp/i,
+      });
+      expect(whatsappLink).toHaveAttribute(
+        'href',
+        expect.stringContaining('wa.me/5491156137150'),
+      );
+    });
   });
 });

@@ -24,3 +24,5 @@ export * from './CountUp';
 export * from './Masonry';
 export * from './StackedCards';
 export * from './MediaPlayer';
+export * from './NextPageCta';
+export * from './DevBadge';

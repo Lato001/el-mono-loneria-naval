@@ -4,6 +4,7 @@ import { CategorySelect } from "../CategorySelect";
 import { WorksCarousel } from "../WorksCarousel";
 import { ImgCard } from "../Card";
 import { SectionWrapper } from "../SectionWrapper";
+import { NextPageCta } from "../NextPageCta";
 import { Button } from "../Button";
 import Masonry from "../Masonry/Masonry";
 import type { Trabajo } from "../../../types/trabajo";
@@ -196,10 +197,9 @@ export function WorksSection({ thumbMap, imageDims }: WorksSectionProps) {
         id={showcaseId}
         eyebrow="Trabajos"
         title="Nuestros Trabajos"
-        gradientVariant="hero-to-navy"
         headingLevel="h1"
         containerClassName="mx-auto max-w-[1400px] px-6 lg:px-10 "
-        className="!pb-10"
+        className="!pb-10 bg-gradient-to-b from-pr-aquamarine/20 to-sc-ocean-blue"
       >
         <CategorySelect
           value={selectedCategoria}
@@ -288,23 +288,27 @@ export function WorksSection({ thumbMap, imageDims }: WorksSectionProps) {
           hoverScale={0.95}
           colorShiftOnHover={true}
           footer={
-            hasMoreAlbumItems ? (
-              <div className="flex flex-col items-center gap-4 pb-20 pt-12">
-                <p className="font-poppins text-lg text-sc-chalk/70">
-                  Mostrando {Math.min(visibleCount, albumItems.length)} de {albumItems.length}
-                </p>
-                <Button
-                className="text-lg font-semibold"
-                  variant="danger"
-                  size="lg"
-                  onClick={() =>
-                    setVisibleCount((prev) => Math.min(prev + ALBUM_PAGE_SIZE, albumItems.length))
-                  }
-                >
-                  Cargar más
-                </Button>
-              </div>
-            ) : undefined
+            <div className="flex flex-col items-center gap-4 pb-20 pt-12">
+              {hasMoreAlbumItems && (
+                <>
+                  <p className="font-poppins text-lg text-sc-chalk/70">
+                    Mostrando {Math.min(visibleCount, albumItems.length)} de {albumItems.length}
+                  </p>
+                  <Button
+                    className="text-lg font-semibold"
+                    variant="danger"
+                    size="lg"
+                    onClick={() =>
+                      setVisibleCount((prev) => Math.min(prev + ALBUM_PAGE_SIZE, albumItems.length))
+                    }
+                  >
+                    Cargar más
+                  </Button>
+                </>
+              )}
+              
+              <NextPageCta variant="light" className="!pt-2"  />
+            </div>
           }
           onItemClick={(item) => handleAlbumClick(item as AlbumImage)}
         />

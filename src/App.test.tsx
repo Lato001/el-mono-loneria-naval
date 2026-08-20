@@ -27,10 +27,16 @@ function renderApp(initialPath: string) {
 }
 
 describe("App", () => {
-  it("hides the WhatsApp button on the products page", () => {
+  it("renders the DevBadge WhatsApp link as the only WhatsApp anchor on /productos", () => {
     renderApp("/productos");
-    expect(
-      screen.queryByRole("link", { name: /whatsapp/i }),
-    ).not.toBeInTheDocument();
+    // The Footer's DevBadge carries a global WhatsApp signature link on every
+    // route. With no products selected, the Products page itself does not
+    // render its own WhatsApp CTA — so the only one expected is the DevBadge's.
+    const whatsappLinks = screen.queryAllByRole("link", { name: /whatsapp/i });
+    expect(whatsappLinks).toHaveLength(1);
+    expect(whatsappLinks[0]).toHaveAttribute(
+      "aria-label",
+      "Escribir a Lautaro Camejo por WhatsApp",
+    );
   });
 });

@@ -5,6 +5,7 @@ import { SectionWrapper } from "../../components/ui/SectionWrapper";
 import { FaqBubble } from "../../components/ui/FaqBubble";
 import { FaqCategoryGrid } from "../../components/ui/FaqCategoryGrid";
 import { Modal } from "../../components/ui/Modal";
+import { NextPageCta } from "../../components/ui/NextPageCta";
 import { data } from "../../mocks/data";
 import type { FaqCategory, FaqItem } from "../../mocks/types";
 import type { FaqBubbleDialogData } from "../../components/ui/FaqBubble";
@@ -146,8 +147,7 @@ export function Faq() {
       theme={faqSection.theme}
       titlesAlign={faqSection.titlesAlign}
       headingLevel="h1"
-      className="overflow-x-clip"
-      gradientVariant="navy-to-hero"
+      className="overflow-x-clip bg-gradient-to-b from-pr-aquamarine/20 to-sc-ocean-blue"
     >
       <div className="mb-16">
         <FaqCategoryGrid onSelect={handleCategoryClick} />
@@ -220,6 +220,8 @@ export function Faq() {
           </div>
         )}
       </Modal>
+
+      <NextPageCta variant="light" />
     </SectionWrapper>
   );
 }

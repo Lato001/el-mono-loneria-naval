@@ -17,6 +17,7 @@ import {
   Modal,
   Button,
   ProductCarousel,
+  NextPageCta,
 } from "../../components/ui";
 import type { Product } from "../../components/ui/ProductCarousel/ProductCarousel.types";
 import type { Tab } from "../../components/ui/SectionTabs/SectionTabs.types";
@@ -284,7 +285,7 @@ export function Products() {
           />
 
           {activeCategory && (
-            <div className="px-6 pt-10 pb-20 xl:mx-auto xl:max-w-400">
+            <div className="px-6 pt-10 pb-12 xl:mx-auto xl:max-w-400">
               <div
                 data-testid="catalog-layout"
                 className="flex flex-col gap-8 xl:grid xl:grid-cols-12 xl:gap-8 xl:h-176"
@@ -394,6 +395,7 @@ export function Products() {
                   </div>
                 </div>
               </div>
+              <NextPageCta />
             </div>
           )}
         </div>

@@ -1,4 +1,4 @@
-import { LinkButton, MapSection, SectionWrapper } from "../../components/ui";
+import { LinkButton, MapSection, SectionWrapper, NextPageCta } from "../../components/ui";
 import { ContactGrid } from "../../components/ui/ContactGrid/ContactGrid";
 import { useDocumentMeta } from "../../hooks/useDocumentMeta";
 import acuarelaImg from "../../assets/backgrounds/formas-acuarela-01.webp";
@@ -46,6 +46,7 @@ export function Contact() {
         theme="light"
       >
         <ContactGrid></ContactGrid>
+        <NextPageCta className="pt-20"/>
       </SectionWrapper>
     </>
   );

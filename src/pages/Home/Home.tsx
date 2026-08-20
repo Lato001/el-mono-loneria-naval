@@ -4,6 +4,7 @@ import {
   LinkButton,
   SectionWrapper,
   SplitCards,
+  NextPageCta,
 } from "../../components/ui";
 import Masonry from "../../components/ui/Masonry/Masonry";
 import { SplitReviews } from "../../components/ui/SplitReviews/SplitReviews";
@@ -12,7 +13,6 @@ import type { MasonryItem } from "../../mocks/types";
 import { data } from "../../mocks/data";
 import { PATHS } from "../../routes/routes";
 import lineasonduladasImg from '../../assets/backgrounds/formas-lineas-onduladas.svg'
-
 // ── Nuevos imports para el masonry de la home ──────────────────────────────
 import capota01 from "../../assets/img/works/capota/thumbs/capota-01.webp";
 import carpa01 from "../../assets/img/works/carpa/thumbs/carpa-01.webp";
@@ -62,26 +62,27 @@ export function Home() {
         secondaryCta={data.home.hero.secondaryCta}
         videos={data.home.hero.videos}
       />
-      <div className="section-navy-gradient">
+      <div className=" bg-gradient-to-br from-sc-ocean-blue/20 to-pr-aquamarine/20">
+
         <SectionWrapper
-        gradientVariant="hero-to-navy"
-          className="!bg-transparent"
+
+        className="bg-gradient-to-b from-sc-ocean-blue to-pr-hero-blue/20"
           titlesAlign={data.home.sections.whatWeOffer.titlesAlign}
           eyebrow={data.home.sections.whatWeOffer.eyebrow}
           title={data.home.sections.whatWeOffer.title}
-        >
+          >
           <SplitCards
             items={data.home.splitCards}
             imageMap={splitCardsImageMap}
-          />
+            />
         </SectionWrapper>
         <SectionWrapper
-          gradientVariant="navy-to-hero"
+        className="bg-gradient-to-b from-pr-hero-blue/20 to-sc-ocean-blue/10"
           backgroundImage={lineasonduladasImg}
           titlesAlign={data.home.sections.aboutUs.titlesAlign}
           eyebrow={data.home.sections.aboutUs.eyebrow}
           title={data.home.sections.aboutUs.title}
-        >
+          >
           <div className="pb-10">
             <Masonry
               items={homeMasonryItems}
@@ -91,7 +92,7 @@ export function Home() {
               stagger={0.05}
               scaleOnHover
               hoverScale={0.95}
-            />
+              />
           </div>
           <div className="flex justify-center">
             <LinkButton
@@ -99,38 +100,38 @@ export function Home() {
               text="Ver mas trabajos..."
               theme="light"
               path={PATHS.WORKS}
-              className="mt-10 !px-8 !py-3 !rounded-full "
+              className="mt-15 xl:hidden "
             />
           </div>
         </SectionWrapper>
-      </div>
       
       <SectionWrapper
-        gradientVariant="hero-to-navy"
+      className="bg-gradient-to-b from-sc-ocean-blue/20 to-sc-sky-blue/35"
         titlesAlign={data.home.sections.testimonials.titlesAlign}
         eyebrow={data.home.sections.testimonials.eyebrow}
         title={data.home.sections.testimonials.title}
-      >
+        >
         <SplitReviews></SplitReviews>
-        <div className=" mt-10 flex justify-center">
+        <div className=" mt-10 pt-10 flex justify-center">
           <LinkButton
             type="Google"
             text="Ver Reseñas"
             theme="light"
             url="https://maps.app.goo.gl/5yJprtv3uSdtv13M7"
-          />
+            />
         </div>
       </SectionWrapper>
       <SectionWrapper
-      className="pb-40"
-      gradientVariant="navy-to-hero"
+        className="bg-gradient-to-b from-sc-sky-blue/35 to-sc-ocean-blue"
         theme={data.home.sections.faq.theme}
         titlesAlign={data.home.sections.faq.titlesAlign}
         eyebrow={data.home.sections.faq.eyebrow}
         title={data.home.sections.faq.title}
-      >
+        >
         <Accordion items={data.home.faqs} />
+        <NextPageCta className="pt-20" variant="light" />
       </SectionWrapper>
+      </div>
 
     </>
   );

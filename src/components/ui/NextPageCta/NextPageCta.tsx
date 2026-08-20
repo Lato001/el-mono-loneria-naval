@@ -1,0 +1,90 @@
+import { Link, useLocation } from "react-router-dom";
+import {
+  IconAnchor,
+  IconArrowRight,
+  IconBuildingFactory,
+  IconHelp,
+  IconMessage,
+  IconPackage,
+  IconTool,
+} from "@tabler/icons-react";
+import type { Icon } from "@tabler/icons-react";
+import { PATHS } from "../../../routes/routes";
+
+/**
+ * Canonical route order used for the "next page" CTA at the bottom of every
+ * route. The last entry loops back to the first so Contact → Home completes
+ * the journey instead of dropping the user off a cliff.
+ *
+ * Each entry carries a Tabler icon that hints at the destination's content:
+ * the marine/canvas theme informs the set (Anchor for home, Tool for craft,
+ * BuildingFactory for the workshop) so the CTA reads as a curated suggestion,
+ * not just a generic "next" button.
+ */
+interface NextRoute {
+  path: string;
+  label: string;
+  RouteIcon: Icon;
+}
+
+const NEXT_PATH_ORDER: ReadonlyArray<NextRoute> = [
+  { path: PATHS.HOME, label: "Inicio", RouteIcon: IconAnchor },
+  { path: PATHS.PRODUCTS, label: "Productos", RouteIcon: IconPackage },
+  { path: PATHS.WORKS, label: "Trabajos", RouteIcon: IconTool },
+  { path: PATHS.ABOUT_US, label: "Nosotros", RouteIcon: IconBuildingFactory },
+  { path: PATHS.FAQ, label: "Preguntas Frecuentes", RouteIcon: IconHelp },
+  { path: PATHS.CONTACT, label: "Contacto", RouteIcon: IconMessage },
+];
+
+export type NextPageCtaVariant = "dark" | "light";
+
+/**
+ * Class matrix for the two CTA variants. Keeping each variant's full class
+ * string in one place avoids the conditional sprawl that creeps into Tailwind
+ * components and silently breaks purging when one of the branches is unused.
+ */
+const VARIANT_CLASSES: Record<
+  NextPageCtaVariant,
+  { base: string; hover: string }
+> = {
+  dark: {
+    base: "bg-sc-ocean-blue text-sc-chalk",
+    hover:
+      "hover:bg-sc-ocean-blue hover:text-pr-aquamarine hover:shadow-pr-aquamarine/30 hover:shadow-lg",
+  },
+  light: {
+    base: "bg-pr-aquamarine text-sc-ocean-blue",
+    hover:
+      "hover:bg-pr-aquamarine hover:text-sc-chalk hover:shadow-pr-aquamarine/30 hover:shadow-lg",
+  },
+};
+
+/**
+ * "Continue exploring" CTA rendered inside the last section of every route.
+ * Choose the variant that contrasts against the host section:
+ *   - `dark`  → navy bg / chalk text  (for chalk / light sections)
+ *   - `light` → aquamarine bg / navy text (for navy / dark sections)
+ *
+ * Reads the current path from useLocation, finds the next route in the
+ * canonical order, and renders nothing when the user is on the 404 fallback
+ * (path not in NEXT_PATH_ORDER).
+ */
+export function NextPageCta({ variant = "dark" , className}: { variant?: NextPageCtaVariant, className?: string } = {}) {
+  const { pathname } = useLocation();
+  const index = NEXT_PATH_ORDER.findIndex((r) => r.path === pathname);
+  if (index === -1) return null;
+  const next = NEXT_PATH_ORDER[(index + 1) % NEXT_PATH_ORDER.length];
+  const styles = VARIANT_CLASSES[variant];
+  return (
+    <div className={`flex justify-end pt-20 ${className}`}>
+      <Link
+        to={next.path}
+        className={`inline-flex items-center gap-3 rounded-full px-6 py-3 font-poppins text-base font-bold shadow-md transition-all duration-300 hover:scale-105 ${styles.base} ${styles.hover} focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pr-aquamarine`}
+      >
+        <next.RouteIcon size={18} stroke={2.5} aria-hidden="true" />
+        <span>{next.label}</span>
+        <IconArrowRight size={18} stroke={2.5} aria-hidden="true" />
+      </Link>
+    </div>
+  );
+}

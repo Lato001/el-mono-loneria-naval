@@ -1,5 +1,4 @@
-import { ImgCard, SectionWrapper } from "../../components/ui";
-import { Button } from "../../components/ui/Button";
+import { ImgCard, SectionWrapper, NextPageCta } from "../../components/ui";
 import { data } from "../../mocks/data";
 import CountUp from "../../components/ui/CountUp/CountUp";
 import { useDocumentMeta } from "../../hooks/useDocumentMeta";
@@ -19,7 +18,7 @@ const galleryImageMap: Record<string, string> = {
 
 export function AboutUs() {
   useDocumentMeta({
-    title: "El Mono — Nuestro Taller",
+    title: "Nuestro Taller",
     description:
       "Oficio de lonería naval y trabajo artesanal. 20 años de oficio, 500 proyectos entregados y 300 clientes satisfechos.",
     path: "/nosotros",
@@ -32,11 +31,10 @@ export function AboutUs() {
     <SectionWrapper
       eyebrow={about.eyebrow}
       title={about.title}
-      containerClassName="w-full px-6 bg-gradient-to-b from-sc-ocean-blue/20 to-pr-aquamarine/20"
+      containerClassName="w-full bg-gradient-to-b from-sc-ocean-blue/20 to-pr-aquamarine/20"
       titlesAlign="center"
       headingLevel="h1"
-      className="pt-30"
-      
+      className="!pb-0"
       >
 
 
@@ -92,17 +90,12 @@ export function AboutUs() {
 
 
 
-        {about.cta && (
-          <div className="mt-2 flex justify-center">
-            <Button variant="danger" href={about.cta.href}>
-              {about.cta.text}
-            </Button>
-          </div>
-        )}
+
+        <NextPageCta className="pt-5" />
         </div>
 
       </div>
-   
+
     </SectionWrapper>
 
   );

@@ -30,7 +30,8 @@ const brandItems: MarqueeItem[] = data.brands.map((b) => ({
 export function BrandMarquee({ className }: BrandMarqueeProps) {
   return (
     <Marquee
-      className={` shadow-lg shadow-black/5   bg-linear-to-r from-pr-hero-blue/50 to-sc-ocean-blue/50 ${className}`}
+      className={` shadow-lg shadow-black/5  pb-4   ${className}`}
+      // 
       items={brandItems}
       speed={10}
       pauseOnHover={false}
