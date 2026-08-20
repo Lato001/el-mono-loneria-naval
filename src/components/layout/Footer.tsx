@@ -10,6 +10,7 @@ import {
 import { Link } from "react-router-dom";
 import { data } from "../../mocks/data";
 import type { ContactIconKey, SocialPlatform } from "../../mocks/types";
+import { DevBadge } from "../ui/DevBadge";
 import isotipoElmono from "../../assets/logos/elmono/isotipo-elmono.png";
 import letteringElMono from "../../assets/logos/elmono/isotipo-elmono-name.png";
 
@@ -86,8 +87,15 @@ export function Footer() {
           ))}
         </div>
       </div>
-      <div className="mx-auto flex max-w-295 flex-col items-center mt-2 justify-end   text-sm text-white/50 lg:flex-row">
+      <div className="mx-auto flex max-w-295 flex-col items-center gap-3 mt-2 justify-between text-sm text-white/50 lg:flex-row">
         <p>{nav.footer.copyright}</p>
+        <DevBadge
+          name="Lautaro Camejo"
+          initials="LC"
+          role="Desarrollador Web"
+          linkedinUrl="https://www.linkedin.com/in/lautaro-camejo-837339247/"
+          whatsappNumber="5491156137150"
+        />
       </div>
     </footer>
   );
