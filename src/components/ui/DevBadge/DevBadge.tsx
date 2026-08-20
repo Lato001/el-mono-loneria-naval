@@ -43,7 +43,7 @@ export function DevBadge({
     : null;
 
   return (
-    <div className={`flex items-center gap-2 ${className}`}>
+    <div className={`flex items-center gap-2.5 ${className}`}>
       {/* Avatar con tooltip — el click abre LinkedIn directamente */}
       <a
         href={linkedinUrl}
@@ -67,12 +67,12 @@ export function DevBadge({
               }}
               exit={{ opacity: 0, y: 12, scale: 0.6 }}
               style={{ translateX, rotate }}
-              className="absolute -top-14 left-1/2 z-50 flex -translate-x-1/2 flex-col items-center whitespace-nowrap rounded-lg bg-[#171F5E] px-3 py-1.5 shadow-lg"
+              className="absolute -top-16 left-1/2 z-50 flex -translate-x-1/2 flex-col items-center whitespace-nowrap rounded-lg bg-[#171F5E] px-3.5 py-2 shadow-lg"
             >
-              <span className="text-[13px] font-semibold text-[#F5F7FF]">
+              <span className="text-[14px] font-semibold text-[#F5F7FF]">
                 {name}
               </span>
-              <span className="text-[11px] text-[#8DE0D6]">{role}</span>
+              <span className="text-[12px] text-[#8DE0D6]">{role}</span>
               <span className="text-[10px] text-[#B9C0E8]">Ver LinkedIn ↗</span>
               {/* Flechita del tooltip */}
               <span className="absolute -bottom-1 left-1/2 h-2 w-2 -translate-x-1/2 rotate-45 bg-[#171F5E]" />
@@ -81,8 +81,8 @@ export function DevBadge({
         </AnimatePresence>
 
         <span
-          className="flex h-9 w-9 items-center justify-center rounded-full border border-white/10
-                     bg-gradient-to-br from-[#4FE0D0] to-[#2AA9C9] text-[12px] font-bold text-[#0F1547]
+          className="flex h-11 w-11 items-center justify-center rounded-full border border-white/10
+                     bg-gradient-to-br from-[#4FE0D0] to-[#2AA9C9] text-[14px] font-bold text-[#0F1547]
                      transition-transform duration-200 hover:scale-105"
         >
           {initials}
@@ -90,16 +90,16 @@ export function DevBadge({
       </a>
 
       {/* Texto + link a WhatsApp, separados del avatar */}
-      <div className="flex items-center gap-1.5">
+      <div className="flex items-center gap-2">
         <span className="flex flex-col leading-none">
-          <span className="text-[10px] font-medium uppercase tracking-wider text-[#B9C0E8]">
+          <span className="text-[11px] font-medium uppercase tracking-wider text-[#B9C0E8]">
             Desarrollado por
           </span>
           <a
             href={linkedinUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-[13px] font-semibold text-[#F5F7FF] hover:text-[#4FE0D0]"
+            className="text-[15px] font-semibold text-[#F5F7FF] hover:text-[#4FE0D0]"
           >
             {name}
           </a>
@@ -110,9 +110,9 @@ export function DevBadge({
           target="_blank"
           rel="noopener noreferrer"
           aria-label={`LinkedIn de ${name}`}
-          className="flex h-7 w-7 items-center justify-center rounded-full text-[#B9C0E8] transition-colors duration-200 hover:bg-white/10 hover:text-[#4FE0D0]"
+          className="flex h-9 w-9 items-center justify-center rounded-full text-[#B9C0E8] transition-colors duration-200 hover:bg-white/10 hover:text-[#4FE0D0]"
         >
-          <IconBrandLinkedin size={16} stroke={1.75} />
+          <IconBrandLinkedin size={18} stroke={1.75} />
         </a>
 
         {whatsappUrl && (
@@ -121,9 +121,9 @@ export function DevBadge({
             target="_blank"
             rel="noopener noreferrer"
             aria-label={`Escribir a ${name} por WhatsApp`}
-            className="flex h-7 w-7 items-center justify-center rounded-full text-[#B9C0E8] transition-colors duration-200 hover:bg-white/10 hover:text-[#4FE0D0]"
+            className="flex h-9 w-9 items-center justify-center rounded-full text-[#B9C0E8] transition-colors duration-200 hover:bg-white/10 hover:text-[#4FE0D0]"
           >
-            <IconBrandWhatsapp size={16} stroke={1.75} />
+            <IconBrandWhatsapp size={18} stroke={1.75} />
           </a>
         )}
       </div>
