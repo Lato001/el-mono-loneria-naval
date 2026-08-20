@@ -18,7 +18,7 @@ const galleryImageMap: Record<string, string> = {
 
 export function AboutUs() {
   useDocumentMeta({
-    title: "El Mono — Nuestro Taller",
+    title: "Nuestro Taller",
     description:
       "Oficio de lonería naval y trabajo artesanal. 20 años de oficio, 500 proyectos entregados y 300 clientes satisfechos.",
     path: "/nosotros",
