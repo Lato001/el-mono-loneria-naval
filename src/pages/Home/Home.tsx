@@ -65,8 +65,7 @@ export function Home() {
       />
       <div className="section-navy-gradient">
         <SectionWrapper
-        gradientVariant="hero-to-navy"
-          className="!bg-transparent"
+          gradientVariant="navy-to-hero"
           titlesAlign={data.home.sections.whatWeOffer.titlesAlign}
           eyebrow={data.home.sections.whatWeOffer.eyebrow}
           title={data.home.sections.whatWeOffer.title}
@@ -77,7 +76,7 @@ export function Home() {
           />
         </SectionWrapper>
         <SectionWrapper
-          gradientVariant="navy-to-hero"
+        className="!bg-transparent"
           backgroundImage={lineasonduladasImg}
           titlesAlign={data.home.sections.aboutUs.titlesAlign}
           eyebrow={data.home.sections.aboutUs.eyebrow}
@@ -123,7 +122,6 @@ export function Home() {
         </div>
       </SectionWrapper>
       <SectionWrapper
-      className="pb-40"
       gradientVariant="navy-to-hero"
         theme={data.home.sections.faq.theme}
         titlesAlign={data.home.sections.faq.titlesAlign}
@@ -131,7 +129,7 @@ export function Home() {
         title={data.home.sections.faq.title}
       >
         <Accordion items={data.home.faqs} />
-        <NextPageCta />
+        <NextPageCta className="pt-20" />
       </SectionWrapper>
 
     </>

@@ -99,11 +99,11 @@ export function AboutUs() {
             </Button>
           </div>
         )}
+
+        <NextPageCta className="pt-5" />
         </div>
 
       </div>
-
-      <NextPageCta />
 
     </SectionWrapper>
 

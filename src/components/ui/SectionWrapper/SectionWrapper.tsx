@@ -49,7 +49,7 @@ export function SectionWrapper({
 
   const gradientClass =
   gradientVariant === "navy-to-hero"
-    ? "section-navy-to-hero"
+    ? "bg-gradient-to-b from-sc-ocean-blue/20 to-pr-aquamarine/20"
     : gradientVariant === "hero-to-navy"
     ? "section-hero-to-navy"
     : "";

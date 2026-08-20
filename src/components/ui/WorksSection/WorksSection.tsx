@@ -289,27 +289,30 @@ export function WorksSection({ thumbMap, imageDims }: WorksSectionProps) {
           hoverScale={0.95}
           colorShiftOnHover={true}
           footer={
-            hasMoreAlbumItems ? (
-              <div className="flex flex-col items-center gap-4 pb-20 pt-12">
-                <p className="font-poppins text-lg text-sc-chalk/70">
-                  Mostrando {Math.min(visibleCount, albumItems.length)} de {albumItems.length}
-                </p>
-                <Button
-                className="text-lg font-semibold"
-                  variant="danger"
-                  size="lg"
-                  onClick={() =>
-                    setVisibleCount((prev) => Math.min(prev + ALBUM_PAGE_SIZE, albumItems.length))
-                  }
-                >
-                  Cargar más
-                </Button>
-              </div>
-            ) : undefined
+            <div className="flex flex-col items-center gap-4 pb-20 pt-12">
+              {hasMoreAlbumItems && (
+                <>
+                  <p className="font-poppins text-lg text-sc-chalk/70">
+                    Mostrando {Math.min(visibleCount, albumItems.length)} de {albumItems.length}
+                  </p>
+                  <Button
+                    className="text-lg font-semibold"
+                    variant="danger"
+                    size="lg"
+                    onClick={() =>
+                      setVisibleCount((prev) => Math.min(prev + ALBUM_PAGE_SIZE, albumItems.length))
+                    }
+                  >
+                    Cargar más
+                  </Button>
+                </>
+              )}
+              
+              <NextPageCta variant="light" className="!pt-2"  />
+            </div>
           }
           onItemClick={(item) => handleAlbumClick(item as AlbumImage)}
         />
-        <NextPageCta />
         </div>
       </SectionWrapper>
     </>

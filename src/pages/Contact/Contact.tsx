@@ -46,7 +46,7 @@ export function Contact() {
         theme="light"
       >
         <ContactGrid></ContactGrid>
-        <NextPageCta />
+        <NextPageCta className="pt-20"/>
       </SectionWrapper>
     </>
   );

@@ -39,8 +39,10 @@ describe('Home page', () => {
     expect(screen.getByText('¿Qué ofrecemos?')).toBeInTheDocument();
     expect(screen.getByText('Encontrá lo que buscas')).toBeInTheDocument();
 
-    // ImgCards: "Productos" and "Trabajos" titles
-    expect(screen.getByText('Productos')).toBeInTheDocument();
+    // ImgCards: "Productos" and "Trabajos" titles.
+    // "Productos" also appears in the NextPageCta label at the bottom of the
+    // route (which points to /productos), so use getAllByText and assert >=1.
+    expect(screen.getAllByText('Productos').length).toBeGreaterThanOrEqual(1);
     expect(screen.getByText('Trabajos')).toBeInTheDocument();
   });
 
