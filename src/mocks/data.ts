@@ -409,10 +409,6 @@ export const data = {
           iconKey: "mapPin",
         },
       ],
-      tagline: "El Mono · Lonería Naval desde 2026",
-      copyright:
-        "© 2026 El Mono Lonería Naval",
-      contactTitle: "Contacto",
     } satisfies FooterNav,
   },
 

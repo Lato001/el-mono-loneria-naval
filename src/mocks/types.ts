@@ -44,9 +44,6 @@ export interface FooterNav {
   groups: NavGroup[];
   social: SocialLink[];
   contact: ContactItem[];
-  tagline: string;
-  copyright: string;
-  contactTitle: string;
 }
 
 // ─── Hero ────────────────────────────────────────────────────────────────
