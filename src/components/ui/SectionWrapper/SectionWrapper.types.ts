@@ -15,7 +15,6 @@ export interface SectionWrapperProps {
   /** Section title. Required. */
   title: string;
   theme?: "dark" | "light";
-  gradientVariant?: "none" | "navy" | "hero-to-navy" | "navy-to-hero";
   titlesAlign?: "start" | "center" | "end";
   /**
    * Optional background image rendered behind the whole section (titles and

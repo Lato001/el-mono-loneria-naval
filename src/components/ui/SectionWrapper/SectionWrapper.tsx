@@ -20,7 +20,6 @@ export function SectionWrapper({
   subtitle,
   title,
   theme = "dark",
-  gradientVariant = "none",
   titlesAlign = "start",
   headingLevel = "h1",
   fullWidth,
@@ -46,25 +45,10 @@ export function SectionWrapper({
     </>
   );
 
-
-  const gradientClass =
-  gradientVariant === "navy-to-hero"
-    ? "section-navy-to-hero"
-    : gradientVariant === "hero-to-navy"
-    ? "section-navy-to-hero"
-    : "";
-
-
   return (
     <section
       id={id}
-      className={`${
-        gradientVariant === "none"
-          ? theme === "dark"
-            ? "bg-sc-ocean-blue"
-            : "bg-sc-chalk"
-          : ""
-      } ${gradientClass} py-25 text-white ${
+      className={`${theme === "dark" ? "bg-sc-ocean-blue" : "bg-sc-chalk"} py-25 text-white ${
         backgroundImage ? "relative overflow-hidden" : ""
       } ${className ?? ""}`}
       aria-label={title}
