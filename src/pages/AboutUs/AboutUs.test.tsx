@@ -65,11 +65,10 @@ describe("AboutUs page", () => {
     expect(images).toHaveLength(aboutUsData.gallery!.length);
   });
 
-  it("renders CTA with the correct href", () => {
+  it("renders the NextPageCta linking to the next route in order", () => {
     renderAboutUs();
-    const cta = aboutUsData.cta!;
-    const ctaLink = screen.getByRole("link", { name: new RegExp(cta.text, "i") });
-    expect(ctaLink).toBeInTheDocument();
-    expect(ctaLink).toHaveAttribute("href", cta.href);
+    // /nosotros -> /faq per NEXT_PATH_ORDER; the CTA shows the route label
+    const nextLink = screen.getByRole("link", { name: /preguntas frecuentes/i });
+    expect(nextLink).toHaveAttribute("href", "/faq");
   });
 });

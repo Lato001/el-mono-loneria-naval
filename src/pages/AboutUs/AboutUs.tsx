@@ -1,5 +1,4 @@
 import { ImgCard, SectionWrapper, NextPageCta } from "../../components/ui";
-import { Button } from "../../components/ui/Button";
 import { data } from "../../mocks/data";
 import CountUp from "../../components/ui/CountUp/CountUp";
 import { useDocumentMeta } from "../../hooks/useDocumentMeta";
@@ -91,13 +90,6 @@ export function AboutUs() {
 
 
 
-        {about.cta && (
-          <div className="mt-2 flex justify-center">
-            <Button variant="danger" href={about.cta.href}>
-              {about.cta.text}
-            </Button>
-          </div>
-        )}
 
         <NextPageCta className="pt-5" />
         </div>
