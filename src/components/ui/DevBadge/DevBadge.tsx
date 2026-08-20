@@ -21,6 +21,7 @@ export function DevBadge({
   role = "Frontend Developer",
   initials,
   linkedinUrl,
+  photoSrc,
   whatsappNumber,
   whatsappMessage = "Hola! Vi tu firma en un sitio que desarrollaste y quiero hacerte una consulta.",
   className = "",
@@ -81,11 +82,19 @@ export function DevBadge({
         </AnimatePresence>
 
         <span
-          className="flex h-11 w-11 items-center justify-center rounded-full border border-white/10
-                     bg-gradient-to-br from-[#4FE0D0] to-[#2AA9C9] text-[14px] font-bold text-[#0F1547]
+          className="flex h-11 w-11 items-center justify-center overflow-hidden rounded-full border border-white/10
+                     bg-gradient-to-br from-[#4FE0D0] to-[#2AA9C9]
                      transition-transform duration-200 hover:scale-105"
         >
-          {initials}
+          {photoSrc ? (
+            <img
+              src={photoSrc}
+              alt={name}
+              className="h-full w-full object-cover"
+            />
+          ) : (
+            <span className="text-[14px] font-bold text-[#0F1547]">{initials}</span>
+          )}
         </span>
       </a>
 
@@ -112,7 +121,7 @@ export function DevBadge({
           aria-label={`LinkedIn de ${name}`}
           className="flex h-9 w-9 items-center justify-center rounded-full text-[#B9C0E8] transition-colors duration-200 hover:bg-white/10 hover:text-[#4FE0D0]"
         >
-          <IconBrandLinkedin size={18} stroke={1.75} />
+          <IconBrandLinkedin size={30} stroke={1.75} />
         </a>
 
         {whatsappUrl && (
@@ -123,7 +132,7 @@ export function DevBadge({
             aria-label={`Escribir a ${name} por WhatsApp`}
             className="flex h-9 w-9 items-center justify-center rounded-full text-[#B9C0E8] transition-colors duration-200 hover:bg-white/10 hover:text-[#4FE0D0]"
           >
-            <IconBrandWhatsapp size={18} stroke={1.75} />
+            <IconBrandWhatsapp size={30} stroke={1.75} />
           </a>
         )}
       </div>

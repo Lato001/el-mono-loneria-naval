@@ -13,6 +13,7 @@ import type { ContactIconKey, SocialPlatform } from "../../mocks/types";
 import { DevBadge } from "../ui/DevBadge";
 import isotipoElmono from "../../assets/logos/elmono/isotipo-elmono.png";
 import letteringElMono from "../../assets/logos/elmono/isotipo-elmono-name.png";
+import devPhoto from "../../assets/img/dev-badge/dev-photo.webp";
 
 const socialIconMap: Record<SocialPlatform, Icon> = {
   Facebook: IconBrandFacebook,
@@ -91,6 +92,7 @@ export function Footer() {
         <p>{nav.footer.copyright}</p>
         <DevBadge
           name="Lautaro Camejo"
+          photoSrc={devPhoto}
           initials="LC"
           role="Desarrollador Web"
           linkedinUrl="https://www.linkedin.com/in/lautaro-camejo-837339247/"

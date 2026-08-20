@@ -54,11 +54,13 @@ describe('Footer', () => {
   });
 
   describe('DevBadge signature', () => {
-    it('renders the developer name, role and initials in the signature line', () => {
+    it('renders the developer name, role and avatar photo in the signature line', () => {
       renderFooter();
       expect(screen.getByText('Desarrollado por')).toBeInTheDocument();
       expect(screen.getByText('Lautaro Camejo')).toBeInTheDocument();
-      expect(screen.getByText('LC')).toBeInTheDocument();
+      // The badge now uses a photo avatar instead of initials; the <img>
+      // alt matches the developer name.
+      expect(screen.getByAltText('Lautaro Camejo')).toBeInTheDocument();
     });
 
     it('links to the dev LinkedIn profile from the badge', () => {
