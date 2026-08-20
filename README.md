@@ -1,215 +1,136 @@
-# El Mono — Loneria Naval
+<p align="center">
+  <img src="src/assets/logos/elmono/isotipo-elmono.png" alt="El Mono" width="120" />
+</p>
 
-Landing page for a marine canvas and awning workshop ("lonería naval"). Built with React 19, TypeScript 6, Vite 8, and Tailwind CSS v4.
+<h1 align="center">El Mono Loneria Naval</h1>
 
-## Tech Stack
+<p align="center">
+  <em>Lonería naval a medida en Tigre, Buenos Aires — lonas, capotas, cerramientos y fundas hechas a mano.</em>
+</p>
 
-| Tool | Version |
-|---|---|
-| React | ^19.2.6 |
-| TypeScript | ~6.0.2 |
-| Vite | ^8.0.16 |
-| Tailwind CSS | ^4.3.0 |
-| react-router-dom | ^7.18.1 |
-| @tabler/icons-react | ^3.44.0 |
-| React Compiler | via `@rolldown/plugin-babel` + `babel-plugin-react-compiler` |
-| Vitest | ^4.1.10 |
-| @testing-library/react | ^16 |
-| jsdom | latest |
-| Package Manager | pnpm |
+<p align="center">
+  <a href="https://elmonoloneria.com/"><strong>elmonoloneria.com</strong></a>
+</p>
+
+---
 
 ## Quick Start
 
 ```bash
-pnpm dev              # Start dev server
-pnpm build            # Type-check (tsc -b) + production build
-pnpm lint             # ESLint on all .ts/.tsx files
-pnpm preview          # Preview production build locally
-pnpm test             # Vitest watch mode (dev)
-pnpm test:run         # Vitest single run (CI)
-pnpm test:coverage    # Vitest run with v8 coverage report
+pnpm install        # install deps
+pnpm dev            # dev server (Vite, default :5173)
+pnpm build          # type-check (tsc -b) + production build
+pnpm preview        # preview the production build locally
+pnpm test           # vitest watch mode
+pnpm test:run       # vitest single run (CI)
+pnpm test:coverage  # coverage report (v8 provider)
+pnpm lint           # ESLint on .ts/.tsx
 ```
 
-## Project Structure
+Requires **Node 22** and **pnpm 11** (pinned in the deploy workflow).
+
+## Stack
+
+| Tech | Version | Uso |
+|---|---|---|
+| React | 19.2 | UI framework (functional + hooks) |
+| TypeScript | ~6.0 | type system, strict (`noUnusedLocals`, `noUnusedParameters`, `verbatimModuleSyntax`, `erasableSyntaxOnly`) |
+| Vite | 8.0 | dev server + bundler |
+| `@tailwindcss/vite` + Tailwind CSS | 4.3 | estilos via `@theme` tokens in `src/index.css` |
+| react-router-dom | 7.18 | client-side routing, lazy-loaded route chunks |
+| @radix-ui/react-accordion + dialog | latest | a11y primitives for accordion + modal |
+| @tabler/icons-react | 3.44 | icon set (UI + DevBadge) |
+| framer-motion · gsap · motion | latest | animations + gestures (DevBadge tooltip, hero scroll-cue, etc.) |
+| maplibre-gl + react-map-gl | latest | map (workshop location on Contact) |
+| react-player | latest | media player (hero videos + works showcase) |
+| Vitest + @testing-library/react + jsdom | 4 / 16 / 29 | tests, jsdom env, `@testing-library/jest-dom` matchers |
+
+**React Compiler** is enabled via `@rolldown/plugin-babel` + `babel-plugin-react-compiler` — write idiomatic React, the compiler handles memoization.
+
+## Estructura
 
 ```
 src/
 ├── assets/
-│   ├── backgrounds/       # SVG wave/line patterns
-│   ├── fonts/             # brown-beige/, nord/, poppins/ (33 TTF files)
-│   └── logos/
-│       ├── brands/        # 5 brand SVGs: achilles, coats, sauleda, sunbrella, ykk
-│       ├── elmono/        # isotipo-elmono.png (the new logo)
-│       └── icons/         # insumos, servicios, tiempos, trabajos logos
+│   ├── backgrounds/    SVG decorative patterns (olas, lineas onduladas, ...)
+│   ├── fonts/          33 self-hosted TTF files (Brown Beige, Nord, Poppins)
+│   ├── img/            product + works photos, dev badge avatar
+│   └── logos/          El Mono isotipo + brand partner logos
 ├── components/
-│   ├── layout/
-│   │   ├── Header.tsx     # Responsive nav with bubble effect, stitch indicator, mobile sidebar
-│   │   ├── Hero.tsx       # Gradient hero with decorative circle, wave overlay, CTAs
-│   │   └── Footer.tsx     # 12-col grid: brand(2) + 4 nav groups(8) + contact(2)
-│   ├── ui/
-│   │   ├── AboutSection/  # 2-col layout with image fallback, content, highlights, CTA
-│   │   ├── Button/        # 4 variants, 3 sizes, Link-aware + ScrollToTop + tests
-│   │   ├── Card/          # Full card (image/color header, badge, CTA) + ReviewCard + tests
-│   │   ├── Carousel/      # Stacked cards carousel (not used in Home; available for future)
-│   │   ├── HomeSection/   # Reusable section: eyebrow + title + icon + children + centerTitleOnMobile prop
-│   │   ├── Marquee/       # Pure CSS marquee + BrandMarquee (5 brands)
-│   │   ├── ServiceGrid/   # Responsive grid of service cards (not used in Home; available for future)
-│   │   └── ServicesSection/  # Dark-blue section: eyebrow + title + icon + children
-│   └── index.ts           # Barrel
-├── hooks/                  # (empty)
-├── mocks/
-│   └── data.ts             # Mock sections (discriminated union) and services
-├── pages/
-│   ├── Home/              # Composes Hero + BrandMarquee + ServicesSection + Reviews + AboutSection
-│   ├── Products/          # Stub
-│   ├── Services/          # Stub
-│   ├── AboutUs/           # Stub
-│   ├── Faq/               # Stub
-│   ├── Contact/           # Stub
-│   └── index.ts            # Barrel
-├── routes/
-│   └── routes.ts           # PATHS constant
-├── test/                   # Vitest setup (jest-dom matchers + polyfills)
-├── App.tsx                 # Layout (Header, ScrollToTop, Routes, Footer) assembly
-├── main.tsx                # Entry point (BrowserRouter wrapper)
-├── index.css               # Tailwind v4 @import + @theme (colors, fonts)
-└── fonts.css               # @font-face declarations (Brown Beige, Nord, Poppins)
+│   ├── common/         cross-cutting primitives
+│   ├── layout/         Header · Footer · Hero
+│   └── ui/             28 typed components (Button, Card, SectionWrapper,
+│                       Accordion, Modal, Masonry, NextPageCta, DevBadge, ...)
+├── hooks/              custom React hooks
+├── lib/                pure utilities
+├── mocks/              typed mock data (data.ts)
+├── pages/              Home · Products · Works · AboutUs · Faq · Contact
+├── routes/             PATHS constant (single source of truth)
+├── test/               Vitest setup (ResizeObserver + IntersectionObserver + matchMedia polyfills)
+├── types/              shared types
+├── App.tsx             Header (sticky) + ScrollToTop + Routes + Footer (global)
+├── main.tsx            createRoot + BrowserRouter
+└── index.css           Tailwind v4 `@theme` (colors + fonts)
 ```
 
-## Design System
+## Features
 
-### Colors
+The site is built around a single conversion path: pick what you want → reach out on WhatsApp → we confirm at the workshop. No forms, no logins, no e-commerce.
 
-Defined in `@theme` block in `src/index.css`:
+- **`/` Home** — Hero with gradient + decorative SVG overlay + dual CTAs to Productos and Trabajos, brand partner marquee, split cards (¿Qué ofrecemos?), masonry works preview, About Us, testimonials, FAQ, location map.
+- **`/productos` Productos** — catalog with category filter (`?categoria=...`), live selection cart, **WhatsApp deep-link pre-filled with the current selection** (`buildWhatsAppUrl`), disabled state when the message exceeds the WhatsApp URL length limit (`WHATSAPP_URL_MAX_LENGTH`).
+- **`/trabajos` Trabajos** — works showcase (categoria / hash routing, masonry album with `?imagen=` photo deep-links, "Cargar más" pagination), per-proyecto detail with category filter and history-backed state.
+- **`/nosotros` Nosotros** — full-bleed gallery of the Tigre workshop, three CountUp stats (years / projects / clients), full content from typed mock data.
+- **`/faq` Faq** — bubble filter (Insumos · Servicios · Tiempos · Trabajos), Radix Accordion, search-as-you-type.
+- **`/contacto` Contacto** — MapLibre map of the workshop location + contact items + WhatsApp CTA.
+- **Bottom-of-route CTA** — `NextPageCta` renders at the bottom of every page, linking to the next route in canonical order with a per-route Tabler icon and a `dark` / `light` variant for chalk vs navy host sections.
+- **DevBadge** signature in the footer — `Lautaro Camejo` (Frontend Developer) mark with LinkedIn + WhatsApp hover-tooltip, photo avatar (compressed 357 KB → 1.5 KB webp), courtesy dev attribution.
 
-| Token | Value | Usage |
-|---|---|---|
-| `pr-hero-blue` | `#344784` | Hero background end, section eyebrow text (on chalk) |
-| `pr-aquamarine` | `#40F1E7` | Accent highlights, active link indicator, dots, ServicesSection eyebrow (on dark blue) |
-| `sc-ocean-blue` | `#001051` | Header/Footer/ServicesSection background, text color, hero gradient start |
-| `sc-sky-blue` | `#42B2EB` | — |
-| `sc-chalk` | `#F4F4F4` | Section backgrounds (HomeSection, AboutSection) |
-| `sc-sand` | `#EAD9C1` | Image fallback backgrounds |
+## Variables de entorno
 
-### Fonts
-
-| Family | CSS Token | Variants |
-|---|---|---|
-| Brown Beige | `font-brown` | normal (1) |
-| Nord | `font-nord` | 14 variants (thin to black, all with italics) |
-| Poppins | `font-poppins` | 18 variants (thin to black, all with italics) |
-
-No external font CDN — all fonts are self-hosted TTF files in `src/assets/fonts/`.
-
-### Responsive Approach
-
-- Fluid sizing via `clamp()` instead of breakpoint jumps (e.g. `text-[clamp(1.8rem,3.5vw,2.8rem)]`)
-- Minimal breakpoints: mobile sidebar at 800px, service grid at `md:grid-cols-2` / `lg:grid-cols-3`
-- Custom max-width: `max-w-295` (295 * 0.25rem = ~1180px) for the centered content container
-- Logo in Footer/Header: `h-12 w-12` (48px square isotipo)
-- Logo in BrandMarquee: container `h-24` (96px), grayscale 50% → full color on hover
-
-## Routing
-
-| Path | Page Component | Status |
-|---|---|---|
-| `/` | Home | Implemented |
-| `/productos` | Products | Stub |
-| `/servicios` | Services | Stub |
-| `/nosotros` | AboutUs | Stub |
-| `/faq` | Faq | Stub |
-| `/contacto` | Contact | Stub |
-| `*` | 404 (inline `h1`) | Basic |
-
-Routes defined in `src/routes/routes.ts` via `PATHS` constant.
-
-## Component Architecture
-
-### Layout Components
-
-| Component | File | Props | Description |
-|---|---|---|---|
-| `Header` | `components/layout/Header.tsx` | (none) | Unified header: logo + nav links (bubble gradient on hover/active) + aquamarine stitch indicator + "Cotizar" CTA + mobile sidebar |
-| `Hero` | `components/layout/Hero.tsx` | `eyebrow?`, `titlePrefix?`, `titleHighlight?`, `description?`, `primaryCta?`, `secondaryCta?` | Gradient section with decorative circle, wave overlay, H1 (with highlight span), 2 CTAs |
-| `Footer` | `components/layout/Footer.tsx` | (none) | 12-col grid: brand(2) + 4 grouped nav sections(8) + contact(2). Dark blue background, white text, 4 nav columns (Servicios, Productos, Nosotros, Ayuda), 3 contact items (phone, email, address) with `@tabler/icons-react` icons. |
-
-### UI Components
-
-| Component | File | Props | Description |
-|---|---|---|---|
-| `Button` | `ui/Button/Button.tsx` | `children`, `variant?`, `size?`, `href?`, `onClick?`, `className?` | 4 variants (primary/secondary/outline/ghost), 3 sizes, Link-aware, full keyboard focus styles |
-| `ScrollToTop` | `ui/Button/ScrollToTop.tsx` | (none) | Floating button, visible past 200px scroll, "Volver al inicio" |
-| `Card` | `ui/Card/Card.tsx` | `title`, `description`, `badge?`, `imageSrc?`, `ctaLabel?`, `onCtaClick?`, `className?`, `color?`, `badgeClassName?` | Full card with image/color header, badge, title, description, CTA button, dashed separator |
-| `ReviewCard` | `ui/Card/ReviewCard.tsx` | `id`, `avatar?`, `title`, `author`, `stars`, `description` | Review card with avatar/initial, star rating, title, description. Mobile: `max-w-md mx-auto md:max-w-none md:mx-0` |
-| `HomeSection` | `ui/HomeSection/HomeSection.tsx` | `eyebrow?`, `title`, `icon?`, `children`, `centerTitleOnMobile?` | Reusable section with chalk bg. When `centerTitleOnMobile=true`, icon centers above title on mobile (matches ServicesSection pattern) |
-| `ServicesSection` | `ui/ServicesSection/ServicesSection.tsx` | `children`, `className?`, `icon?`, `eyebrow?`, `title` | Dark-blue section: eyebrow (`text-pr-aquamarine`) + title (`text-white`) + optional icon + children. Mirrors HomeSection pattern but with dark-bg color contract |
-| `Marquee` | `ui/Marquee/Marquee.tsx` | `items`, `renderItem?`, `speed?`, `pauseOnHover?`, `direction?`, `className?` | Pure CSS marquee with ResizeObserver auto-fill, no dependencies |
-| `BrandMarquee` | `ui/Marquee/BrandMarquee.tsx` | (none) | Pre-configured Marquee with 5 brand logos (Sauleda, Sunbrella, Achilles, Coats, YKK), grayscale to color on hover |
-| `StackedCarousel` | `ui/Carousel/Carousel.tsx` | `items: StackedCard[]` | Stacked cards carousel (not used in Home; available for future) |
-| `ServiceGrid` | `ui/ServiceGrid/ServiceGrid.tsx` | `services: Service[]` | Responsive grid of service cards (not used in Home; available for `/servicios` page) |
-
-## Home Page Composition
-
-The Home page (`src/pages/Home/Home.tsx`) composes these sections in order:
-
-1. **Hero** — gradient hero with CTAs
-2. **BrandMarquee** — 5 brand logos in grayscale → color
-3. **ServicesSection** — dark-blue section with "¿Qué ofrecemos?" eyebrow + "Nuestros Servicios" title + isotipo icon + 2 category cards (Productos, Servicios) in a responsive grid
-4. **Reviews** — `HomeSection` with `centerTitleOnMobile`, renders 3 of 5 review cards in a responsive grid (stacked on mobile, 3 columns on desktop)
-5. **AboutSection** — data-driven from `data.Home.Sections` discriminated union (`kind: "aboutus"`)
-
-The Footer is mounted globally in `App.tsx` (appears on every page).
-
-## Data Flow
-
-- Mock data in `src/mocks/data.ts` provides:
-  - `data.Home.Sections[]` — discriminated union (`kind: "reviews" | "aboutus"`)
-  - `data.Home.Services[]` — 3 services (Lonas, Capotas, Cubreautos)
-  - `data.Home.Reviews[]` — 5 reviews
-- `src/data/` directory is gitignored for future local data storage
-- `.env` holds `VITE_WHATSAPP_URL` for the WhatsApp CTA link
-- Hero component has default props ready for future copy extraction (i18n/editing)
-
-## Code Conventions
-
-- **TypeScript strict**: `noUnusedLocals`, `noUnusedParameters`, `verbatimModuleSyntax`, `erasableSyntaxOnly`
-- `import type` required for type-only imports (`verbatimModuleSyntax`)
-- No `any` — strict interfaces for all props
-- Component props and identifiers in English; content text in Spanish (matching brand language)
-- No inline `style` props unless unavoidable (prefer Tailwind classes)
-- No third-party animation libraries — all animations are pure CSS or hand-rolled React hooks
-- React Compiler enabled via `@rolldown/plugin-babel` — write idiomatic React, let the compiler optimize
-- Co-located tests: `.test.tsx` next to each component
-- All test files use `@testing-library/react` with jsdom environment
-- `vitest/globals` enabled (no need to import `describe`/`it`/`expect`)
+| Variable | Description |
+|---|---|
+| `VITE_WHATSAPP_URL` | WhatsApp deep link with the preset greeting. Stored in `.env` (gitignored, local-only). `vite.config.ts` ships a deterministic CI fallback so tests don't depend on it. |
 
 ## Testing
 
-- **Stack**: Vitest 4 + @testing-library/react 16 + jsdom
-- **48 tests passing** across 6 test files (Button, AboutSection, Footer, Home, ServicesSection, HomeSection)
-- **Coverage** (v8 provider): ~76% statements, ~53% branches, ~84% functions, ~98% lines
-- **Thresholds** (v1): 40% stmts / 35% branches / 35% functions / 40% lines
-- **Excluded from coverage**: barrel files (`index.ts`), stub pages, Carousel, ScrollToTop, Header, App.tsx
-- **Test wrapper**: components using `<Link>` need `MemoryRouter` wrapper
-- **Globals**: `describe`/`it`/`expect`/`vi` available without imports (via `vitest/globals` in tsconfig)
-- **Polyfills** in `src/test/setup.ts`: `ResizeObserver`, `IntersectionObserver`, `matchMedia`
+- **355 tests passing** across 12 co-located `*.test.tsx` files.
+- **Coverage** (v8): ~83% statements · ~73% branches · ~82% functions · ~89% lines.
+- **Thresholds** (enforced by `vite build`): 75/65/75/80 — defined inline in `vite.config.ts` so a regression fails the build but a small edit doesn't.
+- **Excluded from coverage**: barrel files (`index.ts`), `*.types.ts`, stub pages, `ScrollToTop`, `Header`, `App.tsx`.
+- Components using `<Link>` need a `MemoryRouter` wrapper around the render.
+- `describe` / `it` / `expect` / `vi` are available globally (no imports needed via `vitest/globals`).
 
-## Build
+## Deploy
 
-```bash
-pnpm build
-# tsc -b (0 errors)
-# vite build (~6226 modules to ~282 KB JS + ~39 KB CSS gzipped)
-```
+`main` branch pushes trigger [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml):
 
-Current status: **passing** — 0 TypeScript errors, clean production build.
+1. `pnpm install --frozen-lockfile`
+2. `pnpm build`
+3. `cloudflare/wrangler-action@v3` → `pages deploy ./dist --project-name=elmonoloneria`
 
-## Known Issues / TODO
+Live at **[elmonoloneria.com](https://elmonoloneria.com/)** via Cloudflare Pages.
 
-- 4 stub pages (`/productos`, `/servicios`, `/nosotros`, `/faq`, `/contacto`) — to be implemented with real content
-- Placeholder content in services section, reviews, about us, footer contact (all marked with `// TODO` in code)
-- App.tsx has no smoke test (the "componente implementado pero no montado" bug pattern could recur)
-- Coverage thresholds are v1 — should be raised as more components get tested
-- No CI workflow (GitHub Actions) configured yet
-- No PR template in `.github/PULL_REQUEST_TEMPLATE.md`
-- Branch protection not configured on `dev` or `main`
+SEO setup: per-page meta via the `useDocumentMeta` hook (title, description, og, twitter, canonical), JSON-LD `LocalBusiness` schema in `index.html`, sitemap.xml and robots.txt served from `public/`.
+
+## Design system
+
+Tokens defined in `src/index.css` via Tailwind v4 `@theme`:
+
+| Token | Hex | Uso |
+|---|---|---|
+| `pr-hero-blue` | `#344784` | hero gradient end, eyebrow text on chalk |
+| `pr-aquamarine` | `#40F1E7` | accent — link active, brand mark, dots |
+| `sc-ocean-blue` | `#001051` | header / footer / dark sections, text on chalk |
+| `sc-chalk` | `#F4F4F4` | section backgrounds, body text on dark |
+
+Typography is fluid — `clamp()` over breakpoint jumps (e.g. `text-[clamp(1.8rem,3.5vw,2.8rem)]`). The only explicit breakpoint is the 800px mobile sidebar toggle; grid breakpoints are `md:grid-cols-2` / `lg:grid-cols-3`.
+
+All fonts are self-hosted TTF — no CDN.
+
+---
+
+<p align="center">
+  Built and maintained by <a href="https://www.linkedin.com/in/lautaro-camejo-837339247/">Lautaro Camejo</a><br />
+  <sub>First public release — v1.0</sub>
+</p>
