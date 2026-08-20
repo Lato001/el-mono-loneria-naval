@@ -88,8 +88,7 @@ export function Footer() {
           ))}
         </div>
       </div>
-      <div className="mx-auto flex max-w-295 flex-col items-center gap-3 mt-2 justify-between text-sm text-white/50 lg:flex-row">
-        <p>{nav.footer.copyright}</p>
+      <div className="mx-auto flex max-w-295 flex-col items-center gap-3 mt-2 justify-center text-sm text-white/50 lg:flex-row">
         <DevBadge
           name="Lautaro Camejo"
           photoSrc={devPhoto}

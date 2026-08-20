@@ -46,13 +46,6 @@ describe('Footer', () => {
     expect(facebook).toHaveAttribute('rel', 'noopener noreferrer');
   });
 
-  it('renders the copyright text', () => {
-    renderFooter();
-    expect(
-      screen.getByText(/2026 El Mono Lonería Naval/),
-    ).toBeInTheDocument();
-  });
-
   describe('DevBadge signature', () => {
     it('renders the developer name, role and avatar photo in the signature line', () => {
       renderFooter();
