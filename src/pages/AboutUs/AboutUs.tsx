@@ -32,11 +32,10 @@ export function AboutUs() {
     <SectionWrapper
       eyebrow={about.eyebrow}
       title={about.title}
-      containerClassName="w-full px-6 bg-gradient-to-b from-sc-ocean-blue/20 to-pr-aquamarine/20"
+      containerClassName="w-full bg-gradient-to-b from-sc-ocean-blue/20 to-pr-aquamarine/20"
       titlesAlign="center"
       headingLevel="h1"
-      className="pt-30"
-      
+      className="!pb-0"
       >
 
 
