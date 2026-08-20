@@ -13,7 +13,6 @@ import type { MasonryItem } from "../../mocks/types";
 import { data } from "../../mocks/data";
 import { PATHS } from "../../routes/routes";
 import lineasonduladasImg from '../../assets/backgrounds/formas-lineas-onduladas.svg'
-
 // ── Nuevos imports para el masonry de la home ──────────────────────────────
 import capota01 from "../../assets/img/works/capota/thumbs/capota-01.webp";
 import carpa01 from "../../assets/img/works/carpa/thumbs/carpa-01.webp";
@@ -66,7 +65,7 @@ export function Home() {
       <div className=" bg-gradient-to-b from-sc-ocean-blue/20 to-pr-aquamarine/20">
 
         <SectionWrapper
-        backgroundImage={lineasonduladasImg}
+
         className="bg-gradient-to-t from-pr-hero-blue/20 to-sc-ocean-blue"
           titlesAlign={data.home.sections.whatWeOffer.titlesAlign}
           eyebrow={data.home.sections.whatWeOffer.eyebrow}
