@@ -197,10 +197,9 @@ export function WorksSection({ thumbMap, imageDims }: WorksSectionProps) {
         id={showcaseId}
         eyebrow="Trabajos"
         title="Nuestros Trabajos"
-        gradientVariant="hero-to-navy"
         headingLevel="h1"
         containerClassName="mx-auto max-w-[1400px] px-6 lg:px-10 "
-        className="!pb-10"
+        className="!pb-10 bg-gradient-to-b from-pr-aquamarine/20 to-sc-ocean-blue"
       >
         <CategorySelect
           value={selectedCategoria}

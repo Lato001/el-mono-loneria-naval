@@ -27,7 +27,7 @@ const reviews = data.Home.Reviews.map((r) => ({
 
 export function SplitReviews() {
   return (
-    <div className="grid grid-cols-1 gap-6 md:grid-cols-3 md:gap-8">
+    <div className="grid grid-cols-1 gap-6 md:grid-cols-3 md:gap-8 mt-15">
       {reviews.slice(0, 3).map((r: Review) => (
         <ReviewCard key={r.id} {...r} />
       ))}

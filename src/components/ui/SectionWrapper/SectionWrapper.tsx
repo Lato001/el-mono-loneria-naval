@@ -49,9 +49,9 @@ export function SectionWrapper({
 
   const gradientClass =
   gradientVariant === "navy-to-hero"
-    ? "bg-gradient-to-b from-sc-ocean-blue/20 to-pr-aquamarine/20"
+    ? "section-navy-to-hero"
     : gradientVariant === "hero-to-navy"
-    ? "bg-gradient-to-b from-pr-aquamarine/75 to-sc-ocean-blue"
+    ? "section-navy-to-hero"
     : "";
 
 
@@ -64,7 +64,7 @@ export function SectionWrapper({
             ? "bg-sc-ocean-blue"
             : "bg-sc-chalk"
           : ""
-      } ${gradientClass} py-20 text-white ${
+      } ${gradientClass} py-25 text-white ${
         backgroundImage ? "relative overflow-hidden" : ""
       } ${className ?? ""}`}
       aria-label={title}

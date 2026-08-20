@@ -63,25 +63,27 @@ export function Home() {
         secondaryCta={data.home.hero.secondaryCta}
         videos={data.home.hero.videos}
       />
-      <div className="section-navy-gradient">
+      <div className=" bg-gradient-to-b from-sc-ocean-blue/20 to-pr-aquamarine/20">
+
         <SectionWrapper
-          gradientVariant="navy-to-hero"
+        backgroundImage={lineasonduladasImg}
+        className="bg-gradient-to-t from-pr-hero-blue/20 to-sc-ocean-blue"
           titlesAlign={data.home.sections.whatWeOffer.titlesAlign}
           eyebrow={data.home.sections.whatWeOffer.eyebrow}
           title={data.home.sections.whatWeOffer.title}
-        >
+          >
           <SplitCards
             items={data.home.splitCards}
             imageMap={splitCardsImageMap}
-          />
+            />
         </SectionWrapper>
         <SectionWrapper
-        className="!bg-transparent"
+        className="bg-gradient-to-b from-pr-hero-blue/20 to-sc-ocean-blue/10"
           backgroundImage={lineasonduladasImg}
           titlesAlign={data.home.sections.aboutUs.titlesAlign}
           eyebrow={data.home.sections.aboutUs.eyebrow}
           title={data.home.sections.aboutUs.title}
-        >
+          >
           <div className="pb-10">
             <Masonry
               items={homeMasonryItems}
@@ -91,7 +93,7 @@ export function Home() {
               stagger={0.05}
               scaleOnHover
               hoverScale={0.95}
-            />
+              />
           </div>
           <div className="flex justify-center">
             <LinkButton
@@ -103,34 +105,34 @@ export function Home() {
             />
           </div>
         </SectionWrapper>
-      </div>
       
       <SectionWrapper
-        gradientVariant="hero-to-navy"
+      className="bg-gradient-to-b from-sc-ocean-blue/20 to-sc-sky-blue/35"
         titlesAlign={data.home.sections.testimonials.titlesAlign}
         eyebrow={data.home.sections.testimonials.eyebrow}
         title={data.home.sections.testimonials.title}
-      >
+        >
         <SplitReviews></SplitReviews>
-        <div className=" mt-10 flex justify-center">
+        <div className=" mt-10 pt-10 flex justify-center">
           <LinkButton
             type="Google"
             text="Ver Reseñas"
             theme="light"
             url="https://maps.app.goo.gl/5yJprtv3uSdtv13M7"
-          />
+            />
         </div>
       </SectionWrapper>
       <SectionWrapper
-      gradientVariant="navy-to-hero"
+        className="bg-gradient-to-b from-sc-sky-blue/35 to-sc-ocean-blue"
         theme={data.home.sections.faq.theme}
         titlesAlign={data.home.sections.faq.titlesAlign}
         eyebrow={data.home.sections.faq.eyebrow}
         title={data.home.sections.faq.title}
-      >
+        >
         <Accordion items={data.home.faqs} />
         <NextPageCta className="pt-20" />
       </SectionWrapper>
+      </div>
 
     </>
   );

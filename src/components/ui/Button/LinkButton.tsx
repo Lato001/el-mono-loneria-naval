@@ -53,7 +53,7 @@ export function LinkButton({
           href={url}
           target="_blank"
           rel="noopener noreferrer"
-          className={` group inline-flex items-center gap-4 rounded-full border border-zinc-100 bg-green py-2 pl-2 pr-8 shadow-[0_10px_30px_rgba(15,23,42,.08)] transition-all duration-300 hover:-translate-y-0.5 hover:border-zinc-200 
+          className={` group inline-flex items-center gap-4 rounded-full border border-zinc-100 bg-green py-2 pl-2 pr-14 shadow-[0_10px_30px_rgba(15,23,42,.08)] transition-all duration-300 hover:-translate-y-0.5 hover:border-zinc-200 
             hover:shadow-[0_16px_40px_rgba(15,23,42,.12)] active:scale-[0.98] ${className} ${theme === "light" ? "bg-white border-white" : "bg-sc-ocean-blue border-sc-ocean-blue"}`}
         >
           <div

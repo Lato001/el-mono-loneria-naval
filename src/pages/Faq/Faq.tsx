@@ -147,8 +147,7 @@ export function Faq() {
       theme={faqSection.theme}
       titlesAlign={faqSection.titlesAlign}
       headingLevel="h1"
-      className="overflow-x-clip"
-      gradientVariant="navy-to-hero"
+      className="overflow-x-clip bg-gradient-to-b from-pr-aquamarine/20 to-sc-ocean-blue"
     >
       <div className="mb-16">
         <FaqCategoryGrid onSelect={handleCategoryClick} />
@@ -222,7 +221,7 @@ export function Faq() {
         )}
       </Modal>
 
-      <NextPageCta />
+      <NextPageCta variant="light" />
     </SectionWrapper>
   );
 }
