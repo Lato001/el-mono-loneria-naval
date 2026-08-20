@@ -8,7 +8,7 @@ interface MetaConfig {
   noIndex?: boolean;
 }
 
-const SITE_NAME = "El Mono — Lonería naval";
+const SITE_NAME = "El Mono Loneria Naval";
 const SITE_DESCRIPTION =
   "Confección de lonas, cerramientos, capotas, cubreautos y fundas para motos de agua. Trabajo a medida con materiales técnicos de alta durabilidad.";
 const ORIGIN = "https://elmonoloneria.com";
