@@ -17,7 +17,7 @@ export function Hero({
     <>
       <section
         id="home"
-        className="relative overflow-hidden pt-40 text-white bg-linear-to-br from-sc-ocean-blue to-pr-hero-blue"
+        className="relative overflow-hidden pt-40 text-white bg-linear-to-r from-sc-ocean-blue to-pr-hero-blue"
       >
         <div
           className="absolute inset-0 pointer-events-none select-none"

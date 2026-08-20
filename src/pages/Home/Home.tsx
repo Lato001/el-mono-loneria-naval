@@ -62,11 +62,11 @@ export function Home() {
         secondaryCta={data.home.hero.secondaryCta}
         videos={data.home.hero.videos}
       />
-      <div className=" bg-gradient-to-b from-sc-ocean-blue/20 to-pr-aquamarine/20">
+      <div className=" bg-gradient-to-br from-sc-ocean-blue/20 to-pr-aquamarine/20">
 
         <SectionWrapper
 
-        className="bg-gradient-to-t from-pr-hero-blue/20 to-sc-ocean-blue"
+        className="bg-gradient-to-b from-sc-ocean-blue to-pr-hero-blue/20"
           titlesAlign={data.home.sections.whatWeOffer.titlesAlign}
           eyebrow={data.home.sections.whatWeOffer.eyebrow}
           title={data.home.sections.whatWeOffer.title}
@@ -100,7 +100,7 @@ export function Home() {
               text="Ver mas trabajos..."
               theme="light"
               path={PATHS.WORKS}
-              className="mt-10 !px-8 !py-3 !rounded-full "
+              className="mt-15 xl:hidden "
             />
           </div>
         </SectionWrapper>
@@ -129,7 +129,7 @@ export function Home() {
         title={data.home.sections.faq.title}
         >
         <Accordion items={data.home.faqs} />
-        <NextPageCta className="pt-20" />
+        <NextPageCta className="pt-20" variant="light" />
       </SectionWrapper>
       </div>
 
