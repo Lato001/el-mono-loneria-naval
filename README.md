@@ -130,6 +130,12 @@ All fonts are self-hosted TTF — no CDN.
 
 ---
 
+## License
+
+Proprietary — all rights reserved. See [LICENSE](./LICENSE).
+
+---
+
 <p align="center">
   Built and maintained by <a href="https://www.linkedin.com/in/lautaro-camejo-837339247/">Lautaro Camejo</a><br />
   <sub>First public release — v1.0</sub>
