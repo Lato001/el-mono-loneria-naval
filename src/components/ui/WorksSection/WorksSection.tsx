@@ -288,7 +288,7 @@ export function WorksSection({ thumbMap, imageDims }: WorksSectionProps) {
           hoverScale={0.95}
           colorShiftOnHover={true}
           footer={
-            <div className="flex flex-col items-center gap-4 pb-20 pt-12">
+            <div className="flex flex-col items-end gap-4 pb-20 pt-12">
               {hasMoreAlbumItems && (
                 <>
                   <p className="font-poppins text-lg text-sc-chalk/70">
