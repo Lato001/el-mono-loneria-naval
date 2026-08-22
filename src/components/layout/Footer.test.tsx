@@ -72,15 +72,15 @@ describe('Footer', () => {
       }
     });
 
-    it('exposes a WhatsApp link with the dev number', () => {
+    it('does not render a WhatsApp link from the dev badge', () => {
+      // The DevBadge carries only the LinkedIn signature now; the WhatsApp link
+      // was removed from the footer signature. Asserting absence here keeps the
+      // regression net tight if someone re-adds whatsappNumber later.
       renderFooter();
-      const whatsappLink = screen.getByRole('link', {
+      const whatsappLinks = screen.queryAllByRole('link', {
         name: /Escribir a Lautaro Camejo por WhatsApp/i,
       });
-      expect(whatsappLink).toHaveAttribute(
-        'href',
-        expect.stringContaining('wa.me/5491156137150'),
-      );
+      expect(whatsappLinks).toHaveLength(0);
     });
   });
 });

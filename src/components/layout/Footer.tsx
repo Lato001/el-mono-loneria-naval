@@ -95,7 +95,6 @@ export function Footer() {
           initials="LC"
           role="Desarrollador Web"
           linkedinUrl="https://www.linkedin.com/in/lautaro-camejo-837339247/"
-          whatsappNumber="5491156137150"
         />
       </div>
     </footer>

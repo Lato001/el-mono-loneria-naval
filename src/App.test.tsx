@@ -27,16 +27,12 @@ function renderApp(initialPath: string) {
 }
 
 describe("App", () => {
-  it("renders the DevBadge WhatsApp link as the only WhatsApp anchor on /productos", () => {
+  it("does not render the DevBadge WhatsApp anchor on /productos", () => {
     renderApp("/productos");
-    // The Footer's DevBadge carries a global WhatsApp signature link on every
-    // route. With no products selected, the Products page itself does not
-    // render its own WhatsApp CTA — so the only one expected is the DevBadge's.
+    // The Footer's DevBadge no longer carries a WhatsApp link — only LinkedIn.
+    // With no products selected, the Products page itself does not render its
+    // own WhatsApp CTA either, so the total count on this route is zero.
     const whatsappLinks = screen.queryAllByRole("link", { name: /whatsapp/i });
-    expect(whatsappLinks).toHaveLength(1);
-    expect(whatsappLinks[0]).toHaveAttribute(
-      "aria-label",
-      "Escribir a Lautaro Camejo por WhatsApp",
-    );
+    expect(whatsappLinks).toHaveLength(0);
   });
 });
