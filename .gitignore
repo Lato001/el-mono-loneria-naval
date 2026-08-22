@@ -28,4 +28,5 @@ coverage
 
 # Agent state
 .atl/
+.pi/
 

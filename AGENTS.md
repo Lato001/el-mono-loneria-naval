@@ -1,4 +1,4 @@
-# AGENTS.md — loneria-web
+# AGENTS.md — el-mono-loneria-naval
 
 Landing page for "El Mono" lonería naval (marine canvas workshop).
 
