@@ -221,7 +221,7 @@ export function Faq() {
         )}
       </Modal>
 
-      <NextPageCta variant="light" />
+      <NextPageCta />
     </SectionWrapper>
   );
 }

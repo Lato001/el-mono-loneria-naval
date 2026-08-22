@@ -129,7 +129,7 @@ export function Home() {
         title={data.home.sections.faq.title}
         >
         <Accordion items={data.home.faqs} />
-        <NextPageCta className="pt-20" variant="light" />
+        <NextPageCta className="pt-20" />
       </SectionWrapper>
       </div>
 

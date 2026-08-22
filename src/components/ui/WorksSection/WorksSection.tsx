@@ -307,7 +307,7 @@ export function WorksSection({ thumbMap, imageDims }: WorksSectionProps) {
                 </>
               )}
               
-              <NextPageCta variant="light" className="!pt-2"  />
+              <NextPageCta className="!pt-2" />
             </div>
           }
           onItemClick={(item) => handleAlbumClick(item as AlbumImage)}
